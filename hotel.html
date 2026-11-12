@@ -11,7 +11,7 @@
 <style>
 :root{--d:'Black Han Sans','Noto Sans KR',-apple-system,sans-serif;--b:'Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
-html,body{margin:0;height:100%;overflow:hidden;background:#7fcf5c;touch-action:none;font-family:var(--b)}
+html,body{margin:0;height:100%;overflow:hidden;background:#0a2466;touch-action:none;font-family:var(--b)}
 canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 #hud{position:fixed;left:0;right:0;top:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px;z-index:5;pointer-events:none}
 #hud>*{pointer-events:auto}
@@ -94,6 +94,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 .rdInfo{margin-top:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:7px 12px;color:#fff;font:700 12px var(--b);min-height:34px}.rdInfo b{font-weight:900;color:#ffd23f}
 #rdGo{margin-top:8px;height:66px;border:0;border-radius:22px;background:linear-gradient(#ffe14d,#ff9a1a);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 6px 0 #b85a00;color:#fff;font-family:var(--d);font-size:28px;text-shadow:0 2px 0 #b85a00}#rdGo:active{transform:translateY(4px);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 2px 0 #b85a00}#rdGo:disabled{filter:grayscale(1);opacity:.7}
 body.title #hud,body.title #sub,body.title #bbar{opacity:0!important;pointer-events:none!important}
+@media (display-mode:standalone){html{height:100vh;min-height:calc(100% + env(safe-area-inset-top))}body{height:100vh}}
 </style>
 </head>
 <body>
@@ -626,8 +627,8 @@ function hotelRoad(){ const TH=i=>{ let t=''; try{ t=localStorage.getItem('hotel
   const HS=[['도심 호텔','허름한 여관에서 시작해 객실·세탁실·카페를 늘려요'],['바닷가 리조트','수영장 · 수건 관리 · 숙박비 3배'],['설산 스키 리조트','다음 지역 · 준비 중이에요']];
   const stages=HS.map(([nm,d],i)=>{ const k=i===ST?'cur':i<=META.max&&i<2?'done':i===META.max+1&&i<2?'next':'lock';
     return {name:nm,state:k,badge:k==='cur'?'진행 '+S.unl.length+'/'+PADS.length:k==='done'?(i<ST||S.done?'영업 중':'열림'):k==='next'?'다음 호텔':'잠김',desc:d+(k==='next'?' · 도심 호텔을 완성하면 열려요':''),thumb:'hs'+i+'.jpg',filter:k==='lock'?'grayscale(1) brightness(.7)':k==='next'?'grayscale(.6) brightness(.85)':''}; });
-  openRoad({mode:'hotel',theme:['#0a4a66','#136a8a','linear-gradient(#4fe0c8,#16a58c)'],stars:'★ '+rating().toFixed(1),stages,sel:ST,tab:roadTab,label:i=>i===ST?'▶ 영업 시작':i<=META.max&&i<2?'이 호텔로 이동':'',go:i=>{ if(i!==ST){ META.st=i; saveMeta(); save(); try{ sessionStorage.setItem('hotel-skip','1'); }catch(e){} location.reload(); return false; } document.body.classList.remove('title'); }}); }
-{ let skip=false; try{ skip=sessionStorage.getItem('hotel-skip')==='1'; sessionStorage.removeItem('hotel-skip'); }catch(e){} if(skip) $('title').remove(); else { document.body.classList.add('title'); $('tStart').onclick=()=>{ try{ initAudio(); }catch(e){} $('title').classList.add('out'); setTimeout(()=>$('title').remove(),650); setTimeout(hotelRoad,250); }; $('tLobby').onclick=()=>$('back').click(); } }
+  openRoad({mode:'hotel',theme:['#0a4a66','#136a8a','linear-gradient(#4fe0c8,#16a58c)'],stars:'★ '+rating().toFixed(1),stages,sel:ST,tab:roadTab,label:i=>i===ST?'▶ 영업 시작':i<=META.max&&i<2?'이 호텔로 이동':'',go:i=>{ if(i!==ST){ META.st=i; saveMeta(); save(); try{ sessionStorage.setItem('hotel-skip','1'); }catch(e){} location.reload(); return false; } document.body.classList.remove('title'); setBg(); }}); }
+{ let skip=false; try{ skip=sessionStorage.getItem('hotel-skip')==='1'; sessionStorage.removeItem('hotel-skip'); }catch(e){} const setBg=()=>{ document.documentElement.style.background=document.body.style.background=THM.ground; }; if(skip){ $('title').remove(); setBg(); } else { document.body.classList.add('title'); $('tStart').onclick=()=>{ try{ initAudio(); }catch(e){} $('title').classList.add('out'); setTimeout(()=>$('title').remove(),650); setTimeout(hotelRoad,250); }; $('tLobby').onclick=()=>$('back').click(); } }
 const away=S.last?Math.min(7200,(Date.now()-S.last)/1000):0; const openN=rooms.filter(r=>r.state!=='locked').length;
 if(S.seen&&away>120&&openN>0){ const auto=(recep?1:0.35)*(staff.length?1:0.5); const earn=Math.round(away/60*openN*6*(1+0.15*S.up.price)*auto*(0.7+rating()*0.1)); if(earn>0) setTimeout(()=>{ openModal('<h2>자리 비운 동안</h2><p>'+Math.floor(away/60)+'분 동안 호텔이 영업했어요<br><b style="font-family:var(--d);font-size:30px;color:#2faa45">$'+earn.toLocaleString()+'</b><br><small>'+(recep?'':'프런트 직원을 고용하면 더 많이 벌어요')+'</small></p><button id="mOk">받기</button><button class="gray" id="m2x" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">2배 받기 (광고 · 테스트)</button>'); const ok=$('mOk').onclick; $('mOk').onclick=()=>{ money+=earn; snd('coin',0.5); $('modal').classList.remove('on'); }; $('m2x').onclick=()=>{ $('m2x').textContent='광고 보는 중…'; setTimeout(()=>{ money+=earn*2; snd('level_up',0.5); $('modal').classList.remove('on'); },1200); }; },400); }
 if(!S.seen){ S.seen=1; for(let k=0;k<3;k++){ spawnGuest(); const g=guests[guests.length-1]; const q=QPOS(k); g.pos.copy(q); g.state='queue'; g.ch.g.position.copy(q); }

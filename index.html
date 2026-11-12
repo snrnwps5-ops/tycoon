@@ -424,6 +424,7 @@ button{-webkit-user-select:none;user-select:none}
 #splash .rays,#splash .sky,#splash #spc,#splash .scoin,#splash .stap{display:none!important}
 .slogo{top:calc(5% + env(safe-area-inset-top))!important}.slogo .l1{font-size:46px!important}.slogo .l2{font-size:60px!important}
 #spPlay{bottom:calc(8% + env(safe-area-inset-bottom))!important}
+@media (display-mode:standalone){html{height:100vh;min-height:calc(100% + env(safe-area-inset-top))}body{height:100vh}}
 </style>
 </head>
 <body>
@@ -2219,5 +2220,6 @@ if(titleOn){ document.body.classList.add('titling'); setTitleScene(true); update
 requestAnimationFrame(step);
 })();
 </script>
+<script>try{ document.documentElement.style.background='#c8382a'; document.getElementById('spPlay').addEventListener('click',function(){ document.documentElement.style.background=''; }); }catch(e){}</script>
 </body>
 </html>
