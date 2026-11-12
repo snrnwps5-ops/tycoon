@@ -424,7 +424,6 @@ button{-webkit-user-select:none;user-select:none}
 #splash .rays,#splash .sky,#splash #spc,#splash .scoin,#splash .stap{display:none!important}
 .slogo{top:calc(5% + env(safe-area-inset-top))!important}.slogo .l1{font-size:46px!important}.slogo .l2{font-size:60px!important}
 #spPlay{bottom:calc(8% + env(safe-area-inset-bottom))!important}
-@media (display-mode:standalone){html{height:100vh;min-height:calc(100% + env(safe-area-inset-top))}body{height:100vh}}
 </style>
 </head>
 <body>
@@ -809,7 +808,8 @@ const trunkG=new THREE.CylinderGeometry(0.13,0.19,1,10);
     tmesh(blobG,c0,x+0.05*sc,1.75*sc,z+0.05*sc,0.48*sc);
     if(i%3===0){ for(let k=0;k<3;k++) tmesh(blobG,'#ff5a4e',x+Math.cos(k*2.1+i)*0.62*sc,1.25*sc+(k%2)*0.25,z+Math.sin(k*2.1+i)*0.62*sc,0.07); } }
 });
-if(SI===2){ for(let i=0;i<9;i++){ const l=sph(0.2,i%2?'#ffd23f':'#ff6b8a',-6+i*1.5,2.9,2.4); } box(13,0.03,0.03,'#333',0,3.05,2.4); for(let i=0;i<2;i++) cyl(0.06,0.06,3.1,'#555',i?6.5:-6.5,1.55,2.4,null,6); }
+{ const BC=[['#ffe7a0','#ffd27a'],['#ffd23f','#9ad8ff'],['#ffd23f','#ff6b8a']][SI]||['#ffe7a0','#ffd27a']; for(let i=0;i<11;i++){ const l=sph(0.15,BC[i%2],-6+i*1.2,2.92-0.12*Math.sin(i/10*Math.PI),2.4); l.material=new THREE.MeshBasicMaterial({color:BC[i%2]}); l.castShadow=false; } box(13,0.025,0.025,'#4a4038',0,3.08,2.4); for(let i=0;i<2;i++) cyl(0.06,0.06,3.1,'#6a5a4a',i?6.5:-6.5,1.55,2.4,null,6);
+  const gc=['#ffd98a','#ffb0e0','#ffc27a'][SI]||'#ffd98a'; [[0,2.66,13.3,0.07],[0,-9.06,13.3,0.07],[-6.56,-3.2,0.07,11.8],[6.56,-3.2,0.07,11.8]].forEach(([x,z,w,d])=>{ const m=box(w,0.035,d,gc,x,0.115,z); m.material=new THREE.MeshBasicMaterial({color:gc}); m.castShadow=false; m.receiveShadow=false; }); }
 // ground details
 (function(){ let sd=7; const rnd=()=>{ sd=(sd*9301+49297)%233280; return sd/233280; }; const fc=['#ffffff','#ffd23f','#ff7aa8','#b48cff'];
   for(let i=0;i<120;i++){ const x=-18+rnd()*36, z=-9+rnd()*24; if(x>-7.2&&x<7.2&&z>-9.6&&z<3) continue; if(x>-3&&x<14&&z>2.4&&z<12.2) continue;

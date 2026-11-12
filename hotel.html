@@ -94,7 +94,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 .rdInfo{margin-top:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:7px 12px;color:#fff;font:700 12px var(--b);min-height:34px}.rdInfo b{font-weight:900;color:#ffd23f}
 #rdGo{margin-top:8px;height:66px;border:0;border-radius:22px;background:linear-gradient(#ffe14d,#ff9a1a);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 6px 0 #b85a00;color:#fff;font-family:var(--d);font-size:28px;text-shadow:0 2px 0 #b85a00}#rdGo:active{transform:translateY(4px);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 2px 0 #b85a00}#rdGo:disabled{filter:grayscale(1);opacity:.7}
 body.title #hud,body.title #sub,body.title #bbar{opacity:0!important;pointer-events:none!important}
-@media (display-mode:standalone){html{height:100vh;min-height:calc(100% + env(safe-area-inset-top))}body{height:100vh}}
+u.fc{display:inline-block;width:26px;height:26px;text-decoration:none;border-radius:50%;background:url(faces.jpg) 0 0/78px 78px no-repeat;border:2px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.2);vertical-align:middle;margin:-5px 5px -4px -5px}
 </style>
 </head>
 <body>
@@ -394,7 +394,7 @@ function spawnGuest(isBus){ if(queue.length>=(isBus?11:8)) return; const t=Math.
   const ch=makeChar(model,{tint:T.tint?T.tint[Math.floor(Math.random()*T.tint.length)]:null,pants:t===0?'#4a4038':null});
   if(t===3){ const head=ch.m.getObjectByName('Head'); if(head){ const cr=new THREE.Group(); cr.position.y=0.55; cr.scale.setScalar(1.4*QH/1.25); head.add(cr); const gm=new THREE.MeshPhongMaterial({color:'#ffcf3a'}); cr.add(new THREE.Mesh(new THREE.CylinderGeometry(0.085,0.085,0.05,10,1,true),gm)); for(let k=0;k<5;k++){ const a=k/5*Math.PI*2; const sp=new THREE.Mesh(new THREE.ConeGeometry(0.022,0.06,4),gm); sp.position.set(Math.cos(a)*0.08,0.05,Math.sin(a)*0.08); cr.add(sp); } } }
   const g={ch,tier:t,bus:isBus||evtT>0,pos:isBus?new THREE.Vector3(-1.5,0,11.4):new THREE.Vector3(14,0,11.2),wp:[new THREE.Vector3(isBus?-0.5:2,0,10),new THREE.Vector3(0,0,7.5)],state:'enter',pat:45,patMax:45,face:0,room:null,el:document.createElement('div')};
-  g.el.className='lb tier'+t; g.el.innerHTML=T.name+'<i class="pt"><s></s></i>'; $('labels').appendChild(g.el); ch.g.position.copy(g.pos); guests.push(g); queue.push(g); }
+  g.el.className='lb tier'+t; { const k=[0,3,1,4,6][Math.min(4,g.tier||0)]; g.el.innerHTML='<u class="fc" style="background-position:-'+(k%3)*26+'px -'+Math.floor(k/3)*26+'px"></u>'+T.name+'<i class="pt"><s></s></i>'; } $('labels').appendChild(g.el); ch.g.position.copy(g.pos); guests.push(g); queue.push(g); }
 function freeRoom(){ return rooms.find(r=>r.state==='clean'&&!r.guest); }
 function checkIn(g){ const r=freeRoom(); if(!r) return false; const qi=queue.indexOf(g); if(qi>=0) queue.splice(qi,1); r.guest=g; r.state='booked'; g.room=r; g.state='toRoom'; g.el.style.display='none';
   const side=r.x<0?-2.3:2.3; g.wp=[new THREE.Vector3(side,0,3.4),new THREE.Vector3(side,0,0.8),new THREE.Vector3(r.x,0,-4.6),new THREE.Vector3(r.x,0,-6.4)];
