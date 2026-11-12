@@ -509,7 +509,23 @@ function takeItem(o,t){ const i=o.stack.lastIndexOf(t); if(i<0) return false; o.
 const camT=new THREE.Vector3(); let last=performance.now(), spawnT=1, saveT=0, time=0, pickT=0, cleanT=0, checkT=0, cashT=0;
 cashVal=S.cash||0; rebuildCash();
 const TUT=['초록 원에 서서 손님을 체크인해요','손님이 나간 방은 세탁실에서 시트를 들고 가서 치워요','바닥의 판에 서서 돈을 내면 객실을 수리해요'];
-function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000); last=now; time+=dt;
+/* ---- guest requests ---- */
+const HREQ=[{ic:'🧴',q:'수건이 더 필요해요',a:['바로 새 수건을 가져다 드리기','프런트로 내려오라고 하기','내일 드린다고 하기']},{ic:'🍽️',q:'룸서비스 되나요? 배가 고파요',a:['메뉴를 안내하고 주문을 받아 전달하기','근처 편의점만 알려주기','영업 끝났다고 하기']},{ic:'❄️',q:'에어컨 소리가 너무 시끄러워요',a:['바로 점검하고 안 되면 방을 바꿔 드리기','참으라고 하기','창문을 열라고 하기']},{ic:'⏰',q:'내일 조금 늦게 나가도 될까요?',a:['다음 예약을 확인하고 가능하면 연장해 드리기','무조건 안 된다고 하기','추가 요금이 2배라고 하기']},{ic:'🧳',q:'체크아웃 후에 짐을 맡길 수 있나요?',a:['보관표를 드리고 프런트에서 맡아 드리기','방에 그냥 두라고 하기','안 된다고만 하기']},{ic:'🗺️',q:'근처에 가볼 만한 곳이 있을까요?',a:['지도에 맛집과 명소를 표시해 드리기','인터넷에서 찾아보라고 하기','잘 모른다고 하기']}];
+let hreq=null, hreqT=22, hreqOpen=false;
+const hreqRing=new THREE.Mesh(new THREE.RingGeometry(0.5,0.66,32),new THREE.MeshBasicMaterial({color:'#ffb020',transparent:true,opacity:0.9,depthWrite:false})); hreqRing.rotation.x=-Math.PI/2; hreqRing.visible=false; scene.add(hreqRing);
+function hreqEnd(){ hreq=null; hreqRing.visible=false; hreqT=26+Math.random()*18; }
+function openHreq(){ hreqOpen=true; const Q=hreq.Q, r=hreq.r, g=r.guest; const opts=Q.a.map((t,i)=>({t,ok:i===0})).sort(()=>Math.random()-0.5);
+  openModal('<h2>'+Q.ic+' '+(101+r.i)+'호 손님 요청</h2><p style="font-size:16px"><b>"'+Q.q+'"</b><br><small>어떻게 응대할까요?</small></p>'+opts.map((o,i)=>'<button data-hq="'+i+'" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00;font-size:15px;padding:10px 8px">'+o.t+'</button>').join(''));
+  $('mbox').onclick=e=>{ const b=e.target.closest('[data-hq]'); if(!b) return; $('modal').classList.remove('on'); $('mbox').onclick=null; hreqOpen=false; const P=new THREE.Vector3(r.x,2.3,-6.0);
+    if(opts[+b.dataset.hq].ok){ const tip=Math.round(8*THM.pm*(g?TIERS[g.tier].mult:1)); cashVal+=tip; rebuildCash(); S.reviews.push(5); if(g) g.happy=1; floatText(P,'감사해요! 팁 +'+tip); snd('level_up',0.4,1.3); sparkle(r.x,1.4,-6.0,'#ffd23f'); }
+    else { S.reviews.push(2); floatText(P,'서비스가 왜 이래요…','bad'); toast('아쉬워요… 정답: '+Q.a[0],3); snd('ui',0.4,0.6); }
+    while(S.reviews.length>12) S.reviews.shift(); hreqEnd(); }; }
+function hreqTick(dt){ if(hreqOpen) return; if(hreq){ const r=hreq.r; if(!r.guest||r.guest.state!=='sleep'){ hreqEnd(); return; } hreq.t-=dt; hreq.ft-=dt; if(hreq.ft<=0){ hreq.ft=2.2; floatText(new THREE.Vector3(r.x,2.5,-6.0),'🛎️ '+hreq.Q.ic+' 요청!','say'); }
+    hreqRing.scale.setScalar(1+0.08*Math.sin(performance.now()/160)); if(Math.hypot(player.pos.x-r.x,player.pos.z-(-4.9))<0.9&&!$('modal').classList.contains('on')){ openHreq(); return; }
+    if(hreq.t<=0){ S.reviews.push(2); while(S.reviews.length>12) S.reviews.shift(); floatText(new THREE.Vector3(r.x,2.4,-6.0),'아무도 안 오네요…','bad'); hreqEnd(); } return; }
+  hreqT-=dt; if(hreqT>0||S.stats.ci<4) return; const rs=rooms.filter(r=>r.guest&&r.guest.state==='sleep'&&r.guest.sl>5); if(!rs.length){ hreqT=3; return; }
+  const r=rs[Math.floor(Math.random()*rs.length)]; r.guest.sl+=14; if(r.guest.slMax) r.guest.slMax+=14; hreq={r,Q:HREQ[Math.floor(Math.random()*HREQ.length)],t:16,ft:0}; hreqRing.position.set(r.x,0.125,-4.9); hreqRing.visible=true; snd('ui',0.5,1.5); if(!S.tipReq){ S.tipReq=1; toast('🛎️ 객실 손님이 요청을 보냈어요! 문 앞 주황 원으로 가세요',4); } }
+function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000); last=now; time+=dt; hreqTick(dt);
   // player move
   let ix=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0), iz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0); if(joy.on){ ix=joy.dx; iz=joy.dy; }
   const il=Math.hypot(ix,iz); if(il>0.1){ const sp=5.4*(1+0.1*S.up.spd)*Math.min(1,il);
@@ -636,7 +652,7 @@ if(!S.seen){ S.seen=1; for(let k=0;k<3;k++){ spawnGuest(); const g=guests[guests
 else setTimeout(()=>bigBanner(THM.name,'영업 시작!'),300);
 function openModal(h){ $('mbox').innerHTML=h; $('modal').classList.add('on'); const b=$('mOk'); if(b) b.onclick=()=>{ $('modal').classList.remove('on'); initAudio(); }; }
 addEventListener('pagehide',save); document.addEventListener('visibilitychange',()=>{ if(document.hidden) save(); });
-window.__H={leave:g=>leave(g,true),towel:()=>TOWEL.n,pcash:()=>PCASH.v,bus:()=>{busCD=0},S,player,rooms,guests,queue,cam,PADS,get money(){return money;},set money(v){money=v;},cashVal:()=>cashVal};
+window.__H={hqTest:()=>{ const r=rooms.find(r=>r.state!=='locked'); r.guest={state:'sleep',sl:30,tier:0}; S.stats.ci=9; hreqT=0; return r.x; },hq:()=>hreq&&hreq.Q.q,towel:()=>TOWEL.n,pcash:()=>PCASH.v,bus:()=>{busCD=0},S,player,rooms,guests,queue,cam,PADS,get money(){return money;},set money(v){money=v;},cashVal:()=>cashVal};
 requestAnimationFrame(step);
 })();
 </script>
