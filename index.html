@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script>try{fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=t.trim();if(t&&t!=='1794474267'&&sessionStorage.getItem('upd')!==t){sessionStorage.setItem('upd',t);location.replace(location.pathname+'?b='+t);}}).catch(function(){});}catch(e){}</script><link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="테크 스토어"><meta name="theme-color" content="#0b1c66"><link rel="apple-touch-icon" href="icon-180.png">
+<script>try{fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=t.trim();if(t&&t!=='1794474651'&&sessionStorage.getItem('upd')!==t){sessionStorage.setItem('upd',t);location.replace(location.pathname+'?b='+t);}}).catch(function(){});}catch(e){}</script><link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="테크 스토어"><meta name="theme-color" content="#0b1c66"><link rel="apple-touch-icon" href="icon-180.png">
 <script>try{ if(localStorage.getItem('go-lobby')==='1') localStorage.removeItem('go-lobby'); else if(!/[?&]bunsik/.test(location.search)) location.replace('tech.html'); }catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -532,12 +532,40 @@ button{-webkit-user-select:none;user-select:none}
 <div id="modal"><div class="sheet" id="sheet"></div></div>
 <div id="err">3D를 불러오지 못했어요.<br>잠시 후 다시 열어 주세요.</div>
 
+<script>
+/* boot guard: shows a clear error + retry/lobby instead of an endless loading screen */
+(function(){ var done=false, failed=false;
+  var MSG={webgl:['3D 그래픽(WebGL)을 사용할 수 없어요','이 브라우저나 기기에서 WebGL이 꺼져 있거나 지원되지 않아요.<br>• 브라우저 설정에서 하드웨어 가속을 켜 주세요<br>• 다른 브라우저(Safari, Chrome 최신 버전)로 열어 보세요<br>• 원격·가상 브라우저에서는 실행되지 않을 수 있어요'],
+    lib:['게임 엔진 파일을 불러오지 못했어요','네트워크가 불안정하거나 광고 차단·보안 프로그램이 스크립트(cdnjs, jsdelivr)를 막았을 수 있어요.<br>• 연결 상태를 확인하고 다시 시도해 주세요'],
+    asset:['게임 데이터(그림·모델)를 불러오지 못했어요','assets.js 파일(약 8MB) 다운로드가 실패했어요.<br>• 연결 상태를 확인하고 다시 시도해 주세요'],
+    timeout:['불러오는 시간이 너무 오래 걸려요','네트워크가 느리거나 중간에 끊겼어요. 3D 그래픽 문제는 아니에요.<br>• Wi-Fi 상태를 확인하고 다시 시도해 주세요'],
+    init:['게임을 시작하는 중 오류가 났어요','예상하지 못한 오류예요. 다시 시도해도 반복되면 아래 내용을 알려 주세요.']};
+  window.bootFail=function(kind,detail){ if(done||failed) return; failed=true; var m=MSG[kind]||MSG.init, el=document.getElementById('load')||document.getElementById('loading');
+    if(!el){ el=document.createElement('div'); document.body.appendChild(el); } var d=detail?String(detail&&detail.message||detail).slice(0,160):'';
+    el.id='bootErr'; el.className=''; el.setAttribute('style','position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:radial-gradient(circle at 50% 40%,#1a3aa0,#0a1650);color:#fff;font-family:"Noto Sans KR",sans-serif;opacity:1');
+    el.innerHTML='<div style="font-size:44px">⚠️</div><div style="font-size:20px;font-weight:900;margin:10px 0 8px">'+m[0]+'</div><div style="font-size:13px;font-weight:700;line-height:1.7;color:#cfe0ff;max-width:320px;text-align:left">'+m[1]+'</div>'+(d?'<div style="margin-top:10px;font:11px monospace;color:#8fa6d8;max-width:320px;word-break:break-all">['+kind+'] '+d.replace(/</g,'&lt;')+'</div>':'')+
+      '<button id="beRetry" style="margin-top:18px;width:230px;height:54px;border:0;border-radius:18px;background:linear-gradient(#6fdcff,#2f7df0);color:#fff;font-size:18px;font-weight:900">다시 시도</button><button id="beLobby" style="margin-top:10px;width:230px;height:46px;border:1px solid rgba(255,255,255,.4);border-radius:16px;background:rgba(255,255,255,.12);color:#fff;font-size:15px;font-weight:800">로비로 돌아가기</button>';
+    var t=document.getElementById('title'); if(t) t.style.display='none'; document.body.classList.remove('title');
+    document.getElementById('beRetry').onclick=function(){ location.reload(); };
+    document.getElementById('beLobby').onclick=function(){ try{ localStorage.setItem('go-lobby','1'); }catch(e){} location.href='index.html'; }; };
+  window.bootOK=function(){ done=true; };
+  window.bootPre=function(){ if(typeof THREE==='undefined'||!THREE.GLTFLoader){ bootFail('lib',typeof THREE==='undefined'?'three.js not loaded':'GLTFLoader not loaded'); return false; }
+    if(!window.BUNSIK_ASSETS){ bootFail('asset','assets.js not loaded'); return false; }
+    var ok=false; try{ var c=document.createElement('canvas'); ok=!!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl'))); }catch(e){}
+    if(!ok){ bootFail('webgl','WebGL context unavailable'); return false; } return true; };
+  window.bootRenderer=function(opts){ try{ return new THREE.WebGLRenderer(opts); }catch(e1){ try{ opts.antialias=false; opts.powerPreference='low-power'; return new THREE.WebGLRenderer(opts); }catch(e2){ bootFail('webgl',e2); return null; } } };
+  addEventListener('error',function(e){ if(!done&&e&&e.message&&!/ResizeObserver/.test(e.message)) bootFail(typeof THREE==='undefined'?'lib':/webgl/i.test(e.message)?'webgl':'init',e.message); });
+  addEventListener('unhandledrejection',function(e){ if(!done){ var m=e&&e.reason&&(e.reason.message||e.reason)||''; bootFail(/webgl/i.test(m)?'webgl':'init',m); } });
+  setTimeout(function(){ if(!done) bootFail('timeout','no response after 45s'); },45000);
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
 <script src="assets.js"></script>
 <script>
 (async function(){
+if(!bootPre()) return;
 if(!window.THREE){document.getElementById('err').style.display='flex';return;}
 const $=id=>document.getElementById(id);
 
@@ -661,7 +689,7 @@ function startMusic(){ if(musicTimer) return; musicTimer=setInterval(()=>{ if(!a
 
 /* ================= THREE ================= */
 const canvas=$('c');
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+const renderer=bootRenderer({canvas,antialias:true,alpha:true}); if(!renderer) return;
 renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
 renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; 
 const scene=new THREE.Scene(); scene.background=new THREE.Color(TH.bg); document.body.style.background=TH.bg;
@@ -698,7 +726,7 @@ await new Promise(res=>{ if(!THREE.GLTFLoader){ res(); return; } const L=new THR
   const done=()=>{ n++; $('ldb').style.width=(n/MODELS.length*100)+'%'; if(n>=MODELS.length) res(); };
   const AB=window.BUNSIK_ASSETS||{}; const b64=x=>{ const bin=atob(x), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u.buffer; };
   MODELS.forEach(nm=>{ const d=AB[/^[qkfy]:/.test(nm)?nm:'m:'+nm]; if(!d){ done(); return; } try{ L.parse(b64(d),'',g=>{ ASSETS[nm]=g; done(); },()=>done()); }catch(e){ done(); } }); setTimeout(res,20000); });
-$('loading').classList.add('done'); setTimeout(()=>{ const l=$('loading'); if(l) l.remove(); },600);
+bootOK(); $('loading').classList.add('done'); setTimeout(()=>{ const l=$('loading'); if(l) l.remove(); },600);
 const HAS3D=false;
 const ENV_COL={leafsGreen:SI===2?'#3fb36b':'#55b947',grass:SI===2?'#4fbf6a':'#5fc24c',woodBark:'#8f5a33',dirt:'#9a6d45',colorRed:'#e8434f'};
 const flatMat=c=>matC['f'+c]||(matC['f'+c]=new THREE.MeshStandardMaterial({color:new THREE.Color(c).convertSRGBToLinear(),roughness:0.85,flatShading:true}));
