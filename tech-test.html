@@ -207,6 +207,9 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
     var t=document.getElementById('title'); if(t) t.style.display='none'; document.body.classList.remove('title');
     document.getElementById('beRetry').onclick=function(){ location.reload(); }; };
   window.bootOK=function(){ done=true; };
+  window.__ERR=[];
+  addEventListener('error',function(e){ try{ window.__ERR.push(String((e&&e.message)||e)); }catch(_){} });
+  addEventListener('unhandledrejection',function(e){ try{ window.__ERR.push('rej:'+String((e&&e.reason&&e.reason.message)||(e&&e.reason)||'')); }catch(_){} });
   window.bootPre=function(){ try{ var c=document.createElement('canvas'); return !!c.getContext('2d'); }catch(e){ bootFail('canvas',e); return false; } };
   addEventListener('error',function(e){ if(!done&&e&&e.message&&!/ResizeObserver/.test(e.message)) bootFail('init',e.message); });
   addEventListener('unhandledrejection',function(e){ if(!done){ var m=e&&e.reason&&(e.reason.message||e.reason)||''; bootFail('init',m); } });
@@ -323,7 +326,7 @@ THM.ground=TS.ground; if(STG===0) THM.wood=['#c98a52','#b97a45','#d49860','#c080
 function openModal(h){ if(curFace!=null&&h.indexOf('<h2')===0) h='<div style="margin-bottom:2px">'+faceI(curFace,76,'fm')+'</div>'+h; $('mbox').innerHTML=h; $('modal').classList.add('on'); const b=$('mOk'); if(b) b.onclick=()=>{ $('modal').classList.remove('on'); $('mbox').onclick=null; initAudio(); if(window.__rts){ window.__rts=0; setTimeout(startDayModal,150); } }; }
 /* ---------- 2D 탑다운 렌더러 (WebGL 없이 동작) ---------- */
 const cv=$('c'), ctx2=cv.getContext('2d',{alpha:false});
-const renderer={domElement:cv,setPixelRatio(){},setSize(){},shadowMap:{enabled:false,type:0},render(){draw2D();}};
+const renderer={domElement:cv,setPixelRatio(){},setSize(){},shadowMap:{enabled:false,type:0},render(){ try{ draw2D(); }catch(e){ window.__ERR=(window.__ERR||[]); if(window.__ERR.length<6) window.__ERR.push('draw:'+((e&&e.message)||e)); } }};
 const scene=new THREE.Scene(); scene.background=new THREE.Color(THM.ground);
 const cam=new THREE.OrthographicCamera(); cam.position=new THREE.Vector3(0,20,0); cam.zoom=1;
 const CAM_OFF=new THREE.Vector3(0,20,0);
@@ -460,7 +463,7 @@ let _frame=0;
 function drawStatus(){
   if((_frame++ % 6)!==0) return;
   const nz=custs.filter(c=>c.st==='wait'||c.st==='want').length;
-  const e=$('aiv'); if(e){ e.textContent='위치 x'+player.pos.x.toFixed(1)+' · z'+player.pos.z.toFixed(1)+'\n대기 손님 '+nz+'명 · 들기 '+player.stack.length+'/'+CAP()+(NAV.path.length?'\n➡️ 이동 중':''); }
+  const e=$('aiv'); if(e){ e.textContent=((window.__ERR&&window.__ERR.length)?('⚠️ '+window.__ERR[0]+'\n'):'')+'위치 x'+player.pos.x.toFixed(1)+' · z'+player.pos.z.toFixed(1)+'\n대기 손님 '+nz+'명 · 들기 '+player.stack.length+'/'+CAP()+(NAV.path.length?'\n➡️ 이동 중':''); }
   const st=$('aistat'); if(st){ st.textContent=(dayState==='run'?'영업중':dayState==='end'?'마감':'준비')+' DAY '+(S.day+1); }
 }
 function draw2D(){
