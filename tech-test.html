@@ -331,6 +331,7 @@ const scene=new THREE.Scene(); scene.background=new THREE.Color(THM.ground);
 const cam=new THREE.OrthographicCamera(); cam.position=new THREE.Vector3(0,20,0); cam.zoom=1;
 const CAM_OFF=new THREE.Vector3(0,20,0);
 const gget=(k,f)=>f?f():null;
+const sun={position:new THREE.Vector3(),target:{position:new THREE.Vector3()}};
 const VIEW={x:0,z:-1.3,s:40,zoom:1,W:0,H:0};
 const ZOOMS=[1,1.55,2.2]; let ZOOMI=0;
 function fitScale(){ const W=innerWidth,H=innerHeight; return Math.max(20,Math.min(112,Math.min(W/15.9,H/16.6))); }
