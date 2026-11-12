@@ -377,7 +377,11 @@ function drawFloor(){
   quad(-4.0,-7.75,5.8,2.3,'rgba(255,255,255,.35)',null,2);
   quad(0,5.8,2.5,0.8,'#2f6fd8','#ffffff',4);
   ctext('입구',0,5.8,Math.max(9,VIEW.s*VIEW.zoom*0.3),'#ffffff',true);
-  ctext(TS.sign,0,-8.5,Math.max(10,VIEW.s*VIEW.zoom*0.4),'rgba(255,255,255,.9)',true);
+  // 매장 간판 (뒷벽 바깥)
+  const ss=SX(0,-9.35); const sw=5.0*ss.s;
+  ctx2.fillStyle='#1d2433'; rrect(ctx2,ss.x-sw/2,ss.y-0.42*ss.s,sw,0.66*ss.s,6); ctx2.fill();
+  ctx2.fillStyle=TS.signLine||'#5ad1ff'; ctx2.fillRect(ss.x-sw/2,ss.y+0.24*ss.s,sw,2);
+  ctext(TS.sign+' · '+STN[STG],0,-9.35,Math.max(10,ss.s*0.34),'#ffffff',true);
 }
 function drawWalls(){
   for(const w of WALLS){
@@ -398,13 +402,13 @@ function drawFurn(f){
 }
 function drawShelf(x){
   const s=SX(0,0).s;
-  if(!x.on){ quad(x.x,x.z,1.4,0.62,'rgba(120,130,145,.45)','#8a96a8',0); ctext('잠김',x.x,x.z,Math.max(8,s*0.2),'#ffffff'); return; }
+  if(!x.on){ quad(x.x,x.z,1.4,0.72,'rgba(120,130,145,.45)','#8a96a8',0); ctext('잠김',x.x,x.z,Math.max(8,s*0.22),'#ffffff'); return; }
   const col='bsc'.includes(x.t)?'#2a8a3a':'#2f6fd8';
-  quad(x.x,x.z,1.4,0.62,'#f6ecd8',col,0);
-  quad(x.x-0.34,x.z,0.52,0.44,IT[x.t].c,'#ffffff',2);
-  ctext(IT[x.t].n,x.x+0.28,x.z-0.04,Math.max(9,s*0.2),'#1d2433',true);
-  ctext(x.n+'/'+x.max,x.x+0.28,x.z+0.19,Math.max(9,s*0.24),x.n===0?'#e8342a':'#2faa45',true);
-  if(x.n===0&&(S.inv[x.t]||0)<=0) ctext('품절',x.x-0.1,x.z-0.45,Math.max(9,s*0.22),'#e8342a',true);
+  quad(x.x,x.z,1.4,0.72,'#fbf4e4',col,0);
+  quad(x.x-0.44,x.z,0.46,0.44,IT[x.t].c,'#ffffff',2);
+  ctext(IT[x.t].n,x.x+0.06,x.z-0.12,Math.max(9,s*0.24),'#1d2433',true);
+  ctext(x.n+' / '+x.max,x.x+0.06,x.z+0.16,Math.max(10,s*0.28),x.n===0?'#e8342a':'#1d7a2a',true);
+  if(x.n===0&&(S.inv[x.t]||0)<=0) ctext('품절',x.x,x.z-0.52,Math.max(9,s*0.24),'#e8342a',true);
 }
 function drawPad2(p){
   const s=SX(0,0).s;
