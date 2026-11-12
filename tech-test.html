@@ -146,6 +146,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 .rpg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}#modal .rpg button{margin:0;font-size:14px;padding:9px 4px;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1d4a9a}
 .rpmsg{min-height:18px;font:800 13px var(--b);color:#e8342a;margin-top:4px}.shk{animation:shk .3s}@keyframes shk{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 #modal button.gray{background:linear-gradient(#b8c2d0,#8a96a8);box-shadow:0 4px 0 #5a6578}
+
 /* ===== 2D 테스트 모드 전용 UI ===== */
 #aip{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:12;width:200px;background:rgba(10,18,38,.88);border:2px solid rgba(255,255,255,.38);border-radius:16px;padding:8px;color:#fff;font:900 12px var(--b);box-shadow:0 6px 18px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #aip.min #aib{display:none}
@@ -185,6 +186,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 <div id="joy"><i></i></div>
 <div id="modal"><div class="box" id="mbox"></div></div>
 <div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tv">v1.5</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
 <div class="aihint">구역 버튼을 누르면 자동으로 걸어가요 · 화면을 눌러도 이동</div>
@@ -327,6 +329,7 @@ const TS=[
   {name:'실리콘밸리 본사',sign:'NOVA HQ',signBg:'#ffffff',signFg:'#1d1d1f',signLine:'#2f6fd8',ground:'#86c46e',floor:['#f1efea','#e8e5df','#c8c3ba'],wall:['#ffffff','#f3f3f1','#c9c9c4'],cap:'#1d1d1f',table:'table_medium_long',acc:'#2f6fd8',promo:['#1d1d1f','#2f6fd8'],out:'campus'}][STG];
 THM.ground=TS.ground; if(STG===0) THM.wood=['#c98a52','#b97a45','#d49860','#c08048'];
 function openModal(h){ if(curFace!=null&&h.indexOf('<h2')===0) h='<div style="margin-bottom:2px">'+faceI(curFace,76,'fm')+'</div>'+h; $('mbox').innerHTML=h; $('modal').classList.add('on'); const b=$('mOk'); if(b) b.onclick=()=>{ $('modal').classList.remove('on'); $('mbox').onclick=null; initAudio(); if(window.__rts){ window.__rts=0; setTimeout(startDayModal,150); } }; }
+
 /* ---------- 2D 탑다운 렌더러 (WebGL 없이 동작) ---------- */
 const cv=$('c'), ctx2=cv.getContext('2d',{alpha:false});
 const renderer={domElement:cv,setPixelRatio(){},setSize(){},shadowMap:{enabled:false,type:0},render(){ try{ draw2D(); }catch(e){ window.__ERR=(window.__ERR||[]); if(window.__ERR.length<6) window.__ERR.push('draw:'+((e&&e.message)||e)); } }};
@@ -401,12 +404,12 @@ function drawFurn(f){
 function drawShelf(x){
   const s=SX(0,0).s;
   if(!x.on){ quad(x.x,x.z,1.4,0.72,'rgba(120,130,145,.45)','#8a96a8',0); ctext('잠김',x.x,x.z,Math.max(8,s*0.22),'#ffffff'); return; }
-  const col='bsc'.includes(x.t)?'#2a8a3a':'#2f6fd8';
+  const out=(x.n===0&&(S.inv[x.t]||0)<=0);
+  const col=out?'#e8342a':('bsc'.includes(x.t)?'#2a8a3a':'#2f6fd8');
   quad(x.x,x.z,1.4,0.72,'#fbf4e4',col,0);
   quad(x.x-0.44,x.z,0.46,0.44,IT[x.t].c,'#ffffff',2);
   ctext(IT[x.t].n,x.x+0.06,x.z-0.12,Math.max(9,s*0.24),'#1d2433',true);
-  ctext(x.n+' / '+x.max,x.x+0.06,x.z+0.16,Math.max(10,s*0.28),x.n===0?'#e8342a':'#1d7a2a',true);
-  if(x.n===0&&(S.inv[x.t]||0)<=0) ctext('품절',x.x,x.z-0.52,Math.max(9,s*0.24),'#e8342a',true);
+  ctext(out?'품절':(x.n+' / '+x.max),x.x+0.06,x.z+0.16,Math.max(10,s*0.28),x.n===0?'#e8342a':'#1d7a2a',true);
 }
 function drawPad2(p){
   const s=SX(0,0).s;
@@ -543,7 +546,7 @@ function navStep(dt){
   if(NAV.stuckT>2.0&&NAV.tries<2){ NAV.stuckT=0; NAV.tries++; if(NAV.goal){ const g=NAV.goal; const path=findPath(p.x,p.z,g.x,g.z); if(path&&path.length) NAV.path=path; else { NAV.path=[]; NAV.goal=null; return null; } } }
   return {ix:dx/L, iz:dz/L};
 }
-const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-4.0,-7.55],restock:[5.6,-2.0]};
+const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-4.0,-7.55],restock:[5.9,-2.0]};
 function nudge(dx,dz){ NAV.path=[]; NAV.goal=null; const q={x:player.pos.x,z:player.pos.z};
   for(let i=0;i<6;i++){ const t={x:q.x+dx*0.15,z:q.z+dz*0.15}; collide(t); const mv=Math.hypot(t.x-q.x,t.z-q.z); q.x=t.x; q.z=t.z; if(mv<0.005) break; }
   player.pos.x=q.x; player.pos.z=q.z; player.face=Math.atan2(dx,dz); }
@@ -564,6 +567,7 @@ let bgmOn=true, bgmT=0, bgmStep=0; const BGM=[[0,4,7,11],[5,9,12,16],[2,5,9,12],
 function bgmTick(dt){ if(!AC||!bgmOn) return; bgmT-=dt; if(bgmT>0) return; bgmT=0.28; const ch=BGM[Math.floor(bgmStep/8)%4], k=bgmStep%8; const n=ch[[0,1,2,3,2,1,2,3][k]]; tone(BASE*Math.pow(2,n/12),0.35,0.035,'triangle'); if(k===0) tone(BASE/2*Math.pow(2,ch[0]/12),1.0,0.05,'sine'); if(k===4) tone(BASE/2*Math.pow(2,ch[2]/12),0.8,0.035,'sine'); bgmStep++; }
 function snd(k,v,r){ if(!AC||!SB[k]) return; const s=AC.createBufferSource(), g=AC.createGain(); s.buffer=SB[k]; s.playbackRate.value=r||1; g.gain.value=v||0.5; s.connect(g); g.connect(AC.destination); s.start(); }
 addEventListener('pointerdown',initAudio,{once:true});
+
 /* 3D 모델 로더는 2D 모드에서 쓰지 않습니다 (원본 코드가 호출해도 안전하게 null) */
 function kkTex(){ return null; }
 const ZT=null, YT=null, ZM=null, YM=null;
@@ -584,7 +588,6 @@ function makeChar(model,o){ o=o||{};
   return ch; }
 function animChar(ch,speed,dt,carry){ playA(ch,'Idle',0); if(ch.mixer) ch.mixer.update(dt);
   let y=0; if(ch.jump>0){ ch.jump=Math.max(0,ch.jump-dt*2.2); y=Math.sin((1-ch.jump)*Math.PI)*0.4; } ch.inner.position.y=y; }
-
 /* ---------- world (2D 평면도 데이터) ---------- */
 const OB=[]; const ob=(x1,x2,z1,z2)=>OB.push({x1:x1,x2:x2,z1:z1,z2:z2});
 const STORE={x1:-7,x2:7,z1:-9,z2:6};
@@ -777,6 +780,7 @@ function npsOf(a){ if(!a.length) return null; let P=0,D=0; a.forEach(v=>{ if(v>=
 let dayState='pre', dayT=0, dayRev=0, dayComp=0, dayRevs=[], dayEndT=0;
 const shuffle=a=>{ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 
+
 /* ---- unlock pads ---- */
 const PADS=[
   {id:'table2',x:3.3,z:1.6,price:150,ic:'table',t:'체험 테이블 2',req:null},
@@ -955,10 +959,6 @@ function inv2Tick(dt){ const run=hasCrew('runner');
       }
     }
   }
-  if(S.autoOrd&&hasCrew('mgr')&&dayState==='run'){ SRC.forEach(s=>{ if(!s.on) return; const t=s.t, cst=COST[t]*5; if(s.n+S.inv[t]<=3&&!incoming(t)&&money>=cst){ money-=cst; S.orders.push({t,q:5,ex:1,eta:25}); toast('🤖 매니저 자동 발주: '+IT[t].n+' +5',2.4); } }); } }
-function inv2Tick(dt){ const run=hasCrew('runner');
-  if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.15) receiveDock(); else if(run&&DOCK.t>8){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); } }
-  const nr=needRestock(); REST.m.visible=nr; if(nr){ REST.m.scale.setScalar(1+0.06*Math.sin(performance.now()/180)); if(Math.hypot(player.pos.x-REST.x,player.pos.z-REST.z)<0.85){ REST.t+=dt; if(REST.t>1.0){ REST.t=0; restockAll(); } } else REST.t=0; }
   if(S.autoOrd&&hasCrew('mgr')&&dayState==='run'){ SRC.forEach(s=>{ if(!s.on) return; const t=s.t, cst=COST[t]*5; if(s.n+S.inv[t]<=3&&!incoming(t)&&money>=cst){ money-=cst; S.orders.push({t,q:5,ex:1,eta:25}); toast('🤖 매니저 자동 발주: '+IT[t].n+' +5',2.4); } }); } }
 function alertTick(){ const el=$('stockAl'); if(!el) return; const out=[], low=[]; SRC.forEach(s=>{ if(!s.on) return; const tot=s.n+S.inv[s.t]; if(tot===0) out.push(IT[s.t].n); else if(tot<=3) low.push(IT[s.t].n); });
   let h=''; if(S.dock.length) h+='<b class="dk">📦 입고 박스 도착 · 입구에서 받기</b>'; if(out.length) h+='<b class="ot">⛔ 품절: '+out.join('·')+'</b>'; if(low.length) h+='<b class="lw">⚠️ 부족: '+low.join('·')+'</b>'; if(needRestock()&&!hasCrew('runner')) h+='<b class="rs">🧺 진열대 비는 중 · 창고에서 보충</b>';
@@ -1184,7 +1184,7 @@ function titleCam(dt){}
 const camT=new THREE.Vector3(0,0,1.2); let last=performance.now(), spawnT=0.5, saveT=0, time=0, pickT=0, cashT=0, hintT=0;
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
 function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now; time+=dt;
-  // player (2D: 화면 방향 = 월드 방향, 자동 경로 지원)
+  // player (2D: 화면 방향 = 월드 방향, A* 자동 이동 경로 지원)
   let ix=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0), iz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0); if(joy.on){ ix=joy.dx; iz=joy.dy; }
   const nvv=navStep(dt); if(nvv){ ix=nvv.ix; iz=nvv.iz; }
   const il=Math.hypot(ix,iz); if(il>0.1&&!quizOpen){ const sp=5.6*(1+0.1*S.up.spd)*(feverT>0?1.3:1)*Math.min(1,il); const k=sp*dt/Math.max(1,il);
