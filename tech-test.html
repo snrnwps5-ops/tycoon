@@ -162,6 +162,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 #aiv{margin-top:6px;font:800 10px/1.5 var(--b);color:#cfe0ff;background:rgba(255,255,255,.1);border-radius:8px;padding:5px 6px;white-space:pre-line}
 #aib .aihint{font:700 9px/1.3 var(--b);color:#9fc6ff;margin:2px 2px 4px}
 @media (max-width:460px){#aip{width:152px;padding:6px}#aib button{font-size:10px;padding:7px 2px}#aiv{font-size:9px}}
+#vig{display:none!important}
 </style>
 </head>
 <body>
@@ -332,18 +333,21 @@ const cam=new THREE.OrthographicCamera(); cam.position=new THREE.Vector3(0,20,0)
 const CAM_OFF=new THREE.Vector3(0,20,0);
 const gget=(k,f)=>f?f():null;
 const sun={position:new THREE.Vector3(),target:{position:new THREE.Vector3()}};
-const VIEW={x:0,z:-1.3,s:40,zoom:1,W:0,H:0};
+const VIEW={x:0,z:-1.5,s:40,zoom:1,W:0,H:0,cx:0,cy:0};
 const ZOOMS=[1,1.55,2.2]; let ZOOMI=0;
-function fitScale(){ const W=innerWidth,H=innerHeight; return Math.max(20,Math.min(112,Math.min(W/15.9,H/16.6))); }
+function fitScale(){ const W=innerWidth,H=innerHeight;
+  const top=Math.min(132,H*0.15), bot=Math.min(112,H*0.13), usable=Math.max(120,H-top-bot);
+  VIEW.cx=W/2; VIEW.cy=top+usable/2;
+  return Math.max(17,Math.min(112,Math.min((W-20)/15.6,usable/15.8))); }
 function resize(){ const W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,2);
   cv.width=Math.max(1,Math.round(W*dpr)); cv.height=Math.max(1,Math.round(H*dpr)); cv.style.width=W+'px'; cv.style.height=H+'px';
   ctx2.setTransform(dpr,0,0,dpr,0,0); VIEW.W=W; VIEW.H=H; VIEW.s=fitScale(); }
 addEventListener('resize',resize); resize();
 window.__proj=function(x,y,z){ const s=VIEW.s*VIEW.zoom,W=VIEW.W||1,H=VIEW.H||1;
-  return { x:((W/2+(x-VIEW.x)*s)/W)*2-1, y:1-((H/2+(z-VIEW.z)*s-(y||0)*s*0.62)/H)*2 }; };
+  return { x:((VIEW.cx+(x-VIEW.x)*s)/W)*2-1, y:1-((VIEW.cy+(z-VIEW.z)*s-(y||0)*s*0.62)/H)*2 }; };
 
 /* ---- 그리기 도우미 ---- */
-function SX(x,z){ const s=VIEW.s*VIEW.zoom; return {x:VIEW.W/2+(x-VIEW.x)*s, y:VIEW.H/2+(z-VIEW.z)*s, s:s}; }
+function SX(x,z){ const s=VIEW.s*VIEW.zoom; return {x:VIEW.cx+(x-VIEW.x)*s, y:VIEW.cy+(z-VIEW.z)*s, s:s}; }
 function rrect(g,x,y,w,h,r){ r=Math.max(0,Math.min(r,w/2,h/2)); g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
 function quad(x,z,w,d,c,stroke,r){ const p=SX(x-w/2,z-d/2), s=p.s; rrect(ctx2,p.x,p.y,w*s,d*s,r==null?Math.max(2,0.08*s):r); if(c){ ctx2.fillStyle=c; ctx2.fill(); } if(stroke){ ctx2.lineWidth=Math.max(1,s*0.04); ctx2.strokeStyle=stroke; ctx2.stroke(); } }
 function ctext(t,x,z,size,color,bold,dy){ const p=SX(x,z); ctx2.font=(bold===false?'800 ':'900 ')+Math.max(8,size)+'px "Noto Sans KR",sans-serif'; ctx2.textAlign='center'; ctx2.textBaseline='middle'; ctx2.fillStyle=color; ctx2.fillText(t,p.x,p.y+(dy||0)); }
@@ -470,7 +474,7 @@ function drawStatus(){
 function draw2D(){
   const W=VIEW.W,H=VIEW.H; if(!W||!H) return;
   VIEW.zoom=ZOOMS[ZOOMI];
-  if(VIEW.zoom>1.01){ VIEW.x=player.pos.x; VIEW.z=player.pos.z; } else { VIEW.x=0; VIEW.z=-1.3; }
+  if(VIEW.zoom>1.01){ VIEW.x=player.pos.x; VIEW.z=player.pos.z; } else { VIEW.x=0; VIEW.z=-1.5; }
   const s=VIEW.s*VIEW.zoom;
   ctx2.setTransform(Math.min(devicePixelRatio||1,2),0,0,Math.min(devicePixelRatio||1,2),0,0);
   ctx2.fillStyle=TS.ground; ctx2.fillRect(0,0,W,H);
@@ -541,7 +545,7 @@ const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[
 function nudge(dx,dz){ NAV.path=[]; NAV.goal=null; const q={x:player.pos.x,z:player.pos.z};
   for(let i=0;i<6;i++){ const t={x:q.x+dx*0.15,z:q.z+dz*0.15}; collide(t); const mv=Math.hypot(t.x-q.x,t.z-q.z); q.x=t.x; q.z=t.z; if(mv<0.005) break; }
   player.pos.x=q.x; player.pos.z=q.z; player.face=Math.atan2(dx,dz); }
-function screenToWorld(cx,cy){ const s=VIEW.s*VIEW.zoom; return {x:VIEW.x+(cx-VIEW.W/2)/s, z:VIEW.z+(cy-VIEW.H/2)/s}; }
+function screenToWorld(cx,cy){ const s=VIEW.s*VIEW.zoom; return {x:VIEW.x+(cx-VIEW.cx)/s, z:VIEW.z+(cy-VIEW.cy)/s}; }
 let _pd={x:0,y:0,t:0,id:null};
 addEventListener('pointerdown',function(e){ if(e.target&&e.target.closest&&e.target.closest('button,#modal,#aip')) return; _pd={x:e.clientX,y:e.clientY,t:performance.now(),id:e.pointerId}; },true);
 addEventListener('pointerup',function(e){ if(!_pd.id||e.pointerId!==_pd.id) return; const dt2=performance.now()-_pd.t, dist=Math.hypot(e.clientX-_pd.x,e.clientY-_pd.y); _pd.id=null;
