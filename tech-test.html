@@ -184,7 +184,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 <div id="evt"><b>단체 관광객!</b><span>매장 매출 ×2</span><em id="evtT">30</em></div>
 <div id="joy"><i></i></div>
 <div id="modal"><div class="box" id="mbox"></div></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tv">v1.4</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tv">v1.5</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
 <div class="aihint">구역 버튼을 누르면 자동으로 걸어가요 · 화면을 눌러도 이동</div>
@@ -543,7 +543,7 @@ function navStep(dt){
   if(NAV.stuckT>2.0&&NAV.tries<2){ NAV.stuckT=0; NAV.tries++; if(NAV.goal){ const g=NAV.goal; const path=findPath(p.x,p.z,g.x,g.z); if(path&&path.length) NAV.path=path; else { NAV.path=[]; NAV.goal=null; return null; } } }
   return {ix:dx/L, iz:dz/L};
 }
-const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-4.0,-7.55],restock:[5.9,-2.0]};
+const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-4.0,-7.55],restock:[5.6,-2.0]};
 function nudge(dx,dz){ NAV.path=[]; NAV.goal=null; const q={x:player.pos.x,z:player.pos.z};
   for(let i=0;i<6;i++){ const t={x:q.x+dx*0.15,z:q.z+dz*0.15}; collide(t); const mv=Math.hypot(t.x-q.x,t.z-q.z); q.x=t.x; q.z=t.z; if(mv<0.005) break; }
   player.pos.x=q.x; player.pos.z=q.z; player.face=Math.atan2(dx,dz); }
@@ -744,10 +744,10 @@ const FIXQ=[
   {q:'떨어뜨렸더니 화면이 깨졌어요',a:[{t:'액정 교체',x:'s'},{t:'배터리 교체',x:'b'},{t:'테이프로 붙이기',x:0}]},
   {q:'소리가 안 나요',a:[{t:'무음 스위치·볼륨·블루투스 연결 확인',x:1},{t:'액정 교체',x:'s'},{t:'배터리 교체',x:'b'}]}];
 const DAYS=[
-  {goal:120,dur:120,min:3.4,types:['pick','buy'],title:'첫 영업일',tip:'픽업과 구입 상담부터 시작해요'},
-  {goal:200,dur:130,min:3.4,types:['pick','buy','fix'],open:'repair',backup:1,fail:0.12,title:'수리 센터 오픈',tip:'수리 전엔 꼭 데이터 백업을 확인해요. 가끔 당일 수리가 실패해요'},
-  {goal:300,dur:140,min:3.4,types:['pick','buy','fix','sw'],open:'support',backup:1,fail:0.12,title:'상담 바 오픈',tip:'소프트웨어 고민 해결! 결제·계정 문제는 온라인팀 연결이 정답일 때도 있어요'},
-  {goal:340,dur:140,min:3.4,types:['pick','buy','fix','sw'],backup:1,fail:0.12,diag:0.5,walkin:0.5,title:'예약 없는 손님',tip:'예약 없이 온 수리 손님을 입구에서 안내해요 (대기 등록 or 다른 날 예약)'},
+  {goal:120,dur:120,min:3.2,types:['pick','buy'],title:'첫 영업일',tip:'픽업과 구입 상담부터 시작해요'},
+  {goal:200,dur:130,min:3.2,types:['pick','buy','fix'],open:'repair',backup:1,fail:0.10,title:'수리 센터 오픈',tip:'수리 전엔 꼭 데이터 백업을 확인해요. 가끔 당일 수리가 실패해요'},
+  {goal:300,dur:140,min:3.2,types:['pick','buy','fix','sw'],open:'support',backup:1,fail:0.10,title:'상담 바 오픈',tip:'소프트웨어 고민 해결! 결제·계정 문제는 온라인팀 연결이 정답일 때도 있어요'},
+  {goal:340,dur:140,min:3.2,types:['pick','buy','fix','sw'],backup:1,fail:0.10,diag:0.5,walkin:0.5,title:'예약 없는 손님',tip:'예약 없이 온 수리 손님을 입구에서 안내해요 (대기 등록 or 다른 날 예약)'},
   {goal:500,dur:150,min:3.6,types:['pick','buy','fix','sw'],backup:1,fail:0.12,diag:0.5,walkin:0.4,xfer:0.5,spec:1,title:'데이터 이전 & 스펙 상담',tip:'픽업 손님 데이터를 옮겨주고, 용도에 맞는 스펙까지 추천해요'},
   {goal:900,dur:150,min:3.6,types:['pick','buy','fix','sw','esc'],backup:1,fail:0.12,diag:0.5,walkin:0.4,xfer:0.4,spec:1,tough:0.15,title:'까다로운 손님',tip:'빨간 손님은 인내심이 짧지만 돈을 2배 내요'},
   {goal:1600,dur:150,min:3.5,types:['tour','esc','pick','buy','fix','sw'],backup:1,fail:0.12,diag:0.4,walkin:0.3,xfer:0.4,spec:1,tough:0.1,rush:1,spawn:1.6,title:'신제품 출시일!',tip:'픽업 손님이 몰려와요'},
@@ -928,12 +928,34 @@ function openRank(g){ g=g==null?STAGE_OF(S.day):g; const L=ranking(g), cur=STAGE
 S.dock=S.dock||[]; const DOCK={x:4.3,z:5.2,g:new THREE.Group(),t:0}; DOCK.g.position.set(DOCK.x,0,DOCK.z); scene.add(DOCK.g);
 function drawDock(){ while(DOCK.g.children.length) DOCK.g.remove(DOCK.g.children[0]); const n=Math.min(5,S.dock.length); for(let i=0;i<n;i++){ rbox(0.62,0.42,0.5,'#c9955a',((i%2)-0.5)*0.66,0.21+Math.floor(i/2)*0.43,0,DOCK.g,0.04); box(0.64,0.06,0.12,'#f2e3c8',((i%2)-0.5)*0.66,0.3+Math.floor(i/2)*0.43,0,DOCK.g); } if(n){ const r=new THREE.Mesh(new THREE.RingGeometry(0.95,1.08,32),new THREE.MeshBasicMaterial({color:'#ffb020',transparent:true,opacity:0.8,depthWrite:false})); r.rotation.x=-Math.PI/2; r.position.y=0.12; DOCK.g.add(r); } }
 function receiveDock(who){ if(!S.dock.length) return; S.dock.forEach(o=>{ S.inv[o.t]+=o.q; soWarn[o.t]=0; const s=srcOf2(o.t); if(s&&s.on) fly(makeItem(o.t),new THREE.Vector3(DOCK.x,1.0,DOCK.z),()=>new THREE.Vector3(REST.x,1.0,REST.z),0.6); }); const n=S.dock.reduce((a,o)=>a+o.q,0); S.dock=[]; DOCK.t=0; drawDock(); toast('📦 입고 처리 완료 · 창고 +'+n+(who?' ('+who+')':''),2.6); snd('coin',0.45,0.9); save(); }
-const REST={x:5.9,z:-2.0,t:0}; { box(0.12,1.9,1.2,'#5a6578',6.82,0.95,REST.z); box(0.06,1.7,1.0,'#2a3144',6.74,0.9,REST.z); const t=canvasTex((g,w,h)=>{ g.fillStyle='#16a58c'; g.fillRect(0,0,w,h); g.fillStyle='#fff'; g.font='bold 40px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('창고',w/2,h/2+2); },160,64); const m=new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.3),new THREE.MeshBasicMaterial({map:t})); m.position.set(6.7,2.05,REST.z); m.rotation.y=-Math.PI/2; scene.add(m);
-  const pt=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(22,165,140,.9)'; g.beginPath(); g.arc(w/2,h/2,w/2-6,0,7); g.fill(); g.strokeStyle='#fff'; g.lineWidth=8; g.stroke(); g.fillStyle='#fff'; g.font='bold 40px "Black Han Sans",sans-serif'; g.textAlign='center'; g.fillText('진열',w/2,h/2-6); g.fillText('보충',w/2,h/2+38); },256,256); REST.m=new THREE.Mesh(new THREE.PlaneGeometry(1.3,1.3),new THREE.MeshBasicMaterial({map:pt,transparent:true,depthWrite:false})); REST.m.rotation.x=-Math.PI/2; REST.m.position.set(REST.x,0.125,REST.z); scene.add(REST.m); }
+const REST={x:5.6,z:-2.0,t:0}; { box(0.12,1.9,1.2,'#5a6578',6.82,0.95,REST.z); box(0.06,1.7,1.0,'#2a3144',6.74,0.9,REST.z); const t=canvasTex((g,w,h)=>{ g.fillStyle='#16a58c'; g.fillRect(0,0,w,h); g.fillStyle='#fff'; g.font='bold 40px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('창고',w/2,h/2+2); },160,64); const m=new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.3),new THREE.MeshBasicMaterial({map:t})); m.position.set(6.7,2.05,REST.z); m.rotation.y=-Math.PI/2; scene.add(m);
+  const pt=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(22,165,140,.9)'; g.beginPath(); g.arc(w/2,h/2,w/2-6,0,7); g.fill(); g.strokeStyle='#fff'; g.lineWidth=8; g.stroke(); g.fillStyle='#fff'; g.font='bold 40px "Black Han Sans",sans-serif'; g.textAlign='center'; g.fillText('진열',w/2,h/2-6); g.fillText('보충',w/2,h/2+38); },256,256); REST.m=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.6),new THREE.MeshBasicMaterial({map:pt,transparent:true,depthWrite:false})); REST.m.rotation.x=-Math.PI/2; REST.m.position.set(REST.x,0.125,REST.z); scene.add(REST.m); }
 function needRestock(){ return SRC.some(s=>s.on&&s.n<s.max&&S.inv[s.t]>0); }
 function restockAll(){ let n=0; SRC.forEach(s=>{ if(!s.on) return; const k=Math.min(s.max-s.n,S.inv[s.t]); if(k>0){ s.n+=k; S.inv[s.t]-=k; n+=k; layoutSrc(s); sparkle(s.x,1.2,s.z,'#4fe0c8'); } }); if(n){ toast('진열 보충 완료 · '+n+'개',2); snd('level_up',0.35,1.4); } }
 function stockTotal(t){ const s=srcOf2(t); return (s?s.n:0)+(S.inv[t]||0)+S.dock.filter(o=>o.t===t).reduce((a,o)=>a+o.q,0); }
 function incoming(t){ return S.orders.filter(o=>o.t===t).length+S.dock.filter(o=>o.t===t).length; }
+let restockTipT=0;
+function inv2Tick(dt){ const run=hasCrew('runner');
+  if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.6) receiveDock(); else if(run&&DOCK.t>6){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); } }
+  const nr=needRestock(), near=Math.hypot(player.pos.x-REST.x,player.pos.z-REST.z)<1.4;
+  REST.m.visible=true;
+  if(nr){
+    REST.m.material.opacity=0.9;
+    REST.m.scale.setScalar(1+0.08*Math.sin(performance.now()/160));
+    if(near){ REST.t+=dt; if(REST.t>0.35){ REST.t=0; restockAll(); } } else REST.t=0;
+  } else {
+    REST.m.material.opacity=0.35; REST.m.scale.setScalar(1.0); REST.t=0;
+    if(near){
+      restockTipT-=dt;
+      if(restockTipT<=0){
+        restockTipT=2.5;
+        const totalInv=Object.keys(S.inv).reduce((a,k)=>a+(S.inv[k]||0),0);
+        if(totalInv<=0) toast('창고 재고가 비었어요! 하단 [재고]에서 발주하세요',2.4);
+        else toast('진열대가 이미 가득 차 있어요!',1.8);
+      }
+    }
+  }
+  if(S.autoOrd&&hasCrew('mgr')&&dayState==='run'){ SRC.forEach(s=>{ if(!s.on) return; const t=s.t, cst=COST[t]*5; if(s.n+S.inv[t]<=3&&!incoming(t)&&money>=cst){ money-=cst; S.orders.push({t,q:5,ex:1,eta:25}); toast('🤖 매니저 자동 발주: '+IT[t].n+' +5',2.4); } }); } }
 function inv2Tick(dt){ const run=hasCrew('runner');
   if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.15) receiveDock(); else if(run&&DOCK.t>8){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); } }
   const nr=needRestock(); REST.m.visible=nr; if(nr){ REST.m.scale.setScalar(1+0.06*Math.sin(performance.now()/180)); if(Math.hypot(player.pos.x-REST.x,player.pos.z-REST.z)<0.85){ REST.t+=dt; if(REST.t>1.0){ REST.t=0; restockAll(); } } else REST.t=0; }
@@ -1121,8 +1143,38 @@ $('mute').onclick=()=>{ bgmOn=!bgmOn; $('mute').style.opacity=bgmOn?1:0.45; };
 $('back').onclick=goLobby;
 
 /* ---------- movement ---------- */
-function collide(p){ const R=0.28; for(const b of OB){ if(b.off) continue; if(p.x>b.x1-R&&p.x<b.x2+R&&p.z>b.z1-R&&p.z<b.z2+R){ const dl=p.x-(b.x1-R), dr=(b.x2+R)-p.x, dt=p.z-(b.z1-R), db=(b.z2+R)-p.z, m=Math.min(dl,dr,dt,db); if(m===dl) p.x=b.x1-R; else if(m===dr) p.x=b.x2+R; else if(m===dt) p.z=b.z1-R; else p.z=b.z2+R; } }
-  p.x=Math.max(-6.6,Math.min(6.6,p.x)); p.z=Math.max(-8.6,Math.min(5.6,p.z)); }
+function collideBox(px, pz, R){
+  for(const b of OB){
+    if(b.off) continue;
+    if(px>b.x1-R&&px<b.x2+R&&pz>b.z1-R&&pz<b.z2+R) return b;
+  }
+  return null;
+}
+function collideAxis(p, axis, oldVal){
+  const R=0.28;
+  const b=collideBox(p.x, p.z, R);
+  if(b){
+    if(axis==='x'){
+      if(p.x>oldVal) p.x=b.x1-R; else p.x=b.x2+R;
+    } else {
+      if(p.z>oldVal) p.z=b.z1-R; else p.z=b.z2+R;
+    }
+  }
+  p.x=Math.max(-6.6,Math.min(6.6,p.x));
+  p.z=Math.max(-7.8,Math.min(5.6,p.z));
+}
+function collide(p){
+  const R=0.28;
+  for(const b of OB){
+    if(b.off) continue;
+    if(p.x>b.x1-R&&p.x<b.x2+R&&p.z>b.z1-R&&p.z<b.z2+R){
+      const dl=p.x-(b.x1-R), dr=(b.x2+R)-p.x, dt=p.z-(b.z1-R), db=(b.z2+R)-p.z, m=Math.min(dl,dr,dt,db);
+      if(m===dl) p.x=b.x1-R; else if(m===dr) p.x=b.x2+R; else if(m===dt) p.z=b.z1-R; else p.z=b.z2+R;
+    }
+  }
+  p.x=Math.max(-6.6,Math.min(6.6,p.x));
+  p.z=Math.max(-7.8,Math.min(5.6,p.z));
+}
 function walkTo(o,dt,spd){ if(!o.wp||!o.wp.length) return true; const t=o.wp[0]; const dx=t.x-o.pos.x, dz=t.z-o.pos.z, L=Math.hypot(dx,dz); if(L<0.08){ o.wp.shift(); return !o.wp.length; } const s=Math.min(spd,L/dt); o.pos.x+=dx/L*s*dt; o.pos.z+=dz/L*s*dt; o.face=Math.atan2(dx,dz); o.speed=s; return false; }
 function angLerp(a,b,t){ let d=b-a; while(d>Math.PI)d-=Math.PI*2; while(d<-Math.PI)d+=Math.PI*2; return a+d*t; }
 
@@ -1135,13 +1187,17 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   // player (2D: 화면 방향 = 월드 방향, 자동 경로 지원)
   let ix=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0), iz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0); if(joy.on){ ix=joy.dx; iz=joy.dy; }
   const nvv=navStep(dt); if(nvv){ ix=nvv.ix; iz=nvv.iz; }
-  const il=Math.hypot(ix,iz); if(il>0.1&&!quizOpen){ const sp=5.2*(1+0.1*S.up.spd)*(feverT>0?1.3:1)*Math.min(1,il); const k=sp*dt/Math.max(1,il);
-    const mx=ix*k, mz=iz*k; player.pos.x+=mx; player.pos.z+=mz; player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
-  collide(player.pos); player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
+  const il=Math.hypot(ix,iz); if(il>0.1&&!quizOpen){ const sp=5.6*(1+0.1*S.up.spd)*(feverT>0?1.3:1)*Math.min(1,il); const k=sp*dt/Math.max(1,il);
+    const mx=ix*k, mz=iz*k;
+    const ox=player.pos.x, oz=player.pos.z;
+    player.pos.x+=mx; collideAxis(player.pos,'x',ox);
+    player.pos.z+=mz; collideAxis(player.pos,'z',oz);
+    player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
+  player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
   pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); tickMarkers(performance.now()/1000);
-  SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>3&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
-    if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<0.95){ s.n--; layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
+  SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
+    if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
   // cash
   cashT-=dt; if(cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; snd('coin',0.35,1+Math.random()*0.2); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
   // customers
