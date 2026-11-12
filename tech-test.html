@@ -163,6 +163,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 #aib .aihint{font:700 9px/1.3 var(--b);color:#9fc6ff;margin:2px 2px 4px}
 @media (max-width:460px){#aip{width:152px;padding:6px}#aib button{font-size:10px;padding:7px 2px}#aiv{font-size:9px}}
 #vig{display:none!important}
+#aib button.go2{background:linear-gradient(#7bea62,#2faa45);box-shadow:0 3px 0 #1d7a2a}
 </style>
 </head>
 <body>
@@ -190,6 +191,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 <div class="air"><button data-go="door">🚪 입구 안내</button><button data-go="fix">🔧 수리 카운터</button></div>
 <div class="air"><button data-go="sw">💬 상담 창구</button><button data-go="cash">💵 계산대</button></div>
 <div class="air"><button data-go="shelf">📦 재고 진열대</button><button id="aistop">✋ 정지</button></div>
+<div class="air"><button data-go="serve" class="go2">🙋 손님 응대</button><button data-go="restock" class="go2">🧺 진열 보충</button></div>
 <div class="air"><button class="dir" data-dir="up">⬆️ 위</button><button class="dir" data-dir="down">⬇️ 아래</button></div>
 <div class="air"><button class="dir" data-dir="left">⬅️ 왼쪽</button><button class="dir" data-dir="right">➡️ 오른쪽</button></div>
 <div class="air"><button id="aizoom" class="warn">🔍 줌</button><button id="aireset" class="warn">♻️ 초기화</button></div>
@@ -368,7 +370,7 @@ function drawOutside(){
 function drawFloor(){
   const p0=SX(-7,-9), p1=SX(7,6);
   ctx2.fillStyle=TS.floor[0]; ctx2.fillRect(p0.x,p0.y,p1.x-p0.x,p1.y-p0.y);
-  ctx2.fillStyle=TS.floor[1]; ctx2.globalAlpha=0.5;
+  ctx2.fillStyle=TS.floor[1]; ctx2.globalAlpha=0.28;
   for(let x=-7;x<7;x++) for(let z=-9;z<6;z++){ if(((x+z)&1)===0) continue; const q=SX(x,z); ctx2.fillRect(q.x,q.y,q.s+1,q.s+1); }
   ctx2.globalAlpha=1;
   ctx2.strokeStyle='rgba(0,0,0,.08)'; ctx2.lineWidth=1;
@@ -377,11 +379,7 @@ function drawFloor(){
   quad(-4.0,-7.75,5.8,2.3,'rgba(255,255,255,.35)',null,2);
   quad(0,5.8,2.5,0.8,'#2f6fd8','#ffffff',4);
   ctext('입구',0,5.8,Math.max(9,VIEW.s*VIEW.zoom*0.3),'#ffffff',true);
-  // 매장 간판 (뒷벽 바깥)
-  const ss=SX(0,-9.35); const sw=5.0*ss.s;
-  ctx2.fillStyle='#1d2433'; rrect(ctx2,ss.x-sw/2,ss.y-0.42*ss.s,sw,0.66*ss.s,6); ctx2.fill();
-  ctx2.fillStyle=TS.signLine||'#5ad1ff'; ctx2.fillRect(ss.x-sw/2,ss.y+0.24*ss.s,sw,2);
-  ctext(TS.sign+' · '+STN[STG],0,-9.35,Math.max(10,ss.s*0.34),'#ffffff',true);
+  // 매장 간판은 화면 상단 HUD 칩으로 표시 (2D 뷰와 겹치지 않게)
 }
 function drawWalls(){
   for(const w of WALLS){
@@ -545,7 +543,7 @@ function navStep(dt){
   if(NAV.stuckT>2.0&&NAV.tries<2){ NAV.stuckT=0; NAV.tries++; if(NAV.goal){ const g=NAV.goal; const path=findPath(p.x,p.z,g.x,g.z); if(path&&path.length) NAV.path=path; else { NAV.path=[]; NAV.goal=null; return null; } } }
   return {ix:dx/L, iz:dz/L};
 }
-const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-4.0,-7.55]};
+const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-4.0,-7.55],restock:[5.9,-2.0]};
 function nudge(dx,dz){ NAV.path=[]; NAV.goal=null; const q={x:player.pos.x,z:player.pos.z};
   for(let i=0;i<6;i++){ const t={x:q.x+dx*0.15,z:q.z+dz*0.15}; collide(t); const mv=Math.hypot(t.x-q.x,t.z-q.z); q.x=t.x; q.z=t.z; if(mv<0.005) break; }
   player.pos.x=q.x; player.pos.z=q.z; player.face=Math.atan2(dx,dz); }
@@ -1335,7 +1333,10 @@ window.__H={go:()=>$('dayGo')&&$('dayGo').click(),endNow:()=>{dayT=0.01},dstate:
 
 /* ---- AI 조작 패널 / QA 헬퍼 ---- */
 $('aitog').onclick=function(){ $('aip').classList.toggle('min'); $('aitog').textContent=$('aip').classList.contains('min')?'+':'–'; };
-Array.prototype.forEach.call(document.querySelectorAll('#aip [data-go]'),function(b){ b.onclick=function(){ if(quizOpen) return; navTo(GOTO[b.dataset.go][0],GOTO[b.dataset.go][1]); }; });
+Array.prototype.forEach.call(document.querySelectorAll('#aip [data-go]'),function(b){ b.onclick=function(){ if(quizOpen) return;
+  const k=b.dataset.go;
+  if(k==='serve'){ const gd=guide(); if(gd){ navTo(gd[0],gd[1]); } else { toast('지금 응대할 손님이 없어요',2); } return; }
+  const t=GOTO[k]; if(t) navTo(t[0],t[1]); }; });
 Array.prototype.forEach.call(document.querySelectorAll('#aip [data-dir]'),function(b){ b.onclick=function(){ if(quizOpen) return; const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[b.dataset.dir]; nudge(d[0],d[1]); }; });
 $('aistop').onclick=function(){ NAV.path=[]; NAV.goal=null; };
 $('aizoom').onclick=function(){ ZOOMI=(ZOOMI+1)%ZOOMS.length; };
