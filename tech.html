@@ -163,10 +163,10 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 <div id="toast"></div>
 <div id="big"><b id="bigT"></b><span id="bigS"></span></div>
 <button id="help"><b>급해요! 재고 가득 채우기</b><span>광고 보고 즉시 · 테스트</span></button>
-<div id="evt"><b>단체 관광객!</b><span>체크인 수익 ×2</span><em id="evtT">30</em></div>
+<div id="evt"><b>단체 관광객!</b><span>매장 매출 ×2</span><em id="evtT">30</em></div>
 <div id="joy"><i></i></div>
 <div id="modal"><div class="box" id="mbox"></div></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tv">v1.3</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tv">v1.4</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry/lobby instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -207,7 +207,7 @@ const THM={ground:'#7fcf5c',cap:'#2f6fd8',wood:['#eceef2','#e2e5ea','#f2f3f6','#
 let S={day:0,dayStars:[],stats:{srv:0,fix:0,ok:0,earn:0},ms:null,money:30,unl:[],lvl:1,xp:0,tut:0,reviews:[5,5,4],up:{spd:0,cap:0,chk:0,price:0},last:0,cash:0};
 try{ const o=JSON.parse(localStorage.getItem(SAVE)||'null'); if(o) S=Object.assign(S,o); }catch(e){}
 S.up=Object.assign({spd:0,cap:0,chk:0,price:0},S.up||{}); S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); S.ach=S.ach||{}; S.orders=S.orders||[]; S.best=S.best||[]; S.r1=S.r1||[]; S.mast=Object.assign({b:0,s:0,c:0},S.mast||{}); S.stats=Object.assign({srv:0,fix:0,ok:0,earn:0},S.stats||{});
-function save(){ try{ S.money=Math.floor(money); S.last=Date.now(); localStorage.setItem(SAVE,JSON.stringify(S)); }catch(e){} }
+function save(){ try{ S.money=Math.floor(money); S.last=Date.now(); S.shelf={}; SRC.forEach(s=>{ S.shelf[s.t]=s.n; }); localStorage.setItem(SAVE,JSON.stringify(S)); }catch(e){} }
 let money=S.money;
 const STAGE_OF=d=>d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; const STN=['대구 동성로점','부산 센텀점','서울 가로수길점','인천공항점','뉴욕 5번가점','실리콘밸리 본사'], STS=['대구','부산','서울','인천','뉴욕','본사'], STK=['동네 대리점','쇼핑몰 매장','플래그십 스토어','공항 면세점','글로벌 플래그십','본사 쇼룸'], STC=['DAEGU','BUSAN','SEOUL','INCHEON AIRPORT','NEW YORK','SILICON VALLEY'], STI=['🏙️','🌊','🗼','✈️','🗽','🚀']; const STG=STAGE_OF(S.day||0);
 const TS=[
@@ -443,7 +443,8 @@ function addShelf(t,x,z,lock){ const g=new THREE.Group(); g.position.set(x,0,z);
   const sgn=new THREE.Mesh(new THREE.PlaneGeometry(1.2,0.3),new THREE.MeshLambertMaterial({map:lt})); sgn.position.set(0,2.0,0.2); g.add(sgn); box(1.25,0.36,0.04,'#1d2433',0,2.0,0.17,g);
   ob(x-0.72,x+0.72,z-0.35,z+0.25);
   const so=new THREE.Mesh(new THREE.PlaneGeometry(1.1,0.34),new THREE.MeshBasicMaterial({map:canvasTex((gg,w,h)=>{ gg.fillStyle='#e8342a'; gg.fillRect(0,0,w,h); gg.fillStyle='#fff'; gg.font='bold 44px "Black Han Sans",sans-serif'; gg.textAlign='center'; gg.textBaseline='middle'; gg.fillText('품절 · 발주 필요',w/2,h/2+2); },256,72),transparent:true})); so.position.set(0,1.0,0.3); so.visible=false; g.add(so);
-  const s={t,x,z,g,n:4,max:9,tt:0,sm:[],on:!lock,so}; g.visible=!lock; SRC.push(s); layoutSrc(s); return s; }
+  const initN=(S.shelf&&typeof S.shelf[t]==='number')?S.shelf[t]:4;
+  const s={t,x,z,g,n:initN,max:9,tt:0,sm:[],on:!lock,so}; g.visible=!lock; SRC.push(s); layoutSrc(s); return s; }
 function layoutSrc(s){ while(s.sm.length<s.n){ const j=s.sm.length; const m=makeItem(s.t); m.position.set(((j%3)-1)*0.42,[0.47,0.97,1.47][Math.floor(j/3)%3],0.05); s.g.add(m); s.sm.push(m); } while(s.sm.length>s.n) s.g.remove(s.sm.pop()); if(s.so) s.so.visible=s.n===0&&S.inv[s.t]<=0; }
 addShelf('p',-5.6,-8.4); addShelf('l',-4.0,-8.4); addShelf('w',-2.4,-8.4);
 const SHB=addShelf('b',2.6,-8.4,true), SHS=addShelf('s',4.2,-8.4,true), SHC=addShelf('c',5.8,-8.4,true);
@@ -596,8 +597,8 @@ const FIXQ=[
 const DAYS=[
   {goal:120,dur:120,min:3.4,types:['pick','buy'],title:'첫 영업일',tip:'픽업과 구입 상담부터 시작해요'},
   {goal:200,dur:130,min:3.4,types:['pick','buy','fix'],open:'repair',backup:1,fail:0.12,title:'수리 센터 오픈',tip:'수리 전엔 꼭 데이터 백업을 확인해요. 가끔 당일 수리가 실패해요'},
-  {goal:300,dur:140,min:3.5,types:['pick','buy','fix','sw'],open:'support',backup:1,fail:0.12,title:'상담 바 오픈',tip:'소프트웨어 고민 해결! 결제·계정 문제는 온라인팀 연결이 정답일 때도 있어요'},
-  {goal:340,dur:140,min:3.5,types:['pick','buy','fix','sw'],backup:1,fail:0.12,diag:0.5,walkin:0.5,title:'예약 없는 손님',tip:'예약 없이 온 수리 손님을 입구에서 안내해요 (대기 등록 or 다른 날 예약)'},
+  {goal:300,dur:140,min:3.4,types:['pick','buy','fix','sw'],open:'support',backup:1,fail:0.12,title:'상담 바 오픈',tip:'소프트웨어 고민 해결! 결제·계정 문제는 온라인팀 연결이 정답일 때도 있어요'},
+  {goal:340,dur:140,min:3.4,types:['pick','buy','fix','sw'],backup:1,fail:0.12,diag:0.5,walkin:0.5,title:'예약 없는 손님',tip:'예약 없이 온 수리 손님을 입구에서 안내해요 (대기 등록 or 다른 날 예약)'},
   {goal:500,dur:150,min:3.6,types:['pick','buy','fix','sw'],backup:1,fail:0.12,diag:0.5,walkin:0.4,xfer:0.5,spec:1,title:'데이터 이전 & 스펙 상담',tip:'픽업 손님 데이터를 옮겨주고, 용도에 맞는 스펙까지 추천해요'},
   {goal:900,dur:150,min:3.6,types:['pick','buy','fix','sw','esc'],backup:1,fail:0.12,diag:0.5,walkin:0.4,xfer:0.4,spec:1,tough:0.15,title:'까다로운 손님',tip:'빨간 손님은 인내심이 짧지만 돈을 2배 내요'},
   {goal:1600,dur:150,min:3.5,types:['tour','esc','pick','buy','fix','sw'],backup:1,fail:0.12,diag:0.4,walkin:0.3,xfer:0.4,spec:1,tough:0.1,rush:1,spawn:1.6,title:'신제품 출시일!',tip:'픽업 손님이 몰려와요'},
@@ -660,7 +661,7 @@ applyUnlocks();
 /* ---- staff ---- */
 const STAFFC=['#36b39b','#2f6fd8','#e8473d','#0f2a4a','#1d1d1f','#2f6fd8'][STG];
 const ROLES={greet:{n:'입구 안내',d:'예약 없는 손님을 상황에 맞게 안내해요',ic:'G',c:'#2f6fd8',st:0},runner:{n:'재고 담당',d:'픽업 주문 제품을 찾아 전달해요',ic:'R',c:'#ff9a1a',st:0},tech:{n:'수리 기사',d:'부품을 가져와 백업 확인 후 수리해요',ic:'T',c:'#2a8a3a',st:1},spec:{n:'상담 전문가',d:'소프트웨어·구입 상담을 대신 해요',ic:'S',c:'#7a4ad6',st:2},mgr:{n:'매니저',d:'항의 손님을 맡아 에스컬레이션을 처리해요',ic:'M',c:'#1d2433',st:3}};
-const ROLE_UNLOCK={greet:3,runner:0,tech:1,spec:4,mgr:3};
+const ROLE_UNLOCK={greet:3,runner:0,tech:1,spec:2,mgr:3};
 const FN_=['민준','서연','지호','하은','도윤','수아','예준','지유','시우','하린','주원','윤서','건우','채원','현우','다은'];
 S.crew=S.crew||[]; let newStarter=false; if(!S.starter){ S.starter=1; if(!S.crew.some(c=>c.role==='runner')){ S.crew.push({role:'runner',name:'하준',spd:0.95,acc:0.9,wage:10,lv:1,sat:80}); newStarter=true; } } if(S.unl.includes('runner')&&!S.crew.some(c=>c.role==='runner')) S.crew.push({role:'runner',name:'민준',spd:1,acc:0.9,wage:20,lv:1}); if(S.unl.includes('tech')&&!S.crew.some(c=>c.role==='tech')) S.crew.push({role:'tech',name:'지호',spd:1,acc:0.9,wage:30,lv:1});
 const hasCrew=r=>S.crew.some(c=>c.role===r);
@@ -707,7 +708,7 @@ const faceI=(k,s,cl)=>'<u class="'+cl+'" style="width:'+s+'px;height:'+s+'px;bac
 function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); if(c._lt!==txt){ c._lt=txt; c.el.innerHTML=faceI(c.face,26,'fc')+txt+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':''); } }
 function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.spot){ c.spot.occ=null; c.spot=null; }
   c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?-14:14,0,11.2)];
-  let stars=ok?4+(c.happy?1:0)-(c.waited>25?1:0):(c.miss?2:1); stars=Math.max(1,Math.min(5,stars)); if(!c.quiet||ok) floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),['😡','😠','😐','🙂','😍'][stars-1],'emo'); if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; }
+  let stars=ok?4+(c.happy?1:0)-(c.waited>25?1:0):(c.miss?2:(c.walk?2:1)); stars=Math.max(1,Math.min(5,stars)); if(!c.quiet||ok) floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),['😡','😠','😐','🙂','😍'][stars-1],'emo'); if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; }
   if(c.influ&&dayState==='run'){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift();
   if(dayState==='run'){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(!ok&&!c.quiet){ comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } }
   if(ok&&pay){ pay=Math.round(pay*priceMul()*(c.tough?2:1)*(c.flight?1.5:1)*(c.vip?3:1)*(S.boostD===S.day?2:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1)); if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; cashVal+=pay; rebuildCash(); S.stats.srv++; floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); c.ch.jump=1; gainXP(1);
@@ -717,11 +718,11 @@ function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.spot
 /* ---- quiz modal ---- */
 let quizOpen=false;
 function quizBtns(opts,col){ return opts.map((o,i)=>'<button data-qa="'+i+'" style="background:linear-gradient('+col[0]+','+col[1]+');box-shadow:0 4px 0 '+col[2]+';font-size:15px;padding:10px 8px">'+o.t+'</button>').join(''); }
-function openQuiz(c){ quizOpen=true; c.st='consult'; curFace=c.face;
+function openQuiz(c){ quizOpen=true; c.st='consult'; curFace=c.face; const qcBtn='<button id="qClose" class="gray" style="font-size:14px;margin-top:6px">잠시 후 응대 (닫기)</button>';
   if(c.walkin&&c.spot===GSPOT){ const free=SPOTS.find(s=>s.type==='fix'&&s.on&&!s.occ); const tl=dayT;
     const opts=[{t:'오늘 현장 대기 등록 (대기 길어요)',k:'wait'},{t:'가장 빠른 날로 수리 예약 잡아드리기',k:'book'},{t:'예약 없으면 안 된다고 돌려보내기',k:'no'}];
-    openModal('<h2>입구 안내</h2><p style="font-size:15px"><b>"예약 없이 왔는데 오늘 수리 되나요?"</b><br><small>수리 자리: '+(free?'비어 있음':'꽉 참')+' · 남은 영업 '+Math.ceil(tl)+'초</small></p>'+quizBtns(opts,['#5aa8ff','#2f6fd8','#1c3f9a']));
-    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const o=opts[+b.dataset.qa]; closeQuiz(); GSPOT.occ=null;
+    openModal('<h2>입구 안내</h2><p style="font-size:15px"><b>"예약 없이 왔는데 오늘 수리 되나요?"</b><br><small>수리 자리: '+(free?'비어 있음':'꽉 참')+' · 남은 영업 '+Math.ceil(tl)+'초</small></p>'+quizBtns(opts,['#5aa8ff','#2f6fd8','#1c3f9a'])+qcBtn);
+    $('mbox').onclick=e=>{ if(e.target.id==='qClose'){ closeQuiz(); c.st='wait'; c.reopenT=3.0; return; } const b=e.target.closest('[data-qa]'); if(!b) return; const o=opts[+b.dataset.qa]; closeQuiz(); GSPOT.occ=null;
       if(o.k==='wait'){ const f=SPOTS.find(s=>s.type==='fix'&&s.on&&!s.occ); if(f&&tl>35){ c.spot=f; f.occ=c; c.st='wait'; c.walkin=2; c.wp=[new THREE.Vector3(2.3,0,1.5),new THREE.Vector3(f.x,0,f.z)]; c.st='enter'; c.pat=c.patMax=34; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'기다릴게요!','say'); if(!c.want&&!c.diag) c.want=fixPart(); }
         else { c.miss=true; toast(f?'영업 종료가 가까워서 오늘 수리는 무리였어요':'수리 자리가 꽉 차서 한참 기다리다 지쳤어요'); custLeave(c,false); } }
       else if(o.k==='book'){ c.quiet=1; S.stats.ok++; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'예약 고마워요!','say'); custLeave(c,true,0); }
@@ -867,7 +868,7 @@ function openRepair(c,then){ quizOpen=true; const t=c.want, cfg=dayCfg(S.day); c
   S.know=S.know||{}; const known=!isNew||(S.know[mk]||0)>=3;
   let seq=(c.data&&cfg.backup?['bk']:[]).concat(t==='s'?['off','scr','heat','bat','dsp','part','asm','test']:t==='c'?['off','scr','heat','bat','cam','part','asm','test']:['off','scr','heat','bat','part','asm','test']);
   if(isNew){ if(t==='b') seq.splice(seq.indexOf('part'),0,'adh'); if(t==='s'&&pro) seq.splice(seq.indexOf('part'),0,'fid'); seq.splice(seq.indexOf('test'),0,'pair'); }
-  const D={}; let idx=0, err=0, partMode=false, guideMode=false, guide=known&&isNew, lockT=0, msg=''; const t0=performance.now();
+  const D={}; let idx=0, err=0, partMode=false, guideMode=false, guide=known, lockT=0, msg=''; const t0=performance.now();
   const dec=shuffle(RDECOY.slice()).slice(0,isNew?2:1); const pool=shuffle(seq.map(k=>({k,n:RSTEP[k]})).concat(dec.map(n=>({k:'x',n}))));
   const alt=isNew?'Nova 16'+(pro?'':' Pro'):'Nova '+(mdl===12?13:mdl-1);
   const parts=shuffle([{n:mn+' 정품 '+pn,ok:1},{n:alt+' 정품 '+pn,ok:0,w:'모델이 달라요! 손님 기기는 '+mn+'예요'},{n:'호환 '+pn+' (비정품)',ok:0,w:'비정품은 경고 메시지가 떠요. 정품만 써야 해요'}]);
@@ -1016,12 +1017,14 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
     if(c.st==='enter'){ if(walkTo(c,dt,3.2)){ c.st=c.type==='fix'?'wait':'wait'; c.face=c.spot.face; } }
     else if(c.st==='wait'||c.st==='want'||c.st==='repair'||c.st==='xfer'||c.st==='mgrwait'){ const near=Math.hypot(player.pos.x-c.pos.x,player.pos.z-c.pos.z)<1.35;
       if(c.st!=='repair'&&c.st!=='xfer'&&c.st!=='mgrwait'&&!(c.claim&&c.claim.state==='work')){ c.pat-=dt*(quizOpen?0.3:1); if(c.pat<=0){ c.walk=1; custLeave(c,false); continue; } }
-      if((c.st==='wait'||c.st==='want')&&near&&!quizOpen&&!c.claim&&c.want&&(c.type==='pick'||c.type==='buy'||c.type==='tour')&&!c.soAsked&&stockTotal(c.want)===0&&!player.stack.includes(c.want)){ c.soAsked=1; openStockout(c); }
-      else if(c.st==='wait'&&near&&!quizOpen&&!c.claim&&((c.walkin===1&&c.spot===GSPOT)||c.type==='ret'||c.type==='corp'||c.type==='esc'||(c.type==='tour'&&!c.want)||c.type==='sw'||(c.type==='buy'&&!c.want)||(c.type==='fix'&&c.diag&&!c.want&&c.walkin!==1))){ openQuiz(c); }
+      if(c.reopenT>0) c.reopenT-=dt;
+      const mOpen=$('modal').classList.contains('on');
+      if((c.st==='wait'||c.st==='want')&&near&&!quizOpen&&!mOpen&&!c.claim&&c.want&&(c.type==='pick'||c.type==='buy'||c.type==='tour')&&!c.soAsked&&stockTotal(c.want)===0&&!player.stack.includes(c.want)){ c.soAsked=1; openStockout(c); }
+      else if(c.st==='wait'&&near&&!quizOpen&&!mOpen&&(!c.reopenT||c.reopenT<=0)&&!c.claim&&((c.walkin===1&&c.spot===GSPOT)||c.type==='ret'||c.type==='corp'||c.type==='esc'||(c.type==='tour'&&!c.want)||c.type==='sw'||(c.type==='buy'&&!c.want)||(c.type==='fix'&&c.diag&&!c.want&&c.walkin!==1))){ openQuiz(c); }
       else if(c.type==='pick'&&c.st==='wait'&&near&&takeItem(player,c.want)){ fly(makeItem(c.want),player.pos.clone().setY(1.3),()=>c.pos.clone().setY(1.2),0.25); c.waited=c.patMax-c.pat; if(c.xfer){ c.st='xfer'; c.xt=0; } else { custLeave(c,true,15); continue; } }
       if(c.st==='xfer'){ if(near){ c.xt+=dt; if(Math.random()<dt*4) sparkle(c.pos.x,1.4,c.pos.z,'#5ad1ff'); } if(c.xt>=3){ c.happy=1; custLeave(c,true,30); continue; } }
       else if((c.type==='buy'||c.type==='tour')&&c.st==='want'&&near&&takeItem(player,c.want)){ fly(makeItem(c.want),player.pos.clone().setY(1.3),()=>c.pos.clone().setY(1.2),0.25); c.waited=c.patMax-c.pat; custLeave(c,true,Math.round((c.want==='l'?60:c.want==='p'?45:30)*(c.specOk?1.5:1)*(c.tourist?1.3:1))); continue; }
-      else if(c.type==='fix'&&c.st==='wait'&&c.want&&c.spot!==GSPOT&&near&&!quizOpen&&takeItem(player,c.want)){ fly(makeItem(c.want),player.pos.clone().setY(1.3),()=>new THREE.Vector3(c.spot.x,1.1,-4.6),0.25); c.waited=c.patMax-c.pat; snd('ui',0.4,0.9); c.st='consult'; openRepair(c,()=>{ c.st='repair'; c.rt=1.5; }); }
+      else if(c.type==='fix'&&c.st==='wait'&&c.want&&c.spot!==GSPOT&&near&&!quizOpen&&!mOpen&&takeItem(player,c.want)){ fly(makeItem(c.want),player.pos.clone().setY(1.3),()=>new THREE.Vector3(c.spot.x,1.1,-4.6),0.25); c.waited=c.patMax-c.pat; snd('ui',0.4,0.9); c.st='consult'; openRepair(c,()=>{ c.st='repair'; c.rt=1.5; }); }
       if(c.st==='repair'){ c.rt-=dt; if(Math.random()<dt*3) sparkle(c.spot.x,1.15,-4.6,'#5ad1ff'); if(c.rt<=0){ const cfg=dayCfg(S.day);
         if(cfg.fail&&Math.random()<cfg.fail){ c.quiet=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'당일 수리 불가 → 수리센터 이관','say'); toast('추가 부품이 필요해 수리센터로 보냈어요 (진단비만 받아요)'); custLeave(c,true,10); continue; }
         if(c.data&&!c.backed&&Math.random()<0.45){ c.miss=true; c.major=1; toast('데이터가 유실됐어요! 수리 전에 백업 확인이 필요했어요'); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'사진이 다 날아갔어요!!','bad'); custLeave(c,false); continue; }
@@ -1046,14 +1049,14 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
           else { if(c.type==='sw'){ if(ok){ S.stats.ok++; custLeave(c,true,30); } else { c.quiet=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'음… 잘 모르겠네요','say'); custLeave(c,true,0); } }
             else { const T=c.type==='tour'?c.tq.t:c.bq.t; if(T){ c.want=T; c.specOk=ok; c.st='want'; c.pat=Math.max(c.pat,30); } else custLeave(c,true,25); } } } }
       s.ch.g.position.copy(s.pos); s.ch.g.rotation.y=angLerp(s.ch.g.rotation.y,s.face,Math.min(1,dt*10)); animChar(s.ch,s.speed,dt,false); return; }
-    if(s.state==='idle'){ const job=s.kind==='runner'?custs.find(c=>((c.type==='pick'&&c.st==='wait')||((c.type==='buy'||c.type==='tour')&&c.st==='want'))&&!c.claim):custs.find(c=>c.type==='fix'&&c.st==='wait'&&c.want&&c.spot!==GSPOT&&!c.claim);
+    if(s.state==='idle'){ const job=s.kind==='runner'?custs.find(c=>((c.type==='pick'&&c.st==='wait')||(s.crew.lv>=2&&(c.type==='buy'||c.type==='tour')&&c.st==='want'))&&!c.claim):custs.find(c=>c.type==='fix'&&c.st==='wait'&&c.want&&c.spot!==GSPOT&&!c.claim);
       if(job){ job.claim=s; s.job=job; const src=srcOf(job.want); s.state='fetch'; s.wp=[new THREE.Vector3(src.x,0,src.z+0.9)]; } else { const h=HOME[s.kind]; s.wp=[new THREE.Vector3(h[0],0,h[1])]; walkTo(s,dt,2.4); } }
-    else if(s.state==='fetch'){ if(!custs.includes(s.job)||s.job.st==='leave'){ s.state='idle'; s.job=null; } else if(walkTo(s,dt,SP)){ const src=srcOf(s.job.want); s.t+=dt; if(s.t>0.3&&src.n>0){ s.t=0; src.n--; layoutSrc(src); s.stack.push(s.job.want); s.state='deliver'; s.wp=[new THREE.Vector3(s.job.pos.x,0,s.job.pos.z+(s.kind==='runner'?-0.9:-0.9))]; } } }
-    else if(s.state==='deliver'){ const c=s.job; if(!custs.includes(c)||c.st==='leave'){ s.stack=[]; s.state='idle'; s.job=null; } else if(walkTo(s,dt,SP)){ s.stack.pop(); c.claim=null; if(c.type==='pick'){ c.waited=c.patMax-c.pat; if(c.xfer){ c.st='xfer'; c.xt=0; } else custLeave(c,true,15); } else if(c.type==='buy'||c.type==='tour'){ custLeave(c,true,Math.round((c.want==='l'?60:c.want==='p'?45:30)*(c.specOk?1.5:1)*(c.tourist?1.3:1))); } else { c.st='repair'; c.rt=3.5; c.backed=1; c.waited=c.patMax-c.pat; } s.state='idle'; s.job=null; } }
+    else if(s.state==='fetch'){ if(!custs.includes(s.job)||s.job.st==='leave'){ s.state='idle'; s.job=null; } else if(walkTo(s,dt,SP)){ const src=srcOf(s.job.want); if(src.n<=0){ s.state='idle'; s.t=0; if(s.job) s.job.claim=null; s.job=null; toast((IT[src.t]?IT[src.t].n:'수리')+' 부품 부족 · 발주 필요'); } else { s.t+=dt; if(s.t>0.3&&src.n>0){ s.t=0; src.n--; layoutSrc(src); s.stack.push(s.job.want); s.state='deliver'; s.wp=[new THREE.Vector3(s.job.pos.x,0,s.job.pos.z+(s.kind==='runner'?-0.9:-0.9))]; } } } }
+    else if(s.state==='deliver'){ const c=s.job; if(!custs.includes(c)||c.st==='leave'){ s.stack=[]; s.state='idle'; s.job=null; } else if(walkTo(s,dt,SP)){ s.stack.pop(); c.claim=null; if(c.type==='pick'){ c.waited=c.patMax-c.pat; if(c.xfer){ c.st='xfer'; c.xt=0; } else custLeave(c,true,15); } else if(c.type==='buy'||c.type==='tour'){ custLeave(c,true,Math.round((c.want==='l'?60:c.want==='p'?45:30)*(c.specOk?1.5:1)*(c.tourist?1.3:1))); } else { c.st='repair'; c.rt=7.0; c.waited=c.patMax-c.pat; if(!c.backed) c.backed=Math.random()<0.85?1:0; } s.state='idle'; s.job=null; } }
     s.ch.g.position.copy(s.pos); s.ch.g.rotation.y=angLerp(s.ch.g.rotation.y,s.face,Math.min(1,dt*10)); animChar(s.ch,s.speed,dt,s.stack.length>0); layoutStack(s); });
   // pads
   PADS.forEach(p=>{ const vis=padVisible(p); p.m.visible=vis; if(!vis) return; const on=Math.abs(player.pos.x-p.x)<0.75&&Math.abs(player.pos.z-p.z)<0.75;
-    if(on&&money>0){ const pay=Math.min(money,Math.max(1,p.price*dt*1.2),p.price-p.paid); money-=pay; p.paid+=pay; S.paid=S.paid||{}; S.paid[p.id]=p.paid; if(Math.random()<dt*14) snd('coin',0.15,1.4); drawPad(p); if(p.paid>=p.price-0.01) unlock(p); } });
+    if(on){ p.hold=(p.hold||0)+dt; if(p.hold>0.8&&money>0){ const pay=Math.min(money,Math.max(1,p.price*dt*1.5),p.price-p.paid); money-=pay; p.paid+=pay; S.paid=S.paid||{}; S.paid[p.id]=p.paid; if(Math.random()<dt*14) snd('coin',0.15,1.4); drawPad(p); if(p.paid>=p.price-0.01) unlock(p); } } else p.hold=0; });
   helpCD-=dt; { const stuck=dayState==='run'&&custs.filter(c=>c.st==='wait'||c.st==='want').length>=4&&SRC.some(s=>s.on&&s.n===0); $('help').classList.toggle('on',stuck&&helpCD<=0); }
   // fx
   bgmTick(dt); if(TS.out==='street'||TS.out==='city') cars.forEach(c=>{ c.g.position.x+=c.sp*dt; if(c.g.position.x>34) c.g.position.x=-34; });
