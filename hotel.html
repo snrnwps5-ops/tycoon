@@ -98,6 +98,7 @@ u.fc{display:inline-block;width:26px;height:26px;text-decoration:none;border-rad
 </style>
 </head>
 <body>
+<script>(function(){try{var sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;if(!sa)return;var real=window.innerHeight;if(window.innerWidth>real)return;var d=screen.height-real;if(d<20||d>130)return;var H=screen.height;Object.defineProperty(window,'innerHeight',{configurable:true,get:function(){return H}});var st=document.createElement('style');st.textContent='html,body{height:'+H+'px!important;overflow:hidden!important}#app{position:absolute;left:0;top:0;width:100%;height:'+H+'px;transform:translateZ(0);overflow:hidden}';document.head.appendChild(st);document.addEventListener('DOMContentLoaded',function(){var a=document.createElement('div');a.id='app';while(document.body.firstChild)a.appendChild(document.body.firstChild);document.body.appendChild(a);});}catch(e){}})();</script>
 <canvas id="c"></canvas><div id="vig" style="position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 55%,rgba(20,24,40,.28) 100%)"></div>
 <div id="labels"></div>
 <div id="hud">
@@ -633,7 +634,7 @@ function openRoad(R){ // R:{mode,theme:[bg,paper,plate],stars,stages:[{name,stat
     '<div class="rdFrame"><div class="rdScroll"><div class="rdIn" style="height:'+H+'px"><svg viewBox="0 0 100 '+H+'" preserveAspectRatio="none">'+path+'</svg>'+
     R.stages.map((s,i)=>'<div class="rdN '+s.state+'" data-rn="'+i+'" style="left:'+pos[i][0]+'%;top:'+pos[i][1]+'px"><div class="im" style="background-image:url('+s.thumb+');'+(s.filter?'filter:'+s.filter:'')+'"></div>'+(s.state==='cur'?'<div class="rdPin">📍</div>':'')+'<div class="bd">'+s.badge+'</div><br><div class="nm">'+(i+1)+'. '+s.name+'</div></div>').join('')+
     '</div></div></div><div class="rdInfo" id="rdInfo"></div><button id="rdGo"></button>';
-  document.body.appendChild(el); let sel=R.sel;
+  (document.getElementById('app')||document.body).appendChild(el); let sel=R.sel;
   const upd=()=>{ el.querySelectorAll('.rdN').forEach((q,i)=>q.classList.toggle('sel',i===sel)); const s=R.stages[sel]; $('rdInfo').innerHTML='<b>'+s.name+'</b> · '+s.desc; const lb=R.label(sel); $('rdGo').textContent=lb||'잠긴 매장이에요'; $('rdGo').disabled=!lb; };
   upd(); const cn=el.querySelector('[data-rn="'+sel+'"]'); if(cn) cn.scrollIntoView({block:'center'});
   el.onclick=e=>{ const t=e.target.closest('[data-tab]'); if(t){ if(t.dataset.tab!==R.mode) R.tab(t.dataset.tab); return; } const q=e.target.closest('[data-rn]'); if(q){ sel=+q.dataset.rn; try{ snd('ui',0.3); }catch(_){} upd(); } };
