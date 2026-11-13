@@ -570,3 +570,11 @@
 - 계약(그대로 구현): **11-Z** — 세이브 스키마(`S.branches`·`S.hq`·`S.hqStaff`·`S.escJobs`·`S.iv`·`S.cands`), 함수 시그니처(`branchSaveNow`·`branchLoad`·`branchOfflineTick`·`openBranchBoard`·`hqMission`·`hqProg`·`hqApprove`·`openHQ`·`promoteCareer`·`openInterviewModal`·`ivStep`·`ivAsk`·`ivScore`·`ivOfferBuild`·`ivSignOffer`·`ivClose`·`promoteToHq`·`hqBuffGet`·`triggerEscalation`·`openEscalation`·`escKitStart`·`escKitTick`·`escKitHit`·`escSendTeam`·`escResolve`·`payBase`·`hireCost`·`facilityCost`·`branchMul`·`stageMul`), 구현 규칙, 2D/3D 빌드 규칙.
 - 작업 순서: 11-A(구조) → 11-B/C(본사·승진) → 11-D/E(채용·전직) → 11-F(에스컬레이션) → 11-G/H(채용 루프·경제). 각 단계마다 빌드·2D/3D 확인·커밋.
 - 검증 훅: v2.8에 `__H.staffAt()`, `__H.walkTest(sx,sz,cx,cz,old)`, `__H.approach(sx,sz,cx,cz)`, `__H.freeAt(x,z)`가 이미 있습니다. 11-Z의 새 훅(`branchState`·`hqState`·`escList`·`ivState`)도 함께 넣으세요.
+
+## v2.14 (Claude) — 하단 도로 노출 · 상단 칩 잘림 · 불러오기 버튼
+
+- **빌드 주의:** `_t2d/build.py`는 저장소에 없어(피클 작업 공간 `/workspace/_t2d`에만 있음) 이번엔 실행하지 못했습니다. 같은 문자열 치환을 `tech.html`·`tech-test.html`에 똑같이 적용하고 `index.html`은 `tech.html` 사본으로 다시 썼습니다. **다음에 build.py를 돌리기 전에 `_t2d/part_head.html`의 `V`를 `1794567168`로, 타이틀 표기를 v2.14로 맞추세요.** 2D 전용 조각(part_*.js)이 아래 구간을 덮어쓰는지도 확인이 필요합니다.
+- **카메라(`camClampT`)**: `tzMax=(CAMS.z1-1.2)-sp.dzMax`로 화면 아래 끝을 출입문 안쪽(z=4.8)에 가둡니다. 이 값만 쓰면 플레이어가 z≥3 구간(출입구·해금 패드)에서 하단 버튼 바 뒤로 사라지는 것을 캡처로 확인해, 플레이어 발이 바 뒤로 가려질 때만 기존 한계(`tzFar=z1+marM`)까지 따라 내려가는 보정을 넣었습니다. 완전 고정을 원하면 그 보정 블록(`v<vMin`)만 지우면 됩니다.
+- **상단 칩**: `#sub`(매장명·★·NPS·들기)는 줄바꿈 허용, `#subR`(📂 불러오기·💾·⚙️)는 우측 상단 고정. `#sub` 높이를 `--subH`로 넘겨 DAY 바·콤보·토스트가 그 아래로 내려갑니다.
+- **불러오기**: `openLoad()`·`saveParse()` 추가. 저장 코드와 세이브 링크(`#save=…`) 모두 받습니다. 타이틀 `#tLoad`, 인게임 `#loadChip`.
+- **확인한 것(헤드리스 Chrome)**: 3D 360·375·390·430 세로와 932×430 가로, 2D 390 — 칩 겹침·화면 밖 없음, ⚙️ 열림, 링크 붙여넣기→덮어쓰기 확인→재시작 후 금액 복원, 페이지 오류 0. **확인 못 한 것**: 실제 아이폰 Safari·홈 화면 앱, 클립보드 `붙여넣기` 버튼(권한 필요), 2스테이지 이후 매장.

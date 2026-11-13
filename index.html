@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794554794';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794567168';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -41,7 +41,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 .pill b{flex:1;text-align:center;font-family:var(--d);font-size:21px;color:#fff;text-shadow:0 2px 0 #1c3f9a}
 .pill.bump{animation:bump .25s}@keyframes bump{50%{transform:scale(1.08)}}
 .mbtn{width:44px;height:44px;border:0;border-radius:12px;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 3px 0 #b85a00;color:#fff;font-family:var(--d);font-size:13px;line-height:1;padding:0}
-#sub{position:fixed;left:12px;top:calc(64px + env(safe-area-inset-top));z-index:5;display:flex;gap:6px}
+#sub{position:fixed;left:12px;top:calc(64px + env(safe-area-inset-top));z-index:5;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 186px)}#sub .chip2{max-width:100%;box-sizing:border-box;overflow:hidden;text-overflow:ellipsis}#subR{position:fixed;right:10px;top:calc(62px + env(safe-area-inset-top));z-index:6;display:flex;gap:5px}#subR .chip2{position:relative;min-width:34px;height:30px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 8px;font-size:13px;cursor:pointer;pointer-events:auto;background:rgba(20,30,60,.72)}#subR .chip2::after{content:"";position:absolute;left:-2px;right:-2px;top:-7px;bottom:-7px}#subR .chip2:active{transform:scale(.94)}#loadChip{background:rgba(47,111,216,.88)!important}#stn{max-width:calc(100% - 86px)!important}#dayBar{top:calc(72px + var(--subH,58px) + env(safe-area-inset-top))!important}#combo{top:calc(env(safe-area-inset-top,0px) + 124px + var(--subH,58px))!important}#toast{top:calc(104px + var(--subH,58px) + env(safe-area-inset-top))!important}@media (max-width:374px){#loadChip span{display:none}#sub{max-width:calc(100% - 146px)}}body.title #modal{z-index:45}#tLoad{margin-top:12px;border:1px solid rgba(255,255,255,.5);background:rgba(6,12,40,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font:800 14px var(--b);border-radius:14px;padding:10px 20px;animation:tup .7s .6s backwards}
 .chip2{padding:4px 9px 5px;border-radius:11px;background:rgba(20,30,60,.55);color:#fff;font:900 12px var(--b);white-space:nowrap}
 #labels{position:fixed;inset:0;pointer-events:none;z-index:3;overflow:hidden}
 .lb{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font:900 13px var(--b);color:#2a2a3a;background:#fff;border-radius:12px;padding:4px 9px 5px;box-shadow:0 3px 0 rgba(0,0,0,.18)}
@@ -136,7 +136,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 #tStart{position:relative;overflow:hidden;width:250px;height:70px;border:0;border-radius:24px;background:linear-gradient(#6fdcff,#2f7df0);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 7px 0 #1a3f96,0 16px 30px rgba(47,125,240,.55);color:#fff;font-family:var(--d);font-size:30px;text-shadow:0 2px 0 #1a3f96;animation:tup .7s .55s backwards,tpu 1.5s 1.4s ease-in-out infinite}#tStart:active{transform:translateY(5px);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 2px 0 #1a3f96}
 #tStart i{position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:tsh 2.4s 1.2s infinite}@keyframes tsh{0%{left:-80px}45%,100%{left:300px}}@keyframes tpu{50%{transform:scale(1.045)}}@keyframes tup{0%{transform:translateY(40px);opacity:0}}
 #title .tv{margin-top:8px;font:700 10px var(--b);color:rgba(255,255,255,.5)}#title .tsv{margin-top:10px;font:800 11px var(--b);color:#ffffff;background:rgba(6,12,40,.5);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:5px 11px;animation:tup .7s .6s backwards}#title .tsv:empty{display:none}
-body.title #hud,body.title #sub,body.title #dayBar,body.title #bbar,body.title #shopBtn,body.title #combo,body.title #labels,body.title #help,body.title #hint,body.title #toast{opacity:0!important;pointer-events:none!important}#hud,#sub,#dayBar,#bbar,#shopBtn{transition:opacity .5s}
+body.title #hud,body.title #sub,body.title #subR,body.title #dayBar,body.title #bbar,body.title #shopBtn,body.title #combo,body.title #labels,body.title #help,body.title #hint,body.title #toast{opacity:0!important;pointer-events:none!important}#hud,#sub,#subR,#dayBar,#bbar,#shopBtn{transition:opacity .5s}
 #load{background:radial-gradient(circle at 50% 40%,#1a3aa0,#0a1650)!important}#load .t{color:#fff!important;-webkit-text-stroke:0!important;text-shadow:0 4px 0 #1c3f9a,0 0 30px rgba(90,209,255,.7)!important}#load .s{color:#8fe3ff!important}#load:after{content:'';width:150px;height:5px;border-radius:3px;margin-top:16px;background:linear-gradient(90deg,#5ad1ff 40%,rgba(255,255,255,.15) 40%);background-size:250% 100%;animation:ldb 1.2s linear infinite}@keyframes ldb{0%{background-position:100% 0}100%{background-position:-60% 0}}
 #carry b{font-weight:900;margin-right:3px}#carry .cs{display:inline-block;width:9px;height:9px;border-radius:2.5px;border:1.5px solid rgba(255,255,255,.75);margin-left:2px;vertical-align:-1px;font-style:normal}#carry .cs.on{background:#ffd23f;border-color:#ffd23f;box-shadow:0 0 4px rgba(255,210,63,.8)}#carry .cf{margin:0 0 0 5px;color:#ffd23f}#carry.full{background:rgba(232,90,20,.85)}
 i.sp{display:inline-block;flex:none;border-radius:13px;background-image:url(shop.jpg);background-repeat:no-repeat;box-shadow:0 2px 0 rgba(0,0,0,.18)}
@@ -260,7 +260,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
   <div class="pill" id="cashPill"><svg class="ic" viewBox="0 0 48 48"><g transform="rotate(-14 24 24)"><rect x="5" y="14" width="38" height="22" rx="3" fill="#2f8a2a"/><rect x="7" y="12" width="38" height="22" rx="3" fill="#5cc94a" stroke="#fff" stroke-width="2"/><circle cx="26" cy="23" r="6" fill="#3fa83a"/><text x="26" y="27" font-size="10" font-weight="900" text-anchor="middle" fill="#e9f7d0">$</text></g></svg><b id="money">0</b></div>
   <button id="shopBtn"><span class="sp" style="display:block;width:30px;height:30px;border-radius:8px;background:url(shop.jpg) 0 0/90px 90px"></span><b>상점</b><em>SALE</em></button><button class="mbtn" id="branchBtn" aria-label="지점 관리" title="지점 관리" style="width:38px;font-size:16px;background:linear-gradient(#6fdcff,#2f7df0);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 3px 0 #1c3f9a">🏢</button><button class="mbtn" id="mute" style="width:38px;font-size:16px">♪</button><button class="mbtn" id="back" style="font-size:12px">타이틀</button>
 </div>
-<div id="sub"><div class="chip2" id="stn" style="background:rgba(255,210,63,.9);color:#5a2a00"></div><div class="chip2" id="rate">★ 4.0</div><div class="chip2" id="rooms">NPS —</div><div class="chip2" id="carry"></div><div class="chip2" id="saveChip" style="cursor:pointer;pointer-events:auto">💾</div><div class="chip2" id="optChip" style="cursor:pointer;pointer-events:auto">⚙️</div></div>
+<div id="sub"><div class="chip2" id="stn" style="background:rgba(255,210,63,.9);color:#5a2a00"></div><div class="chip2" id="rate">★ 4.0</div><div class="chip2" id="rooms">NPS —</div><div class="chip2" id="carry"></div></div><div id="subR"><div class="chip2" id="loadChip" role="button" aria-label="저장 코드 불러오기">📂<span>&nbsp;불러오기</span></div><div class="chip2" id="saveChip" role="button" aria-label="저장">💾</div><div class="chip2" id="optChip" role="button" aria-label="설정">⚙️</div></div>
 <div id="bbar"><button id="upBtn" class="bb g"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 3l7 8h-4v9H9v-9H5z" fill="#fff"/></svg><span>업그레이드</span><i id="upDot"></i></button><button id="crewBtn" class="bb p"><svg viewBox="0 0 24 24" width="26" height="26"><circle cx="9" cy="8" r="3.5" fill="#fff"/><circle cx="16.5" cy="9" r="2.8" fill="#fff" opacity=".8"/><path d="M2.5 20c0-4 3-6.5 6.5-6.5s6.5 2.5 6.5 6.5z" fill="#fff"/><path d="M14 20c.3-2.8 1.6-5 4-5s3.6 2 3.8 5z" fill="#fff" opacity=".8"/></svg><span>직원</span><i id="crewDot"></i></button><button id="msBtn" class="bb o"><svg viewBox="0 0 24 24" width="26" height="26"><rect x="5" y="3" width="14" height="18" rx="2" fill="#fff"/><path d="M8 9h8M8 13h8M8 17h5" stroke="#ff8a1a" stroke-width="2"/></svg><span>미션</span><i id="msDot"></i></button><button id="invBtn" class="bb t"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M3 8l9-4 9 4v10l-9 4-9-4z" fill="#fff"/><path d="M3 8l9 4 9-4M12 12v10" stroke="#16a58c" stroke-width="1.6" fill="none"/></svg><span>재고</span><i id="invDot"></i></button><button id="mapBtn" class="bb b"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M7 3h10v4a5 5 0 0 1-10 0z" fill="#fff"/><path d="M7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4" stroke="#fff" stroke-width="1.6" fill="none"/><rect x="10.5" y="11" width="3" height="5" fill="#fff"/><rect x="7" y="16" width="10" height="4" rx="1" fill="#fff"/></svg><span>랭킹</span></button></div>
 <div id="stockAl" style="display:none"></div><div id="combo" style="display:none"><b></b><small></small><i><s></s></i></div><div id="dayBar"><b id="dbDay">DAY 1</b><span id="dbT">2:00</span><span id="dbRev">$0/$120</span><span id="dbComp">민원 0/3</span><i><s id="dbFill"></s></i></div>
 <div id="hint"></div>
@@ -272,7 +272,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.13</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.14</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1819,6 +1819,17 @@ function slotClick(e){ const hb=e.target.closest('[data-xhire]'), fb=e.target.cl
 /* ---- save: status, manual save, export / import code ---- */
 function saveCode(){ save(); return 'NOVA1.'+btoa(unescape(encodeURIComponent(JSON.stringify(S)))); }
 function loadCode(txt){ txt=(txt||'').trim(); if(txt.indexOf('NOVA1.')!==0) throw new Error('저장 코드가 아니에요'); let o; try{ o=JSON.parse(decodeURIComponent(escape(atob(txt.slice(6))))); }catch(e){ throw new Error('코드가 손상됐거나 일부만 복사됐어요'); } if(!o||typeof o.day!=='number'||!Array.isArray(o.unl)) throw new Error('코드가 손상됐어요'); return o; }
+function saveParse(t){ t=(t||'').trim(); let i=t.indexOf('NOVA1.'); if(i<0){ try{ t=decodeURIComponent(t); }catch(_){} i=t.indexOf('NOVA1.'); } if(i<0) throw new Error('저장 코드나 세이브 링크가 아니에요 (NOVA1. 로 시작해요)'); t=t.slice(i).split(/[\s&#"'<>]/)[0]; try{ t=decodeURIComponent(t); }catch(_){} return loadCode(t); } /* v2.14: 저장 코드와 세이브 링크(#save=…) 둘 다 받는다 */
+function openLoad(msg){
+  openModal('<h2>📂 불러오기</h2><p style="font-size:12.5px;margin:4px 0 6px;text-align:left">사파리와 홈 화면 앱은 저장 공간이 따로예요. 원래 하던 곳에서 <b>💾 → 저장 코드 복사</b>(또는 세이브 링크 복사)를 한 뒤, 여기에 붙여 넣으면 이어서 할 수 있어요.</p>'+
+   '<textarea id="ldTxt" placeholder="저장 코드(NOVA1.…)나 세이브 링크를 붙여 넣으세요" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" style="width:100%;box-sizing:border-box;height:84px;border-radius:10px;border:2px solid #d8cdb8;padding:8px;font:16px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea>'+
+   '<button id="ldPaste" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">📋 붙여넣기</button><button id="ldGo" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">불러오기</button><div class="rpmsg" id="ldMsg">'+(msg||'')+'</div><button class="gray" id="mOk">닫기</button>');
+  const reset=()=>{ const b=$('ldGo'); if(b&&b.dataset.ok==='1'){ b.dataset.ok=''; b.textContent='불러오기'; } };
+  $('ldTxt').oninput=reset; $('ldTxt').onclick=e=>e.stopPropagation();
+  $('ldPaste').onclick=e=>{ e.stopPropagation(); const no=()=>{ $('ldMsg').textContent='위 칸을 길게 눌러 "붙여넣기"를 선택하세요'; try{ $('ldTxt').focus(); }catch(_){} }; try{ navigator.clipboard.readText().then(t=>{ if(t){ $('ldTxt').value=t; reset(); $('ldMsg').innerHTML='<span style="color:#2faa45">붙여 넣었어요. 불러오기를 누르세요</span>'; } else no(); }).catch(no); }catch(_){ no(); } };
+  $('ldGo').onclick=e=>{ e.stopPropagation(); let o; try{ o=saveParse($('ldTxt').value); }catch(er){ $('ldMsg').textContent='불러오지 못했어요: '+er.message; return; }
+    if($('ldGo').dataset.ok!=='1'){ $('ldGo').dataset.ok='1'; $('ldGo').textContent='정말 덮어쓸까요? 한 번 더 누르기'; $('ldMsg').innerHTML='불러올 저장: DAY '+(o.day+1)+' · $'+(o.money||0)+' · 직원 '+((o.crew||[]).length)+'명'+(S.seen?'<br>지금 진행은 사라져요':''); return; }
+    try{ delete o.mid; localStorage.setItem(SAVE,JSON.stringify(o)); window.__noSave=1; try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }catch(er){ $('ldMsg').textContent='저장 공간에 쓸 수 없어요'; } }; }
 function openSave(msg){
   openModal('<h2>💾 저장</h2><div class="dstat ok"><span>자동 저장 켜짐 (4초마다)</span><b>마지막 저장: '+saveAgo()+'</b></div><p style="font-size:12px;margin:4px 0;text-align:left">• 이 기기의 이 브라우저에만 저장돼요. 사파리와 홈 화면 앱은 저장 공간이 달라요.<br>• 영업 도중에 끄면 그날 영업은 처음부터 다시 시작해요 (돈·직원·해금은 유지).<br>• 저장 코드를 복사해 두면 다른 기기나 홈 화면 앱에서 이어서 할 수 있어요.</p>'+
    '<button id="svNow">지금 저장</button><button id="svCopy" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">저장 코드 복사</button><button id="svLink" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">세이브 링크 복사</button><textarea id="svTxt" placeholder="저장 코드를 여기에 붙여 넣으세요" style="width:100%;box-sizing:border-box;height:58px;margin-top:8px;border-radius:10px;border:2px solid #d8cdb8;padding:6px;font:11px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea><button id="svLoad" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">코드로 불러오기</button><div class="rpmsg" id="svMsg">'+(msg||'')+'</div><button class="gray" id="mOk">닫기</button>');
@@ -1827,7 +1838,7 @@ function openSave(msg){
   $('svLink').onclick=e=>{ e.stopPropagation(); const code=saveCode(); const url=location.origin+location.pathname+'#save='+encodeURIComponent(code);
     const done=()=>{ $('svMsg').innerHTML='<span style="color:#2faa45">세이브 링크를 복사했어요. 다른 브라우저나 홈 화면 앱에서 이 링크를 열면 이어서 할 수 있어요</span>'; };
     try{ navigator.clipboard.writeText(url).then(done).catch(()=>{ $('svTxt').value=url; $('svTxt').select(); $('svMsg').innerHTML='위 칸의 링크를 길게 눌러 복사하세요'; }); }catch(_){ $('svTxt').value=url; $('svTxt').select(); $('svMsg').innerHTML='위 칸의 링크를 길게 눌러 복사하세요'; } };
-  $('svLoad').onclick=e=>{ e.stopPropagation(); let o; try{ o=loadCode($('svTxt').value); }catch(er){ $('svMsg').textContent='불러오지 못했어요: '+er.message; return; }
+  $('svLoad').onclick=e=>{ e.stopPropagation(); let o; try{ o=saveParse($('svTxt').value); }catch(er){ $('svMsg').textContent='불러오지 못했어요: '+er.message; return; }
     if($('svLoad').dataset.ok!=='1'){ $('svLoad').dataset.ok='1'; $('svLoad').textContent='정말 덮어쓸까요? 한 번 더 누르기'; $('svMsg').innerHTML='불러올 저장: DAY '+(o.day+1)+' · $'+(o.money||0)+' · 직원 '+((o.crew||[]).length)+'명<br>지금 진행은 사라져요'; return; }
     try{ delete o.mid; localStorage.setItem(SAVE,JSON.stringify(o)); window.__noSave=1; try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }catch(er){ $('svMsg').textContent='저장 공간에 쓸 수 없어요'; } }; }
 /* ---- v2.2: 설정(⚙️) — BGM/효과음 켜기·음량, 진동 ---- */
@@ -1875,6 +1886,10 @@ $('msBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openMs(
 function openLog(){ const n=Math.max(DAYS.length,S.day+1); let h='<h2>영업 일지</h2><div class="dlist">'; for(let d=0;d<n;d++){ if(d===0||d===4||d===8||d===11||d===15||d===19) h+='<div style="font-family:var(--d);font-size:15px;color:#7a4a20;margin:10px 2px 2px">STAGE '+(STAGE_OF(d)+1)+' · '+STN[STAGE_OF(d)]+'</div>'; const cfg=dayCfg(d), st=S.dayStars[d]||0, lock=d>S.day; h+='<div class="dli'+(lock?' lock':'')+'"><b>DAY '+(d+1)+'<small>'+cfg.title+' · 목표 $'+cfg.goal+'</small></b><em>'+'★'.repeat(st)+'<span style="color:#d8cdb8">'+'★'.repeat(3-st)+'</span></em></div>'; } h+='</div><button id="mOk">닫기</button>'; openModal(h); }
 $('mapBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openRank(); };
 let _chipT=0;
+/* v2.14: 왼쪽 정보 칩이 몇 줄로 접히든 그 아래에 DAY 바·콤보·토스트가 오도록 높이를 CSS 변수로 넘긴다 */
+try{ const _sb=$('sub'), _fit=()=>{ const h=Math.round(_sb.getBoundingClientRect().height); document.documentElement.style.setProperty('--subH',Math.max(26,h||26)+'px'); }; if(window.ResizeObserver) new ResizeObserver(_fit).observe(_sb); addEventListener('resize',_fit); _fit(); }catch(_){}
+$('loadChip').onclick=()=>{ initAudio(); if(qBusy()||$('modal').classList.contains('on')) return; snd('ui',0.4); openLoad(); };
+{ const _tl=$('tLoad'); if(_tl) _tl.onclick=e=>{ e.stopPropagation(); if($('modal').classList.contains('on')) return; openLoad(); }; }
 $('saveChip').onclick=()=>{ initAudio(); if(qBusy()||$('modal').classList.contains('on')) return; const _t=performance.now();
   if(_t-_chipT<420){ _chipT=0; snd('ui',0.4); openSave(); return; }
   _chipT=_t; save(); snd('coin',0.32,1.25); toast('💾 저장 완료',1.4,1); const _c=$('saveChip'); if(_c){ _c.textContent='✅'; setTimeout(()=>{ _c.textContent='💾'; },900); } };
@@ -2061,14 +2076,15 @@ function camClampT(dt){
   /* 세로: 화면 아래 끝을 '출입구 + 하단 바 높이'에 맞춘다 → 매장 바닥이 화면 끝까지 차고,
      바깥 바닥은 하단 버튼 바 뒤로만 지나간다. 화면이 매장보다 얕을 때만 플레이어를 따라간다. */
   let tz=px.z-1.8;
-  const tzMax=(CAMS.z1+marM)-sp.dzMax, tzMin=(CAMS.z0-0.6)-sp.dzMin;
+  const tzMax=(CAMS.z1-1.2)-sp.dzMax, tzFar=(CAMS.z1+marM)-sp.dzMax, tzMin=(CAMS.z0-0.6)-sp.dzMin; /* v2.14: 화면 아래 끝을 출입문 안쪽(z=4.8) 매장 바닥에 가둔다 — 버튼 틈·홈 바 아래로 바깥 도로가 보이지 않는다 */
   if(tzMin<=tzMax) tz=Math.max(tzMin,Math.min(tzMax,tz)); else tz=tzMax;
   /* 가로: 매장을 화면 가운데에 고정하고, 플레이어가 화면 밖으로 밀릴 때만 따라간다 */
-  let tx=0;
-  const txMin=(CAMS.x1+1.2)-sp.dxMax, txMax=(CAMS.x0-1.2)-sp.dxMin;
-  if(txMin<=txMax) tx=Math.max(txMin,Math.min(txMax,tx));
-  const U=0.72*hw, cz=(px.z-tz)*Xz;
-  tx=Math.max(px.x-(U-cz)/Xx, Math.min(px.x-(-U-cz)/Xx, tx));
+  const txMin=(CAMS.x1+1.2)-sp.dxMax, txMax=(CAMS.x0-1.2)-sp.dxMin, U=0.72*hw;
+  const fitX=()=>{ let x=0; if(txMin<=txMax) x=Math.max(txMin,Math.min(txMax,x)); const cz=(px.z-tz)*Xz; return Math.max(px.x-(U-cz)/Xx, Math.min(px.x-(-U-cz)/Xx, x)); };
+  let tx=fitX();
+  /* v2.14: 플레이어가 출입구 쪽으로 내려가 하단 버튼 바 뒤로 가려질 때만, 발이 바 위로 보일 만큼만 따라 내려간다 (평소엔 z=4.8 안쪽에 고정) */
+  { const Yx=_camY.x, Yz=_camY.z, vMin=-vh/2/zoom+(CAMUI.marPx+2)/H*vh/zoom+0.9, v=(px.x-tx)*Yx+(px.z-tz)*Yz;
+    if(v<vMin&&Yz<-0.01){ tz=Math.min(tzFar,Math.max(tz,px.z-(vMin-(px.x-tx)*Yx)/Yz)); tx=fitX(); } }
   _camNew.set(tx,0,tz); return _camNew;
 }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
