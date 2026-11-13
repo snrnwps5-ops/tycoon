@@ -1202,6 +1202,7 @@ function bohRmaCredit(){ return (S.rma||[]).reduce((a,o)=>a+(o.credit||0),0); }
 function bohDiff(){ return {dock:bohDockQty(),rma:bohRmaQty()}; }
 function opBonus(){ try{ return S.boh&&S.boh.ccDay===S.day?0.1:0; }catch(e){ return 0; } }
 function opBonusText(){ return opBonus()?'★+0.1':'—'; }
+function bohRmaCr(t,q){ return Math.max(8,Math.round((typeof COST!=='undefined'?(COST[t]||5):5)*(q||1)*0.5)); }
 function bohPushRma(t,q,why,credit){ if(!S.rma) S.rma=[]; S.rma.push({t:t,q:Math.max(1,q||1),why:why||'',credit:Math.max(0,Math.round(credit||0))}); }
 /* 고객 반품이 들어오면 35%는 불량으로 분리 보관 → 본사 크레딧으로 환급 */
 function bohReturnRma(c){ if(!c||c.type!=='ret') return; if(Math.random()>=0.35) return; bohPushRma(c.want||'p',1,'고객 반품',18+6*STG); }
@@ -1246,9 +1247,9 @@ function bohScanEnd(){ const i=BOHSCAN.i, o=S.dock[i], hits=BOHSCAN.hits;
   if(hits>=3){ S.inv[o.t]=(S.inv[o.t]||0)+q; soWarn[o.t]=0; money+=50; S.boh.perfect=(S.boh.perfect||0)+1; good=1;
     msg='검수 완료 · '+IT[o.t].n+' '+q+'대 창고 입고 +$50'; }
   else if(hits>0){ const okq=Math.max(0,q-miss); if(okq){ S.inv[o.t]=(S.inv[o.t]||0)+okq; soWarn[o.t]=0; }
-    if(miss) bohPushRma(o.t,miss,'시리얼 미확인',14+4*STG); S.boh.miss=(S.boh.miss||0)+miss;
+    if(miss) bohPushRma(o.t,miss,'시리얼 미확인',bohRmaCr(o.t,miss)); S.boh.miss=(S.boh.miss||0)+miss;
     msg='시리얼 '+hits+'/3 확인 · '+okq+'대 입고, '+miss+'대 불량 반품(RMA)'; }
-  else { bohPushRma(o.t,q,'전량 시리얼 불일치',14+4*STG); S.boh.miss=(S.boh.miss||0)+q;
+  else { bohPushRma(o.t,q,'전량 시리얼 불일치',bohRmaCr(o.t,q)); S.boh.miss=(S.boh.miss||0)+q;
     msg='시리얼 불일치 — '+q+'대 전량 RMA 보관'; }
   try{ drawDock(); }catch(e){} save();
   if(good){ bigBanner('✔ 검수 완료!','+$50 오퍼레이션 보너스'); snd('confirm',0.5,1.2); haptic(15); }
@@ -1280,7 +1281,7 @@ function bohAutoInspect(i,cr){ const o=S.dock[i]; if(!o) return;
   if(perfect){ S.inv[o.t]=(S.inv[o.t]||0)+o.q; soWarn[o.t]=0; money+=50; S.boh.perfect=(S.boh.perfect||0)+1;
     toast('🔍 '+cr.name+'(재고 담당)가 입고 검수 완료 · '+IT[o.t].n+' '+o.q+'대 +$50',2.8); }
   else { const k=Math.max(0,(o.q||1)-1); if(k){ S.inv[o.t]=(S.inv[o.t]||0)+k; soWarn[o.t]=0; }
-    bohPushRma(o.t,1,'자동 검수 누락',14+4*STG); S.boh.miss=(S.boh.miss||0)+1;
+    bohPushRma(o.t,1,'자동 검수 누락',bohRmaCr(o.t,1)); S.boh.miss=(S.boh.miss||0)+1;
     toast('🔍 '+cr.name+'가 검수했지만 시리얼 1개가 맞지 않아 RMA로 보냈어요',2.8); }
   try{ drawDock(); }catch(e){} save(); }
 /* --- BOH 패널 --- */
@@ -1302,7 +1303,7 @@ function bohHTML(){ const d=bohDiff(), dif=d.dock+d.rma, cr=bohCrew();
       '<div class="dstat"><span>미검수 입고 (①)</span><b>'+d.dock+'개</b></div>'+
       '<div class="dstat"><span>RMA 보관 (③)</span><b>'+d.rma+'개</b></div>'+
       '<div class="dstat '+(opBonus()?'ok':'')+'"><span>오늘 평점 보너스</span><b>'+opBonusText()+'</b></div>'+
-      (dif?'<p style="font-size:12px;margin:6px 0">오차 원인: '+(d.dock?'미검수 박스 '+d.dock+'개 → ① 입고 검수':'')+(d.dock&&d.rma?' · ':'')+(d.rma?'RMA '+d.rma+'개 → ③ 크레딧 정산':'')+'</p>'
+      (S.boh.ccDay===S.day?'<p style="font-size:12px;margin:6px 0">오늘 실사는 <b>오차 0</b>으로 완료했어요. 평점 <b>★+0.1</b>이 오늘 하루 적용됩니다.</p>':dif?'<p style="font-size:12px;margin:6px 0">오차 원인: '+(d.dock?'미검수 박스 '+d.dock+'개 → ① 입고 검수':'')+(d.dock&&d.rma?' · ':'')+(d.rma?'RMA '+d.rma+'개 → ③ 크레딧 정산':'')+'</p>'
           :'<p style="font-size:12px;margin:6px 0">진열대·창고 수량이 장부와 일치해요.<br>실사하면 오늘 평점 <b>★+0.1</b>과 오퍼레이션 보너스 <b>$'+(150+50*STG)+'</b>를 받아요.</p>')+
       '<button data-cc="1" '+(S.boh.ccDay===S.day?'disabled':'')+'>'+(S.boh.ccDay===S.day?'오늘 실사 완료 ✔':'재고 실사 실행')+'</button>';
   }
@@ -1420,7 +1421,7 @@ function invTick(dt){ for(const o of S.orders.slice()) if(o.ex){ o.eta-=dt; if(o
   const d=$('invDot'); if(d) d.style.display=low||S.dock.length?'block':'none'; alertTick(); }
 function openInv(){ const rows=SRC.filter(s=>s.on).map(s=>{ const t=s.t, on=S.orders.filter(o=>o.t===t), oq=on.reduce((a,o)=>a+o.q,0), tot=s.n+S.inv[t]; const lv=tot<=3?'no':tot<=8?'mid':'ok';
     return '<div class="ivr '+lv+'"><div class="ivh"><b>'+IT[t].n+(lv==='no'?' <span style="color:#e8342a;font-size:12px">부족!</span>':'')+'</b><small>진열 '+s.n+' · 창고 '+S.inv[t]+(oq?' · 배송중 '+oq+(on.some(o=>o.ex)?' ('+Math.ceil(Math.min(...on.filter(o=>o.ex).map(o=>o.eta)))+'초)':''):'')+'</small></div><div class="ivb"><button data-o="'+t+'" data-x="0">+5 내일<br><small>$'+COST[t]*5+'</small></button><button data-o="'+t+'" data-x="1" class="ex">+5 퀵<br><small>$'+Math.round(COST[t]*5*1.6)+'</small></button></div></div>'; }).join('');
-  openModal('<h2>재고 관리</h2><p style="font-size:12px;margin:4px 0">발주 → 입구 박스 받기 → 창고 → 진열 보충 순서예요<br><small>재고 담당이 있으면 박스 받기·진열 보충을 대신 해요 · 없으면 직접!<br>⏱ 이 화면을 보는 동안에도 영업 시간은 흘러요</small></p><div class="dstat"><span>🤖 자동 발주 '+(hasCrew('mgr')?'':'<small>(매니저 고용 필요)</small>')+'</span><button id="aoBtn" style="width:auto;margin:0;padding:5px 12px;font-size:13px" '+(hasCrew('mgr')?'':'disabled')+'>'+(S.autoOrd&&hasCrew('mgr')?'켜짐':'꺼짐')+'</button></div><div class="ivl">'+rows+'</div><p style="font-size:13px">보유 $'+Math.floor(money)+'</p><button id="mOk">닫기</button>');
+  openModal('<h2>재고 관리</h2><p style="font-size:12px;margin:4px 0">발주 → 입구 박스 받기 → 창고 → 진열 보충 순서예요<br><small>재고 담당이 있으면 박스 받기·진열 보충을 대신 해요<br>BOH 데스크에서 시리얼 검수하면 박스마다 <b>+$50</b><br>⏱ 이 화면을 보는 동안에도 영업 시간은 흘러요</small></p><div class="dstat"><span>🤖 자동 발주 '+(hasCrew('mgr')?'':'<small>(매니저 고용 필요)</small>')+'</span><button id="aoBtn" style="width:auto;margin:0;padding:5px 12px;font-size:13px" '+(hasCrew('mgr')?'':'disabled')+'>'+(S.autoOrd&&hasCrew('mgr')?'켜짐':'꺼짐')+'</button></div><div class="ivl">'+rows+'</div><p style="font-size:13px">보유 $'+Math.floor(money)+'</p><button id="mOk">닫기</button>');
   $('mbox').onclick=e=>{ if(e.target.id==='aoBtn'){ S.autoOrd=!S.autoOrd; snd('ui',0.4); save(); openInv(); return; } const b=e.target.closest('[data-o]'); if(!b) return; const t=b.dataset.o, ex=+b.dataset.x, cst=Math.round(COST[t]*5*(ex?1.6:1)); if(money<cst){ toast('돈이 부족해요'); snd('ui',0.4,0.5); return; } money-=cst; if(dayState==='run') dayOrd+=cst; S.orders.push({t,q:5,ex,eta:ex?20:0}); snd('coin',0.4,1.2); save(); openInv(); }; }
 
 /* ---- repair minigame ---- */
