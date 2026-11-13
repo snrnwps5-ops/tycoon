@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794620000';
+<script>try{(function(){var V='1794630000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
 <meta name="robots" content="noindex">
-<title>테크 스토어 타이쿤 · 2D 테스트 모드 (AI QA)</title>
+<title>테크 스토어 타이쿤 v2.27 · 2D 테스트 모드 (AI QA)</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -280,6 +280,24 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 .bsRow b{color:#2faa45}
 
 
+
+/* ===== v2.27: 본사 AI 총괄 디렉터 성적표 · 설정의 AI 엔진 배지 ===== */
+.dirAI{margin:10px 0 2px;border:2px solid #27386b;border-radius:14px;background:linear-gradient(#233a6b,#16233f);color:#fff;padding:10px 12px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.dirAI .daih{display:flex;align-items:center;gap:6px;font:900 13px var(--b);color:#ffd98a;margin-bottom:5px;line-height:1.3}
+.dirAI .daih small{margin-left:auto;flex:none;font:800 10px var(--b);color:#c9d6ff;background:rgba(255,255,255,.14);border-radius:8px;padding:2px 6px}
+.dirAI .daib{font:700 13px/1.65 var(--b);color:#eef3ff;word-break:keep-all;overflow-wrap:anywhere}
+.dirAI.busy .daib{color:#c9d6ff}
+.dirAI.fb{border-color:#8a6a10;background:linear-gradient(#4a3a10,#2a2108)}
+.dadots{display:inline-flex;gap:4px;margin-right:6px;vertical-align:middle}
+.dadots s{width:6px;height:6px;border-radius:50%;background:#ffd23f;display:block;animation:dadot 1s infinite}
+.dadots s:nth-child(2){animation-delay:.15s}.dadots s:nth-child(3){animation-delay:.3s}
+@keyframes dadot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.aibadge{flex:none;font:900 11px var(--b);border-radius:9px;padding:3px 8px;background:#2faa45;color:#fff}
+.aibadge.off{background:#8a96a8}
+.aikey{display:flex;gap:6px;margin:-2px 0 8px}
+.aikey input{flex:1;min-width:0;border:2px solid #d8cdb8;border-radius:11px;padding:9px;font:700 12px var(--b);color:#2a2a2a;background:#fff;-webkit-user-select:text;user-select:text}
+.aikey button{flex:none;border:0;border-radius:11px;padding:0 12px;font:900 12px var(--b);color:#fff;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 3px 0 #1c3f9a}
+
 /* ===== 2D 테스트 모드 전용 UI ===== */
 #aip{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:12;width:200px;background:rgba(10,18,38,.88);border:2px solid rgba(255,255,255,.38);border-radius:16px;padding:8px;color:#fff;font:900 12px var(--b);box-shadow:0 6px 18px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #aip.min #aib{display:none}
@@ -345,6 +363,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <details id="diag"><summary><span class="dt">🩺 진단</span><span id="diagB">오류 0</span></summary><div id="aiv">위치 …</div></details>
 </div></div>
 <script src="hq-ui.js"></script>
+<script src="ai-service.js"></script>
 <script>
 /* boot guard (2D test mode): WebGL/3D 없이 동작. 오류가 나면 화면에 원인을 보여 줍니다. */
 (function(){ var done=false, failed=false;
@@ -687,11 +706,8 @@ function drawStatus(){
   const db=$('diagB'); if(db){ const en=(window.__ERR&&window.__ERR.length)||0; db.textContent=en?('오류 '+en):'오류 0'; db.className=en?'bad':''; }
   const st=$('aistat'); if(st){ st.textContent=(dayState==='run'?'영업중':dayState==='end'?'마감':'준비')+' DAY '+(S.day+1); }
 }
-/* ---- v2.5: 인테리어 상점 패드 · 배송 차량 2D 표시 ---- */
-function drawIntPad2(){ if(!S.unl.includes('decor')) return; const s=SX(0,0).s;
-  circ(5.0,3.6,0.62,'rgba(255,217,138,.22)','#ffd98a');
-  ctext('🛋️',5.0,3.55,Math.max(11,s*0.42),'#ffffff',true);
-  ctext('인테리어',5.0,3.98,Math.max(8,s*0.18),'#ffffff',true); }
+/* ---- v2.27: 인테리어 상점 바닥 패드(drawIntPad2) 제거 — 버튼(#intBtn)으로만 연다 ---- */
+/* ---- v2.5: 배송 차량 2D 표시 ---- */
 function drawTruck2(){ if(!TRUCK.jobs.length) return;
   for(const j of TRUCK.jobs){ if(j.delay>0) continue; const p=SX(j.x,j.z), s=p.s;
     ctx2.font='900 '+Math.max(16,s*(j.quick?0.7:1.4))+'px sans-serif'; ctx2.textAlign='center'; ctx2.textBaseline='middle';
@@ -709,7 +725,6 @@ function draw2D(){
   for(const p of PADS){ if(padVisible(p)) drawPad2(p); }
   for(const sp of SPOTS) drawSpot(sp);
   drawZoneText();
-  drawIntPad2();
   drawActors();
   drawTruck2();
   drawFx();
@@ -1057,6 +1072,9 @@ let dayEv='', influDone=0, waveT=30, dayNps=[], dayWalk=0, dayCash0=0, dayFloor0
 function loadK(){ const w=custs.filter(c=>(c.st==='wait'||c.st==='want')&&!c.claim).length, cap=3+S.crew.length; return w<cap?1:w<cap+2?0.45:0.15; }
 function npsOf(a){ if(!a.length) return null; let P=0,D=0; a.forEach(v=>{ if(v>=9) P++; else if(v<=6) D++; }); return Math.round((P-D)/a.length*100); }
 let dayState='pre', dayT=0, dayRev=0, dayComp=0, dayRevs=[], dayEndT=0;
+/* v2.27: 민원 유형 집계 — 본사 AI 성적표의 "주요 유형"으로 쓴다 */
+let dayCompTypes={};
+function compNote(k){ if(!k) return; try{ dayCompTypes[k]=(dayCompTypes[k]||0)+1; }catch(e){} }
 const shuffle=a=>{ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 
 /* ---- v2.3: 설명 원하는 손님(📖) 전용 2문항 풀 ---- */
@@ -1146,6 +1164,7 @@ if(window.HQUI){
     setMoney: function(v){ money = v; S.money = money; },
     save: save,
     snd: snd,
+    toast: function(m,s){ try{ toast(m,s); }catch(e){} },
     onOpen: function(){ quizOpen = true; },
     onClose: function(){ quizOpen = false; },
     onHire: function(rec, cand){
@@ -1257,7 +1276,7 @@ function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.soft
   c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?-14:14,0,11.2)];
   let stars=c.softLeave?3:(ok?4+(c.happy?1:0)-(c.waited>25?1:0):(c.miss?2:(c.walk?2:1))); if(c.detailOK) stars=5; stars=Math.max(1,Math.min(5,stars)); if(!c.quiet||ok) floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),['😡','😠','😐','🙂','😍'][stars-1],'emo'); if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; }
   if(c.influ&&dayState==='run'&&!c.softLeave){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } if(!c.softLeave){ S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift(); }
-  if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
+  if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈'); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
   if(ok&&c.type==='ret') hubReturnRma(c);
   if(ok&&pay){ pay=Math.round(pay*priceMul()*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(S.boostD===S.day?2:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1)); if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; cashVal+=pay; rebuildCash(); S.stats.srv++; floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); haptic(15,'cashPill'); c.ch.jump=1; gainXP(1);
     if(c.ch.acts.Victory){ playA(c.ch,'Victory',0.1); c.lock=0.8; } if(S.stats.srv===1) setTimeout(()=>bigBanner('첫 고객 응대!','돈은 계산대 옆에 쌓여요'),300); }
@@ -1879,6 +1898,10 @@ function openOpt(){
     +'<div class="srow"><div class="snm">효과음<small>버튼 · 판매 · 수리 알림</small></div>'+optSw('sfx',o.sfx)+'</div>'
     +'<div class="svol'+(o.sfx?'':' off')+'" id="oVSrow"><input type="range" id="oVS" min="0" max="100" step="5" value="'+Math.round(o.sfxVol*100)+'"><b id="oVSv">'+Math.round(o.sfxVol*100)+'%</b></div>'
     +'<div class="srow"><div class="snm">진동<small>'+(vibOK?'판매·수리 때 짧게 울려요':'이 브라우저는 진동이 없어 화면이 반짝여요')+'</small></div>'+optSw('vib',o.vib)+'</div>'
+    +'<div style="height:8px"></div>'
+    +'<div class="srow"><div class="snm">🤖 실시간 AI 엔진: Groq (Qwen 27B) · <span id="aiStat">상태 확인 중…</span><small id="aiSub">AI 면접실·본사 성적표에 쓰여요</small></div><b class="aibadge" id="aiBadge">…</b></div>'
+    +'<div class="aikey"><input type="password" id="aiKey" placeholder="Groq API 키 변경 (gsk_…)" autocomplete="off" spellcheck="false"><button type="button" id="aiKeySave">키 저장</button></div>'
+    +'<p class="shint" id="aiKeyMsg">키를 비우고 저장하면 기본 키로 돌아가요.</p>'
     +'<p class="shint">설정은 저장 코드·세이브 링크에도 함께 담겨요.</p>'
     +'<button class="gray" id="mOk">닫기</button>');
   const paint=(k,on)=>{ const b=document.querySelector('#mbox [data-opt="'+k+'"]'); if(!b) return; b.classList.toggle('on',!!on); const t=b.querySelector('b'); if(t) t.textContent=on?'ON':'OFF'; };
@@ -1892,6 +1915,26 @@ function openOpt(){
       if(key==='sfxVol'){ const n=performance.now(); if(n-lt>150){ lt=n; sfxStep(0); } } };
     r.onchange=e=>{ e.stopPropagation(); save(); }; };
   bindV('oVB','oVBv','bgmVol'); bindV('oVS','oVSv','sfxVol');
+  /* v2.27: 실시간 AI 엔진 상태 배지 · 키 변경 */
+  const aiB=$('aiBadge'), aiS=$('aiStat'), aiSub=$('aiSub'), aiM=$('aiKeyMsg');
+  const aiNoKey=()=>{ try{ return !!(window.TycoonAI&&TycoonAI.hasKey&&!TycoonAI.hasKey()); }catch(e){ return false; } };
+  const aiPaint=(ok,ms,txt)=>{ const nk=!ok&&aiNoKey();
+    if(aiB){ aiB.textContent=ok?'LIVE':(nk?'KEY':'OFF'); aiB.classList.toggle('off',!ok); }
+    if(aiS) aiS.textContent=ok?'활성화됨 🟢':(nk?'키 등록 필요 🔑':'오프라인 🔴 (시뮬레이터)');
+    if(aiSub) aiSub.textContent=ok?('응답 '+(ms||'-')+'ms · AI 면접실·본사 성적표에 쓰여요'):'키를 넣기 전까지는 시뮬레이터가 답해요';
+    if(aiM&&txt) aiM.textContent=txt; };
+  if(window.TycoonAI&&TycoonAI.status){ const st=TycoonAI.status();
+    aiPaint(st.mode==='live', st.ms, st.mode==='live'?null:(st.err?'마지막 오류: '+st.err:null));
+    if(st.mode!=='live'&&aiNoKey()){ aiPaint(false,0,'⚙️ 여기에 Groq API 키(gsk_…)를 붙여넣고 [키 저장]을 누르면 실시간 AI가 켜져요 · 발급: console.groq.com/keys'); }
+    else if(st.mode!=='live') TycoonAI.ping().then(r=>aiPaint(!!(r&&r.ok), r&&r.ms, r&&r.ok?'AI 연결 확인됨 · 바로 쓰고 있어요':'AI에 연결하지 못했어요 · 시뮬레이터로 게임은 계속돼요')).catch(()=>aiPaint(false,0,null));
+  } else aiPaint(false,0,'AI 모듈(ai-service.js)을 불러오지 못했어요');
+  if($('aiKeySave')) $('aiKeySave').onclick=e=>{ e.stopPropagation();
+    const v=(($('aiKey')||{}).value||'');
+    if(!window.TycoonAI){ if(aiM) aiM.textContent='AI 모듈이 없어 키를 저장할 수 없어요'; return; }
+    TycoonAI.setKey(v); if($('aiKey')) $('aiKey').value='';
+    if(aiM) aiM.textContent=v.trim()?'키를 저장했어요 · 연결 확인 중…':'키를 지웠어요 · 기본 키로 돌아왔어요';
+    TycoonAI.ping().then(r=>{ if(r&&r.ok){ aiPaint(true,r.ms,'🟢 새 키로 연결됐어요 · '+r.ms+'ms'); snd('level_up',0.4,1.2); }
+      else aiPaint(false,0,'⚠️ 연결 실패: '+((r&&r.error)||'키를 확인해 주세요')); }).catch(()=>aiPaint(false,0,'⚠️ 연결 실패')); };
 }
 function openCrew(){ openModal(crewHTML()); $('mbox').onclick=e=>{ if(slotClick(e)) return;
   /* v2.26: 직급 승진 — 등급 조건과 매장 T.O. 정원을 둘 다 통과해야 한다 */
@@ -2165,7 +2208,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
     player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
   player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
-  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt); intTick();
+  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt);
   SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
     if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; useStock(s.t); layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
   // cash
@@ -2367,8 +2410,42 @@ function startDayModal(){ if((S.att||{}).d!==today()){ openAttend(startDayModal)
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div><button id="dayGo">영업 시작!</button><div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); };
   $('dUpg').onclick=()=>{ window.__rts=1; openUp(); }; $('dMap').onclick=()=>{ window.__rts=1; snd('ui',0.4); openWorld(); };
-  $('dayGo').onclick=()=>{ $('modal').classList.remove('on'); initAudio(); useResetDay(); dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 진열대는 창고 재고로 채워져요. 부족하면 하단 [재고]에서 발주!',4.5),2600); } spawnT=0.3; bigBanner('DAY '+(S.day+1),cfg.title); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(5.2,0,-4.4); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } }; }
+  $('dayGo').onclick=()=>{ $('modal').classList.remove('on'); initAudio(); useResetDay(); dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 진열대는 창고 재고로 채워져요. 부족하면 하단 [재고]에서 발주!',4.5),2600); } spawnT=0.3; bigBanner('DAY '+(S.day+1),cfg.title); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(5.2,0,-4.4); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } }; }
 function endDay(fail){ if(dayState!=='run') return; dayState='end'; GSPOT.occ=null; dayEndT=1.2; S.lastFail=fail?'comp':null; custs.forEach(c=>{ if(c.st!=='leave'){ c.quiet=1; c.el.style.display='none'; if(c.spot){ c.spot.occ=null; c.spot=null; } c.st='leave'; c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(14,0,11.2)]; } }); if(quizOpen) closeQuiz(); bigBanner(fail?'영업 정지!':'영업 종료!',fail?'민원 3건이 쌓였어요':'오늘 결과를 확인해요'); }
+/* =============================================================
+   v2.27: 본사 AI 총괄 디렉터 — 일일 리더십 성적표
+   영업 마감 정산(showResult)이 오늘 데이터를 모아 Groq에 보내고,
+   영수증 하단에 '🏢 본사 총괄 디렉터 실시간 리더십 성적표' 박스로 그린다.
+   AI가 안 되면 시뮬레이터 문장으로 채워서 정산창은 항상 완성된 상태로 뜬다.
+   ============================================================= */
+function dirData(clear){
+  let stockout='', crewN=0, crew=null, types='';
+  try{ stockout=SRC.filter(s=>s.on&&s.n===0&&(S.inv[s.t]||0)<=0).map(s=>IT[s.t].n).slice(0,3).join('·'); }catch(e){ stockout=''; }
+  try{ const cr=S.crew||[]; crewN=cr.length; if(cr.length) crew=Math.round(cr.reduce((a,c)=>a+(c.sat==null?70:c.sat),0)/cr.length); }catch(e){}
+  try{ types=Object.keys(dayCompTypes||{}).map(k=>[k,dayCompTypes[k]]).sort((a,b)=>b[1]-a[1]).slice(0,2).map(e=>e[0]+' '+e[1]+'건').join(', '); }catch(e){ types=''; }
+  let goal=0, rating=null;
+  try{ goal=dayCfg(S.day).goal||0; }catch(e){}
+  try{ rating=+(dayRating()||0).toFixed(1); }catch(e){}
+  return { branch:(STN[STG]||'대구 동성로점'), rank:myRankName(), name:'전영훈',
+    goal:goal, rev:Math.round(dayRev||0), comp:Math.round((dayComp||0)*10)/10, compTypes:types,
+    crew:crew, crewN:crewN, stockout:stockout, rating:rating, clear:!!clear };
+}
+function dirAIShell(){
+  return '<div class="dirAI busy"><div class="daih">🏢 본사 총괄 디렉터 실시간 리더십 성적표<small>AI 분석 중…</small></div>'+
+    '<div class="daib"><i class="dadots"><s></s><s></s><s></s></i>오늘 운영 데이터를 본사로 올리는 중…</div></div>';
+}
+function dirAIAsk(d){
+  const box=$('dirAI'); if(!box) return;
+  const esc=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const fb=()=>{ try{ return (window.TycoonAI&&TycoonAI.fallbackDirector)?TycoonAI.fallbackDirector({data:d}):'본사 총평을 불러오지 못했어요.'; }catch(e){ return '본사 총평을 불러오지 못했어요.'; } };
+  const paint=(txt,ok,ms)=>{ box.innerHTML='<div class="dirAI'+(ok?'':' fb')+'"><div class="daih">🏢 본사 총괄 디렉터 실시간 리더십 성적표<small>'+
+      (ok?'AI 실시간'+(ms?' · '+ms+'ms':''):'오프라인 시뮬레이터')+'</small></div><div class="daib">'+esc(txt).replace(/\n/g,'<br>')+'</div></div>'; };
+  try{
+    if(!(window.TycoonAI&&typeof TycoonAI.directorReport==='function')){ paint(fb(),false); return; }
+    const t0=Date.now();
+    TycoonAI.directorReport({data:d}).then(r=>paint((r&&r.text)||fb(), !!(r&&r.ok), r&&r.ms)).catch(()=>paint(fb(),false));
+  }catch(e){ paint(fb(),false); }
+}
 function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer) window.__checkVer(); },1500); }catch(e){} const cfg=dayCfg(S.day), r=dayRating(); const okRev=dayRev>=cfg.goal, okRate=r>=cfg.min+(dayEv==='review'?0.2:0)-1e-9, okComp=dayComp<3; const clear=okRev&&okRate&&okComp;
   let stars=clear?1+(dayRev>=cfg.goal*1.3?1:0)+(dayRev>=cfg.goal*1.6&&dayComp===0?1:0):0; S.bp=S.bp||[]; const bonusFull=clear?Math.round(cfg.goal*0.2*stars*(dayEv==='review'?2:1)):0, bonus=Math.max(0,bonusFull-(S.bp[S.day]||0)); const moneyPre=Math.floor(money); const wages=S.crew.reduce((a,c)=>a+c.wage,0), rent=RENT[STG]; money=Math.max(0,money-wages-rent); const nps=npsOf(dayNps); let npsB=0, npsMsg=''; if(nps!=null){ if(nps>=50){ S.stats.nps50=(S.stats.nps50||0)+1; S.womD=S.day+1; S.womK=1.15; npsB=Math.round(cfg.goal*0.1); money+=npsB; npsMsg='입소문 효과! 다음 영업 손님 +15%'; } else if(nps<0){ S.womD=S.day+1; S.womK=0.9; npsMsg='나쁜 입소문… 다음 영업 손님 -10%'; } else npsMsg='추천 손님을 늘리면 입소문 보너스!'; }
   const crewLines=[]; const load=dayRevs.length/(S.crew.length+1); S.crew.slice().forEach(cr=>{ if(cr.sat==null) cr.sat=70; let d=-3-Math.round(Math.max(0,load-8)*1.5)+(stars>=3?6:stars>=1?3:0)+(dayComp===0?2:-dayComp*2); cr.sat=Math.max(0,Math.min(100,cr.sat+d)); if(cr.sat<30&&Math.random()<0.5){ S.crew.splice(S.crew.indexOf(cr),1); const st=staff.find(s=>s.crew===cr); if(st) removeStaff(st); crewLines.push('<div class="dstat no"><span>😢 '+cr.name+'('+ROLES[cr.role].n+') 퇴사</span><b>만족도 '+cr.sat+'</b></div>'); } else if(cr.sat<45) crewLines.push('<div class="dstat no"><span>😟 '+cr.name+' 퇴사 위험</span><b>만족도 '+cr.sat+'</b></div>'); });
@@ -2402,8 +2479,9 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
     '<div class="dstat '+(okRev?'ok':'no')+'"><span>매출 $'+dayRev+' / 목표 $'+cfg.goal+'</span><b>'+(okRev?'달성':'부족')+'</b></div>'+
     '<div class="dstat '+(okRate?'ok':'no')+'"><span>오늘 서비스 평점 ★'+r.toFixed(1)+' / 최소 ★'+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</span><b>'+(okRate?'통과':'미달')+'</b></div>'+
     (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(dLead>0?'ok':dLead<0?'no':'')+'"><span>'+leadLine+'</span><b>'+(promotion?'승진 🎉':penalty?'경고 ⚠️':dLead>0?'▲ '+dLead:dLead<0?'▼ '+dLead:'유지')+'</b></div>'+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+S.crew.length+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+(brInc?'<div class="dstat ok"><span>지점 자동 매출 합계</span><b>+$'+brInc+'</b></div>':'')+
-    receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+(stars<2?'매출 $'+Math.round(cfg.goal*1.3):'매출 $'+Math.round(cfg.goal*1.6)+' + 민원 0건')+'</p>':'</p>')+'<button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button>'));
+    '<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+(stars<2?'매출 $'+Math.round(cfg.goal*1.3):'매출 $'+Math.round(cfg.goal*1.6)+' + 민원 0건')+'</p>':'</p>')+'<button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button>'));
   $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
+  try{ dirAIAsk(dirData(clear)); }catch(e){ console.warn('dirAI',e); }
   const go=next=>{ $('modal').classList.remove('on'); if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; } setTimeout(startDayModal,300); };
   if($('dNext')) $('dNext').onclick=()=>go(true); if($('dRetry')) $('dRetry').onclick=()=>go(false); if($('dUp')) $('dUp').onclick=()=>{ dayState='pre'; save(); window.__rts=1; openUp(); }; save();
   /* v2.26: 승진/경고 발령 공문은 결과창 위에 따로 띄운다(결과창·닫기 흐름을 건드리지 않게) */
@@ -2433,10 +2511,9 @@ const INTSHOP={
          {k:'flower',n:'꽃 화분',p:160,sw:'#e8508f'}]
 };
 const INTCAT={floor:'바닥',wall:'벽',plant:'식물·화분'};
-const INTP={x:5.0,z:3.6};                       // '매장 꾸미기' 해금 패드와 같은 자리
 const INT_PLANT_POS=[[-6.3,4.8],[6.3,4.8],[-6.3,0.6]];
 const _CAMC=new THREE.Vector3(0,0,-1.3);         // 전체 보기에서 카메라가 보는 매장 중심
-let INT_TAB='floor', INT_PV=null, intOpenState=false, intArmed=true;
+let INT_TAB='floor', INT_PV=null, intOpenState=false;
 function intO(){ if(!S.decor||typeof S.decor!=='object') S.decor={};
   const d=S.decor, has=(c,k)=>INTSHOP[c].some(o=>o.k===k);
   if(!has('floor',d.floor)) d.floor='theme'; if(!has('wall',d.wall)) d.wall='theme'; if(!has('plant',d.plant)) d.plant='none';
@@ -2462,7 +2539,7 @@ function intRender(){
 }
 let INT_PIN=false;   /* v2.7: 버튼으로 연 경우 발판에서 멀어져도 닫지 않음 */
 function openInt(pin){ if(!S.unl.includes('decor')){ toast('인테리어는 매장 꾸미기 해금 뒤에 쓸 수 있어요',2.6); return; }
-  INT_PIN=!!pin; intOpenState=true; intArmed=false; INT_TAB='floor'; INT_PV=null; intApplyAll(); intRender(); $('intp').classList.add('on'); snd('ui',0.4,1.15); updIntBtn(); }
+  INT_PIN=!!pin; intOpenState=true; INT_TAB='floor'; INT_PV=null; intApplyAll(); intRender(); $('intp').classList.add('on'); snd('ui',0.4,1.15); updIntBtn(); }
 function closeInt(){ INT_PIN=false; INT_PV=null; intOpenState=false; const p=$('intp'); if(p) p.classList.remove('on'); intApplyAll(); updIntBtn(); }
 function updIntBtn(){ const b=$('intBtn'); if(!b) return; let on=false, op=false; try{ on=S.unl.includes('decor'); op=!!intOpenState; }catch(e){} b.style.display=on?'flex':'none'; b.classList.toggle('on',op); }
 function intBuy(){ if(!INT_PV) return; const cat=INT_PV.cat, k=INT_PV.k, o=INTSHOP[cat].find(x=>x.k===k), d=intO();
@@ -2478,14 +2555,7 @@ if($('intp')) $('intp').addEventListener('click',e=>{
   if(d[cat]===k) return;
   if(d.own[k]){ d[cat]=k; INT_PV=null; intApplyAll(); intRender(); save(); snd('level_up',0.35,1.3); toast('🎨 '+o.n+' 적용했어요',1.8); return; }
   INT_PV={cat:cat,k:k}; intApplyAll(); intRender(); snd('ui',0.3,1.4); });
-function intTick(){
-  if(typeof intPadVis3==='function'){ try{ intPadVis3(); }catch(e){} }
-  if(!S.unl.includes('decor')) return;
-  const dist=Math.hypot(player.pos.x-INTP.x,player.pos.z-INTP.z);
-  if(intOpenState){ if(!INT_PIN&&dist>2.8) closeInt(); return; }
-  if(!intArmed){ if(dist>2.0) intArmed=true; return; }
-  if(dist<1.5&&!quizOpen&&!$('modal').classList.contains('on')) openInt();
-}
+/* v2.27: intTick(intPadVis3·INTP 근접 자동 열림) 제거 — 버튼으로만 연다 */
 
 /* ---- 3D 카메라: 핀치 줌(0.7~1.3) · 전체 보기 · 기본 시점 ---- */
 const CAMV={pz:1,mode:'base'};

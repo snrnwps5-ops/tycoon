@@ -106,6 +106,32 @@ var CSS='\
 .hqstamp.go{animation:hqst .35s cubic-bezier(.3,1.5,.5,1) forwards}.hqstamp.no{border-color:#5a6578;color:#5a6578}@keyframes hqst{to{transform:rotate(-14deg) scale(1);opacity:.9}}\
 .hqoff{display:flex;gap:8px;margin-top:8px}.hqoff button{flex:1;border:2px solid #d8cdb8;background:#fff;border-radius:14px;padding:8px 4px;font:900 13px "Noto Sans KR",sans-serif;color:#1b2748;min-height:64px}.hqoff button.on{border-color:#2f6fd8;background:#eef3ff;box-shadow:0 0 0 2px #2f6fd8}.hqoff small{display:block;font:700 11px "Noto Sans KR",sans-serif;color:#5a4a3a;margin-top:2px}\
 .hqmsg{min-height:18px;font:900 12px "Noto Sans KR",sans-serif;color:#e8342a;text-align:center;padding:2px 12px}\
+/* ---- v2.27: 실시간 AI 면접 대화 ---- */\
+.ivwrap{margin-top:10px;background:#fff;border-radius:16px;padding:10px;box-shadow:0 3px 0 rgba(0,0,0,.08)}\
+.ivhh{display:flex;align-items:center;gap:6px;font:900 13px "Noto Sans KR",sans-serif;color:#1b2748;margin-bottom:6px}\
+.ivhh small{margin-left:auto;font:800 10px "Noto Sans KR",sans-serif;color:#1b3f7a;background:#eef3ff;border-radius:8px;padding:2px 6px}\
+.ivresume{font:700 12px/1.5 "Noto Sans KR",sans-serif;color:#5a4a3a;background:#f6f0e2;border-radius:10px;padding:7px 9px;margin-bottom:7px;word-break:keep-all;overflow-wrap:anywhere}\
+.iv-chat-box{max-height:186px;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:6px;padding:6px;background:#faf7ef;border-radius:12px}\
+.ivb{max-width:88%;font:700 13px/1.55 "Noto Sans KR",sans-serif;padding:8px 10px;border-radius:14px;word-break:keep-all;overflow-wrap:anywhere}\
+.ivb.me{align-self:flex-end;background:#dcebff;color:#12305a;border-bottom-right-radius:4px}\
+.ivb.them{align-self:flex-start;background:#fff;color:#2a3344;border:1px solid #e6ddcb;border-bottom-left-radius:4px}\
+.ivdots{display:inline-flex;gap:4px;align-items:center}\
+.ivdots s{width:6px;height:6px;border-radius:50%;background:#8a96a8;display:block;animation:ivdot 1s infinite}\
+.ivdots s:nth-child(2){animation-delay:.15s}.ivdots s:nth-child(3){animation-delay:.3s}\
+@keyframes ivdot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}\
+.ivchips{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 0}\
+.ivchips button{flex:1 1 auto;border:1px solid #cdd9ef;background:#f2f7ff;color:#1b3f7a;border-radius:12px;padding:6px 8px;font:800 11px/1.35 "Noto Sans KR",sans-serif;text-align:left}\
+.ivchips button:active{background:#dcebff}\
+.ivrow{display:flex;gap:6px;align-items:stretch;margin-top:8px}\
+.iv-input{flex:1;min-width:0;border:2px solid #d8cdb8;border-radius:12px;padding:10px;font:700 13px "Noto Sans KR",sans-serif;color:#2a2a2a;background:#fff;-webkit-user-select:text;user-select:text}\
+.iv-send{flex:none;border:0;border-radius:12px;padding:0 14px;font:400 15px "Black Han Sans","Noto Sans KR",sans-serif;color:#fff;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 3px 0 #1c3f9a}\
+.iv-send:active{transform:translateY(2px);box-shadow:0 1px 0 #1c3f9a}\
+.iv-send:disabled{filter:grayscale(1);opacity:.6}\
+.ivempty{font:700 12px "Noto Sans KR",sans-serif;color:#9a8a7a;text-align:center;padding:8px}\
+.ivrep{margin-top:2px;font:700 13px/1.65 "Noto Sans KR",sans-serif;color:#2a3344;word-break:keep-all;overflow-wrap:anywhere}\
+.ivrep.busy{color:#8a7a6a}\
+.ivrep.fb{color:#7a4a10;background:#fff6dc;border-radius:10px;padding:8px 10px}\
+.ivrepbox h3{margin:0 0 4px;font:900 14px "Noto Sans KR",sans-serif;color:#1b2748}\
 ';
 function mount(){ if($('hqui')) return; var st=document.createElement('style'); st.id='hqui-css'; st.textContent=CSS; document.head.appendChild(st);
   var d=document.createElement('div'); d.id='hqui'; d.innerHTML='<div id="hqbox"></div>'; (document.getElementById('app')||document.body).appendChild(d);
@@ -129,6 +155,14 @@ var IV_ROLE={runner:'재고 담당',tech:'수리 기사',spec:'상담 전문가'
 var IV_NAME=['김도윤','이서연','박지호','최하은','정민재','한유나','오건우','윤서아','장도현','임지안','신은우','배수아'];
 var IV_FACE_N=9;   /* v2.26: crew_faces.jpg 3x3 스프라이트(9종 3D 크루 프로필) 인덱스 0~8 */
 function faceIdx(v){ var n=(typeof v==='number'&&isFinite(v))?Math.floor(v)%IV_FACE_N:-1; return n<0?0:(n+IV_FACE_N)%IV_FACE_N; }
+/* v2.27: 실시간 AI 면접 대화 — 원터치 추천 질문 */
+var IV_SUGGEST=[
+  '주말에 손님이 폭주할 때 어떻게 대처하나요?',
+  '원칙을 지키는 편인가요, 유연한 편인가요?',
+  '동료와 의견 충돌이 나면 어떻게 해결하나요?'
+];
+function aiOn(){ return !!(window.TycoonAI && typeof window.TycoonAI.askInterviewer==='function'); }
+function aiLabel(){ try{ return aiOn()? window.TycoonAI.modelLabel : '오프라인'; }catch(e){ return '오프라인'; } }
 var IV_Q=[
  {q:'이력서 요약',good:['전자제품 매장 3년 근무, 월 고객 만족도 상위 10%를 여러 번 받았습니다. 재고 실사 오차를 절반으로 줄인 경험이 있어요.','수리 센터에서 2년간 하루 평균 15건을 처리했고, 재수리율을 낮추는 체크리스트를 직접 만들었습니다.'],
    mid:['편의점과 카페에서 2년 일했습니다. 전자제품 경험은 없지만 손님 응대는 익숙합니다.','판매 경력 1년입니다. 실적은 평균 정도였고 지각은 없었습니다.'],
@@ -157,15 +191,66 @@ function openInterviewModal(role,done){ ensure(); var s=S(); role=IV_ROLE[role]?
   if(!s.interview.cur||s.interview.cur.role!==role||s.interview.cur.closed) s.interview.cur=ivNew(role);
   ivRender(); }
 function ivHead(c){ var fi=faceIdx(c.face); return '<div class="hqsteps">'+IV_STAGE.map(function(n,i){ return '<i class="'+(i<c.stage?'ok':i===c.stage?'on':'')+'">'+(i<c.stage?'✓ ':'')+n+'</i>'; }).join('')+'</div><div class="hqcard hqpro"><u class="hqface" style="display:inline-block;width:44px;height:44px;border-radius:50%;background-image:url(crew_faces.jpg);background-size:300% 300%;background-position:'+(fi%3)*50+'% '+Math.floor(fi/3)*50+'%;border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,.2);vertical-align:middle;flex:none"></u><div style="flex:1"><h3>'+esc(c.name)+' <span class="hqtag">'+IV_ROLE[c.role]+' 지원</span></h3><div style="font:700 12px \'Noto Sans KR\',sans-serif;color:#5a4a3a">희망 일급 '+fmt(c.wage)+' · 지원 번호 #'+c.id+'</div></div></div>'; }
+/* ---- v2.27: 실시간 AI 면접 대화 (2차 컬처핏 · 3차 실무 · 4차 최종) ---- */
+function chatOf(c){ if(!Array.isArray(c.chat)) c.chat=[]; return c.chat; }
+function ivChatHTML(c){ var log=chatOf(c), h='';
+  log.forEach(function(m){ h+='<div class="ivb me">'+esc(m.q)+'</div><div class="ivb them">'+esc(m.a)+'</div>'; });
+  if(!h) h='<div class="ivempty">지원자에게 직접 질문해 보세요 · Enter 또는 [전송]</div>';
+  var resume=''; try{ resume=c.ans&&c.ans[0]?c.ans[0].text:''; }catch(e){ resume=''; }
+  return '<div class="ivwrap"><div class="ivhh">💬 라이브 면접 대화<small>🤖 '+esc(aiLabel())+'</small></div>'+
+    (resume?'<div class="ivresume">📄 이력서 요약 · '+esc(resume)+'</div>':'')+
+    '<div class="iv-chat-box" id="ivChat">'+h+'</div>'+
+    '<div class="ivchips" id="ivChips">'+IV_SUGGEST.map(function(q){ return '<button type="button" data-q="'+esc(q)+'">'+esc(q)+'</button>'; }).join('')+'</div>'+
+    '<div class="ivrow"><input type="text" class="iv-input" id="ivIn" placeholder="지원자에게 질문을 입력하세요… (Enter 또는 전송)" autocomplete="off" autocapitalize="off" spellcheck="false"><button type="button" class="iv-send" id="ivSend" data-hq="none">전송</button></div></div>'; }
+function ivChatPaint(c,busy){ var box=$('ivChat'); if(!box) return;
+  var h=''; chatOf(c).forEach(function(m){ h+='<div class="ivb me">'+esc(m.q)+'</div><div class="ivb them">'+esc(m.a||'')+'</div>'; });
+  if(busy) h+='<div class="ivb them"><i class="ivdots"><s></s><s></s><s></s></i></div>';
+  if(!h) h='<div class="ivempty">지원자에게 직접 질문해 보세요 · Enter 또는 [전송]</div>';
+  box.innerHTML=h; box.scrollTop=box.scrollHeight; }
+function ivBindChat(c){ var inp=$('ivIn'), send=$('ivSend'), chips=$('ivChips'); if(!inp||!send) return;
+  var ask=function(q){ q=String((q==null?inp.value:q)||'').trim(); if(!q||c._aiBusy) return;
+    inp.value=''; var item={q:q,a:''}; chatOf(c).push(item); c._aiBusy=1; send.disabled=true; ivChatPaint(c,true);
+    var fin=function(txt,ok){ item.a=String(txt||'')||'(답변이 비어 있어요 — 다시 질문해 주세요)'; item.fb=ok?0:1; c._aiBusy=0;
+      var b=$('ivSend'); if(b) b.disabled=false; ivChatPaint(c,false); call('save');
+      if(!ok&&!c._fbTip){ c._fbTip=1; msg('AI 연결이 잠시 안 되어 시뮬레이터로 답했습니다'); } };
+    try{
+      if(aiOn()){ window.TycoonAI.askInterviewer({ cand:c, role:IV_ROLE[c.role], question:q, history:chatOf(c).slice(0,-1) })
+        .then(function(r){ fin(r&&r.text?r.text:window.TycoonAI.fallbackInterview({cand:c,question:q}), !!(r&&r.ok)); })
+        .catch(function(){ fin(window.TycoonAI.fallbackInterview({cand:c,question:q}), false); }); }
+      else fin(window.TycoonAI?window.TycoonAI.fallbackInterview({cand:c,question:q}):'AI 엔진을 불러오지 못했어요. 새로고침 후 다시 시도해 주세요.', false);
+    }catch(e){ fin('질문 처리 중 문제가 생겼어요 — 다시 시도해 주세요', false); } };
+  send.onclick=function(e){ e.stopPropagation(); ask(); };
+  inp.onkeydown=function(e){ if(e.key==='Enter'||e.keyCode===13){ e.preventDefault(); e.stopPropagation(); ask(); } };
+  inp.onclick=function(e){ e.stopPropagation(); };
+  inp.onfocus=function(){ try{ setTimeout(function(){ var b=$('ivChat'); if(b) b.scrollTop=b.scrollHeight; },260); }catch(e){} };
+  if(chips) chips.onclick=function(e){ var b=e.target&&e.target.closest?e.target.closest('[data-q]'):null; if(!b) return; e.stopPropagation(); ask(b.getAttribute('data-q')); };
+  ivChatPaint(c,!!c._aiBusy); }
+/* 4차 최종 합격 직후 — AI가 면접 기록을 분석해 채용 리포트를 만든다 */
+function ivReportStart(c){ c.aiReport={busy:1,text:'',fail:0};
+  var fin=function(txt,ok){ c.aiReport={busy:0,text:String(txt||''),fail:ok?0:1}; ivReportPaint(c); sfx('ui',0.4,ok?1.2:0.8); call('save');
+    if(ok) call('toast','📋 AI 채용 분석 리포트가 도착했어요',3); };
+  try{
+    if(aiOn()){ window.TycoonAI.interviewReport({ cand:c, role:IV_ROLE[c.role], history:chatOf(c) })
+      .then(function(r){ fin(r&&r.text?r.text:window.TycoonAI.fallbackReport({cand:c,role:IV_ROLE[c.role],history:chatOf(c)}), !!(r&&r.ok)); })
+      .catch(function(){ fin(window.TycoonAI.fallbackReport({cand:c,role:IV_ROLE[c.role],history:chatOf(c)}), false); }); }
+    else fin(window.TycoonAI?window.TycoonAI.fallbackReport({cand:c,role:IV_ROLE[c.role],history:chatOf(c)}):'리포트를 만들 수 없어요', false);
+  }catch(e){ fin(window.TycoonAI?window.TycoonAI.fallbackReport({cand:c,role:IV_ROLE[c.role],history:chatOf(c)}):'리포트를 만들 수 없어요', false); } }
+function ivReportCard(c){ var r=c.aiReport; if(!r) return '';
+  var inner=r.busy?'<div class="ivrep busy"><i class="ivdots"><s></s><s></s><s></s></i> AI가 면접 대화와 이력을 분석하는 중…</div>'
+    :'<div class="ivrep'+(r.fail?' fb':'')+'">'+(r.fail?'🔌 AI 연결 실패 — 시뮬레이터 분석<br>':'')+esc(r.text).replace(/\n/g,'<br>')+'</div>';
+  return '<div class="hqcard ivrepbox"><h3>📋 AI 채용 분석 리포트</h3>'+inner+'</div>'; }
+function ivReportPaint(c){ var el=$('ivRep'); if(el) el.innerHTML=ivReportCard(c); }
+
 function ivRender(){ var s=S(), c=s.interview.cur; if(!c) return;
   if(c.stage>=4){ ivOffer(); return; }
   var a=c.ans[c.stage], Q=IV_Q[c.stage];
-  var body=ivHead(c)+'<div class="hqcard"><div class="hqq">'+(c.stage===0?'📄 ':'🎙️ ')+esc(Q.q)+'</div><div class="hqa">'+esc(a.text)+'</div>'+(c.shown[c.stage]?'<div class="hqhint">🔎 AI 면접 보조: '+esc(a.hint)+'</div>':'')+'</div><div style="font:700 12px \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center">답변을 듣고 이 단계의 결과를 정하세요 · 재검토 '+c.review+'회 남음</div>';
+  var body=ivHead(c)+'<div class="hqcard"><div class="hqq">'+(c.stage===0?'📄 ':'🎙️ ')+esc(Q.q)+'</div><div class="hqa">'+esc(a.text)+'</div>'+(c.shown[c.stage]?'<div class="hqhint">🔎 AI 면접 보조: '+esc(a.hint)+'</div>':'')+'</div>'+(c.stage>=1?ivChatHTML(c):'')+'<div style="font:700 12px \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center">답변을 듣고 이 단계의 결과를 정하세요 · 재검토 '+c.review+'회 남음</div>';
   show('AI 채용 면접실',IV_STAGE[c.stage]+' 전형 · 영업과 분리된 공간이에요',body,
     '<button class="hqbtn" data-hq="pass">합격</button><button class="hqbtn y" data-hq="review" '+(c.review<=0||c.shown[c.stage]?'disabled':'')+'>재검토<small>보조 의견 보기</small></button><button class="hqbtn r" data-hq="fail">불합격</button>',
-    {pass:function(){ c.grade.push(a.t); c.stage++; sfx('ui',0.4,1.3); ivRender(); },
+    {pass:function(){ var last=(c.stage===3); c.grade.push(a.t); c.stage++; sfx('ui',0.4,1.3); if(last) ivReportStart(c); ivRender(); },
      review:function(){ c.review--; c.shown[c.stage]=1; sfx('ui',0.4,1.0); ivRender(); },
-     fail:function(){ ivEnd(c,'reject'); }}); }
+     fail:function(){ ivEnd(c,'reject'); }});
+  if(c.stage>=1) ivBindChat(c); }
 function ivEnd(c,how,offer){ var s=S(); c.closed=1; s.interview.log.push({id:c.id,name:c.name,role:c.role,tier:c.tier,result:how,day:s.day||0}); if(s.interview.log.length>30) s.interview.log.shift();
   if(how==='declined') return;   // 오퍼 거절 화면은 호출한 쪽(ivOffer sign)에서 그립니다
   if(how==='reject'){ var lost=c.tier==='good'; sfx('ui',0.4,0.6);
@@ -177,7 +262,7 @@ function ivEnd(c,how,offer){ var s=S(); c.closed=1; s.interview.log.push({id:c.i
   call('save'); }
 function ivOffer(){ var s=S(), c=s.interview.cur; var packs=[{k:'a',n:'기본형',wage:c.wage,rsu:0,vest:0,d:'희망 일급 그대로'},{k:'b',n:'균형형',wage:Math.round(c.wage*0.92),rsu:20,vest:10,d:'일급 -8% + RSU 20주'},{k:'c',n:'주식형',wage:Math.round(c.wage*0.82),rsu:60,vest:20,d:'일급 -18% + RSU 60주'}]; var sel=c.pack||'a';
   var draw=function(){ var p=packs.filter(function(x){ return x.k===sel; })[0];
-    var body=ivHead(c)+'<div class="hqdoc"><div class="hqstamp" id="hqstamp">합격</div><h3>오퍼 레터</h3><div>'+esc(c.name)+' 님께,<br>노바 테크 스토어 <b>'+IV_ROLE[c.role]+'</b> 직무에 최종 합격하셨음을 알려 드립니다.</div><table><tr><td>기본급(일급)</td><td><b>'+fmt(p.wage)+'</b></td></tr><tr><td>RSU 주식 옵션</td><td><b>'+(p.rsu?p.rsu+'주':'없음')+'</b>'+(p.rsu?' · '+p.vest+'영업일 근속 시 지급':'')+'</td></tr><tr><td>근무 시작</td><td>DAY '+((s.day||0)+1)+'</td></tr></table><div class="hqsig" id="hqsig"><span>대표 서명</span>'+signSVG()+'</div></div><div class="hqoff">'+packs.map(function(x){ return '<button data-hq="pk" data-k="'+x.k+'" class="'+(x.k===sel?'on':'')+'">'+x.n+'<small>'+x.d+'</small></button>'; }).join('')+'</div><div style="font:700 11px \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin-top:6px">RSU는 급여 부담을 줄이지만, 근속 기간을 채우면 주식으로 지급해야 해요</div>';
+    var body=ivHead(c)+'<div id="ivRep">'+ivReportCard(c)+'</div>'+'<div class="hqdoc"><div class="hqstamp" id="hqstamp">합격</div><h3>오퍼 레터</h3><div>'+esc(c.name)+' 님께,<br>노바 테크 스토어 <b>'+IV_ROLE[c.role]+'</b> 직무에 최종 합격하셨음을 알려 드립니다.</div><table><tr><td>기본급(일급)</td><td><b>'+fmt(p.wage)+'</b></td></tr><tr><td>RSU 주식 옵션</td><td><b>'+(p.rsu?p.rsu+'주':'없음')+'</b>'+(p.rsu?' · '+p.vest+'영업일 근속 시 지급':'')+'</td></tr><tr><td>근무 시작</td><td>DAY '+((s.day||0)+1)+'</td></tr></table><div class="hqsig" id="hqsig"><span>대표 서명</span>'+signSVG()+'</div></div><div class="hqoff">'+packs.map(function(x){ return '<button data-hq="pk" data-k="'+x.k+'" class="'+(x.k===sel?'on':'')+'">'+x.n+'<small>'+x.d+'</small></button>'; }).join('')+'</div><div style="font:700 11px \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin-top:6px">RSU는 급여 부담을 줄이지만, 근속 기간을 채우면 주식으로 지급해야 해요</div>';
     show('AI 채용 면접실','4차 통과 · 오퍼 조건을 정하고 서명하세요',body,'<button class="hqbtn" data-hq="sign">서명하고 오퍼 보내기</button><button class="hqbtn g" data-hq="back">보류</button>',
       {pk:function(t){ sel=t.getAttribute('data-k'); c.pack=sel; draw(); },
        back:function(){ close(); },
