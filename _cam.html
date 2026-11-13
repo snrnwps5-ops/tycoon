@@ -78,6 +78,7 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
         camv:st
       };
     },
+    size:function(w0,h0,sc){ W=w0; H=h0; SC=sc||1; f.style.width=w0+'px'; f.style.height=h0+'px'; wrap.style.transform='scale('+SC+')'; tag.textContent=w0+'x'+h0+' x'+SC+' '+SRC; this.W=w0; this.H=h0; this.sc=SC; return [w0,h0,SC]; },
     camv:function(){ var w=this.win; return w&&w.__H? w.__H.camv():null; },
     player:function(){ var w=this.win; return w&&w.__H? {x:+w.__H.player.pos.x.toFixed(2), z:+w.__H.player.pos.z.toFixed(2)}:null; },
     stage:function(){ var w=this.win; return w&&w.__H? {day:w.__H.S.day}:null; },
