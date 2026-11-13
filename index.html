@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794540015';fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=(t||'').trim();if(!t||t===V)return;if(location.search.indexOf('b='+t)>=0)return;location.replace(location.pathname+'?b='+t+(location.hash||''));}).catch(function(){});})();}catch(e){}</script><link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="테크 스토어"><meta name="theme-color" content="#0b1c66"><link rel="apple-touch-icon" href="icon-180.png">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794540015';
+function chk(){try{fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=(t||'').trim();if(!t||t===V)return;if(location.search.indexOf('b='+t)>=0)return;
+if(window.__updBusy&&window.__updBusy()){window.__pendVer=t;if(window.__updPend){try{window.__updPend(t);}catch(e){}}return;}
+location.replace(location.pathname+'?b='+encodeURIComponent(t)+(location.hash||''));}).catch(function(){});}catch(e){}}
+window.__checkVer=chk;chk();var _vt=0;function rt(){var n=Date.now();if(n-_vt<12000)return;_vt=n;chk();}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)rt();});
+addEventListener('pageshow',function(e){if(e&&e.persisted)rt();});
+})();}catch(e){}</script><link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="테크 스토어"><meta name="theme-color" content="#0b1c66"><link rel="apple-touch-icon" href="icon-180.png">
 <script>try{ if(localStorage.getItem('go-lobby')==='1') localStorage.removeItem('go-lobby'); else if(!/[?&]bunsik/.test(location.search)) location.replace('tech.html'+(location.search||'')+(location.hash||'')); }catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
