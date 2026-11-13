@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794546891';
+<script>try{(function(){var V='1794549382';
 function chk(){try{fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=(t||'').trim();if(!t||t===V)return;if(location.search.indexOf('b='+t)>=0)return;
 if(window.__updBusy&&window.__updBusy()){window.__pendVer=t;if(window.__updPend){try{window.__updPend(t);}catch(e){}}return;}
 location.replace(location.pathname+'?b='+encodeURIComponent(t)+(location.hash||''));}).catch(function(){});}catch(e){}}
@@ -293,7 +293,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.9</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.10</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -471,7 +471,7 @@ const TS=[
   {name:'뉴욕 타임스퀘어점',sign:'TECH GLOBAL',signBg:'#000000',signFg:'#ffffff',signLine:'#ff5a8a',ground:'#1b2233',floor:['#ece8e2','#e3ded6','#c2bbb0'],wall:['#fbfaf7','#efece6','#bdb5a8'],cap:'#111111',table:'table_medium_long',acc:'#ff5a8a',promo:['#111111','#ff5a8a'],out:'city'},
   {name:'노바 테크 본사',sign:'NOVA HQ',signBg:'#ffffff',signFg:'#1d1d1f',signLine:'#2f6fd8',ground:'#86c46e',floor:['#f1efea','#e8e5df','#c8c3ba'],wall:['#ffffff','#f3f3f1','#c9c9c4'],cap:'#1d1d1f',table:'table_medium_long',acc:'#2f6fd8',promo:['#1d1d1f','#2f6fd8'],out:'campus'}][STG];
 THM.ground=TS.ground; if(STG===0) THM.wood=['#c98a52','#b97a45','#d49860','#c08048'];
-function closeModalUI(){ $('modal').classList.remove('on'); $('modal').classList.remove('canClose'); $('mbox').onclick=null; window.__mX=null; curFace=null; if(quizOpen) quizOpen=false; initAudio(); if(window.__rts){ window.__rts=0; setTimeout(startDayModal,150); } }
+function closeModalUI(){ if(window.HUBOPEN) window.HUB_LOCK=1; /* v2.10: 물류 모달을 닫았을 때 발판 위에 서 있어도 즉시 재개방되지 않도록 */ $('modal').classList.remove('on'); $('modal').classList.remove('canClose'); $('mbox').onclick=null; window.__mX=null; curFace=null; if(quizOpen) quizOpen=false; initAudio(); if(window.__rts){ window.__rts=0; setTimeout(startDayModal,150); } }
 function openModal(h,opt){ if(curFace!=null&&h.indexOf('<h2')===0) h='<div style="margin-bottom:2px">'+faceI(curFace,76,'fm')+'</div>'+h; $('mbox').innerHTML=h; $('modal').classList.add('on'); window.__mX=(opt&&opt.onClose)||null; $('modal').classList.toggle('canClose',!!window.__mX||(h.indexOf('id="mOk"')>=0)); const b=$('mOk'); if(b) b.onclick=()=>closeModalUI(); }
 function modalX(){ if(typeof window.__mX==='function'){ const f=window.__mX; window.__mX=null; f(); return; } closeModalUI(); }
 $('mX').onclick=e=>{ e.stopPropagation(); modalX(); };
@@ -1048,6 +1048,11 @@ function applyUnlocks(){ const U=id=>S.unl.includes(id);
   buildDecor(); }
 applyUnlocks();
 /* ---- staff ---- */
+/* ---- v2.10: 한국어 조사 자동 선택 (앞 글자의 받침 확인) ---- */
+function _jong(w){ var s=String(w==null?'':w).replace(/\s+$/,''); if(!s) return -1; var c=s.charCodeAt(s.length-1); return (c>=0xAC00&&c<=0xD7A3)?((c-0xAC00)%28):-1; }
+function josaEul(w){ return String(w)+(_jong(w)>0?'을':'를'); }              /* 을 / 를 */
+function josaGa(w){ return String(w)+(_jong(w)>0?'이':'가'); }               /* 이 / 가 */
+function josaRo(w){ var j=_jong(w); return String(w)+((j>0&&j!==8)?'으로':'로'); }  /* 으로 / 로 (ㄹ 받침은 '로') */
 const STAFFC=['#36b39b','#2f6fd8','#e8473d','#0f2a4a','#1d1d1f','#2f6fd8'][STG];
 const ROLES={greet:{n:'입구 안내',d:'예약 없는 손님을 상황에 맞게 안내해요',ic:'G',c:'#2f6fd8',st:0},runner:{n:'재고 담당',d:'픽업 주문 제품을 찾아 전달해요',ic:'R',c:'#ff9a1a',st:0,lv:['Lv 1: 픽업 전담 & 박스 배달','Lv 2: 이동속도 +15% & 💡 구입 상담 자율 응대 해금','Lv 3+: 처리 속도 +20% & 맞춤 추천률 95%']},tech:{n:'수리 기사',d:'부품을 가져와 백업 확인 후 수리해요',ic:'T',c:'#2a8a3a',st:1,lv:['Lv 1: 9단계 수리 전담','Lv 2: 💡 자율 진단 해금 & 수리 속도 +20%','Lv 3+: 수리 시간 단축 & 고난도 진단 100%']},spec:{n:'상담 전문가',d:'소프트웨어·구입 상담을 대신 해요',ic:'S',c:'#7a4ad6',st:2},mgr:{n:'매니저',d:'항의 손님을 맡아 에스컬레이션을 처리해요',ic:'M',c:'#1d2433',st:3}};
 const ROLE_UNLOCK={greet:3,runner:0,tech:1,spec:2,mgr:3};
@@ -1218,7 +1223,7 @@ function openDetailQ(c,n){ quizOpen=true; c.st='consult'; curFace=c.face; const 
     if(!ok){ c.miss=1; sfxWrong(); qToast('✘ 정답: '+q.a[0]+' — '+q.why,3.8); custLeave(c,false); return; }
     S.stats.ok++; c.happy=1; qToast('✔ '+q.why,3.2); snd('ui',0.4,1.3);
     if(n===1){ openDetailQ(c,2); return; }
-    c.dqDone=1; c.detailOK=1; c.spDone=1; c._lt=null; bigBanner('📖 설명 만족!','오늘 평점 ★5 확정 · NPS +10'); snd('level_up',0.5,1.15); sparkle(c.pos.x,1.6,c.pos.z,'#5ad1ff'); openQuiz(c); }; }
+    c.dqDone=1; c.detailOK=1; c.spDone=1; c._lt=null; bigBanner('📖 설명 만족!','이 고객 만족 ★5 획득! · NPS +10'); snd('level_up',0.5,1.15); sparkle(c.pos.x,1.6,c.pos.z,'#5ad1ff'); openQuiz(c); }; }
 function openQuiz(c){ if(mgmtOpen()) return; quizOpen=true; c.st='consult'; curFace=c.face; if(c.spType&&!c.spDone) spServed(c); if(c.spType==='detail'&&!c.dqDone){ openDetailQ(c,1); return; } const qcBtn='<button id="qClose" class="gray" style="font-size:14px;margin-top:6px">잠시 후 응대 (닫기)</button>';
   if(c.walkin&&c.spot===GSPOT){ const free=SPOTS.find(s=>s.type==='fix'&&s.on&&!s.occ); const tl=dayT;
     const opts=[{t:'오늘 현장 대기 등록 (대기 길어요)',k:'wait'},{t:'가장 빠른 날로 수리 예약 잡아드리기',k:'book'},{t:'예약 없으면 안 된다고 돌려보내기',k:'no'}];
@@ -1286,7 +1291,7 @@ function openWorld(sel,animFrom){ const cur=animFrom!=null?animFrom:STAGE_OF(S.d
 
 function openRank(g){ g=g==null?STAGE_OF(S.day):g; const L=ranking(g), cur=STAGE_OF(S.day);
   let h='<h2>지역 랭킹</h2><div class="rtabs">'+[0,1,2,3,4,5].map(i=>'<button data-g="'+i+'" class="'+(i===g?'on':'')+(i>cur?' lk':'')+'">'+STS[i]+'</button>').join('')+'</div>';
-  if(g>cur) h+='<p style="font-size:14px">🔒 '+STN[g]+'(으)로 이전하면 열려요</p>';
+  if(g>cur) h+='<p style="font-size:14px">🔒 '+josaRo(STN[g])+' 이전하면 열려요</p>';
   else h+='<div>'+L.map((x,i)=>'<div class="rk'+(x.me?' me':'')+'"><i>'+(i+1)+'</i><b>'+x.n+'</b><span>$'+x.v+'</span></div>').join('')+'</div><p style="font-size:12px;margin:4px 0">하루 최고 매출의 합계로 순위가 정해져요. 라이벌도 매일 성장해요!'+(S.r1[g]?'<br><b style="color:#2faa45">🏆 1위 달성!</b>':'<br>1위 달성 시 보너스 $150')+'</p>';
   h+='<div style="display:flex;gap:8px"><button id="rMap" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️ 지역 지도</button><button id="rLog" class="gray">영업 일지</button></div><button id="mOk">닫기</button>'; openModal(h);
   $('rLog').onclick=()=>{ snd('ui',0.4); openLog(); }; $('rMap').onclick=()=>{ snd('ui',0.4); openWorld(); }; $('mbox').onclick=e=>{ const b=e.target.closest('[data-g]'); if(b){ snd('ui',0.3); openRank(+b.dataset.g); } }; }
@@ -1490,13 +1495,15 @@ function openHub(tab){ if(quizOpen) return; if(tab) HUBTAB=tab;
     if(e.target.closest('[data-rmas]')){ hubSettle(); return; } }; }
 function hubTick(dt){ hubScanTick(dt);
   if(HUBSCAN.on&&!$('modal').classList.contains('on')) HUBSCAN.on=false;
-  if(window.HUBOPEN&&(!$('modal').classList.contains('on')||Math.hypot(player.pos.x-HUBP.x,player.pos.z-HUBP.z)>2.6)) window.HUBOPEN=0;
+  const hd=Math.hypot(player.pos.x-HUBP.x,player.pos.z-HUBP.z);
+  if(window.HUB_LOCK&&hd>1.8) window.HUB_LOCK=0;  /* v2.10: 발판 반경 1.8m 밖으로 벗어나면 잠금 해제 */
+  if(window.HUBOPEN&&(!$('modal').classList.contains('on')||hd>2.6)) window.HUBOPEN=0;
   if(dayState!=='run') return;
   if(S.dock&&S.dock.length){ S.dock.forEach(o=>{ if(o._t==null) o._t=time; });
     const cr=hubCrew();
     if(cr&&!HUBSCAN.on){ for(let i=0;i<S.dock.length;i++){ const o=S.dock[i]; if(time-(o._t==null?time:o._t)>HUB_AUTO){ hubAutoInspect(i,cr); break; } } } }
-  if(window.HUBOPEN||quizOpen||$('modal').classList.contains('on')) return;
-  if(Math.hypot(player.pos.x-HUBP.x,player.pos.z-HUBP.z)<1.25) openHub('in'); }
+  if(window.HUBOPEN||quizOpen||$('modal').classList.contains('on')||window.HUB_LOCK) return;
+  if(hd<1.25) openHub('in'); }
 addEventListener('keydown',function(e){ if(!HUBSCAN.on) return; if(e.key===' '||e.code==='Space'){ e.preventDefault(); hubScanHit(); } });
 
 /* ---- Today-at session: 오늘의 클래스 ---- */
@@ -1554,7 +1561,7 @@ function clsEnd(ok,msg){ if(!cls) return; const C=cls; cls=null; clsDone=true;
     try{ confetti(CLSP.x,2.4,CLSP.z); }catch(e){}
     snd('level_up',0.5,1.15); haptic([10,25,10]);
     setTimeout(()=>bigBanner(ok>=3?'🎉 세션 대성공!':'🎉 세션 완료','참가자 ★5 ×'+n+' · 액세서리 매출 +$'+pay),200);
-    toast('🛍️ 참가자들이 '+C.Q.acc+'을(를) 함께 샀어요',3.2);
+    toast('🛍️ 참가자들이 '+josaEul(C.Q.acc)+' 함께 샀어요',3.2);
   } else { if(dayState==='run'){ dayRevs.push(3); dayNps.push(5); }
     toast(msg||'세션이 아쉽게 끝났어요 — 참가자들이 다음 예약을 망설여요',3); }
   save(); }
@@ -1622,7 +1629,8 @@ function openRepair(c,then){ if(mgmtOpen()){ c.st='wait'; return; } quizOpen=tru
   const docs=isNew?shuffle([{n:mn+' '+pn+' 교체 가이드',ok:1},{n:alt+' '+pn+' 교체 가이드',ok:0},{n:mn+' '+op+' 교체 가이드',ok:0},{n:'Nova 15 '+pn+' 교체 가이드',ok:0}]):[];
   const finish=ok=>{ closeQuiz(); if(!ok){ c.miss=1; c.major=1; c.quiet=0; toast('수리 중 기기가 파손됐어요… (민원)',3); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'제 폰이 더 망가졌잖아요!','bad'); custLeave(c,false); return; }
     const sec=(performance.now()-t0)/1000; c.backed=1; S.mast[t]=(S.mast[t]||0)+(err===0?1:0); if(isNew){ S.know[mk]=(S.know[mk]||0)+1; if(S.know[mk]===3) setTimeout(()=>toast(mn+' '+pn+' 수리 숙련! 이제 가이드 없이도 순서가 보여요',3),600); }
-    if(err===0&&!c.usedG&&sec<seq.length*1.7){ c.tip=isNew?20:12; c.happy=1; S.stats.ok++; S.stats.perfect=(S.stats.perfect||0)+1; floatText(new THREE.Vector3(c.pos.x,2.5,c.pos.z),'완벽 수리! 팁 +$'+c.tip,'say'); } else if(err>0) c.happy=0;
+    /* v2.10: 타임어택 1.7 -> 3.5 (9단계 약 32초) — 실수 0회로 끝내고도 시간 때문에 업적이 오르지 않던 문제 완화 */
+    if(err===0&&!c.usedG&&sec<seq.length*3.5){ c.tip=isNew?20:12; c.happy=1; S.stats.ok++; S.stats.perfect=(S.stats.perfect||0)+1; floatText(new THREE.Vector3(c.pos.x,2.5,c.pos.z),'완벽 수리! 팁 +$'+c.tip,'say'); setTimeout(()=>bigBanner('✨ 완벽 수리!','팁 +$'+c.tip+' · 업적 카운트 +1'),260); } else if(err>0) c.happy=0;
     if(c.data) floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),'데이터 안전','say'); sfxLevel(); haptic(30); then(); };
   const render=()=>{ const show=guide||!isNew;
     let hh='<h2 style="margin-bottom:2px">'+pn+' 교체 수리</h2><p style="font-size:12px;margin:0 0 4px">'+mn+(isNew&&!known?' <b style="background:#b07aff;color:#fff;border-radius:6px;padding:1px 5px">신모델</b>':'')+(c.data?' · <b style="color:#e8342a">데이터 중요</b>':'')+' · 실수 <b style="color:'+(err?'#e8342a':'#2faa45')+'">'+err+'/3</b></p>';
@@ -1669,7 +1677,7 @@ function guide(){ const waiting=custs.filter(c=>c.st==='wait'||c.st==='want');
   for(const c of custs){ if(c.st==='xfer') return [c.pos.x,c.pos.z,'손님 옆에 서서 데이터를 옮겨줘요']; if(c.st==='wait'&&c.walkin===1&&c.spot===GSPOT) return [c.pos.x,c.pos.z-0.6,'입구 안내대에서 예약 없는 손님을 안내해요']; if(c.st==='wait'&&c.type==='ret') return [c.pos.x,c.pos.z,'반품 문의 손님을 응대해요']; if(c.st==='wait'&&c.type==='esc'&&!c.claim) return [c.pos.x,c.pos.z,'항의 손님! 먼저 응대해요']; if(c.st==='wait'&&(c.type==='corp'||(c.type==='tour'&&!c.want))&&!c.claim) return [c.pos.x,c.pos.z,c.type==='corp'?'법인 고객을 응대해요':'외국인 손님을 응대해요']; }
   for(const c of waiting){ if(c.type==='sw'||(c.type==='buy'&&!c.want)||(c.type==='fix'&&c.diag&&!c.want)) return [c.pos.x,c.pos.z,c.type==='fix'?'손님 옆에 가서 고장 원인을 진단해요':'손님 옆에 가서 상담해요']; }
   for(const c of waiting){ const t=c.want; if(!t||c.st==='repair'||c.type==='ret'||c.spot===GSPOT||c.claim) continue; 
-    if(player.stack.includes(t)) return [c.pos.x,c.pos.z,IT[t].n+'을(를) 손님에게 가져다줘요']; const s=srcOf(t); if(s) return [s.x,s.z+0.9,IT[t].n+(t==='b'||t==='s'?' 부품을':'을')+' 선반에서 들어요']; }
+    if(player.stack.includes(t)) return [c.pos.x,c.pos.z,josaEul(IT[t].n)+' 손님에게 가져다줘요']; const s=srcOf(t); if(s) return [s.x,s.z+0.9,(t==='b'||t==='s'?IT[t].n+' 부품을':josaEul(IT[t].n))+' 선반에서 들어요']; }
   if(dayState==='run'&&(S.dock||[]).length&&!hubCrew()) return [HUBP.x,HUBP.z,'물류 데스크에서 입고 검수하면 박스마다 +$50'];
   if(cashVal>=30||(S.stats.srv<3&&cashVal>0)) return [CASH.x,CASH.z,'계산대 옆 돈을 챙겨요'];
   const pad=S.stats.srv>=2&&PADS.find(p=>padVisible(p)&&money>=Math.min(p.price-p.paid,p.price*0.5)); if(pad) return [pad.x,pad.z,'판에 서서 '+pad.t+'!'];
@@ -1751,7 +1759,7 @@ function slotClick(e){ const hb=e.target.closest('[data-xhire]'), fb=e.target.cl
   if(tb2){ const c=S.crew[+tb2.dataset.xtr]; if(!c||!c.extra) return true; const lv=c.lv||1, tc=Math.round(c.wage*4*lv); if(money<tc||lv>=5) return true; money-=tc; c.lv=lv+1; c.wage=Math.round(c.wage*1.15); c.sat=Math.min(100,(c.sat==null?70:c.sat)+8); refreshTags(); snd('level_up',0.45,1.3); save(); openCrew(); return true; }
   if(rb2){ const c=S.crew[+rb2.dataset.xrs]; if(!c||!c.extra) return true; const rc=Math.round(c.wage*3); if(money<rc) return true; money-=rc; c.wage=Math.round(c.wage*1.15); c.sat=Math.min(100,(c.sat==null?70:c.sat)+20); refreshTags(); snd('coin',0.5); save(); openCrew(); return true; }
   if(sb){ openShop(); return true; }
-  if(hb){ if(extras().length>=slotCount()) return true; const r=hb.dataset.xhire, c=Object.assign({},candidates(r)[1]), cost=c.wage*5; if(money<cost) return true; money-=cost; delete c.tag; c.extra=1; c.sat=75; const used=S.crew.map(x=>x.name); if(used.includes(c.name)) c.name=(['유나','건우','서아','도현','지안','은우'].find(n=>!used.includes(n))||c.name+'2'); S.crew.push(c); addStaff(r,c); snd('level_up',0.5,1.1); bigBanner(c.name+' 채용!','추가 '+ROLES[r].n+'이(가) 합류했어요'); save(); openCrew(); return true; }
+  if(hb){ if(extras().length>=slotCount()) return true; const r=hb.dataset.xhire, c=Object.assign({},candidates(r)[1]), cost=c.wage*5; if(money<cost) return true; money-=cost; delete c.tag; c.extra=1; c.sat=75; const used=S.crew.map(x=>x.name); if(used.includes(c.name)) c.name=(['유나','건우','서아','도현','지안','은우'].find(n=>!used.includes(n))||c.name+'2'); S.crew.push(c); addStaff(r,c); snd('level_up',0.5,1.1); bigBanner(c.name+' 채용!','추가 '+josaGa(ROLES[r].n)+' 합류했어요'); save(); openCrew(); return true; }
   if(fb){ const c=S.crew[+fb.dataset.xfire]; if(c&&c.extra){ S.crew.splice(S.crew.indexOf(c),1); const st=staff.find(s=>s.crew===c); if(st) removeStaff(st); snd('ui',0.4,0.7); save(); openCrew(); } return true; }
   return false; }
 /* ---- save: status, manual save, export / import code ---- */
@@ -1970,11 +1978,14 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
     if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; useStock(s.t); layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
   // cash
-  cashT-=dt; if(cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; if(dayState==='run'||dayState==='end') dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
+  /* v2.10: 계산대 현금 회수는 '영업 중(run)'에만 — 마감 연출(end)·정산창(result)에서 회수되면 영수증 스냅샷과 HUD 현금이 어긋난다. 남은 현금은 다음 날 그대로 있다가 회수된다. */
+  cashT-=dt; if(dayState==='run'&&cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
   // customers
   if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); spawnT-=dt*loadK()*(cfg.spawn||1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=(S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5; spawnCust(); } }
   else if(dayState==='end'){ dayEndT-=dt; if(dayEndT<=0&&!quizOpen){ dayState='result'; showResult(); } }
   { const cfg=dayCfg(S.day); $('dbDay').textContent=(STG+1)+'-'+(S.day-[0,4,8,11,15,19][STG]+1); const tt=Math.max(0,Math.ceil(dayState==='run'?dayT:cfg.dur)); $('dbT').textContent=Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0'); $('dbT').classList.toggle('low',dayState==='run'&&dayT<20); $('dbRev').textContent='$'+dayRev+'/$'+cfg.goal; $('dbComp').textContent='민원 '+dayComp+'/3'; $('dbComp').classList.toggle('bad',dayComp>=2); $('dbFill').style.width=Math.min(100,dayRev/cfg.goal*100)+'%'; }
+  /* v2.10: 손으로 수리하는 동안에는 대기 손님 인내심이 모달 감속(0.3)의 35%로 더 천천히 줄고, 수리 중인 손님은 인내심이 줄지 않는다 */
+  const repBusy=!!(quizOpen&&custs.some(x=>x.type==='fix'&&x.st==='consult'));
   for(let k=custs.length-1;k>=0;k--){ const c=custs[k]; c.speed=0;
     if(c.lock>0){ c.lock-=dt; c.ch.mixer.update(dt); continue; }
     if(c.st==='enter'){ if(walkTo(c,dt,3.2)){ c.st=c.type==='fix'?'wait':'wait'; c.face=c.spot.face; if(c.spType&&!c.t0){ c.t0=time; if(c.spType==='esc') c.escT=15; c._lt=null; } } }
@@ -1984,7 +1995,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
         if(c.spType==='rush'&&c.t0&&time-c.t0>=c.rushWin){ c.softLeave=1; c.spDone=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'바빠서 먼저 가볼게요!','say'); custLeave(c,false,0); continue; }
         else if(c.spType==='esc'&&!hasCrew('mgr')){ c.escT-=(dt*(quizOpen?0.3:1)); if(c.escT<=0){ c.spDone=1; c.escFail=1; sfxWarn(); floatText(new THREE.Vector3(c.pos.x,2.8,c.pos.z),'🔥 분노 퇴장!','bad'); custLeave(c,false); continue; } }
       }
-      if(c.st!=='repair'&&c.st!=='xfer'&&c.st!=='mgrwait'&&!(c.claim&&c.claim.state==='work')){ c.pat-=dt*(quizOpen?0.3:1); if(c.pat<=0){ c.walk=1; custLeave(c,false); continue; } }
+      if(c.st!=='repair'&&c.st!=='xfer'&&c.st!=='mgrwait'&&!(c.claim&&c.claim.state==='work')&&!(repBusy&&c.type==='fix'&&c.st==='consult')){ c.pat-=dt*(quizOpen?0.3:1)*(repBusy?0.35:1); if(c.pat<=0){ c.walk=1; custLeave(c,false); continue; } }
       if(c.reopenT>0) c.reopenT-=dt;
       const mOpen=$('modal').classList.contains('on');
       if((c.st==='wait'||c.st==='want')&&near&&!quizOpen&&!mOpen&&!c.claim&&c.want&&(c.type==='pick'||c.type==='buy'||c.type==='tour')&&!c.soAsked&&stockTotal(c.want)===0&&!player.stack.includes(c.want)){ c.soAsked=1; openStockout(c); }
@@ -2172,15 +2183,16 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   const crewLines=[]; const load=dayRevs.length/(S.crew.length+1); S.crew.slice().forEach(cr=>{ if(cr.sat==null) cr.sat=70; let d=-3-Math.round(Math.max(0,load-8)*1.5)+(stars>=3?6:stars>=1?3:0)+(dayComp===0?2:-dayComp*2); cr.sat=Math.max(0,Math.min(100,cr.sat+d)); if(cr.sat<30&&Math.random()<0.5){ S.crew.splice(S.crew.indexOf(cr),1); const st=staff.find(s=>s.crew===cr); if(st) removeStaff(st); crewLines.push('<div class="dstat no"><span>😢 '+cr.name+'('+ROLES[cr.role].n+') 퇴사</span><b>만족도 '+cr.sat+'</b></div>'); } else if(cr.sat<45) crewLines.push('<div class="dstat no"><span>😟 '+cr.name+' 퇴사 위험</span><b>만족도 '+cr.sat+'</b></div>'); });
   const RG=STAGE_OF(S.day), rk0=myRank(RG); S.best[S.day]=Math.max(S.best[S.day]||0,dayRev); const rk1=myRank(RG); let r1b=0; if(rk1===1&&!S.r1[RG]){ S.r1[RG]=1; r1b=150; money+=r1b; } S.orders.forEach(o=>{ if(!o.ex) o.ready=1; });
   if(!clear) S.fails=(S.fails||0)+1; if(clear){ S.lastProfit=Math.round(dayRev-dayOrd-wages-rent); S.dayStars[S.day]=Math.max(S.dayStars[S.day]||0,stars); money+=bonus; S.bp[S.day]=(S.bp[S.day]||0)+bonus; confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); } else snd('ui',0.5,0.5);
-  const collected=Math.floor(dayColl), other=Math.floor(money)-(dayCash0+collected-dayOrd-Math.min(wages+rent,dayCash0+collected-dayOrd+0)+bonus+npsB+r1b), rc=(l,v,c)=>'<div><span>'+l+'</span><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>';
-  const receipt='<details class="rcp"><summary>🧾 정산 영수증 보기</summary>'+rc('시작 현금','$'+dayCash0)+rc('오늘 매출 (목표 판정 기준)','$'+dayRev)+rc('└ 회수한 현금','+$'+collected,'#2faa45')+rc('└ 계산대에 남은 현금','$'+Math.floor(cashVal)+' (다음 영업에 그대로 남아요)')+rc('발주비','-$'+dayOrd,'#e8342a')+rc('직원 급여','-$'+wages,'#e8342a')+(rent?rc('임대료','-$'+rent,'#e8342a'):'')+(bonus?rc('클리어 보너스','+$'+bonus,'#2faa45'):bonusFull?rc('클리어 보너스','이미 받음'):'')+(npsB?rc('입소문 보너스','+$'+npsB,'#2faa45'):'')+(r1b?rc('지역 1위 보너스','+$'+r1b,'#2faa45'):'')+(Math.abs(other)>=1?rc('그 외 (업그레이드·채용·확장·미션 등)',(other>0?'+$':'-$')+Math.abs(other)):'')+rc('<b>종료 현금</b>','<b>$'+Math.floor(money)+'</b>')+'<small>별 조건: ★ 목표·평점·민원 통과 / ★★ 매출 130% / ★★★ 매출 160% + 민원 0건<br>평점은 오늘 응대한 손님 기준이고, 화면 위 "누적"은 최근 14명 평균이에요</small></details>';
+  const moneySnap=Math.floor(money); shownMoney=money; /* v2.10: 정산 시점 현금 스냅샷 — 영수증 '종료 현금'과 HUD '보유 현금'을 일치 */
+  const collected=Math.floor(dayColl), other=moneySnap-(dayCash0+collected-dayOrd-Math.min(wages+rent,dayCash0+collected-dayOrd+0)+bonus+npsB+r1b), rc=(l,v,c)=>'<div><span>'+l+'</span><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>';
+  const receipt='<details class="rcp"><summary>🧾 정산 영수증 보기</summary>'+rc('시작 현금','$'+dayCash0)+rc('오늘 매출 (목표 판정 기준)','$'+dayRev)+rc('└ 회수한 현금','+$'+collected,'#2faa45')+rc('└ 계산대에 남은 현금','$'+Math.floor(cashVal)+' (다음 영업에 그대로 남아요)')+rc('발주비','-$'+dayOrd,'#e8342a')+rc('직원 급여','-$'+wages,'#e8342a')+(rent?rc('임대료','-$'+rent,'#e8342a'):'')+(bonus?rc('클리어 보너스','+$'+bonus,'#2faa45'):bonusFull?rc('클리어 보너스','이미 받음'):'')+(npsB?rc('입소문 보너스','+$'+npsB,'#2faa45'):'')+(r1b?rc('지역 1위 보너스','+$'+r1b,'#2faa45'):'')+(Math.abs(other)>=1?rc('그 외 (업그레이드·채용·확장·미션 등)',(other>0?'+$':'-$')+Math.abs(other)):'')+rc('<b>종료 현금</b>','<b>$'+moneySnap+'</b>')+'<small>별 조건: ★ 목표·평점·민원 통과 / ★★ 매출 130% / ★★★ 매출 160% + 민원 0건<br>평점은 오늘 응대한 손님 기준이고, 화면 위 "누적"은 최근 14명 평균이에요</small></details>';
   openModal('<h2>'+(clear?'DAY '+(S.day+1)+' 클리어!':'DAY '+(S.day+1)+' 실패…')+'</h2><div class="dres">'+[1,2,3].map(k=>'<i class="'+(k<=stars?'on':'')+'">★</i>').join('')+'</div>'+
     '<div class="dstat '+(okRev?'ok':'no')+'"><span>매출 $'+dayRev+' / 목표 $'+cfg.goal+'</span><b>'+(okRev?'달성':'부족')+'</b></div>'+
     '<div class="dstat '+(okRate?'ok':'no')+'"><span>오늘 서비스 평점 ★'+r.toFixed(1)+' / 최소 ★'+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</span><b>'+(okRate?'통과':'미달')+'</b></div>'+
     (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+S.crew.length+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+
     receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+(stars<2?'매출 $'+Math.round(cfg.goal*1.3):'매출 $'+Math.round(cfg.goal*1.6)+' + 민원 0건')+'</p>':'</p>')+'<button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button>'));
   $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
-  const go=next=>{ $('modal').classList.remove('on'); if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',nx+'(으)로 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; } setTimeout(startDayModal,300); };
+  const go=next=>{ $('modal').classList.remove('on'); if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; } setTimeout(startDayModal,300); };
   if($('dNext')) $('dNext').onclick=()=>go(true); if($('dRetry')) $('dRetry').onclick=()=>go(false); if($('dUp')) $('dUp').onclick=()=>{ dayState='pre'; save(); window.__rts=1; openUp(); }; save(); }
 function unlock(p){ if(S.unl.includes(p.id)) return; S.unl.push(p.id); p.m.visible=false; snd('level_up',0.55,1.1); sparkle(p.x,0.8,p.z,'#7bea62'); gainXP(3); shakeT=0.3;
   applyUnlocks(); const FOC={repair:[5.2,-4.4,REPG],support:[0.4,-5.0,SUPG],table2:[3.3,-0.6,T2],decor:[0,1,DECOR]}[p.id];
