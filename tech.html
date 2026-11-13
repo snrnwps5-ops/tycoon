@@ -1303,7 +1303,8 @@ function bohHTML(){ const d=bohDiff(), dif=d.dock+d.rma, cr=bohCrew();
       '<div class="dstat"><span>미검수 입고 (①)</span><b>'+d.dock+'개</b></div>'+
       '<div class="dstat"><span>RMA 보관 (③)</span><b>'+d.rma+'개</b></div>'+
       '<div class="dstat '+(opBonus()?'ok':'')+'"><span>오늘 평점 보너스</span><b>'+opBonusText()+'</b></div>'+
-      (S.boh.ccDay===S.day?'<p style="font-size:12px;margin:6px 0">오늘 실사는 <b>오차 0</b>으로 완료했어요. 평점 <b>★+0.1</b>이 오늘 하루 적용됩니다.</p>':dif?'<p style="font-size:12px;margin:6px 0">오차 원인: '+(d.dock?'미검수 박스 '+d.dock+'개 → ① 입고 검수':'')+(d.dock&&d.rma?' · ':'')+(d.rma?'RMA '+d.rma+'개 → ③ 크레딧 정산':'')+'</p>'
+      (dif?'<p style="font-size:12px;margin:6px 0">오차 원인: '+(d.dock?'미검수 박스 '+d.dock+'개 → ① 입고 검수':'')+(d.dock&&d.rma?' · ':'')+(d.rma?'RMA '+d.rma+'개 → ③ 크레딧 정산':'')+'</p>'
+          :S.boh.ccDay===S.day?'<p style="font-size:12px;margin:6px 0">오늘 실사는 <b>오차 0</b>으로 완료했어요. 평점 <b>★+0.1</b>이 오늘 하루 적용됩니다.</p>'
           :'<p style="font-size:12px;margin:6px 0">진열대·창고 수량이 장부와 일치해요.<br>실사하면 오늘 평점 <b>★+0.1</b>과 오퍼레이션 보너스 <b>$'+(150+50*STG)+'</b>를 받아요.</p>')+
       '<button data-cc="1" '+(S.boh.ccDay===S.day?'disabled':'')+'>'+(S.boh.ccDay===S.day?'오늘 실사 완료 ✔':'재고 실사 실행')+'</button>';
   }
