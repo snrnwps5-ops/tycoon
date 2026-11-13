@@ -391,6 +391,8 @@ let HY=''; try{ const m=(location.hash||'').match(/save=([^&]+)/)||(location.sea
 let HYL=0;
 if(HY){ try{ const o=loadCode(HY); S=Object.assign(S,o); delete S.mid; S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); localStorage.setItem(SAVE,JSON.stringify(S)); HYL=1; try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }catch(e){ const msg=e&&e.message?e.message:'알 수 없는 오류'; setTimeout(function(){ try{ toast('🔗 세이브 링크를 불러오지 못했어요: '+msg,4); }catch(_){ } },1800); } }
 function save(){ if(window.__noSave) return; try{ S.money=Math.floor(money); S.last=Date.now(); S.lastSaveTime=S.last; S.shelf={}; SRC.forEach(s=>{ S.shelf[s.t]=s.n; }); localStorage.setItem(SAVE,JSON.stringify(S)); }catch(e){} }
+/* v2.4: 떠나는 시각을 오프라인 수익의 기준으로 남기고 저장 */
+function offSave(){ S.offAt=Date.now(); save(); }
 let money=S.money;
 const STAGE_OF=d=>d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; const STN=['대구 동성로점','부산 센텀점','서울 가로수길점','인천공항점','뉴욕 5번가점','실리콘밸리 본사'], STS=['대구','부산','서울','인천','뉴욕','본사'], STK=['동네 대리점','쇼핑몰 매장','플래그십 스토어','공항 면세점','글로벌 플래그십','본사 쇼룸'], STC=['DAEGU','BUSAN','SEOUL','INCHEON AIRPORT','NEW YORK','SILICON VALLEY'], STI=['🏙️','🌊','🗼','✈️','🗽','🚀']; const STG=STAGE_OF(S.day||0);
 const TS=[
