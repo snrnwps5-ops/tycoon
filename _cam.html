@@ -1,0 +1,100 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v2.13 camera harness</title>
+<style>
+html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
+#wrap{position:absolute;left:0;top:0;transform-origin:0 0}
+#f{border:0;display:block;background:#000}
+#tag{position:absolute;right:6px;bottom:4px;font:700 12px monospace;color:#9fb4ff;opacity:.7}
+</style></head>
+<body>
+<div id="wrap"><iframe id="f"></iframe></div><div id="tag"></div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  var W = +(q.get('w')||390), H = +(q.get('h')||844), SC = +(q.get('s')||1);
+  var UI = q.get('ui')==='1';
+  var X = +(q.get('x')||0), Z = +(q.get('z')||-1.5);
+  var MODE = q.get('mode')||'base', PZ = +(q.get('pz')||1);
+  var f = document.getElementById('f'), wrap = document.getElementById('wrap');
+  f.style.width = W+'px'; f.style.height = H+'px';
+  wrap.style.transform = 'scale('+SC+')';
+  document.getElementById('tag').textContent = W+'x'+H+' x'+SC;
+  try{ localStorage.setItem('tech-notitle','1'); }catch(e){}
+
+  var API = window.CAMQ = {
+    ready:false, doc:null, win:null, W:W, H:H, cfg:{x:X,z:Z,mode:MODE,pz:PZ,ui:UI},
+    clean:function(on){
+      var d=this.doc; if(!d) return 'no doc';
+      var id='__camclean';
+      var el=d.getElementById(id);
+      if(!on){ if(el) el.remove(); return 'ui shown'; }
+      if(!el){ el=d.createElement('style'); el.id=id;
+        el.textContent='#hud,#sub,#bbar,#dayBar,#hint,#toast,#big,#help,#evt,#joy,#camctl,#intp,#modal,#labels,#vig,#stockAl,#combo,#title,#load{display:none!important}';
+        d.head.appendChild(el); }
+      return 'ui hidden';
+    },
+    dismiss:function(){
+      var d=this.doc, w=this.win; if(!d) return 'no doc';
+      var m=d.getElementById('modal'); if(m) m.classList.remove('on');
+      var t=d.getElementById('title'); if(t) t.remove();
+      var l=d.getElementById('load'); if(l) l.style.display='none';
+      return 'ok';
+    },
+    go:function(x,z){ var w=this.win; if(!w||!w.__H) return 'no H'; this.cfg.x=x; this.cfg.z=z; return w.__H.tp(x,z); },
+    mode:function(m,pz){ var w=this.win; if(!w||!w.__H) return 'no H'; this.cfg.mode=m; if(pz!=null){ w.__H.pinch(pz); this.cfg.pz=pz; } w.__H.camMode(m||'base'); return w.__H.camv(); },
+    // 지면(y=0) 위 카메라 프러스텀 네 꼭짓점의 실제 월드 좌표
+    ground:function(){
+      var w=this.win; if(!w||!w.__H) return 'no H';
+      var c = w.__H.cam; c.updateMatrixWorld(true);
+      var e = c.matrixWorld.elements;
+      var pos = {x:e[12], y:e[13], z:e[14]};
+      var hw = (c.right-c.left)/2/c.zoom, hh = (c.top-c.bottom)/2/c.zoom;
+      function at(nx,ny){
+        var ox = pos.x + e[0]*nx*hw + e[4]*ny*hh;
+        var oy = pos.y + e[1]*nx*hw + e[5]*ny*hh;
+        var oz = pos.z + e[2]*nx*hw + e[6]*ny*hh;
+        var dx = -e[8], dy = -e[9], dz = -e[10];
+        var t = -oy/dy;
+        return {x:ox+dx*t, y:0, z:oz+dz*t};
+      }
+      var cs = [at(-1,-1), at(1,-1), at(1,1), at(-1,1)];
+      var xs = cs.map(function(p){return p.x}), zs = cs.map(function(p){return p.z});
+      var st = w.__H.camv ? w.__H.camv() : {};
+      return {
+        bottomZ:+Math.max.apply(null,zs).toFixed(3), topZ:+Math.min.apply(null,zs).toFixed(3),
+        leftX:+Math.min.apply(null,xs).toFixed(3), rightX:+Math.max.apply(null,xs).toFixed(3),
+        cz:+c.position.z.toFixed(3), cy:+c.position.y.toFixed(3), cx:+c.position.x.toFixed(3),
+        zoom:+c.zoom.toFixed(4), halfH:+hh.toFixed(3), halfW:+hw.toFixed(3),
+        inner:{w:w.innerWidth,h:w.innerHeight,a:+(w.innerWidth/w.innerHeight).toFixed(4)},
+        camv:st
+      };
+    },
+    camv:function(){ var w=this.win; return w&&w.__H? w.__H.camv():null; },
+    player:function(){ var w=this.win; return w&&w.__H? {x:+w.__H.player.pos.x.toFixed(2), z:+w.__H.player.pos.z.toFixed(2)}:null; }
+  };
+
+  function boot(){
+    var w = f.contentWindow, d = f.contentDocument;
+    API.win = w; API.doc = d;
+    var t0 = Date.now();
+    (function tick(){
+      var ok = w.__H && w.__H.tp && d.getElementById('c');
+      if(!ok){ if(Date.now()-t0 > 60000){ API.err='timeout'; return; } return setTimeout(tick, 120); }
+      API.ready = true;
+      API.dismiss();
+      setTimeout(function(){ API.dismiss(); }, 800);
+      setTimeout(function(){
+        API.dismiss();
+        if(!UI) API.clean(true);
+        if(MODE!=='base') API.mode(MODE,PZ);
+        API.go(X,Z);
+        setTimeout(function(){ API.go(X,Z); }, 300);
+      }, 1200);
+    })();
+  }
+  f.src = 'tech.html?camh=' + Date.now();
+  f.addEventListener('load', boot);
+  setTimeout(function(){ if(!API.ready && !API.win){ API.win=f.contentWindow; API.doc=f.contentDocument; API.dismiss(); } }, 150);
+})();
+</script>
+</body></html>
