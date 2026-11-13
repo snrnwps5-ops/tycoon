@@ -497,17 +497,20 @@ function faceInfo(model,g,m,head,faceMesh){ if(FACEC[model]) return FACEC[model]
   const f={x1:bb.min.x,x2:bb.max.x,y1:bb.min.y,y2:bb.max.y,z2:bb.max.z};
   f.w=f.x2-f.x1; f.h=f.y2-f.y1; f.cx=(f.x1+f.x2)/2;
   f.R=f.w*0.667; f.hy=f.y2-f.w*0.167; f.hz=f.z2-f.w*0.60;
-  stripEyes(faceMesh.geometry);
+  faceMesh.visible=false;   /* 모델의 뭉개진 눈·눈썹 판은 숨기고 새 눈을 얹는다 */
   FACEC[model]=f; return f; }
 function addFace(head,f,o){
   const dark=new THREE.MeshBasicMaterial({color:o.eye||'#2b2233'});
   const lite=new THREE.MeshBasicMaterial({color:'#ffffff'});
-  const ew=f.w*0.215, eh=f.w*0.255, ex=f.w*0.17, ey=f.y1+f.h*0.28, ez=f.z2+f.w*0.022;
+  const ew=f.w*0.20, eh=f.w*0.235, ex=f.w*0.165, ey=f.y1+f.h*0.30, ez=f.z2+f.w*0.022;
   const eyes=[];
   [-1,1].forEach(s=>{ const e=new THREE.Group(); e.position.set(f.cx+s*ex,ey,ez); head.add(e);
-    const ball=new THREE.Mesh(EYEGEO,dark); ball.scale.set(ew*0.5,eh*0.5,ew*0.26); e.add(ball);
-    const hl=new THREE.Mesh(EYEGEO,lite); hl.scale.set(ew*0.15,eh*0.15,ew*0.11); hl.position.set(ew*0.18,eh*0.22,ew*0.15); e.add(hl);
+    const ball=new THREE.Mesh(EYEGEO,dark); ball.scale.set(ew*0.5,eh*0.5,ew*0.24); e.add(ball);
+    const hl=new THREE.Mesh(EYEGEO,lite); hl.scale.set(ew*0.16,eh*0.16,ew*0.10); hl.position.set(ew*0.19,eh*0.22,ew*0.13); e.add(hl);
     eyes.push(e); });
+  /* 눈썹: 짧고 살짝 기울인 판 — 표정이 살아난다 */
+  [-1,1].forEach(s=>{ const b=new THREE.Mesh(new THREE.BoxGeometry(f.w*0.17,f.w*0.030,f.w*0.018),dark);
+    b.position.set(f.cx+s*f.w*0.17,f.y1+f.h*0.82,ez-f.w*0.004); b.rotation.z=s*0.12; head.add(b); });
   return eyes; }
 const gmat=(c,sh)=>new THREE.MeshPhongMaterial({color:c,shininess:sh==null?16:sh,specular:0x1a1a1a});
 /* 액세서리: 머리(비니·야구모자·헤드폰·안경·선글라스)는 머리뼈에, 가방은 몸통 좌표계에 붙인다 */
@@ -516,18 +519,18 @@ function addGear(kind,ch,head,f,o){
   const R=f.R, HY=f.hy, HZ=f.hz, C=f.cx;
   const c1=o.accC||'#2f3442', c2=o.accC2||'#1d2433';
   if(kind==='beanie'){ const m=gmat(o.accC||'#b07aff');
-    add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.94,R*1.03,R*0.70,16),m),head).position.set(C,HY+R*0.50,HZ);
-    add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.05,R*1.05,R*0.17,16),gmat(c2)),head).position.set(C,HY+R*0.19,HZ);
-    const pom=add(new THREE.Mesh(EYEGEO,gmat('#f4f0e2')),head); pom.position.set(C,HY+R*0.92,HZ); pom.scale.setScalar(R*0.11); }
+    add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.72,R*1.02,R*0.62,16),m),head).position.set(C,HY+R*0.72,HZ);
+    add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.06,R*1.06,R*0.15,16),gmat(c2)),head).position.set(C,HY+R*0.40,HZ);
+    const pom=add(new THREE.Mesh(EYEGEO,gmat('#f4f0e2')),head); pom.position.set(C,HY+R*1.05,HZ); pom.scale.setScalar(R*0.13); }
   else if(kind==='cap'){ const m=gmat(o.accC||'#e8473d');
-    add(new THREE.Mesh(new THREE.SphereGeometry(R*1.02,16,10,0,Math.PI*2,0,Math.PI*0.46),m),head).position.set(C,HY,HZ);
-    add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.05,R*1.06,R*0.10,16),m),head).position.set(C,HY+R*0.20,HZ);
-    const br=add(new THREE.Mesh(new THREE.BoxGeometry(R*1.15,R*0.07,R*0.78),gmat(c2)),head);
-    br.position.set(C,HY+R*0.16,HZ+R*0.82); br.rotation.x=0.12; }
+    add(new THREE.Mesh(new THREE.SphereGeometry(R*1.03,16,10,0,Math.PI*2,0,Math.PI*0.52),m),head).position.set(C,HY+R*0.14,HZ);
+    add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.05,R*1.06,R*0.12,16),m),head).position.set(C,HY+R*0.42,HZ);
+    const br=add(new THREE.Mesh(new THREE.BoxGeometry(R*1.10,R*0.08,R*0.72),gmat(c2)),head);
+    br.position.set(C,HY+R*0.36,HZ+R*0.86); br.rotation.x=0.16; }
   else if(kind==='phones'){ const m=gmat(c1);
-    add(new THREE.Mesh(new THREE.TorusGeometry(R*1.03,R*0.085,6,20,Math.PI),m),head).position.set(C,HY-R*0.05,HZ);
-    [-1,1].forEach(s=>{ const cup=add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.27,R*0.27,R*0.13,12),gmat(c2)),head);
-      cup.position.set(C+s*R*1.0,HY-R*0.05,HZ); cup.rotation.z=Math.PI/2; }); }
+    add(new THREE.Mesh(new THREE.TorusGeometry(R*1.10,R*0.09,6,20,Math.PI),m),head).position.set(C,HY+R*0.05,HZ);
+    [-1,1].forEach(s=>{ const cup=add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.30,R*0.30,R*0.14,12),gmat(c2)),head);
+      cup.position.set(C+s*R*1.08,HY-R*0.02,HZ); cup.rotation.z=Math.PI/2; }); }
   else if(kind==='headset'){ const m=gmat(c1);
     add(new THREE.Mesh(new THREE.TorusGeometry(R*1.03,R*0.075,6,20,Math.PI),m),head).position.set(C,HY-R*0.05,HZ);
     const cup=add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.25,R*0.25,R*0.12,12),gmat(c2)),head);
@@ -535,22 +538,23 @@ function addGear(kind,ch,head,f,o){
     const arm=add(new THREE.Mesh(new THREE.BoxGeometry(R*0.10,R*0.10,R*0.62),gmat(c2)),head);
     arm.position.set(C-R*0.78,HY-R*0.30,HZ+R*0.36); arm.rotation.y=-0.35; }
   else if(kind==='glasses'||kind==='sun'){ const m=gmat(kind==='sun'?'#14161d':'#1d2433');
-    [-1,1].forEach(s=>{ const g2=add(new THREE.Mesh(new THREE.TorusGeometry(R*0.20,R*0.035,6,16),m),head);
-      g2.position.set(C+s*R*0.30,HY-R*0.16,HZ+R*0.62); });
-    if(kind==='sun'){ [-1,1].forEach(s=>{ const d=add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.19,R*0.19,R*0.02,14),gmat('#0f1116',40)),head);
-      d.position.set(C+s*R*0.30,HY-R*0.16,HZ+R*0.63); d.rotation.x=Math.PI/2; }); }
-    add(new THREE.Mesh(new THREE.BoxGeometry(R*0.22,R*0.035,R*0.035),m),head).position.set(C,HY-R*0.14,HZ+R*0.62);
-    [-1,1].forEach(s=>{ add(new THREE.Mesh(new THREE.BoxGeometry(R*0.16,R*0.03,R*0.03),m),head).position.set(C+s*R*0.50,HY-R*0.12,HZ+R*0.52); }); }
-  else if(kind==='backpack'){ const bh=ch.bodyH||1.4, m=gmat(o.accC||'#4a7bd0'), m2=gmat(c2);
-    const bp=new THREE.Group(); ch.inner.add(bp); bp.position.set(0,bh*0.58,-bh*0.135);
-    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.22,bh*0.26,bh*0.12),m),bp).position.set(0,0,0);
-    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.19,bh*0.07,bh*0.10),m2),bp).position.set(0,bh*0.09,-bh*0.01);
-    [-1,1].forEach(s=>{ const st=add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.035,bh*0.26,bh*0.02),m2),ch.inner);
-      st.position.set(s*bh*0.075,bh*0.60,bh*0.075); }); }
-  else if(kind==='tote'){ const bh=ch.bodyH||1.4, m=gmat(o.accC||'#a8743e'), m2=gmat(c2);
-    const bg=new THREE.Group(); ch.inner.add(bg); bg.position.set(bh*0.20,bh*0.36,bh*0.01);
-    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.14,bh*0.17,bh*0.07),m),bg).position.set(0,0,0);
-    const hd=add(new THREE.Mesh(new THREE.TorusGeometry(bh*0.055,R*0.02,5,12,Math.PI),m2),bg); hd.position.set(0,bh*0.085,0); }
+    const GZ=f.z2+f.w*0.030, GY=f.y1+f.h*0.30;
+    [-1,1].forEach(s=>{ const g2=add(new THREE.Mesh(new THREE.TorusGeometry(f.w*0.115,f.w*0.022,6,16),m),head);
+      g2.position.set(f.cx+s*f.w*0.165,GY,GZ); });
+    if(kind==='sun'){ [-1,1].forEach(s=>{ const d=add(new THREE.Mesh(new THREE.CylinderGeometry(f.w*0.105,f.w*0.105,f.w*0.012,14),gmat('#0f1116',40)),head);
+      d.position.set(f.cx+s*f.w*0.165,GY,GZ+f.w*0.006); d.rotation.x=Math.PI/2; }); }
+    add(new THREE.Mesh(new THREE.BoxGeometry(f.w*0.10,f.w*0.020,f.w*0.020),m),head).position.set(f.cx,GY+f.w*0.01,GZ);
+    [-1,1].forEach(s=>{ add(new THREE.Mesh(new THREE.BoxGeometry(f.w*0.12,f.w*0.018,f.w*0.018),m),head).position.set(f.cx+s*f.w*0.28,GY+f.w*0.02,GZ-f.w*0.02); }); }
+  else if(kind==='backpack'){ const bh=ch.bodyH||1.7, m=gmat(o.accC||'#4a7bd0'), m2=gmat(c2);
+    const bp=new THREE.Group(); ch.inner.add(bp); bp.position.set(0,bh*0.585,-bh*0.105);
+    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.20,bh*0.23,bh*0.11),m),bp).position.set(0,0,0);
+    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.17,bh*0.06,bh*0.09),m2),bp).position.set(0,bh*0.08,-bh*0.01);
+    [-1,1].forEach(s=>{ const st=add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.030,bh*0.22,bh*0.020),m2),ch.inner);
+      st.position.set(s*bh*0.070,bh*0.60,bh*0.055); }); }
+  else if(kind==='tote'){ const bh=ch.bodyH||1.7, m=gmat(o.accC||'#a8743e'), m2=gmat(c2);
+    const bg=new THREE.Group(); ch.inner.add(bg); bg.position.set(bh*0.155,bh*0.40,0);
+    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.075,bh*0.14,bh*0.055),m),bg).position.set(0,0,0);
+    const hd=add(new THREE.Mesh(new THREE.TorusGeometry(bh*0.038,bh*0.008,5,12,Math.PI),m2),bg); hd.position.set(0,bh*0.07,0); }
 }
 function playA(ch,n,f){ if(!ch.acts[n]||ch.cur===n) return; const a=ch.acts[n]; a.reset(); a.enabled=true; a.setEffectiveWeight(1); a.fadeIn(f==null?0.15:f).play(); if(ch.cur&&ch.acts[ch.cur]) ch.acts[ch.cur].fadeOut(f==null?0.15:f); ch.cur=n; }
 function makeChar(model,o){ o=o||{}; const G=A['q:'+model]||A['q:Casual_Male']; const g=new THREE.Group(), inner=new THREE.Group(); g.add(inner); scene.add(g);
@@ -565,7 +569,7 @@ function makeChar(model,o){ o=o||{}; const G=A['q:'+model]||A['q:Casual_Male']; 
   const mixer=new THREE.AnimationMixer(m), acts={}; Object.keys(CLIPS).forEach(k=>acts[k]=mixer.clipAction(CLIPS[k]));
   const stackG=new THREE.Group(); stackG.position.set(0,0.78,0.38); g.add(stackG);
   const ch={g,inner,m,mixer,acts,cur:null,stackG,jump:0,look:o.look||null,hair:o.hair||null,eyeL:null,blinkT:1.5+Math.random()*3,blinkK:0};
-  try{ ch.bodyH=new THREE.Box3().setFromObject(m).getSize(new THREE.Vector3()).y||1.4; }catch(e){ ch.bodyH=1.4; }
+  try{ const hp=head?head.getWorldPosition(new THREE.Vector3()):null; ch.bodyH=Math.max(1.3,(hp?hp.y:1.24)/0.74); }catch(e){ ch.bodyH=1.7; }
   if(head&&faceM){ try{ const f=faceInfo(model,g,m,head,faceM); ch.face=f; ch.eyeL=addFace(head,f,o); if(o.acc) addGear(o.acc,ch,head,f,o); }catch(e){ window.__FACEERR=(window.__FACEERR||0)+1; window.__FACEERRM=String(e&&e.message||e); } }
   playA(ch,'Idle',0); mixer.update(Math.random()); return ch; }
 function animChar(ch,speed,dt,carry){ if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4.2; ch.blinkK=1; }
