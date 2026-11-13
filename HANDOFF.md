@@ -8,7 +8,8 @@
 - 2D 테스트 모드: https://snrnwps5-ops.github.io/tycoon/tech-test.html (WebGL 불필요, AI QA용)
 - 현재 버전: v2.5, 로직 커밋 `e172e00` (문서 커밋은 그 뒤) · 캐시 버스팅 `1794540015`
 - 캐시: `tech.html`·`index.html`·`tech-test.html` head에 `Cache-Control: no-cache, no-store, must-revalidate`(및 `Pragma`/`Expires`) 메타를 넣고, `version.txt`를 `cache:'no-store'`로 읽어 값이 다르면 `?b=<값>`으로 새 주소에서 다시 불러옵니다(세션스토리지 락 없음, 주소에 같은 `b=`가 이미 있으면 다시 돌지 않는 가드만 유지). 홈 화면 앱이 백그라운드에서 돌아올 때(`visibilitychange`)·bfcache 복귀(`pageshow persisted`)에도 다시 확인하며, **영업 중·상담 중에는 바로 갱신하지 않고**(`__updBusy`) 영업이 끝나면(`showResult`) 자동으로 확인해 반영합니다
-- `version.txt`: 빌드 시각. `tech.html` 머리의 스크립트가 이 값과 자신에 박힌 값을 비교해 다르면 `?b=`를 붙여 새로 불러옵니다. **배포할 때마다 `version.txt`와 `tech.html` 안의 `t!=='숫자'`를 같은 값으로 갱신**해야 합니다.
+- `version.txt`: 빌드 시각. 머리의 스크립트가 이 값과 자신에 박힌 `var V='숫자'`를 비교해 다르면 `?b=`를 붙여 새로 불러옵니다.
+- **배포할 때마다 아래 4곳을 같은 값으로 갱신**해야 합니다: `version.txt`, `tech.html`의 `var V='…'`, `index.html`의 `var V='…'`, `_t2d/part_head.html`의 `var V='…'`(2D 빌드 머리). 네 값이 다르면 그 페이지만 계속 `?b=`로 다시 불러오는 것처럼 보입니다.
 
 ## 2. 파일 구조
 | 파일 | 내용 |
