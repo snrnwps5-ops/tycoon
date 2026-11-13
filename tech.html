@@ -60,7 +60,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 .bb{width:57px!important;font-size:11px!important}
 .ntag{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font:900 11px var(--b);color:#fff;background:rgba(20,30,60,.7);border-radius:9px;padding:2px 7px 2px 2px;display:flex;align-items:center;gap:4px}.ntag i{font-style:normal;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:900 10px var(--b)}
 .crow{background:#fff;border-radius:14px;padding:9px 10px;margin:7px 0;text-align:left;box-shadow:0 2px 0 #e6d2b0}.crow h4{margin:0 0 4px;font-family:var(--d);font-size:15px;color:#4a2a10;display:flex;align-items:center;gap:6px}.crow h4 i{font-style:normal;width:22px;height:22px;border-radius:7px;color:#fff;display:flex;align-items:center;justify-content:center;font:900 12px var(--b)}.crow small{font:700 11px var(--b);color:#8a6a4a}
-.cand{display:flex;align-items:center;gap:8px;border-top:1px dashed #e6d2b0;padding-top:6px;margin-top:6px}.cand .cn{flex:1;font:800 12px var(--b);color:#5a3a20;line-height:1.35}.cand .cn b{font-family:var(--d);font-size:14px}.cand .cn em{font-style:normal;color:#ff8a1a;font-size:10px;margin-left:4px}.cand button{width:auto!important;margin:0!important;padding:7px 10px!important;font-size:13px!important;min-width:74px}
+.cand{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-top:1px dashed #e6d2b0;padding-top:6px;margin-top:6px}.cand .cn{flex:1 1 150px;min-width:150px;font:800 12px var(--b);color:#5a3a20;line-height:1.35;word-break:keep-all}/* v2.7: 레벨 설명 박스는 카드 아래 전체 폭으로 — 모바일에서 이름이 압사하지 않게 */.cand .lvt{order:3;width:100%;box-sizing:border-box;margin:4px 0 0}.cand>div:last-child{flex:none}.cand .cn b{font-family:var(--d);font-size:14px}.cand .cn em{font-style:normal;color:#ff8a1a;font-size:10px;margin-left:4px}.cand button{width:auto!important;margin:0!important;padding:7px 10px!important;font-size:13px!important;min-width:74px}
 .crow.lock{opacity:.5}
 .bb.g{background:linear-gradient(#7bea62,#2faa45);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 5px 0 #1d7a2a}.bb.o{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 5px 0 #b85a00}.bb.b{background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 5px 0 #1c3f9a}
 .bb i{position:absolute;right:-4px;top:-4px;width:16px;height:16px;border-radius:50%;background:#e8342a;border:2px solid #fff;display:none}
@@ -195,6 +195,9 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 #camctl button b{font:900 9px/1 var(--b);margin-top:2px;letter-spacing:-.3px;color:#dfe7f5}
 #camctl button.on{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00}
 #camctl button.on b{color:#fff}
+/* v2.7: 인테리어 꾸미기 독립 버튼 (해금 전에는 숨김) */
+#camctl button#intBtn{display:none;background:linear-gradient(#4fe0c8,#16a58c);box-shadow:0 3px 0 #0b6e5c}
+#camctl button#intBtn b{color:#fff}
 #intp{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom));width:min(430px,94vw);max-height:46vh;z-index:16;display:none;flex-direction:column;background:rgba(16,22,36,.94);border:2px solid rgba(255,255,255,.22);border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.45);color:#fff;overflow:hidden}
 #intp.on{display:flex}
 #intp .ihd{display:flex;align-items:center;gap:8px;padding:10px 12px 8px}
@@ -257,7 +260,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <button id="help"><b>급해요! 재고 가득 채우기</b><span>광고 보고 즉시 · 테스트</span></button>
 <div id="evt"><b>단체 관광객!</b><span>매장 매출 ×2</span><em id="evtT">30</em></div>
 <div id="joy"><i></i></div>
-<div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button></div>
+<div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
 <div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.6</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
@@ -1312,7 +1315,7 @@ function openStockout(c){ curFace=c.face; quizOpen=true; c.st0=c.st; c.st='consu
     if(o.k==='res'){ S.stats.ok++; c.happy=0; floatText(P,'예약해 주셔서 감사해요','say'); qToast('✔ 다른 매장 예약으로 연결했어요 (예약 수수료만 받아요)\n'+o.w,3.4); custLeave(c,true,8); }
     else if(o.k==='wait'){ c.st=c.st0; if(inc){ c.pat=c.patMax; floatText(P,'네, 기다릴게요','say'); toast('입고되면 바로 전달하세요!',2.4); } else { c.pat=Math.min(c.pat,c.patMax*0.35); floatText(P,'언제 들어오는데요…?','bad'); qToast('✘ 입고 예정이 없어요. 퀵 발주하거나 예약으로 안내하세요 — '+o.w,3.6); c.soAsked=0; setTimeout(()=>{ c.soAsked=0; },6000); c.soAsked=1; } }
     else { c.miss=true; qToast('✘ 대안(예약·입고 안내)을 제시해야 해요 — '+o.w,3.4); custLeave(c,false); } }; }
-/* ================= v2.6 작업 9-A: 애플 오퍼레이션(BOH) 백오피스 재고 업무 =================
+/* ================= v2.6 작업 9-A: 노바 오퍼레이션(BOH) 백오피스 재고 업무 =================
    ① 입고 검수(시리얼 스캔) ② 재고 실사(Cycle Count) ③ 불량·반품(RMA) 분리 보관 ④ 재고 담당 Lv2 자율 분담
    오차 = "아직 정리되지 않은 실물" — 미검수 입고 박스 + RMA 보관 대수. 그래서 실사 오차는 플레이어가 만든 상태에서 나옵니다. */
 const BOHP={x:-5.2,z:-5.55};        /* 데스크 앞 발판 (3D·2D 공통 좌표) */
@@ -1465,21 +1468,21 @@ const CLSQ=[
  {n:'어린이 코딩 교실',q:[['아이들에게 먼저 알려줄 것은?',['블록을 순서대로 놓는 법','복잡한 문법','타자 속도'],'코딩은 순서대로 생각하는 힘이 먼저라 블록 놓기부터 시작해야 이해가 이어져요'],['막힌 아이를 도울 땐?',['힌트를 주고 스스로 풀게 하기','답을 대신 입력해 주기','다음 시간에 하자고 하기'],'힌트만 주면 아이가 스스로 원인을 찾는 힘을 기르고, 답을 대신 넣으면 배움이 남지 않아요'],['수업 마무리는?',['만든 작품을 서로 보여주기','그냥 끝내기','숙제 많이 내기'],'서로 보여주는 시간이 성취감과 다음 수업 동기를 만들어요']]}];
 let cls=null, clsDone=false; const CLSP={x:-0.6,z:-2.9};
 const clsRing=new THREE.Mesh(new THREE.RingGeometry(0.6,0.78,32),new THREE.MeshBasicMaterial({color:'#ff7ab8',transparent:true,opacity:0.9,depthWrite:false})); clsRing.rotation.x=-Math.PI/2; clsRing.position.set(CLSP.x,FLOOR_Y.rest,CLSP.z); clsRing.renderOrder=2; clsRing.visible=false; scene.add(clsRing);
-/* v2.6: 예약제 워크숍 세션 주제 4종 — 질의응답 3개 + 팁 시연 + 액세서리 매출 */
+/* v2.6: 예약제 워크숍 '노바 세션' 주제 4종 — 질의응답 3개 + 팁 시연 + 액세서리 매출 (v2.7: 브랜드 표기 정리) */
 const TAA=[
- {ic:'📸',n:'아이폰 저조도 야간 모드 사진 마스터',tip:'조명을 끄고 같은 장면을 긴 노출로 다시 찍어 비교해요',acc:'케이스 · 미니 삼각대 · 렌즈 클리너',q:[
+ {ic:'📸',n:'노바폰 저조도 야간 모드 사진 마스터',tip:'조명을 끄고 같은 장면을 긴 노출로 다시 찍어 비교해요',acc:'케이스 · 미니 삼각대 · 렌즈 클리너',q:[
   ['야간 모드가 자동으로 켜지지 않을 때는?',['완전히 어두워질 때까지 흔들리지 않게 고정하고 기다리기','플래시를 강제로 켜기','줌을 최대로 당기기'],'야간 모드는 주변 밝기를 재서 자동으로 켜지고, 손을 고정해야 노출 시간이 길게 잡혀요'],
   ['야간 인물 사진에서 얼굴이 흐려질 때는?',['인물 사진 모드에서 1~2m 거리, 얼굴을 눌러 초점 고정','플래시를 얼굴에 직접 비추기','야간 모드를 끄기'],'인물 사진 모드는 거리와 초점 고정이 핵심이고, 직접 플래시는 얼굴을 하얗게 날려요'],
   ['밤 풍경의 불빛이 뭉개질 때 팁은?',['삼각대나 난간에 기대서 노출을 길게 확보','화면 밝기를 최대로 올리기','렌즈를 손으로 살짝 가리기'],'긴 노출을 손떨림 없이 버티는 게 핵심이라 고정이 가장 중요해요']]},
- {ic:'🎨',n:'아이패드 & 애플펜슬 프로크리에이트 드로잉',tip:'같은 선을 필압만 바꿔 두 번 그어 획 차이를 보여줘요',acc:'펜슬 팁 4종 · 펜슬 케이스 · 종이 질감 필름',q:[
+ {ic:'🎨',n:'태블릿 & 펜슬 드로잉 클래스',tip:'같은 선을 필압만 바꿔 두 번 그어 획 차이를 보여줘요',acc:'펜슬 팁 4종 · 펜슬 케이스 · 종이 질감 필름',q:[
   ['선이 끌리듯 늘어질 때는?',['펜슬 팁 마모를 확인하고 새 팁으로 교체','화면을 세게 누르기','브러시를 그대로 쓰기'],'팁이 닳으면 필압이 뭉개져 선이 늘어져서 팁 교체가 가장 먼저예요'],
   ['종이 질감을 내려면?',['질감 필름을 붙이거나 노이즈 텍스처 브러시 사용','해상도를 낮추기','레이어를 모두 합치기'],'유리 위에서는 미끄러워서 질감 필름이 가장 효과적이고, 해상도·레이어는 질감과 무관해요'],
   ['레이어가 많아 느려질 때는?',['레이어 병합과 캔버스 해상도 조정','앱을 지웠다 다시 설치','펜슬을 충전'],'레이어 수와 해상도가 메모리를 차지해서 병합이 가장 빠른 해결이에요']]},
- {ic:'💻',n:'맥북으로 시작하는 스위프트 코딩 첫걸음',tip:'플레이그라운드에서 변수 하나를 바꿔 결과가 바로 바뀌는 걸 보여줘요',acc:'USB-C 어댑터 · 멀티 허브 · 무선 마우스',q:[
+ {ic:'💻',n:'노트북으로 시작하는 스위프트 코딩 첫걸음',tip:'플레이그라운드에서 변수 하나를 바꿔 결과가 바로 바뀌는 걸 보여줘요',acc:'USB-C 어댑터 · 멀티 허브 · 무선 마우스',q:[
   ['처음 배울 때 무엇부터 시작할까요?',['Swift Playgrounds로 변수·조건문부터','고급 제네릭 문법부터','타자 속도부터'],'작은 성공을 쌓는 순서가 오래가고, 문법부터 외우면 금방 지쳐요'],
-  ['앱이 자꾸 멈출 때 먼저 볼 것은?',['오류 메시지를 읽고 옵셔널(nil) 처리 확인','맥북을 새로 사기','화면 밝기 조정'],'스위프트 오류는 대부분 값이 비어 있는(nil) 자리에서 나와요'],
+  ['앱이 자꾸 멈출 때 먼저 볼 것은?',['오류 메시지를 읽고 옵셔널(nil) 처리 확인','노트북을 새로 사기','화면 밝기 조정'],'스위프트 오류는 대부분 값이 비어 있는(nil) 자리에서 나와요'],
   ['배포 전에 꼭 확인할 것은?',['시뮬레이터와 실기기 테스트, 권한 문구 확인','앱 이름만 정하기','아이콘만 바꾸기'],'권한·성능 문제는 실기기에서만 드러나서 배포 전 확인이 필수예요']]},
- {ic:'⌚',n:'애플워치와 함께하는 나만의 러닝 & 심장 건강',tip:'스트랩을 조이고 손목 위치를 바꿔 심박 측정을 비교해요',acc:'스포츠 스트랩 · 충전 거치대 · 이어버드',q:[
+ {ic:'⌚',n:'노바워치와 함께하는 나만의 러닝 & 심장 건강',tip:'스트랩을 조이고 손목 위치를 바꿔 심박 측정을 비교해요',acc:'스포츠 스트랩 · 충전 거치대 · 이어버드',q:[
   ['러닝 기록을 시작하려면?',['운동 앱에서 야외 달리기를 골라 시작','시계를 흔들기','알람을 맞추기'],'종목을 골라야 거리와 심박이 기록되고, 알람은 운동 기록과 무관해요'],
   ['심박이 이상하게 높게 나올 때는?',['스트랩을 조금 조이고 손목뼈 위로 착용','시계를 느슨하게 차기','화면을 끄기'],'센서가 피부에 밀착되지 않으면 심박이 튀어요'],
   ['배터리를 오래 쓰려면?',['저전력 모드와 알림 정리','화면 밝기 최대','수면 추적만 끄기'],'저전력 모드가 센서·화면 주기를 줄여서 가장 효과적이에요']]}
@@ -1497,7 +1500,7 @@ function clsStart(){ if(cls) return null; const Q=pickQ(TAA); if(!Q) return null
     ch.g.position.set(CLSP.x+Math.cos(a)*r,0,CLSP.z+Math.sin(a)*r*0.85);
     ch.g.rotation.y=Math.atan2(CLSP.x-ch.g.position.x,CLSP.z-ch.g.position.z); npcs.push(ch); }
   cls={Q:Q,t:50,seats:st.n,npcs:npcs,noShow:st.noShow,standby:st.standby,ok:0}; clsRing.visible=true;
-  bigBanner('📅 투데이앳애플 세션',Q.ic+' '+Q.n+' · 참가자 '+st.n+'명');
+  bigBanner('📅 노바 세션',Q.ic+' '+Q.n+' · 참가자 '+st.n+'명');
   snd('level_up',0.45,1.3);
   if(st.noShow) setTimeout(()=>toast('🙈 예약 노쇼 1명 — 예약 명단에서 빠졌어요',3.2),900);
   if(st.standby) setTimeout(()=>toast('🙋 현장 대기 손님 1명이 합류했어요 — 자리를 채워 드려요',3.2),1500);
@@ -1770,6 +1773,7 @@ $('upBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openUp(
 let helpCD=25; $('help').onclick=()=>{ $('help').classList.remove('on'); helpCD=90; $('help').querySelector('span').textContent=S.noAds?'채우는 중…':'광고 보는 중…'; setTimeout(()=>{ $('help').querySelector('span').textContent='광고 보고 즉시 · 테스트'; SRC.forEach(s=>{ if(s.on){ s.n=s.max; layoutSrc(s); sparkle(s.x,1.2,s.z); } }); custs.forEach(c=>{ if(c.st==='wait'||c.st==='want') c.pat=c.patMax; }); snd('level_up',0.5); bigBanner('재고 가득!','손님 인내심도 회복'); },S.noAds?150:1000); };
 $('stockAl').onclick=()=>{ if(!quizOpen){ initAudio(); snd('ui',0.4); openInv(); } }; drawDock();
 $('shopBtn').onclick=()=>{ initAudio(); snd('ui',0.4); if(!quizOpen) openShop(); }; updShopBtn();
+$('intBtn').onclick=()=>{ initAudio(); if(qBusy()||mgmtOpen()) return; snd('ui',0.4); if(intOpenState) closeInt(); else openInt(1); }; updIntBtn();
 $('mute').onclick=()=>{ initAudio(); const o=optO(); setOpt('bgm',!o.bgm); $('mute').style.opacity=o.bgm?1:0.45; snd('ui',0.35); };
 try{ $('mute').style.opacity=optO().bgm?1:0.45; }catch(e){}
 $('back').onclick=goLobby;
@@ -2082,7 +2086,7 @@ function openOffline(then,plan){
     $('modal').classList.remove('on'); toast('🏢 오프라인 수익 +$'+o.gain+' 받았어요',2.6); setTimeout(then,500); };
   return true;
 }
-/* 앱을 다시 열었는데 페이지가 새로고침되지 않은 경우(아이폰이 탭을 유지)에도 정산 창을 띄웁니다. 영업 중·상담 중에는 방해하지 않음 */
+/* 앱을 다시 열었는데 페이지가 새로고침되지 않은 경우(폰이 탭을 유지)에도 정산 창을 띄웁니다. 영업 중·상담 중에는 방해하지 않음 */
 function offResume(){
   if(dayState==='run'||quizOpen) return;
   if(document.body.classList.contains('title')) return; /* 타이틀 화면에서는 영업 시작 때 띄움 */
@@ -2127,7 +2131,7 @@ const INTSHOP={
          {k:'herring',n:'헤링본 우드',p:280,sw:'#c9a27a',t:['#c9a27a','#bb946c','#9a7550']},
          {k:'marble',n:'대리석 화이트 타일',p:420,sw:'#f2f2ee',t:['#f4f4f0','#e8e8e2','#d3d3ca']}],
   wall:[{k:'theme',n:'기본 (매장 테마)',p:0,sw:'#f3ead8'},
-        {k:'space',n:'애플 스페이스그레이',p:180,sw:'#3d434f',t:['#4a4f5c','#3c414d','#2a2f3a']},
+        {k:'space',n:'스페이스그레이',p:180,sw:'#3d434f',t:['#4a4f5c','#3c414d','#2a2f3a']},
         {k:'beige',n:'웜베이지',p:200,sw:'#e8dcc4',t:['#f0e4cf','#e3d3b6','#cbb692']},
         {k:'navy',n:'미드나잇 네이비',p:260,sw:'#22304d',t:['#22304d','#1a2740','#121a2b']}],
   plant:[{k:'none',n:'화분 없음',p:0,sw:'#8a7a62'},
@@ -2163,9 +2167,11 @@ function intRender(){
   const p=$('intp'); if(p) p.classList.toggle('pv',!!INT_PV);
   const f=$('intFoot'); if(f) f.innerHTML=INT_PV?('<b>미리 보기: '+INTSHOP[INT_PV.cat].find(x=>x.k===INT_PV.k).n+' · $'+intPrice(INT_PV.cat,INT_PV.k)+'</b><button data-ibuy="1">구매하고 적용</button><button data-icx="1" class="g">취소</button>'):'';
 }
-function openInt(){ if(!S.unl.includes('decor')){ toast('매장 꾸미기(🛋️ 패드)를 먼저 해금해 주세요',2.6); return; }
-  intOpenState=true; intArmed=false; INT_TAB='floor'; INT_PV=null; intApplyAll(); intRender(); $('intp').classList.add('on'); snd('ui',0.4,1.15); }
-function closeInt(){ INT_PV=null; intOpenState=false; const p=$('intp'); if(p) p.classList.remove('on'); intApplyAll(); }
+let INT_PIN=false;   /* v2.7: 버튼으로 연 경우 발판에서 멀어져도 닫지 않음 */
+function openInt(pin){ if(!S.unl.includes('decor')){ toast('인테리어는 매장 꾸미기 해금 뒤에 쓸 수 있어요',2.6); return; }
+  INT_PIN=!!pin; intOpenState=true; intArmed=false; INT_TAB='floor'; INT_PV=null; intApplyAll(); intRender(); $('intp').classList.add('on'); snd('ui',0.4,1.15); updIntBtn(); }
+function closeInt(){ INT_PIN=false; INT_PV=null; intOpenState=false; const p=$('intp'); if(p) p.classList.remove('on'); intApplyAll(); updIntBtn(); }
+function updIntBtn(){ const b=$('intBtn'); if(!b) return; const on=S.unl.includes('decor'); b.style.display=on?'flex':'none'; b.classList.toggle('on',!!intOpenState); }
 function intBuy(){ if(!INT_PV) return; const cat=INT_PV.cat, k=INT_PV.k, o=INTSHOP[cat].find(x=>x.k===k), d=intO();
   if(!d.own[k]){ if(money<o.p){ toast('돈이 부족해요 · $'+o.p+' 필요',2.2); snd('ui',0.4,0.5); return; } money-=o.p; d.own[k]=1; }
   d[cat]=k; INT_PV=null; intApplyAll(); intRender(); save(); snd('coin',0.5,1.1);
@@ -2183,7 +2189,7 @@ function intTick(){
   if(typeof intPadVis3==='function'){ try{ intPadVis3(); }catch(e){} }
   if(!S.unl.includes('decor')) return;
   const dist=Math.hypot(player.pos.x-INTP.x,player.pos.z-INTP.z);
-  if(intOpenState){ if(dist>2.8) closeInt(); return; }
+  if(intOpenState){ if(!INT_PIN&&dist>2.8) closeInt(); return; }
   if(!intArmed){ if(dist>2.0) intArmed=true; return; }
   if(dist<1.5&&!quizOpen&&!$('modal').classList.contains('on')) openInt();
 }
