@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794567168';
+<script>try{(function(){var V='1794554794';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -303,7 +303,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.14</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.15</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -1775,7 +1775,7 @@ function slotClick(e){ const hb=e.target.closest('[data-xhire]'), fb=e.target.cl
 /* ---- save: status, manual save, export / import code ---- */
 function saveCode(){ save(); return 'NOVA1.'+btoa(unescape(encodeURIComponent(JSON.stringify(S)))); }
 function loadCode(txt){ txt=(txt||'').trim(); if(txt.indexOf('NOVA1.')!==0) throw new Error('저장 코드가 아니에요'); let o; try{ o=JSON.parse(decodeURIComponent(escape(atob(txt.slice(6))))); }catch(e){ throw new Error('코드가 손상됐거나 일부만 복사됐어요'); } if(!o||typeof o.day!=='number'||!Array.isArray(o.unl)) throw new Error('코드가 손상됐어요'); return o; }
-function saveParse(t){ t=(t||'').trim(); let i=t.indexOf('NOVA1.'); if(i<0){ try{ t=decodeURIComponent(t); }catch(_){} i=t.indexOf('NOVA1.'); } if(i<0) throw new Error('저장 코드나 세이브 링크가 아니에요 (NOVA1. 로 시작해요)'); t=t.slice(i).split(/[\s&#"'<>]/)[0]; try{ t=decodeURIComponent(t); }catch(_){} return loadCode(t); } /* v2.14: 저장 코드와 세이브 링크(#save=…) 둘 다 받는다 */
+function saveParse(t){ t=(t||'').trim(); let i=t.indexOf('NOVA1.'); if(i<0){ try{ t=decodeURIComponent(t); }catch(_){} i=t.indexOf('NOVA1.'); } if(i<0) throw new Error('저장 코드나 세이브 링크가 아니에요 (NOVA1. 로 시작해요)'); t=t.slice(i).split(/[\s&#"'<>]/)[0]; try{ t=decodeURIComponent(t); }catch(_){} return loadCode(t); } /* v2.15: 저장 코드와 세이브 링크(#save=…) 둘 다 받는다 */
 function openLoad(msg){
   openModal('<h2>📂 불러오기</h2><p style="font-size:12.5px;margin:4px 0 6px;text-align:left">사파리와 홈 화면 앱은 저장 공간이 따로예요. 원래 하던 곳에서 <b>💾 → 저장 코드 복사</b>(또는 세이브 링크 복사)를 한 뒤, 여기에 붙여 넣으면 이어서 할 수 있어요.</p>'+
    '<textarea id="ldTxt" placeholder="저장 코드(NOVA1.…)나 세이브 링크를 붙여 넣으세요" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" style="width:100%;box-sizing:border-box;height:84px;border-radius:10px;border:2px solid #d8cdb8;padding:8px;font:16px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea>'+
@@ -1842,7 +1842,7 @@ $('msBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openMs(
 function openLog(){ const n=Math.max(DAYS.length,S.day+1); let h='<h2>영업 일지</h2><div class="dlist">'; for(let d=0;d<n;d++){ if(d===0||d===4||d===8||d===11||d===15||d===19) h+='<div style="font-family:var(--d);font-size:15px;color:#7a4a20;margin:10px 2px 2px">STAGE '+(STAGE_OF(d)+1)+' · '+STN[STAGE_OF(d)]+'</div>'; const cfg=dayCfg(d), st=S.dayStars[d]||0, lock=d>S.day; h+='<div class="dli'+(lock?' lock':'')+'"><b>DAY '+(d+1)+'<small>'+cfg.title+' · 목표 $'+cfg.goal+'</small></b><em>'+'★'.repeat(st)+'<span style="color:#d8cdb8">'+'★'.repeat(3-st)+'</span></em></div>'; } h+='</div><button id="mOk">닫기</button>'; openModal(h); }
 $('mapBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openRank(); };
 let _chipT=0;
-/* v2.14: 왼쪽 정보 칩이 몇 줄로 접히든 그 아래에 DAY 바·콤보·토스트가 오도록 높이를 CSS 변수로 넘긴다 */
+/* v2.15: 왼쪽 정보 칩이 몇 줄로 접히든 그 아래에 DAY 바·콤보·토스트가 오도록 높이를 CSS 변수로 넘긴다 */
 try{ const _sb=$('sub'), _fit=()=>{ const h=Math.round(_sb.getBoundingClientRect().height); document.documentElement.style.setProperty('--subH',Math.max(26,h||26)+'px'); }; if(window.ResizeObserver) new ResizeObserver(_fit).observe(_sb); addEventListener('resize',_fit); _fit(); }catch(_){}
 $('loadChip').onclick=()=>{ initAudio(); if(qBusy()||$('modal').classList.contains('on')) return; snd('ui',0.4); openLoad(); };
 { const _tl=$('tLoad'); if(_tl) _tl.onclick=e=>{ e.stopPropagation(); if($('modal').classList.contains('on')) return; openLoad(); }; }
@@ -1944,18 +1944,27 @@ function collideAxis(p, axis, oldVal){
   const R=0.28;
   const b=collideBox(p.x, p.z, R);
   if(b){
-    /* v2.11: 진행 방향으로만 보정한다. 예전에는 같은 자리(oldVal과 동일)에서도
-       반대편 면(b.x2+R 등)으로 좌표를 옮겨, 벽 틈에 들어가면 몇 m씩 튕겨나갔다. */
+    /* v2.15: 부드러운 벽 슬라이딩 & 모서리 끼임 락 영구 박멸.
+       이전 위치(oldVal)가 충돌 박스 어느 쪽에 있었는지 판정해, 진행 방향 벽 표면으로만 붙이고
+       반대 방향으로 빠져나올 때는 절대 가두지 않는다. */
     if(axis==='x'){
-      const dx=p.x-oldVal;
-      if(dx>0) p.x=Math.max(oldVal,Math.min(p.x,b.x1-R));
-      else if(dx<0) p.x=Math.min(oldVal,Math.max(p.x,b.x2+R));
-      else p.x=(p.x-(b.x1-R)<(b.x2+R)-p.x)?b.x1-R:b.x2+R;
+      if(oldVal<=b.x1-R+0.02) p.x=b.x1-R;
+      else if(oldVal>=b.x2+R-0.02) p.x=b.x2+R;
+      else {
+        const dx=p.x-oldVal;
+        if(dx>0) p.x=b.x1-R;
+        else if(dx<0) p.x=b.x2+R;
+        else p.x=(p.x-(b.x1-R)<(b.x2+R)-p.x)?b.x1-R:b.x2+R;
+      }
     } else {
-      const dz=p.z-oldVal;
-      if(dz>0) p.z=Math.max(oldVal,Math.min(p.z,b.z1-R));
-      else if(dz<0) p.z=Math.min(oldVal,Math.max(p.z,b.z2+R));
-      else p.z=(p.z-(b.z1-R)<(b.z2+R)-p.z)?b.z1-R:b.z2+R;
+      if(oldVal<=b.z1-R+0.02) p.z=b.z1-R;
+      else if(oldVal>=b.z2+R-0.02) p.z=b.z2+R;
+      else {
+        const dz=p.z-oldVal;
+        if(dz>0) p.z=b.z1-R;
+        else if(dz<0) p.z=b.z2+R;
+        else p.z=(p.z-(b.z1-R)<(b.z2+R)-p.z)?b.z1-R:b.z2+R;
+      }
     }
   }
   p.x=Math.max(-6.6,Math.min(6.6,p.x));
@@ -2026,21 +2035,16 @@ function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBou
 function camClampT(dt){
   if(Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01){ _camNew.set(player.pos.x*0.85,0,player.pos.z-1.8); return _camNew; } // 2D 탑다운은 그대로
   const a=innerWidth/Math.max(1,innerHeight), vh=camVH(), zoom=cam.zoom||1, sp=camSpan(vh,a,zoom), H=Math.max(1,innerHeight);
-  const hw=vh*a/2/zoom, pxm=H/(sp.dzMax-sp.dzMin);     // 화면 1px 당 지면 길이(m)
-  const marM=(CAMUI.marPx+2)/pxm;                      // 하단 버튼 바가 덮는 지면 길이(m)
+  const hw=vh*a/2/zoom;
   const px=player.pos, Xx=_camX.x, Xz=_camX.z;
-  /* 세로: 화면 아래 끝을 '출입구 + 하단 바 높이'에 맞춘다 → 매장 바닥이 화면 끝까지 차고,
-     바깥 바닥은 하단 버튼 바 뒤로만 지나간다. 화면이 매장보다 얕을 때만 플레이어를 따라간다. */
-  let tz=px.z-1.8;
-  const tzMax=(CAMS.z1-1.2)-sp.dzMax, tzFar=(CAMS.z1+marM)-sp.dzMax, tzMin=(CAMS.z0-0.6)-sp.dzMin; /* v2.14: 화면 아래 끝을 출입문 안쪽(z=4.8) 매장 바닥에 가둔다 — 버튼 틈·홈 바 아래로 바깥 도로가 보이지 않는다 */
-  if(tzMin<=tzMax) tz=Math.max(tzMin,Math.min(tzMax,tz)); else tz=tzMax;
+  /* v2.15: 화면 아래 끝을 매장 바닥 출입문 안쪽(z=5.6m)에 영구 고정한다.
+     바깥 도로가 화면 아래에 절대 1px도 노출되지 않으며, 매장 내부 바닥이 화면 전체를 100% 채운다. */
+  const tzMax=(CAMS.z1-0.4)-sp.dzMax, tzMin=(CAMS.z0-0.6)-sp.dzMin;
+  let tz=tzMax; // 세로는 매장 바닥 가득 채우도록 tzMax 고정 (도로 노출 원천 차단)
   /* 가로: 매장을 화면 가운데에 고정하고, 플레이어가 화면 밖으로 밀릴 때만 따라간다 */
   const txMin=(CAMS.x1+1.2)-sp.dxMax, txMax=(CAMS.x0-1.2)-sp.dxMin, U=0.72*hw;
   const fitX=()=>{ let x=0; if(txMin<=txMax) x=Math.max(txMin,Math.min(txMax,x)); const cz=(px.z-tz)*Xz; return Math.max(px.x-(U-cz)/Xx, Math.min(px.x-(-U-cz)/Xx, x)); };
   let tx=fitX();
-  /* v2.14: 플레이어가 출입구 쪽으로 내려가 하단 버튼 바 뒤로 가려질 때만, 발이 바 위로 보일 만큼만 따라 내려간다 (평소엔 z=4.8 안쪽에 고정) */
-  { const Yx=_camY.x, Yz=_camY.z, vMin=-vh/2/zoom+(CAMUI.marPx+2)/H*vh/zoom+0.9, v=(px.x-tx)*Yx+(px.z-tz)*Yz;
-    if(v<vMin&&Yz<-0.01){ tz=Math.min(tzFar,Math.max(tz,px.z-(vMin-(px.x-tx)*Yx)/Yz)); tx=fitX(); } }
   _camNew.set(tx,0,tz); return _camNew;
 }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
