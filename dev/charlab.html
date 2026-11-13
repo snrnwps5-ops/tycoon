@@ -12,7 +12,7 @@ const MODELS=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Cas
 const Q=new URLSearchParams(location.search); const ROW=+(Q.get('row')||0), HEAD=Q.get('head')==='1';
 const scene=new THREE.Scene(); scene.background=new THREE.Color('#22252c');
 const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(1); renderer.setSize(innerWidth,innerHeight); document.body.appendChild(renderer.domElement);
-const cam=new THREE.PerspectiveCamera(30,innerWidth/innerHeight,0.05,80);
+const cam=new THREE.PerspectiveCamera(30,innerWidth/innerHeight,0.05,200);
 scene.add(new THREE.HemisphereLight(0xffffff,0x445566,1.05));
 const dl=new THREE.DirectionalLight(0xffffff,0.85); dl.position.set(2,5,6); scene.add(dl);
 function b64(s){ const bin=atob(s); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return u.buffer; }
@@ -21,23 +21,26 @@ const SKINS=['#f7d2b5','#f2c7a0','#e8b48a'];
 function load(n){ return new Promise(res=>L.parse(b64(AB['q:'+n]),'',g=>res(g))); }
 (async()=>{
   const names=MODELS.slice(ROW*5,ROW*5+5);
-  const H=1.7;
+  const holders=[];
   for(let i=0;i<names.length;i++){
     const g=await load(names[i]);
     const m=THREE.SkeletonUtils.clone(g.scene);
     m.traverse(x=>{ if(x.isMesh){ const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString();
       if(/^Skin$/.test(mt.name||'')) hex=SKINS[i%SKINS.length];
       x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
-    const box=new THREE.Box3().setFromObject(m); const sz=box.getSize(new THREE.Vector3());
-    const sc=H/sz.y; m.scale.setScalar(sc); m.position.y=-box.min.y*sc;
-    const holder=new THREE.Group(); holder.add(m);
-    holder.position.x=(i-2)*0.85; holder.rotation.y=HEAD?0:0;
-    scene.add(holder);
+    const holder=new THREE.Group(); holder.add(m); scene.add(holder);
+    holder.updateMatrixWorld(true);
+    let box=new THREE.Box3().setFromObject(m); let sz=box.getSize(new THREE.Vector3());
+    const sc=1.7/sz.y; m.scale.multiplyScalar(sc); holder.updateMatrixWorld(true);
+    box=new THREE.Box3().setFromObject(m); m.position.y=-box.min.y; holder.position.x=(i-2)*0.9;
+    holders.push(holder);
     const d=document.createElement('div'); d.textContent=names[i];
     d.style.cssText='position:fixed;left:'+(9+i*19)+'%;bottom:4px;color:#fff;font:12px monospace'; document.body.appendChild(d);
   }
-  if(HEAD){ cam.position.set(0,1.45,1.9); cam.lookAt(0,1.42,0); }
-  else { cam.position.set(0,1.35,5.2); cam.lookAt(0,0.95,0); }
+  const ab=new THREE.Box3(); holders.forEach(h=>ab.expandByObject(h)); const c=ab.getCenter(new THREE.Vector3()); const s=ab.getSize(new THREE.Vector3());
+  const dist=(Math.max(s.x,s.y*innerWidth/innerHeight)/2)/Math.tan(30*Math.PI/360)+0.6;
+  if(HEAD){ cam.position.set(c.x,c.y+0.55,dist*0.35); cam.lookAt(c.x,c.y+0.55,c.z); }
+  else { cam.position.set(c.x,c.y,dist); cam.lookAt(c.x,c.y,c.z); }
   function tick(){ requestAnimationFrame(tick); renderer.render(scene,cam); } tick();
   window.__ok=1;
 })();
