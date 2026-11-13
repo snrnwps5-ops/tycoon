@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794551689';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794554794';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -272,7 +272,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.12</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.13</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -368,10 +368,10 @@ const renderer=bootRenderer({canvas:$('c'),antialias:true}); if(!renderer) retur
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,2)); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 const scene=new THREE.Scene(); scene.background=new THREE.Color(THM.ground);
 const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,200); const CAM_OFF=new THREE.Vector3(5.5,17,10.5);
-function resize(){ const w=innerWidth,h=innerHeight,a=w/h; renderer.setSize(w,h); /* v2.11: 세로 화각 17m -> 13.5m (화면 아래 잔디 여백 축소) */ const vh=a<1?13.5:12; cam.left=-vh*a/2; cam.right=vh*a/2; cam.top=vh/2; cam.bottom=-vh/2; cam.updateProjectionMatrix(); if(window.__camReady){ try{ camPose(); }catch(e){} } }
+function resize(){ const w=innerWidth,h=innerHeight,a=w/h; renderer.setSize(w,h); /* v2.13: 화면비 자율 반응형 화각 (camVH) */ const vh=camVH(); cam.left=-vh*a/2; cam.right=vh*a/2; cam.top=vh/2; cam.bottom=-vh/2; cam.updateProjectionMatrix(); try{ camMeasureUI(); }catch(e){} if(window.__camReady){ try{ camPose(); }catch(e){} } }
 /* ---- v2.5: 시점 제어 — 기본 쿼터뷰 / 전체 보기(탑다운 하이 앵글) / 핀치 줌 0.7~1.3 ---- */
 const CAMB={x:5.5,y:17,z:10.5};
-function camFit(){ const a=innerWidth/Math.max(1,innerHeight), vh=a<1?13.5:12, vw=vh*a; return Math.max(0.2,Math.min(1,Math.min(vw/15.9,vh/16.9))); }
+function camFit(){ const a=innerWidth/Math.max(1,innerHeight), vh=camVH(), vw=vh*a; return Math.max(0.2,Math.min(1,Math.min(vw/15.9,vh/16.9))); }
 function camFullPose(full,pz){ if(full){ CAM_OFF.set(-0.7,30,11.5); cam.zoom=Math.max(0.18,Math.min(1.3,camFit()*(pz||1))); } else { CAM_OFF.set(CAMB.x,CAMB.y,CAMB.z); cam.zoom=Math.max(0.7,Math.min(1.3,pz||1)); } try{ cam.updateProjectionMatrix(); }catch(e){} }
 addEventListener('resize',resize); resize();
 scene.add(new THREE.HemisphereLight(0xfffaf2,0x9a9aa8,0.8));
@@ -2023,6 +2023,54 @@ function angLerp(a,b,t){ let d=b-a; while(d>Math.PI)d-=Math.PI*2; while(d<-Math.
 let titleOn=true, titleK=1; const _to=new THREE.Vector3(), _tg=new THREE.Vector3(), _tc=new THREE.Vector3(0,0,-1.2);
 function titleCam(dt){ if(!titleOn&&titleK<=0) return; if(!titleOn) titleK=Math.max(0,titleK-dt*1.3); const e=titleK*titleK*(3-2*titleK), a=(Math.sin(time*0.2)*0.5-0.15)*e; _to.set(CAM_OFF.x*Math.cos(a)+CAM_OFF.z*Math.sin(a),CAM_OFF.y,-CAM_OFF.x*Math.sin(a)+CAM_OFF.z*Math.cos(a)); _tg.lerpVectors(camT,_tc,e); cam.position.copy(_tg).add(_to); cam.lookAt(_tg); const z=1-0.4*e; if(cam.zoom!==z){ cam.zoom=z; cam.updateProjectionMatrix(); } }
 const camT=new THREE.Vector3(0,0,1.2); let last=performance.now(), spawnT=0.5, saveT=0, time=0, pickT=0, cashT=0, hintT=0;
+/* ---------------- v2.13: 해상도의 자율 — 반응형 카메라 엔진 ----------------
+   어떤 화면비에서도 매장 내부가 화면을 꽉 채우고, 화면 아래로 바깥 도로가 새지 않게 한다.
+   · camVH()      : 화면비로부터 세로 화각(월드 m)을 정한다 (지면 깊이 17.5m 피팅)
+   · camSpan()    : 현재 화각·핀치줌에서 화면 네 모서리가 지면(y=0)과 만나는 지점의 camT 기준 오프셋
+   · camClampT()  : 그 오프셋으로 camT를 매장 경계 안에 가둔다 (아래=출입구+하단바, 위=뒷벽, 좌우=벽)
+   · camMeasureUI(): 하단 버튼 바가 덮는 화면 높이를 재서, 그 뒤쪽까지만 바깥 바닥이 지나가게 한다 */
+const CAMS={x0:-7,x1:7,z0:-9,z1:6};            // 매장 내부 경계 (가로 14m · 깊이 15m)
+const CAMUI={marPx:76};                        // 하단 버튼 바가 덮는 화면 높이(px)
+function camVH(){ const a=innerWidth/Math.max(1,innerHeight);
+  /* v2.13: 세로 깊이 17.5m(매장 15m + 위아래 숨김 여유)를 화면 세로에 꼭 맞추는 화각.
+     지면 깊이 = vh*(1.08+0.464a) (CAM_OFF 5.5/17/10.5 실측 계수) → vh = 17.5/(1.08+0.464a) */
+  return Math.max(7.6,Math.min(15.0,17.5/(1.08+0.464*a))); }
+const _camO=new THREE.Vector3(), _camX=new THREE.Vector3(), _camY=new THREE.Vector3(), _camUp=new THREE.Vector3(0,1,0), _camSp={dzMin:0,dzMax:0,dxMin:0,dxMax:0}, _camT=new THREE.Vector3(), _camNew=new THREE.Vector3();
+function camSpan(vh,a,zoom){
+  const z=zoom||1, hw=vh*a/2/z, hh=vh/2/z;
+  _camO.copy(CAM_OFF).normalize();
+  _camX.crossVectors(_camUp,_camO).normalize();   // 화면 오른쪽 월드축
+  _camY.crossVectors(_camO,_camX);                // 화면 위쪽 월드축
+  let dzMin=1e9,dzMax=-1e9,dxMin=1e9,dxMax=-1e9;
+  for(let i=0;i<4;i++){ const su=(i&1)?1:-1, sv=(i&2)?1:-1, u=su*hw, v=sv*hh;
+    const t=(CAM_OFF.y+v*_camY.y)/_camO.y;      // 그 화면점의 시선이 지면에 닿는 거리
+    const dz=CAM_OFF.z+u*_camX.z+v*_camY.z-t*_camO.z;
+    const dx=CAM_OFF.x+u*_camX.x+v*_camY.x-t*_camO.x;
+    if(dz<dzMin)dzMin=dz; if(dz>dzMax)dzMax=dz; if(dx<dxMin)dxMin=dx; if(dx>dxMax)dxMax=dx;
+  }
+  _camSp.dzMin=dzMin; _camSp.dzMax=dzMax; _camSp.dxMin=dxMin; _camSp.dxMax=dxMax;
+  return _camSp;
+}
+function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const h=innerHeight-r.top; if(h>0&&h<innerHeight*0.4) CAMUI.marPx=Math.round(h+4); }catch(e){} }
+function camClampT(dt){
+  if(Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01){ _camNew.set(player.pos.x*0.85,0,player.pos.z-1.8); return _camNew; } // 2D 탑다운은 그대로
+  const a=innerWidth/Math.max(1,innerHeight), vh=camVH(), zoom=cam.zoom||1, sp=camSpan(vh,a,zoom), H=Math.max(1,innerHeight);
+  const hw=vh*a/2/zoom, pxm=H/(sp.dzMax-sp.dzMin);     // 화면 1px 당 지면 길이(m)
+  const marM=(CAMUI.marPx+2)/pxm;                      // 하단 버튼 바가 덮는 지면 길이(m)
+  const px=player.pos, Xx=_camX.x, Xz=_camX.z;
+  /* 세로: 화면 아래 끝을 '출입구 + 하단 바 높이'에 맞춘다 → 매장 바닥이 화면 끝까지 차고,
+     바깥 바닥은 하단 버튼 바 뒤로만 지나간다. 화면이 매장보다 얕을 때만 플레이어를 따라간다. */
+  let tz=px.z-1.8;
+  const tzMax=(CAMS.z1+marM)-sp.dzMax, tzMin=(CAMS.z0-0.6)-sp.dzMin;
+  if(tzMin<=tzMax) tz=Math.max(tzMin,Math.min(tzMax,tz)); else tz=tzMax;
+  /* 가로: 매장을 화면 가운데에 고정하고, 플레이어가 화면 밖으로 밀릴 때만 따라간다 */
+  let tx=0;
+  const txMin=(CAMS.x1+1.2)-sp.dxMax, txMax=(CAMS.x0-1.2)-sp.dxMin;
+  if(txMin<=txMax) tx=Math.max(txMin,Math.min(txMax,tx));
+  const U=0.72*hw, cz=(px.z-tz)*Xz;
+  tx=Math.max(px.x-(U-cz)/Xx, Math.min(px.x-(-U-cz)/Xx, tx));
+  _camNew.set(tx,0,tz); return _camNew;
+}
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
 function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now; time+=dt;
   // player
@@ -2140,7 +2188,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   $('rate').textContent=(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1)); { const nv=npsOf(dayNps); const rm=$('rooms'); rm.textContent='NPS '+(nv==null?'—':(nv>0?'+':'')+nv); rm.style.background=nv==null?'':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'; } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
-  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(new THREE.Vector3(player.pos.x*0.85,0,player.pos.z-1.8),1-Math.exp(-dt*5)); /* v2.11: 시점을 매장 안쪽으로 0.4m 더 (하단 초록 여백) */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
+  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.13: 해상도 자율 클램핑 — 화면 아래에 바깥 도로가 새지 않는다 */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
   if(!window.__NR) renderer.render(scene,cam); requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
@@ -2392,7 +2440,7 @@ function truckTick(dt){
   }
   if(typeof truckDraw3==='function'){ try{ truckDraw3(); }catch(e){} }
 }
-window.__camReady=1; camPose(); intO(); intApplyAll();
+window.__camReady=1; camMeasureUI(); camPose(); intO(); intApplyAll();
 /* v2.5: 새 버전 자동 반영 — 영업 중·상담 중에는 미루고, 영업이 끝나면 다시 확인 */
 window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e){ return false; } };
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
@@ -2435,7 +2483,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
     $('tShare').onclick=()=>{ const d={title:'테크 스토어 타이쿤',text:'테크 스토어 타이쿤 같이 해볼래? 수리하고, 상담하고, 매장을 키우는 게임이야',url:APPURL}; if(navigator.share){ navigator.share(d).catch(()=>{}); return; }
       sheet('<h3>🔗 친구에게 공유</h3><div>아래 주소를 보내면 바로 플레이할 수 있어요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>'); $('tsC').onclick=copy; }; } }
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else offResume(); });
-window.__H={tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
+window.__H={camdbg:()=>{ try{ const a=innerWidth/Math.max(1,innerHeight), vh=camVH(), sp=camSpan(vh,a,cam.zoom); return {vh:+vh.toFixed(3),mar:CAMUI.marPx,a:+a.toFixed(4),zoom:+cam.zoom.toFixed(3),tz:+camT.z.toFixed(3),tx:+camT.x.toFixed(3),dzMax:+sp.dzMax.toFixed(3),dzMin:+sp.dzMin.toFixed(3),dxMax:+sp.dxMax.toFixed(3),dxMin:+sp.dxMin.toFixed(3),W:innerWidth,H:innerHeight}; }catch(e){ return 'err '+e; } },tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
 probe:(wx,wz,secs)=>{ const dt=1/60, n=Math.max(1,Math.round((secs||1)*60)), sp=5.6*(1+0.1*S.up.spd);
   const l=Math.hypot(wx,wz)||1, k=sp*dt/l; const tr=[]; let stall=0, jump=0, prev=[player.pos.x,player.pos.z];
   for(let i=0;i<n;i++){ const ox=player.pos.x, oz=player.pos.z;
