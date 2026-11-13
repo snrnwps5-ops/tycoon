@@ -728,7 +728,7 @@ function spawnCust(){ if(dayState!=='run') return; const cfg=dayCfg(S.day); cons
   if(dayEv==='rain'){ c.pat=c.patMax=Math.round(c.patMax*1.4); } if(S.up.chk){ c.pat=c.patMax=c.patMax*(1+0.08*S.up.chk); }
   c.el.className='lb'; $('labels').appendChild(c.el); ch.g.position.copy(c.pos); custs.push(c); addAura(c); }
 const faceI=(k,s,cl)=>'<u class="'+cl+'" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></u>'; let curFace=null;
-function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); if(c._lt!==txt){ c._lt=txt; c.el.innerHTML=faceI(c.face,26,'fc')+txt+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':''); } }
+function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); if(c._lt!==txt){ c._lt=txt; c.el.innerHTML=faceI(c.face,26,'fc')+txt+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':''); c.el._w=c.el.offsetWidth||120; } }
 function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.spot){ c.spot.occ=null; c.spot=null; }
   c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?-14:14,0,11.2)];
   let stars=ok?4+(c.happy?1:0)-(c.waited>25?1:0):(c.miss?2:(c.walk?2:1)); stars=Math.max(1,Math.min(5,stars)); if(!c.quiet||ok) floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),['😡','😠','😐','🙂','😍'][stars-1],'emo'); if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; }
@@ -1015,7 +1015,7 @@ function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); el._sx=(v3.x+1)/2*in
 function lbFlush(){ if(!LBV.length) return; const L=LBV.slice().sort((a,b)=>a._sy-b._sy); const NH=42, NW=64;
   for(let i=0;i<L.length;i++){ const a=L[i];
     for(let pass=0;pass<5;pass++){ let hit=null;
-      for(let j=0;j<i;j++){ const b=L[j]; if(Math.abs(a._sx-b._sx)<NW&&Math.abs((a._sy-a._oy)-(b._sy-b._oy))<NH){ hit=b; break; } }
+      for(let j=0;j<i;j++){ const b=L[j]; const WX=Math.max(NW,((a._w||120)+(b._w||120))/2-8); if(Math.abs(a._sx-b._sx)<WX&&Math.abs((a._sy-a._oy)-(b._sy-b._oy))<NH){ hit=b; break; } }
       if(!hit) break; a._oy=(hit._sy-hit._oy)+NH-a._sy; }
   }
   const D=L.slice().sort((a,b)=>b._d-a._d); for(let i=0;i<D.length;i++) D[i].style.zIndex=String(i+1);
