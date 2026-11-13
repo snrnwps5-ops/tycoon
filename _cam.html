@@ -4,7 +4,7 @@
 html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
 #wrap{position:absolute;left:0;top:0;transform-origin:0 0}
 #f{border:0;display:block;background:#000}
-#tag{position:absolute;right:6px;bottom:4px;font:700 12px monospace;color:#9fb4ff;opacity:.7}
+#tag{position:absolute;right:6px;bottom:4px;font:700 12px monospace;color:#9fb4ff;opacity:.85;background:#0008;padding:2px 5px;border-radius:4px}
 </style></head>
 <body>
 <div id="wrap"><iframe id="f"></iframe></div><div id="tag"></div>
@@ -15,18 +15,28 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
   var UI = q.get('ui')==='1';
   var X = +(q.get('x')||0), Z = +(q.get('z')||-1.5);
   var MODE = q.get('mode')||'base', PZ = +(q.get('pz')||1);
+  var SRC = q.get('src') || 'tech.html';
+  var FRESH = q.get('fresh')==='1';
+  var SAVEKEY = 'bunsik-tech-v1';
   var f = document.getElementById('f'), wrap = document.getElementById('wrap');
+  var tag = document.getElementById('tag');
   f.style.width = W+'px'; f.style.height = H+'px';
   wrap.style.transform = 'scale('+SC+')';
-  document.getElementById('tag').textContent = W+'x'+H+' x'+SC;
+  tag.textContent = W+'x'+H+' x'+SC+' '+SRC;
   try{ localStorage.setItem('tech-notitle','1'); }catch(e){}
+  if(FRESH){
+    try{
+      var cur = localStorage.getItem(SAVEKEY);
+      if(cur!=null && localStorage.getItem('__saveBak')==null) localStorage.setItem('__saveBak', cur);
+      localStorage.removeItem(SAVEKEY);
+    }catch(e){}
+  }
 
   var API = window.CAMQ = {
-    ready:false, doc:null, win:null, W:W, H:H, cfg:{x:X,z:Z,mode:MODE,pz:PZ,ui:UI},
+    ready:false, doc:null, win:null, W:W, H:H, src:SRC, cfg:{x:X,z:Z,mode:MODE,pz:PZ,ui:UI},
     clean:function(on){
       var d=this.doc; if(!d) return 'no doc';
-      var id='__camclean';
-      var el=d.getElementById(id);
+      var id='__camclean', el=d.getElementById(id);
       if(!on){ if(el) el.remove(); return 'ui shown'; }
       if(!el){ el=d.createElement('style'); el.id=id;
         el.textContent='#hud,#sub,#bbar,#dayBar,#hint,#toast,#big,#help,#evt,#joy,#camctl,#intp,#modal,#labels,#vig,#stockAl,#combo,#title,#load{display:none!important}';
@@ -34,15 +44,14 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
       return 'ui hidden';
     },
     dismiss:function(){
-      var d=this.doc, w=this.win; if(!d) return 'no doc';
+      var d=this.doc; if(!d) return 'no doc';
       var m=d.getElementById('modal'); if(m) m.classList.remove('on');
       var t=d.getElementById('title'); if(t) t.remove();
-      var l=d.getElementById('load'); if(l) l.style.display='none';
+      var l=d.getElementById('load'); if(l) l.style.visibility='hidden';
       return 'ok';
     },
     go:function(x,z){ var w=this.win; if(!w||!w.__H) return 'no H'; this.cfg.x=x; this.cfg.z=z; return w.__H.tp(x,z); },
     mode:function(m,pz){ var w=this.win; if(!w||!w.__H) return 'no H'; this.cfg.mode=m; if(pz!=null){ w.__H.pinch(pz); this.cfg.pz=pz; } w.__H.camMode(m||'base'); return w.__H.camv(); },
-    // 지면(y=0) 위 카메라 프러스텀 네 꼭짓점의 실제 월드 좌표
     ground:function(){
       var w=this.win; if(!w||!w.__H) return 'no H';
       var c = w.__H.cam; c.updateMatrixWorld(true);
@@ -55,7 +64,7 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
         var oz = pos.z + e[2]*nx*hw + e[6]*ny*hh;
         var dx = -e[8], dy = -e[9], dz = -e[10];
         var t = -oy/dy;
-        return {x:ox+dx*t, y:0, z:oz+dz*t};
+        return {x:ox+dx*t, z:oz+dz*t};
       }
       var cs = [at(-1,-1), at(1,-1), at(1,1), at(-1,1)];
       var xs = cs.map(function(p){return p.x}), zs = cs.map(function(p){return p.z});
@@ -63,14 +72,17 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
       return {
         bottomZ:+Math.max.apply(null,zs).toFixed(3), topZ:+Math.min.apply(null,zs).toFixed(3),
         leftX:+Math.min.apply(null,xs).toFixed(3), rightX:+Math.max.apply(null,xs).toFixed(3),
-        cz:+c.position.z.toFixed(3), cy:+c.position.y.toFixed(3), cx:+c.position.x.toFixed(3),
+        cz:+c.position.z.toFixed(3), cx:+c.position.x.toFixed(3),
         zoom:+c.zoom.toFixed(4), halfH:+hh.toFixed(3), halfW:+hw.toFixed(3),
         inner:{w:w.innerWidth,h:w.innerHeight,a:+(w.innerWidth/w.innerHeight).toFixed(4)},
         camv:st
       };
     },
     camv:function(){ var w=this.win; return w&&w.__H? w.__H.camv():null; },
-    player:function(){ var w=this.win; return w&&w.__H? {x:+w.__H.player.pos.x.toFixed(2), z:+w.__H.player.pos.z.toFixed(2)}:null; }
+    player:function(){ var w=this.win; return w&&w.__H? {x:+w.__H.player.pos.x.toFixed(2), z:+w.__H.player.pos.z.toFixed(2)}:null; },
+    stage:function(){ var w=this.win; return w&&w.__H? {day:w.__H.S.day}:null; },
+    restoreSave:function(){ try{ var b=localStorage.getItem('__saveBak'); if(b==null) return 'no backup'; localStorage.setItem(SAVEKEY,b); localStorage.removeItem('__saveBak'); return 'restored '+b.length; }catch(e){ return 'err '+e; } },
+    saveLen:function(){ try{ var b=localStorage.getItem('__saveBak'); return b?b.length:0; }catch(e){ return -1; } }
   };
 
   function boot(){
@@ -79,21 +91,20 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
     var t0 = Date.now();
     (function tick(){
       var ok = w.__H && w.__H.tp && d.getElementById('c');
-      if(!ok){ if(Date.now()-t0 > 60000){ API.err='timeout'; return; } return setTimeout(tick, 120); }
+      if(!ok){ if(Date.now()-t0 > 90000){ API.err='timeout'; return; } return setTimeout(tick, 120); }
       API.ready = true;
       API.dismiss();
-      setTimeout(function(){ API.dismiss(); }, 800);
+      setTimeout(function(){ API.dismiss(); }, 700);
       setTimeout(function(){
         API.dismiss();
         if(!UI) API.clean(true);
         if(MODE!=='base') API.mode(MODE,PZ);
         API.go(X,Z);
         setTimeout(function(){ API.go(X,Z); }, 300);
-      }, 1200);
+      }, 1000);
     })();
   }
-  // 큰 자산(assets.js)을 먼저 받아 두어 iframe의 45초 부트 타임아웃을 피한다
-  var tag = document.getElementById('tag');
+
   function preload(u, next){
     var t=Date.now();
     fetch(u, {cache:'force-cache'}).then(function(r){
@@ -111,11 +122,10 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
   var PRE = q.get('pre') || 'assets.js';
   preload(PRE, function(){
     if(q.get('noif')==='1'){ tag.textContent = 'preload done '+PRE+' '+(Math.round((Date.now()-window.__t0)/100)/10)+'s'; return; }
-    f.src = 'tech.html?camh=' + Date.now();
+    f.src = SRC + '?camh=' + Date.now();
     f.addEventListener('load', boot);
   });
   window.__t0 = Date.now();
-  setTimeout(function(){ if(!API.ready && !API.win){ API.win=f.contentWindow; API.doc=f.contentDocument; API.dismiss(); } }, 150);
 })();
 </script>
 </body></html>
