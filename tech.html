@@ -476,16 +476,21 @@ function stripEyes(geo){ if(!geo||!geo.index||geo.userData._noEyes) return; geo.
   const uni=(a,b)=>{ a=find(a); b=find(b); if(a!==b) par[a]=b; };
   for(let t=0;t<idx.length;t+=3){ uni(idx[t],idx[t+1]); uni(idx[t+1],idx[t+2]); }
   const cc=new Map();
-  for(let i=0;i<n;i++){ const r=find(i); let c=cc.get(r); if(!c){ c={n:0,x1:9,x2:-9,y1:9,y2:-9}; cc.set(r,c); } const x=pos.getX(i),y=pos.getY(i); c.n++;
+  for(let i=0;i<n;i++){ const r=find(i); let c=cc.get(r); if(!c){ c={n:0,x1:1e9,x2:-1e9,y1:1e9,y2:-1e9}; cc.set(r,c); } const x=pos.getX(i),y=pos.getY(i); c.n++;
     if(x<c.x1)c.x1=x; if(x>c.x2)c.x2=x; if(y<c.y1)c.y1=y; if(y>c.y2)c.y2=y; }
   const eye=new Set(); cc.forEach((c,r)=>{ if(c.n<600&&(c.y2-c.y1)>(c.x2-c.x1)*1.35) eye.add(r); });
   if(!eye.size) return;
   const keep=[]; for(let t=0;t<idx.length;t+=3){ const a=find(idx[t]),b=find(idx[t+1]),c=find(idx[t+2]); if(eye.has(a)||eye.has(b)||eye.has(c)) continue; keep.push(idx[t],idx[t+1],idx[t+2]); }
   if(keep.length){ geo.setIndex(keep); geo.computeBoundingSphere(); } }
 /* 얼굴판(눈·눈썹 판)을 머리뼈 좌표로 재서 눈 위치 기준으로 쓴다 — 모델마다 한 번만 */
+function skinnedBox(mesh){ const pos=mesh.geometry.attributes.position, v=new THREE.Vector3(), b=new THREE.Box3();
+  mesh.updateMatrixWorld(true); try{ if(mesh.skeleton) mesh.skeleton.update(); }catch(e){}
+  const bt=mesh.applyBoneTransform?mesh.applyBoneTransform.bind(mesh):(mesh.boneTransform?mesh.boneTransform.bind(mesh):null);
+  for(let i=0;i<pos.count;i++){ v.fromBufferAttribute(pos,i); if(bt) bt(i,v); v.applyMatrix4(mesh.matrixWorld); b.expandByPoint(v); }
+  return b; }
 function faceInfo(model,g,m,head,faceMesh){ if(FACEC[model]) return FACEC[model];
   g.updateMatrixWorld(true);
-  const bb=new THREE.Box3().setFromObject(faceMesh);
+  const bb=skinnedBox(faceMesh);
   const inv=new THREE.Matrix4().copy(head.matrixWorld).invert();
   const a=bb.min.clone().applyMatrix4(inv), b=bb.max.clone().applyMatrix4(inv);
   const f={x1:Math.min(a.x,b.x),x2:Math.max(a.x,b.x),y1:Math.min(a.y,b.y),y2:Math.max(a.y,b.y),z2:Math.max(a.z,b.z)};
