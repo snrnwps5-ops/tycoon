@@ -2031,7 +2031,10 @@ const camT=new THREE.Vector3(0,0,1.2); let last=performance.now(), spawnT=0.5, s
    · camMeasureUI(): 하단 버튼 바가 덮는 화면 높이를 재서, 그 뒤쪽까지만 바깥 바닥이 지나가게 한다 */
 const CAMS={x0:-7,x1:7,z0:-9,z1:6};            // 매장 내부 경계 (가로 14m · 깊이 15m)
 const CAMUI={marPx:76};                        // 하단 버튼 바가 덮는 화면 높이(px)
-function camVH(){ const a=innerWidth/Math.max(1,innerHeight); return a<1?Math.max(12.5,Math.min(15.0,14.2/Math.max(0.42,a))):12.0; }
+function camVH(){ const a=innerWidth/Math.max(1,innerHeight);
+  /* v2.13: 세로 깊이 16.2m(매장 15m + 위아래 숨김 여유)를 화면 세로에 꼭 맞추는 화각.
+     지면 깊이 = vh*(1.08+0.464a) (CAM_OFF 5.5/17/10.5 실측 계수) → vh = 16.2/(1.08+0.464a) */
+  return Math.max(7.6,Math.min(15.0,16.2/(1.08+0.464*a))); }
 const _camO=new THREE.Vector3(), _camX=new THREE.Vector3(), _camY=new THREE.Vector3(), _camUp=new THREE.Vector3(0,1,0), _camSp={dzMin:0,dzMax:0,dxMin:0,dxMax:0}, _camT=new THREE.Vector3(), _camNew=new THREE.Vector3();
 function camSpan(vh,a,zoom){
   const z=zoom||1, hw=vh*a/2/z, hh=vh/2/z;
