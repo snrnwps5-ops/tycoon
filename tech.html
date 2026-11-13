@@ -1561,7 +1561,7 @@ msCollectAll:()=>msCollectAll(),msHTML:()=>msHTML(),openMs:()=>openMs(),crewHTML
 modalInfo:()=>({on:$('modal').classList.contains('on'),canClose:$('modal').classList.contains('canClose'),x:!!$('mX'),xVisible:!!($('mX')&&$('mX').offsetParent)}),
 closeModal:()=>closeModalUI(),staffState:()=>staff.map(s=>({kind:s.kind,state:s.state,job:s.job?{type:s.job.type,sp:s.job.spType,st:s.job.st}:null,stack:s.stack.slice()})),
 treeAudit:()=>{ try{ const out=[]; scene.traverse(o=>{ if(!o.isMesh||!o.material) return; if(!(Math.abs(o.rotation.x+Math.PI/2)<0.02)&&!(o.geometry&&o.geometry.type==='CircleGeometry')) return; const p=new THREE.Vector3(); o.getWorldPosition(p); out.push({t:(o.geometry&&o.geometry.type)||'?',y:Math.round(p.y*1000)/1000,x:Math.round(p.x*100)/100,z:Math.round(p.z*100)/100,dw:!!o.material.depthWrite,po:!!o.material.polygonOffset,ro:o.renderOrder}); }); out.sort((a,b)=>a.y-b.y); return out; }catch(e){ return 'n/a:'+e.message; } },
-shadowCfg:()=>({bias:sun.shadow.bias,normalBias:sun.shadow.normalBias,map:sun.shadow.mapSize.x}),DETQ };
+shadowCfg:()=>({bias:sun.shadow.bias,normalBias:sun.shadow.normalBias,map:sun.shadow.mapSize.x}),priceMul:()=>priceMul(),comboMul:()=>comboMul(),combo:()=>combo,rating:()=>rating(),dayRevs:()=>dayRevs.slice(),dayNps:()=>dayNps.slice(),openCrew:()=>openCrew(),DETQ };
 requestAnimationFrame(step);
 })();
 </script>
