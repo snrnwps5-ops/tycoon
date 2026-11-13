@@ -1673,6 +1673,7 @@ function openOffline(then,plan){
 /* 앱을 다시 열었는데 페이지가 새로고침되지 않은 경우(아이폰이 탭을 유지)에도 정산 창을 띄웁니다. 영업 중·상담 중에는 방해하지 않음 */
 function offResume(){
   if(dayState==='run'||quizOpen) return;
+  if(document.body.classList.contains('title')) return; /* 타이틀 화면에서는 영업 시작 때 띄움 */
   if($('modal').classList.contains('on')&&!$('dayGo')) return;
   const p=offCalc(Date.now()); if(!p||!(p.gain>0)) return;
   setTimeout(()=>{ openOffline(startDayModal,p); },120);
