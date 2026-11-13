@@ -82,7 +82,7 @@ var CSS='\
 .hqa{position:relative;background:#eef3ff;border-radius:14px;padding:10px 12px;font:700 14px/1.6 "Noto Sans KR",sans-serif;color:#2a3344}\
 .hqa:before{content:"";position:absolute;left:18px;top:-7px;border:7px solid transparent;border-top:0;border-bottom-color:#eef3ff}\
 .hqhint{margin-top:8px;background:#fff6dc;border-radius:12px;padding:8px 10px;font:700 12px/1.5 "Noto Sans KR",sans-serif;color:#7a4a10}\
-.hqface{flex:none;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;background:#e6edff;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.15)}\
+.hqface{flex:none;width:44px;height:44px;border-radius:50%;display:block;background-color:#e6edff;background-repeat:no-repeat;background-size:300% 300%;background-position:50% 50%;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.15)}\
 .hqpro{display:flex;gap:10px;align-items:center}\
 .hqbar{height:8px;border-radius:4px;background:#e9e2d2;overflow:hidden;margin-top:3px}.hqbar s{display:block;height:100%;border-radius:4px;background:#2f6fd8}\
 .hqgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:359px){.hqgrid{grid-template-columns:1fr}}\
@@ -127,7 +127,8 @@ function signSVG(){ return '<svg viewBox="0 0 150 54"><path d="M8 40 C18 8 30 8 
 var IV_STAGE=['1차 서류','2차 컬처핏','3차 실무','4차 최종'];
 var IV_ROLE={runner:'재고 담당',tech:'수리 기사',spec:'상담 전문가',greet:'입구 안내',mgr:'매니저'};
 var IV_NAME=['김도윤','이서연','박지호','최하은','정민재','한유나','오건우','윤서아','장도현','임지안','신은우','배수아'];
-var IV_FACE=['🧑','👩','👨','🧑‍🦱','👩‍🦰','🧔','👱‍♀️','👨‍🦲'];
+var IV_FACE_N=9;   /* v2.26: crew_faces.jpg 3x3 스프라이트(9종 3D 크루 프로필) 인덱스 0~8 */
+function faceIdx(v){ var n=(typeof v==='number'&&isFinite(v))?Math.floor(v)%IV_FACE_N:-1; return n<0?0:(n+IV_FACE_N)%IV_FACE_N; }
 var IV_Q=[
  {q:'이력서 요약',good:['전자제품 매장 3년 근무, 월 고객 만족도 상위 10%를 여러 번 받았습니다. 재고 실사 오차를 절반으로 줄인 경험이 있어요.','수리 센터에서 2년간 하루 평균 15건을 처리했고, 재수리율을 낮추는 체크리스트를 직접 만들었습니다.'],
    mid:['편의점과 카페에서 2년 일했습니다. 전자제품 경험은 없지만 손님 응대는 익숙합니다.','판매 경력 1년입니다. 실적은 평균 정도였고 지각은 없었습니다.'],
@@ -150,12 +151,12 @@ function ivNew(role){ var s=ensure(); s.interview.n++; var q=Math.random(); var 
   var base={runner:20,tech:30,spec:35,greet:18,mgr:45}[role]||25; var day=s.day||0;
   // 답변은 실력과 대체로 일치하지만 단계마다 20% 확률로 한 단계 어긋납니다(겉만 번지르르 / 긴장한 실력자)
   var ans=IV_Q.map(function(Q){ var t=tier; if(Math.random()<0.2) t=tier==='good'?'mid':tier==='bad'?'mid':(Math.random()<0.5?'good':'bad'); return {t:t,text:rnd(Q[t]),hint:rnd(Q.hint)}; });
-  return {id:s.interview.n, name:rnd(IV_NAME), face:rnd(IV_FACE), role:role, tier:tier, ans:ans, stage:0, grade:[], review:2, shown:{}, wage:Math.round(base*(1+day*0.02)*(tier==='good'?1.25:tier==='mid'?1:0.85)), day:day}; }
+  return {id:s.interview.n, name:rnd(IV_NAME), face:Math.floor(Math.random()*IV_FACE_N), role:role, tier:tier, ans:ans, stage:0, grade:[], review:2, shown:{}, wage:Math.round(base*(1+day*0.02)*(tier==='good'?1.25:tier==='mid'?1:0.85)), day:day}; }
 function ivStats(c){ var k={good:[1.15,0.95],mid:[1.0,0.88],bad:[0.85,0.78]}[c.tier]; return {spd:k[0],acc:k[1]}; }
 function openInterviewModal(role,done){ ensure(); var s=S(); role=IV_ROLE[role]?role:'runner'; onClose=done||null;
   if(!s.interview.cur||s.interview.cur.role!==role||s.interview.cur.closed) s.interview.cur=ivNew(role);
   ivRender(); }
-function ivHead(c){ return '<div class="hqsteps">'+IV_STAGE.map(function(n,i){ return '<i class="'+(i<c.stage?'ok':i===c.stage?'on':'')+'">'+(i<c.stage?'✓ ':'')+n+'</i>'; }).join('')+'</div><div class="hqcard hqpro"><div class="hqface">'+c.face+'</div><div style="flex:1"><h3>'+esc(c.name)+' <span class="hqtag">'+IV_ROLE[c.role]+' 지원</span></h3><div style="font:700 12px \'Noto Sans KR\',sans-serif;color:#5a4a3a">희망 일급 '+fmt(c.wage)+' · 지원 번호 #'+c.id+'</div></div></div>'; }
+function ivHead(c){ var fi=faceIdx(c.face); return '<div class="hqsteps">'+IV_STAGE.map(function(n,i){ return '<i class="'+(i<c.stage?'ok':i===c.stage?'on':'')+'">'+(i<c.stage?'✓ ':'')+n+'</i>'; }).join('')+'</div><div class="hqcard hqpro"><u class="hqface" style="display:inline-block;width:44px;height:44px;border-radius:50%;background-image:url(crew_faces.jpg);background-size:300% 300%;background-position:'+(fi%3)*50+'% '+Math.floor(fi/3)*50+'%;border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,.2);vertical-align:middle;flex:none"></u><div style="flex:1"><h3>'+esc(c.name)+' <span class="hqtag">'+IV_ROLE[c.role]+' 지원</span></h3><div style="font:700 12px \'Noto Sans KR\',sans-serif;color:#5a4a3a">희망 일급 '+fmt(c.wage)+' · 지원 번호 #'+c.id+'</div></div></div>'; }
 function ivRender(){ var s=S(), c=s.interview.cur; if(!c) return;
   if(c.stage>=4){ ivOffer(); return; }
   var a=c.ans[c.stage], Q=IV_Q[c.stage];
@@ -171,7 +172,7 @@ function ivEnd(c,how,offer){ var s=S(); c.closed=1; s.interview.log.push({id:c.i
     show('AI 채용 면접실','전형 종료','<div class="hqcard" style="text-align:center"><div style="font-size:40px">'+(lost?'😢':'👌')+'</div><h3>'+esc(c.name)+' 지원자를 불합격 처리했어요</h3><p style="font:700 13px/1.6 \'Noto Sans KR\',sans-serif;margin:6px 0 0">'+(lost?'알고 보니 실력이 뛰어난 지원자였어요. 답변 한두 개만 보고 판단하지 않았는지 돌아보세요.':c.tier==='bad'?'좋은 판단이에요. 매장에 맞지 않는 지원자였어요.':'무난한 지원자였어요. 다음 지원자를 만나 보세요.')+'</p></div>',
       '<button class="hqbtn b" data-hq="next">다음 지원자</button><button class="hqbtn g" data-hq="close">나가기</button>',{next:function(){ s.interview.cur=ivNew(c.role); ivRender(); }}); return; }
   // hired
-  var st=ivStats(c), rec={name:c.name,role:c.role,spd:st.spd,acc:st.acc,wage:offer.wage,rsu:offer.rsu,vest:offer.vest,tier:c.tier,day:s.day||0};
+  var st=ivStats(c), rec={name:c.name,role:c.role,face:faceIdx(c.face),spd:st.spd,acc:st.acc,wage:offer.wage,rsu:offer.rsu,vest:offer.vest,tier:c.tier,day:s.day||0};
   var handled=call('onHire',rec,c); if(handled!==true) s.interview.pool.push(rec);
   call('save'); }
 function ivOffer(){ var s=S(), c=s.interview.cur; var packs=[{k:'a',n:'기본형',wage:c.wage,rsu:0,vest:0,d:'희망 일급 그대로'},{k:'b',n:'균형형',wage:Math.round(c.wage*0.92),rsu:20,vest:10,d:'일급 -8% + RSU 20주'},{k:'c',n:'주식형',wage:Math.round(c.wage*0.82),rsu:60,vest:20,d:'일급 -18% + RSU 60주'}]; var sel=c.pack||'a';
