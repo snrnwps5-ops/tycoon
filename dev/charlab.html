@@ -27,6 +27,7 @@ function load(n){ return new Promise(res=>L.parse(b64(AB['q:'+n]),'',g=>res(g)))
     const m=THREE.SkeletonUtils.clone(g.scene);
     m.traverse(x=>{ if(x.isMesh){ const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString();
       if(/^Skin$/.test(mt.name||'')) hex=SKINS[i%SKINS.length];
+      if(Q.get('face')==='1') hex = /Face/.test(mt.name||'')?'#ff0000':( /Hair/.test(mt.name||'')?'#333333':'#c8c8c8');
       x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
     const holder=new THREE.Group(); holder.add(m); scene.add(holder);
     holder.updateMatrixWorld(true);
