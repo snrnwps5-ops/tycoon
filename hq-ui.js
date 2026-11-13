@@ -231,7 +231,7 @@ function openHqTransferModal(crew,done){ ensure(); var s=S(); var c=typeof crew=
        setTimeout(function(){ $('hqstamp').classList.add('go'); sfx('level_up',0.5,1.1);
          s.hqStaff.push({name:c.name,fromRole:c.role,lv:c.lv||1,dept:R.dept,score:R.avg,pay:hqPay,rsu:rsu,day:s.day||0});
          var handled=call('onTransfer',c,{dept:R.dept,pay:hqPay,rsu:rsu,score:R.avg}); if(handled!==true) c.hqMoved=1; // 어댑터가 S.crew에서 빼 주지 않으면 표시만 남깁니다
-         call('save'); msg(c.name+' 님이 '+R.dept+'(으)로 임용됐어요',true); done2(); },1200); },
+         call('save'); msg(c.name+' 님이 '+R.dept+'로 임용됐어요',true); done2(); },1200); },
      no:function(){ lock(); var st=$('hqstamp'); st.textContent='반려'; st.classList.add('no','go'); sfx('ui',0.4,0.6);
        c.hqDeniedDay=s.day||0; var drop=R.avg>=68?15:8; c.sat=clamp((c.sat==null?70:c.sat)-drop,0,100); call('onTransferDenied',c,drop); call('save');
        msg(c.name+' 님은 매장에 남아요 · 만족도 -'+drop,false); done2(); }});
