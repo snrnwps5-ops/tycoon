@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794583000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794585000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -272,7 +272,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.21</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.22</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -721,7 +721,7 @@ if(TS.out==='campus'){ const lt=canvasTex((g,w,h)=>{ g.fillStyle='#86c46e'; g.fi
   if(STG===4){ for(let i=0;i<80;i++){ g.fillStyle='rgba(255,255,255,'+(0.3+rnd()*0.6)+')'; g.fillRect(rnd()*w,rnd()*90,2,2); } bld(h,'#1a2236',80,220,'#ffd98a'); g.fillStyle='#1a2236'; g.fillRect(500,20,40,220); g.beginPath(); g.moveTo(505,20); g.lineTo(520,-10); g.lineTo(535,20); g.fill(); g.fillRect(518,-30,4,30); bld(h,'#121829',30,120,'#8fd8ff'); }
   if(STG===5){ hills(170,'#c9a57a',60,0.005); hills(205,'#9db56e',35,0.01); g.strokeStyle='#e8f2f8'; g.lineWidth=16; g.beginPath(); g.ellipse(560,205,220,26,0,0,Math.PI*2); g.stroke(); g.strokeStyle='#8fd0ff'; g.lineWidth=3; g.stroke(); }
  },1024,256);
- // bm removed to eliminate blur }
+ /* bm removed */ }
 if(STG===0){ [[-12,18,'#ff7a5a'],[-6,18,'#5ab0ff'],[0,18.5,'#ffd23f'],[6,18,'#7bd88a'],[12,18,'#b07aff']].forEach(([x,z,c])=>{ box(5,3,3,'#f1ece2',x,1.5,z); const a=box(5.1,0.15,1.1,c,x,2.3,z-1.9); a.rotation.x=0.35; box(3,1.4,0.05,'#bfe6ff',x,1.0,z-1.53); }); }
 // accessory walls (colorful cases) + big promo screen
 [[-6.65,0.6,Math.PI/2],[-6.65,3.4,Math.PI/2],[6.65,1.2,-Math.PI/2],[6.65,3.8,-Math.PI/2]].forEach(([x,z,ry],i)=>{ const g=new THREE.Group(); g.position.set(x,0,z); g.rotation.y=ry; scene.add(g);
