@@ -1095,8 +1095,8 @@ if(window.HQUI){
     setMoney: function(v){ money = v; S.money = money; },
     save: save,
     snd: snd,
-    onOpen: function(){ window.__hqPause = 1; quizOpen = true; },
-    onClose: function(){ window.__hqPause = 0; quizOpen = false; },
+    onOpen: function(){ quizOpen = true; },
+    onClose: function(){ quizOpen = false; },
     onHire: function(rec, cand){
       // 합격자를 S.crew에 추가 가능한지 확인
       const maxCrew = 3 + (S.up.cap||0);
@@ -1819,7 +1819,7 @@ function openCrew(){ openModal(crewHTML()); $('mbox').onclick=e=>{ if(slotClick(
   if(e.target.id==='party'){ const pc=20+15*S.crew.length; if(money<pc||S.party===S.day) return; money-=pc; S.party=S.day; S.crew.forEach(c=>c.sat=Math.min(100,(c.sat==null?70:c.sat)+15)); snd('level_up',0.5); bigBanner('🍕 팀 회식!','모든 직원 만족도 +15'); refreshTags(); save(); openCrew(); return; }
   if(tb){ const cur=S.crew.find(c=>c.role===tb.dataset.tr); const tc=Math.round(cur.wage*4*cur.lv); if(money<tc||cur.lv>=5) return; money-=tc; cur.lv++; cur.wage=Math.round(cur.wage*1.15); cur.sat=Math.min(100,(cur.sat==null?70:cur.sat)+8); refreshTags(); snd('level_up',0.45,1.3); save(); openCrew(); } }; }
 /* ---- v2.9: AI 채용 면접실 진입 (직무 선택 -> HQUI.openInterviewModal) ---- */
-function openIvPick(){ let h='<h2>🎙️ AI 채용 면접실</h2><p style="margin:-4px 0 6px;font-size:12px">직무를 고르면 1차 서류부터 4차 최종까지 진행해요<br>면접이 끝날 때까지 영업은 잠시 멈춰요</p><div class="dlist">';
+function openIvPick(){ let h='<h2>🎙️ AI 채용 면접실</h2><p style="margin:-4px 0 6px;font-size:12px">직무를 고르면 1차 서류부터 4차 최종까지 진행해요<br>면접 보는 동안에도 영업 시간은 계속 흘러요</p><div class="dlist">';
   Object.keys(ROLES).forEach(r=>{ const R=ROLES[r], lockD=ROLE_UNLOCK[r], lock=S.day<lockD;
     h+='<div class="crow'+(lock?' lock':'')+'"><h4><i style="background:'+R.c+'">'+R.ic+'</i>'+R.n+'</h4><small>'+R.d+'</small><div class="cand" style="border-top:0"><div class="cn">'+(lock?'DAY '+(lockD+1)+'부터 면접 가능':'지금 면접 볼 수 있어요')+'</div><button data-ivp="'+r+'" '+(lock?'disabled':'')+'>면접 시작</button></div></div>'; });
   openModal(h+'</div><button class="gray" id="mOk">닫기</button>');
@@ -1988,7 +1988,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   // cash
   cashT-=dt; if(cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; if(dayState==='run'||dayState==='end') dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
   // customers
-  if(dayState==='run'&&!window.__hqPause){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); spawnT-=dt*loadK()*(cfg.spawn||1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=(S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5; spawnCust(); } }
+  if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); spawnT-=dt*loadK()*(cfg.spawn||1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=(S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5; spawnCust(); } }
   else if(dayState==='end'){ dayEndT-=dt; if(dayEndT<=0&&!quizOpen){ dayState='result'; showResult(); } }
   { const cfg=dayCfg(S.day); $('dbDay').textContent=(STG+1)+'-'+(S.day-[0,4,8,11,15,19][STG]+1); const tt=Math.max(0,Math.ceil(dayState==='run'?dayT:cfg.dur)); $('dbT').textContent=Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0'); $('dbT').classList.toggle('low',dayState==='run'&&dayT<20); $('dbRev').textContent='$'+dayRev+'/$'+cfg.goal; $('dbComp').textContent='민원 '+dayComp+'/3'; $('dbComp').classList.toggle('bad',dayComp>=2); $('dbFill').style.width=Math.min(100,dayRev/cfg.goal*100)+'%'; }
   for(let k=custs.length-1;k>=0;k--){ const c=custs[k]; c.speed=0;
