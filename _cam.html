@@ -108,10 +108,13 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
       }); })();
     }).then(function(){ next(); }).catch(function(e){ tag.textContent='preload fail '+u+' '+e; next(); });
   }
-  preload('assets.js', function(){
+  var PRE = q.get('pre') || 'assets.js';
+  preload(PRE, function(){
+    if(q.get('noif')==='1'){ tag.textContent = 'preload done '+PRE+' '+(Math.round((Date.now()-window.__t0)/100)/10)+'s'; return; }
     f.src = 'tech.html?camh=' + Date.now();
     f.addEventListener('load', boot);
   });
+  window.__t0 = Date.now();
   setTimeout(function(){ if(!API.ready && !API.win){ API.win=f.contentWindow; API.doc=f.contentDocument; API.dismiss(); } }, 150);
 })();
 </script>
