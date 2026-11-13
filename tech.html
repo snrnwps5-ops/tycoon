@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794570000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794572400';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 :root{--d:'Black Han Sans','Noto Sans KR',-apple-system,sans-serif;--b:'Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 html,body{margin:0;height:100%;overflow:hidden;background:#0a1650;touch-action:none;font-family:var(--b)}
-canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+canvas#c{position:fixed;inset:0;width:100vw!important;height:100vh!important;min-height:100dvh;display:block;z-index:1}/* v2.17: 3D 캔버스를 기기 화면 전체에 강제 밀착 — iOS innerHeight(792px)와 실제 화면(852px)의 차이로 생기던 하단 회색 띠 0px */
 #hud{position:fixed;left:0;right:0;top:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px;z-index:5;pointer-events:none}
 #hud>*{pointer-events:auto}
 .star{position:relative;width:46px;height:46px;flex:none}
@@ -272,7 +272,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.16</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.17</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -368,12 +368,17 @@ const renderer=bootRenderer({canvas:$('c'),antialias:true}); if(!renderer) retur
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,2)); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 const scene=new THREE.Scene(); scene.background=new THREE.Color(THM.ground);
 const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,200); const CAM_OFF=new THREE.Vector3(5.5,17,10.5);
-function resize(){ const w=innerWidth,h=innerHeight,a=w/h; renderer.setSize(w,h); /* v2.13: 화면비 자율 반응형 화각 (camVH) */ const vh=camVH(); cam.left=-vh*a/2; cam.right=vh*a/2; cam.top=vh/2; cam.bottom=-vh/2; cam.updateProjectionMatrix(); try{ camMeasureUI(); }catch(e){} if(window.__camReady){ try{ camPose(); }catch(e){} } }
+let VW=0,VH=0;
+function resize(){ /* v2.17: 캔버스 실제 CSS 박스(100vh)를 기준으로 버퍼·화각을 맞춘다 — innerHeight(792)만 쓰면 화면 아래 60px가 캔버스 밖으로 남는다 */
+  const el=$('c'), vv=window.visualViewport;
+  const w=Math.round(Math.max(innerWidth||0,(el&&el.clientWidth)||0,(vv&&vv.width)||0,document.documentElement.clientWidth||0,320));
+  const h=Math.round(Math.max(innerHeight||0,(el&&el.clientHeight)||0,(vv&&vv.height)||0,document.documentElement.clientHeight||0,480));
+  VW=w; VH=h; const a=w/h; renderer.setSize(w,h,false); /* v2.17: updateStyle=false — Three.js가 canvas 인라인 height를 덮어쓰지 못하게 */ const vh=camVH(); cam.left=-vh*a/2; cam.right=vh*a/2; cam.top=vh/2; cam.bottom=-vh/2; cam.updateProjectionMatrix(); try{ camMeasureUI(); }catch(e){} if(window.__camReady){ try{ camPose(); }catch(e){} } }
 /* ---- v2.5: 시점 제어 — 기본 쿼터뷰 / 전체 보기(탑다운 하이 앵글) / 핀치 줌 0.7~1.3 ---- */
 const CAMB={x:5.5,y:17,z:10.5};
-function camFit(){ const a=innerWidth/Math.max(1,innerHeight), vh=camVH(), vw=vh*a; return Math.max(0.2,Math.min(1,Math.min(vw/15.9,vh/16.9))); }
+function camFit(){ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)), vh=camVH(), vw=vh*a; return Math.max(0.2,Math.min(1,Math.min(vw/15.9,vh/16.9))); }
 function camFullPose(full,pz){ if(full){ CAM_OFF.set(-0.7,30,11.5); cam.zoom=Math.max(0.18,Math.min(1.3,camFit()*(pz||1))); } else { CAM_OFF.set(CAMB.x,CAMB.y,CAMB.z); cam.zoom=Math.max(0.7,Math.min(1.3,pz||1)); } try{ cam.updateProjectionMatrix(); }catch(e){} }
-addEventListener('resize',resize); resize();
+addEventListener('resize',resize); if(window.visualViewport) try{ visualViewport.addEventListener('resize',()=>resize()); }catch(e){} resize();
 scene.add(new THREE.HemisphereLight(0xfffaf2,0x9a9aa8,0.8));
 const sun=new THREE.DirectionalLight(0xfff1dc,0.72); sun.position.set(10,22,8); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048); sun.shadow.bias=-0.0005; sun.shadow.normalBias=0.035;
 Object.assign(sun.shadow.camera,{left:-20,right:20,top:20,bottom:-20,near:1,far:70}); scene.add(sun); scene.add(sun.target);
@@ -2057,10 +2062,11 @@ const camT=new THREE.Vector3(0,0,1.2); let last=performance.now(), spawnT=0.5, s
    · camMeasureUI(): 하단 버튼 바가 덮는 화면 높이를 재서, 그 뒤쪽까지만 바깥 바닥이 지나가게 한다 */
 const CAMS={x0:-7,x1:7,z0:-9,z1:6};            // 매장 내부 경계 (가로 14m · 깊이 15m)
 const CAMUI={marPx:76};                        // 하단 버튼 바가 덮는 화면 높이(px)
-function camVH(){ const a=innerWidth/Math.max(1,innerHeight);
-  /* v2.13: 세로 깊이 17.5m(매장 15m + 위아래 숨김 여유)를 화면 세로에 꼭 맞추는 화각.
-     지면 깊이 = vh*(1.08+0.464a) (CAM_OFF 5.5/17/10.5 실측 계수) → vh = 17.5/(1.08+0.464a) */
-  return Math.max(7.6,Math.min(15.0,17.5/(1.08+0.464*a))); }
+function camVH(){ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight));
+  /* v2.17: 화면 세로 지면 깊이 14.2m 피팅 — v2.13의 17.5m(전체 조감도)에서 당겨
+     캐릭터·테이블이 시원하게 크게 보이는 모바일 타이쿤 구도 (폰 세로 vh≈11.0m).
+     지면 깊이 = vh*(1.08+0.464a) (CAM_OFF 5.5/17/10.5 실측 계수) → vh = 14.2/(1.08+0.464a) */
+  return Math.max(8.4,Math.min(15.0,14.2/(1.08+0.464*a))); }
 const _camO=new THREE.Vector3(), _camX=new THREE.Vector3(), _camY=new THREE.Vector3(), _camUp=new THREE.Vector3(0,1,0), _camSp={dzMin:0,dzMax:0,dxMin:0,dxMax:0}, _camT=new THREE.Vector3(), _camNew=new THREE.Vector3();
 function camSpan(vh,a,zoom){
   const z=zoom||1, hw=vh*a/2/z, hh=vh/2/z;
@@ -2078,16 +2084,15 @@ function camSpan(vh,a,zoom){
   return _camSp;
 }
 function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const h=innerHeight-r.top; if(h>0&&h<innerHeight*0.4) CAMUI.marPx=Math.round(h+4); }catch(e){} }
+/* v2.17: 캐릭터 추적 카메라 — 플레이어를 화면 세로 45~50%(황금 조작 구역)에 두고 X·Z를 부드럽게 따라간다.
+   · 앞뒤 클램프(tzMin/tzMax): 화면 위 끝은 매장 뒷벽, 아래 끝은 출입문 앞 원목 바닥 안쪽에 머물러
+     출입구·계산대에서도 바깥 도로가 화면에 새지 않고 매장 내부가 화면을 꽉 채운다. */
+const CAMT=window.__CAMT||(window.__CAMT={pz:-0.35,tzMin:-3.3,tzMax:3.4,txMax:5.2,txK:1.0});
 function camClampT(dt){
   if(Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01){ _camNew.set(player.pos.x*0.85,0,player.pos.z-1.8); return _camNew; } // 2D 탑다운은 그대로
-  const px=player.pos;
-  /* v2.16: 카메라 구도 정상화 & 모바일 하단 여백/잘림 영구 박멸
-     1. 플레이어를 화면 중하단(42%)의 황금 조작 구역에 항상 안정적으로 배치
-     2. 플레이어 이동에 따라 카메라가 자연스럽게 상하좌우를 팔로우 (상단 빈 바닥 쏠림 완전 해결)
-     3. 바닥 메쉬 확장(z=+13.5m)과 결합되어 화면 최하단에 회색 도로/여백이 1px도 노출되지 않음 */
-  const targetZ = px.z - 1.2;
-  const tz = Math.max(-6.2, Math.min(1.0, targetZ));
-  const tx = Math.max(-3.0, Math.min(3.0, px.x * 0.75));
+  const px=player.pos, K=window.__CAMT||CAMT;
+  const tz=Math.max(K.tzMin,Math.min(K.tzMax,px.z+K.pz));
+  const tx=Math.max(-K.txMax,Math.min(K.txMax,px.x*K.txK));
   _camNew.set(tx,0,tz); return _camNew;
 }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
