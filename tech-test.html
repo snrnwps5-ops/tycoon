@@ -41,7 +41,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 .ft.bad{-webkit-text-stroke-color:#7a1010;text-shadow:0 2px 0 #7a1010;color:#ff8a80}
 #joy{position:fixed;width:130px;height:130px;margin:-65px 0 0 -65px;border-radius:50%;background:rgba(255,255,255,.18);border:3px solid rgba(255,255,255,.55);z-index:6;display:none;pointer-events:none}
 #joy i{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#dde3ee);box-shadow:0 4px 0 rgba(0,0,0,.2)}
-#toast{position:fixed;left:50%;top:calc(130px + env(safe-area-inset-top));transform:translate(-50%,-50%) scale(.7);padding:9px 18px 11px;border-radius:16px;font-family:var(--d);font-size:15px;color:#fff;text-align:center;white-space:pre-line;background:linear-gradient(#8a63ff,#5a34d6);box-shadow:0 4px 0 #3a1f99;opacity:0;pointer-events:none;z-index:8;transition:opacity .25s,transform .3s cubic-bezier(.2,1.6,.4,1)}
+#toast{position:fixed;left:50%;top:calc(130px + env(safe-area-inset-top));transform:translate(-50%,-50%) scale(.7);max-width:min(86vw,520px);box-sizing:border-box;padding:9px 18px 11px;border-radius:16px;font-family:var(--d);font-size:15px;line-height:1.35;color:#fff;text-align:center;white-space:pre-line;background:linear-gradient(#8a63ff,#5a34d6);box-shadow:0 4px 0 #3a1f99;opacity:0;pointer-events:none;z-index:8;transition:opacity .25s,transform .3s cubic-bezier(.2,1.6,.4,1)}
 #toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 #evt{position:fixed;left:50%;top:calc(104px + env(safe-area-inset-top));transform:translateX(-50%) scale(.6);opacity:0;z-index:7;display:flex;align-items:center;gap:8px;padding:7px 12px 9px 14px;border-radius:15px;background:linear-gradient(#ff5a3a,#e8243a);border:3px solid #ffd23f;box-shadow:0 4px 0 #8a0f1f;transition:all .3s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
 #evt.on{opacity:1;transform:translateX(-50%) scale(1)}#evt b{font-family:var(--d);font-size:20px;color:#fff;white-space:nowrap}#evt span{font:900 11px var(--b);color:#ffe9a0;white-space:nowrap}#evt em{font-style:normal;font-family:var(--d);font-size:22px;color:#3a1a00;background:#ffd23f;border-radius:10px;padding:1px 8px}
@@ -186,7 +186,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 <div id="evt"><b>단체 관광객!</b><span>매장 매출 ×2</span><em id="evtT">30</em></div>
 <div id="joy"><i></i></div>
 <div id="modal"><div class="box" id="mbox"></div></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tv">v1.9</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><button id="tLobby">다른 게임 하러 가기</button><div id="tSheet"></div><div class="tv">v2.0</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -682,71 +682,88 @@ function setRain(on){ RAIN=null; }
 function tickRain(dt){}
 /* ---- quiz content ---- */
 const SWQ=[
-  {q:'업데이트하고 나서 배터리가 빨리 닳아요',a:['하루 이틀 지켜보며 백그라운드 앱 정리 안내','바로 배터리 교체 접수','공장 초기화부터 하자고 하기']},
-  {q:'앱이 계속 튕겨요',a:['앱 업데이트 후 재설치 안내','액정 교체 권유','새 기기 구매 권유']},
-  {q:'와이파이가 안 잡혀요',a:['네트워크 설정 재설정 안내','배터리 교체 접수','케이스부터 빼보라고만 하기']},
-  {q:'저장 공간이 꽉 찼대요',a:['안 쓰는 앱 정리·사진 클라우드 백업 안내','액정 교체 접수','재부팅만 계속 시키기']},
-  {q:'새 폰으로 데이터를 옮기고 싶어요',a:['백업 후 기기 간 전송 기능 안내','그냥 새로 시작하라고 하기','수리 접수']},
-  {q:'비밀번호를 잊어버렸어요',a:['본인 확인 후 계정 복구 절차 안내','새 기기 판매','배터리 분리 권유']},
-  {q:'화면이 멈춰서 아무것도 안 돼요',a:['강제 재시동 방법 안내','액정 바로 교체','기다리라고만 하기']}
-];
-const BUYQ=[
-  {q:'사진이랑 영상 많이 찍고 SNS 해요',t:'p',sp:['카메라 좋은 상위 모델 + 저장공간 넉넉하게','가장 작은 저장공간 기본 모델','화면 큰 것만 고르면 돼요']},
-  {q:'대학생인데 과제랑 코딩용이요',t:'l',sp:['메모리 16GB 이상 + 가벼운 모델','최저 사양이면 충분해요','게이밍 최고 사양 추천']},
-  {q:'운동할 때 심박이랑 걸음 수 보고 싶어요',t:'w',sp:['운동 기록 되는 기본 모델 + 스포츠 밴드','최고급 티타늄 모델만 추천','통화 안 되는 모델은 다 별로예요']},
-  {q:'부모님 선물이요, 전화랑 메신저만 쓰세요',t:'p',sp:['화면 크고 쓰기 쉬운 기본 모델','최상위 프로 모델 1TB','가장 작은 화면 모델']},
-  {q:'출장 많은 직장인이라 문서 작업해요',t:'l',sp:['가볍고 배터리 오래가는 모델','무거운 고성능 대화면 모델','저장공간만 큰 모델']},
-  {q:'알림을 손목으로 받고 싶어요',t:'w',sp:['폰과 연동되는 기본 모델','운동 전용 고급 모델 필수','셀룰러 최고급 모델 필수']},
-  {q:'영상 편집 시작해보려고요',t:'l',sp:['메모리 넉넉 + 저장공간 1TB 이상','기본 8GB / 256GB 모델','태블릿이면 충분해요']}
-];
-SWQ.push(
-  {q:'카톡 알림이 안 와요',a:['앱 알림 설정과 집중 모드 확인 안내','액정 교체 접수','통신사 가라고 돌려보내기']},
-  {q:'폰이 너무 뜨거워요',a:['케이스 빼고 백그라운드 앱 정리, 지속되면 점검 접수','냉동실에 넣으라고 하기','괜찮다고 그냥 보내기']},
-  {q:'블루투스 이어폰이 연결이 안 돼요',a:['기기 등록 해제 후 다시 페어링 안내','폰 공장 초기화','새 이어폰 사라고 하기']},
-  {q:'사진이 사라졌어요!',a:['최근 삭제된 항목·클라우드 백업 먼저 확인','바로 데이터 복구 불가라고 말하기','새 폰 구매 권유']},
-  {q:'업데이트가 계속 실패해요',a:['저장 공간 확보 후 와이파이로 재시도','액정 교체','다음 달에 오라고 하기']});
+  {q:'업데이트하고 나서 배터리가 빨리 닳아요',a:['하루 이틀 지켜보며 백그라운드 앱 정리 안내','바로 배터리 교체 접수','공장 초기화부터 하자고 하기'],why:'업데이트 직후에는 백그라운드 재정리로 소모가 늘었다가 며칠 안에 안정돼서, 바로 부품 교체부터 권하면 비용만 나가요'},
+  {q:'앱이 계속 튕겨요',a:['앱 업데이트 후 재설치 안내','액정 교체 권유','새 기기 구매 권유'],why:'앱 자체 결함이면 업데이트·재설치로 풀리고, 액정이나 기기 교체는 원인과 상관이 없어요'},
+  {q:'와이파이가 안 잡혀요',a:['네트워크 설정 재설정 안내','배터리 교체 접수','케이스부터 빼보라고만 하기'],why:'설정 재설정으로 풀리는 경우가 가장 많아서, 부품 교체 전에 소프트웨어부터 확인해야 해요'},
+  {q:'저장 공간이 꽉 찼대요',a:['안 쓰는 앱 정리·사진 클라우드 백업 안내','액정 교체 접수','재부팅만 계속 시키기'],why:'공간 부족은 정리와 백업으로 바로 풀리는 문제라 부품 교체가 답이 아니에요'},
+  {q:'새 폰으로 데이터를 옮기고 싶어요',a:['백업 후 기기 간 전송 기능 안내','그냥 새로 시작하라고 하기','수리 접수'],why:'기기 간 전송 기능으로 사진·연락처를 그대로 옮길 수 있어서 새로 시작할 이유가 없어요'},
+  {q:'비밀번호를 잊어버렸어요',a:['본인 확인 후 계정 복구 절차 안내','새 기기 판매','배터리 분리 권유'],why:'계정 복구는 본인 확인 절차로만 가능하고, 기기 판매나 부품 분리와는 무관해요'},
+  {q:'화면이 멈춰서 아무것도 안 돼요',a:['강제 재시동 방법 안내','액정 바로 교체','기다리라고만 하기'],why:'강제 재시동은 데이터를 지우지 않고 멈춤을 푸는 첫 단계이고, 액정 교체는 화면 자체가 깨졌을 때 이야기예요'},
+  {q:'카톡 알림이 안 와요',a:['앱 알림 설정과 집중 모드 확인 안내','액정 교체 접수','통신사 가라고 돌려보내기'],why:'알림은 앱 설정과 집중 모드에서 먼저 막히는 경우가 대부분이라 설정 확인이 1순위예요'},
+  {q:'폰이 너무 뜨거워요',a:['케이스 빼고 백그라운드 앱 정리, 지속되면 점검 접수','냉동실에 넣으라고 하기','괜찮다고 그냥 보내기'],why:'충전 중 사용·케이스·백그라운드 앱이 흔한 원인이라 먼저 빼보고, 계속되면 점검으로 넘겨야 해요'},
+  {q:'블루투스 이어폰이 연결이 안 돼요',a:['기기 등록 해제 후 다시 페어링 안내','폰 공장 초기화','새 이어폰 사라고 하기'],why:'등록 정보가 꼬이면 재페어링으로 풀려서 초기화나 재구매까지 갈 일은 아니에요'},
+  {q:'사진이 사라졌어요!',a:['최근 삭제된 항목·클라우드 백업 먼저 확인','바로 데이터 복구 불가라고 말하기','새 폰 구매 권유'],why:'최근 삭제된 항목에 남아 있는 경우가 많아서 백업 확인이 복구 안내보다 먼저예요'},
+  {q:'업데이트가 계속 실패해요',a:['저장 공간 확보 후 와이파이로 재시도','액정 교체','다음 달에 오라고 하기'],why:'저장 공간 부족과 불안정한 네트워크가 대표 원인이라 그 두 가지부터 확인해요'},
+  {q:'구독 결제가 두 번 빠져나갔어요',a:['결제 담당 온라인 지원팀으로 연결해드리기','매장에서 바로 현금 환불','은행에 가라고만 하기'],why:'결제 취소·환불 권한은 결제 담당 온라인팀에만 있어서 매장에서 현금으로 돌려드릴 수 없어요',on:1},
+  {q:'계정이 해킹당한 것 같아요',a:['비밀번호 변경 안내 + 보안 담당 온라인팀 연결','폰 공장 초기화만 하기','괜찮을 거라고 보내기'],why:'비밀번호를 바꾸고 보안팀에 연결해야 계정이 지켜지고, 초기화만 하면 침입 흔적을 놓쳐요',on:1},
+  {q:'온라인으로 주문한 게 배송이 안 와요',a:['주문 번호 확인 후 온라인 주문팀 연결','매장 재고로 그냥 주기','택배사에 알아서 물어보라고 하기'],why:'주문·배송은 온라인 주문팀 소관이라 매장 재고로 대신 드리면 결제가 두 번 되는 일이 생겨요',on:1}];
 const SWQ2=[
-  {q:'산 지 일주일 됐는데 환불해 주세요',a:['구매 영수증·기간 확인 후 환불 규정 안내','무조건 안 된다고 하기','본사에 전화하라고 돌려보내기']},
-  {q:'물에 빠뜨렸는데 무상 수리 되죠?',a:['침수는 보증 제외, 유상 수리·교체 옵션 안내','무상이라고 약속하기','드라이기로 말리라고 하기']},
-  {q:'보증 기간이 지났는데 배터리 공짜로 바꿔주세요',a:['보증 상태 조회 후 유상 교체 비용 안내','몰래 무상으로 해주기','안 된다고만 하고 끝내기']},
-  {q:'중고로 산 폰인데 계정 잠금이 걸려 있어요',a:['원래 주인 계정 해제가 필요하다고 안내','잠금 우회해주기','부품 교체로 해결해주기']}];
-BUYQ.push({q:'아이가 쓸 첫 폰을 찾고 있어요',t:'p',sp:['튼튼한 기본 모델 + 자녀 보호 기능 안내','최상위 프로 모델','중고로 아무거나']},{q:'수영할 때도 쓸 수 있는 거요',t:'w',sp:['방수 등급 확인된 모델 + 수영 모드 안내','방수 안 되는 패션 모델','폰을 방수팩에 넣으라고 하기']},{q:'카페에서 글 쓰는 작가예요',t:'l',sp:['가볍고 키보드 좋은 모델','고성능 게이밍 모델','저장공간만 큰 모델']},{q:'수면 패턴을 관리하고 싶어요',t:'w',sp:['수면 추적 되고 배터리 오래가는 모델','배터리 짧은 고급 모델','폰만 있으면 된다고 하기']},{q:'게임이랑 동영상 스트리밍용 폰이요',t:'p',sp:['고성능 칩 + 큰 화면 모델','가장 저렴한 작은 모델','태블릿 추천']});
-SWQ.push(
-  {q:'구독 결제가 두 번 빠져나갔어요',a:['결제 담당 온라인 지원팀으로 연결해드리기','매장에서 바로 현금 환불','은행에 가라고만 하기'],on:1},
-  {q:'계정이 해킹당한 것 같아요',a:['비밀번호 변경 안내 + 보안 담당 온라인팀 연결','폰 공장 초기화만 하기','괜찮을 거라고 보내기'],on:1},
-  {q:'온라인으로 주문한 게 배송이 안 와요',a:['주문 번호 확인 후 온라인 주문팀 연결','매장 재고로 그냥 주기','택배사에 알아서 물어보라고 하기'],on:1});
+  {q:'산 지 일주일 됐는데 환불해 주세요',a:['구매 영수증·기간 확인 후 환불 규정 안내','무조건 안 된다고 하기','본사에 전화하라고 돌려보내기'],why:'환불 여부는 구매일과 개봉 상태로 갈리니 영수증과 기간을 먼저 확인해야 정확히 안내할 수 있어요'},
+  {q:'물에 빠뜨렸는데 무상 수리 되죠?',a:['침수는 보증 제외, 유상 수리·교체 옵션 안내','무상이라고 약속하기','드라이기로 말리라고 하기'],why:'침수는 보증 대상이 아니라 무상이라고 약속하면 나중에 손님과 매장이 모두 곤란해져요'},
+  {q:'보증 기간이 지났는데 배터리 공짜로 바꿔주세요',a:['보증 상태 조회 후 유상 교체 비용 안내','몰래 무상으로 해주기','안 된다고만 하고 끝내기'],why:'보증 상태를 조회해야 유상과 무상이 갈리므로, 확인 없이 약속하거나 거절만 하면 안 돼요'},
+  {q:'중고로 산 폰인데 계정 잠금이 걸려 있어요',a:['원래 주인 계정 해제가 필요하다고 안내','잠금 우회해주기','부품 교체로 해결해주기'],why:'활성화 잠금은 원래 주인의 계정 해제만이 정답이고, 우회는 보안·법적 문제를 만들어요'}];
+const BUYQ=[
+  {q:'사진이랑 영상 많이 찍고 SNS 해요',t:'p',sp:['카메라 좋은 상위 모델 + 저장공간 넉넉하게','가장 작은 저장공간 기본 모델','화면 큰 것만 고르면 돼요'],why:'촬영이 핵심이면 카메라와 저장공간이 먼저예요. 화면 크기만 키우면 사진 품질은 그대로예요'},
+  {q:'대학생인데 과제랑 코딩용이요',t:'l',sp:['메모리 16GB 이상 + 가벼운 모델','최저 사양이면 충분해요','게이밍 최고 사양 추천'],why:'코딩은 메모리와 무게가 체감을 좌우해서 16GB 경량 모델이 정답이고, 최저 사양은 금방 버벅여요'},
+  {q:'운동할 때 심박이랑 걸음 수 보고 싶어요',t:'w',sp:['운동 기록 되는 기본 모델 + 스포츠 밴드','최고급 티타늄 모델만 추천','통화 안 되는 모델은 다 별로예요'],why:'운동 기록은 센서와 착용감이 핵심이라 소재나 통화 기능에 돈을 더 쓸 이유가 없어요'},
+  {q:'부모님 선물이요, 전화랑 메신저만 쓰세요',t:'p',sp:['화면 크고 쓰기 쉬운 기본 모델','최상위 프로 모델 1TB','가장 작은 화면 모델'],why:'화면이 크고 글자가 큰 기본 모델이 쓰기 쉽고, 최상위나 최소 화면 모델은 오히려 불편해요'},
+  {q:'출장 많은 직장인이라 문서 작업해요',t:'l',sp:['가볍고 배터리 오래가는 모델','무거운 고성능 대화면 모델','저장공간만 큰 모델'],why:'들고 다니며 문서를 쓰는 사람에게는 무게와 배터리가 성능보다 중요해요'},
+  {q:'알림을 손목으로 받고 싶어요',t:'w',sp:['폰과 연동되는 기본 모델','운동 전용 고급 모델 필수','셀룰러 최고급 모델 필수'],why:'알림 확인이 목적이면 폰과 연동되는 기본 모델로 충분하고, 셀룰러나 운동 특화는 값만 올려요'},
+  {q:'영상 편집 시작해보려고요',t:'l',sp:['메모리 넉넉 + 저장공간 1TB 이상','기본 8GB / 256GB 모델','태블릿이면 충분해요'],why:'편집은 메모리와 저장공간이 먼저 병목이라 8GB·256GB로 시작하면 곧 막혀요'},
+  {q:'아이가 쓸 첫 폰을 찾고 있어요',t:'p',sp:['튼튼한 기본 모델 + 자녀 보호 기능 안내','최상위 프로 모델','중고로 아무거나'],why:'첫 폰은 튼튼함과 자녀 보호 설정이 핵심이고, 최상위 모델은 분실·파손 부담만 커져요'},
+  {q:'수영할 때도 쓸 수 있는 거요',t:'w',sp:['방수 등급 확인된 모델 + 수영 모드 안내','방수 안 되는 패션 모델','폰을 방수팩에 넣으라고 하기'],why:'수영은 방수 등급이 확인된 모델만 가능하고, 방수팩 보관은 손님이 원한 운동 기록을 해결하지 못해요'},
+  {q:'카페에서 글 쓰는 작가예요',t:'l',sp:['가볍고 키보드 좋은 모델','고성능 게이밍 모델','저장공간만 큰 모델'],why:'글쓰기는 키보드 타건감과 무게가 전부라 게이밍 성능이나 저장공간만 키우면 값만 올라가요'},
+  {q:'수면 패턴을 관리하고 싶어요',t:'w',sp:['수면 추적 되고 배터리 오래가는 모델','배터리 짧은 고급 모델','폰만 있으면 된다고 하기'],why:'수면 측정은 배터리가 밤을 버텨야 의미가 있어서 배터리가 짧은 고급 모델은 오히려 손해예요'},
+  {q:'게임이랑 동영상 스트리밍용 폰이요',t:'p',sp:['고성능 칩 + 큰 화면 모델','가장 저렴한 작은 모델','태블릿 추천'],why:'게임과 스트리밍은 칩 성능과 큰 화면이 직결이라 저렴한 소형 모델은 경험이 크게 떨어져요'}];
+const BUYC=[
+  {q:'예산 50만원대인데 인강 들으면서 필기할 가성비 제품 찾아요',budget:'낮음',use:'학생·필기',have:'5년 된 노트북',t:'l',sp:['8GB·256GB 기본형, 가벼운 무게 위주','최고 사양 게이밍 노트북','저장공간만 2TB로 키운 모델'],why:'필기와 과제 제출은 키보드와 화면이 있어야 되고 5년 된 기기는 배터리부터 못 버텨서, 같은 값이면 기본형 랩탑 교체가 먼저예요',combo:1},
+  {q:'숏폼 영상 편집 배우는데 돈은 많이 못 써요',budget:'낮음',use:'영상 편집',have:'폰 하나',t:'l',sp:['8GB·256GB 입문형, 외장 저장공간 활용','4K 편집용 고사양 워크스테이션','저장공간 없이 화면만 큰 모델'],why:'폰을 그대로 두고 입문용 랩탑을 더하면 촬영은 폰, 편집은 큰 화면으로 나눠 쓸 수 있어 가장 적은 지출로 시작할 수 있어요',combo:1},
+  {q:'폰 없이 운동할 때 음악이랑 기록만 챙기고 싶어요',budget:'낮음',use:'운동·건강',have:'폰만 있음',t:'w',sp:['운동 기록 기본 모델 + 스포츠 밴드','운동 전용 최고급 모델','통화 되는 셀룰러 최고급 모델'],why:'운동 중 기록과 음악만 필요하면 폰을 바꾸지 않고 기본 워치만 더하는 쪽이 가장 적은 지출이에요',combo:1},
+  {q:'6년 쓴 폰이 하루도 못 가는데 통화랑 메신저만 해요',budget:'낮음',use:'통화·메신저',have:'6년 된 폰',t:'p',sp:['배터리 오래가는 기본 모델','카메라 특화 최상위 모델','저장공간 1TB 모델'],why:'쓰는 기능이 통화와 메신저뿐이면 성능보다 배터리와 화면 상태가 중요해서 기본 폰 교체가 가장 합리적이에요',combo:1},
+  {q:'3년 된 노트북으로 유튜브 편집하는데 렌더링이 너무 느려요',budget:'중간',use:'영상 편집',have:'3년 된 노트북',t:'l',sp:['메모리 16GB 이상 + 저장공간 1TB','8GB·256GB 기본형','게이밍 최고 사양 대화면'],why:'편집은 메모리와 저장공간이 먼저 한계에 부딪혀서, 3년 된 기기는 같은 무게에서 메모리와 저장을 키운 모델로 바꿔야 렌더 대기가 줄어요',combo:1},
+  {q:'폰만 있는데 대학 과제랑 필기를 한 번에 하고 싶어요',budget:'중간',use:'학생·필기',have:'폰 하나',t:'l',sp:['16GB·512GB 경량 모델','8GB 기본형 최저가','고성능 게이밍 모델'],why:'과제와 필기는 키보드가 붙은 기기가 필요해서 폰으로는 제출용 문서를 만들기 어렵고, 중간 예산이면 16GB 경량 모델이 4년은 버텨요',combo:1},
+  {q:'러닝이랑 수영을 같이 하는데 폰은 그대로 쓰고 싶어요',budget:'중간',use:'운동·건강',have:'폰 그대로 사용',t:'w',sp:['방수 등급 확인 + 수영 모드 + 배터리 긴 모델','방수 안 되는 패션 모델','배터리 짧은 고급 모델'],why:'수영과 수면까지 기록하려면 방수 등급과 배터리가 긴 워치가 필요하고, 폰을 바꿔도 물속 기록은 해결되지 않아요',combo:1},
+  {q:'부모님 폰이 느려져서 바꿔 드리려는데 통화랑 메신저만 쓰세요',budget:'중간',use:'통화·메신저',have:'부모님의 오래된 폰',t:'p',sp:['화면 크고 글자 큰 기본 모델','최상위 프로 1TB','가장 작은 화면 모델'],why:'통화와 메신저만 쓰시면 화면이 크고 글자가 큰 기본 모델이 쓰기 편하고, 워치나 랩탑은 쓰지 않을 기능에 돈을 버리는 셈이에요',combo:1},
+  {q:'폰으로 4K 영상 찍어 두는데 편집할 기기가 없어요',budget:'높음',use:'영상 편집',have:'촬영용 폰',t:'l',sp:['메모리 32GB + 2TB, 외장 GPU 경량 모델','8GB·256GB 기본형','화면만 큰 저사양 모델'],why:'4K 편집은 메모리·저장공간·발열이 핵심이라 촬영은 폰으로 두고, 예산이 넉넉하면 휴대 가능한 고사양 랩탑을 먼저 갖추는 게 맞아요',combo:1},
+  {q:'예산은 넉넉한데 대학원 과제랑 논문 작업용이에요',budget:'높음',use:'학생·필기',have:'낡은 랩탑 + 폰',t:'l',sp:['16GB·1TB 경량 모델 + 좋은 키보드','최고 사양 게이밍 모델','작은 화면 저가 모델'],why:'예산이 많아도 논문과 과제는 랩탑이 중심이라, 저장공간 넉넉한 경량 모델로 한 번에 정리하는 편이 오래 써요',combo:1},
+  {q:'마라톤 준비 중이라 훈련 데이터를 제대로 보고 싶어요',budget:'높음',use:'운동·건강',have:'최신 폰',t:'w',sp:['정확도 높은 센서 + 배터리 긴 상위 모델','알림만 되는 기본 모델','통화 위주 셀룰러 모델'],why:'페이스·심박·회복 같은 훈련 데이터는 센서 정확도와 배터리가 긴 상위 워치에서만 제대로 쌓여서 폰 성능으로는 대신할 수 없어요',combo:1},
+  {q:'폰은 오래 쓰는데 사진은 거의 안 찍고 전화·문자만 해요',budget:'높음',use:'통화·메신저',have:'지금 폰 오래 사용',t:'p',sp:['화면 크고 배터리 긴 모델','카메라 특화 최상위 모델','저장공간 1TB 모델'],why:'예산이 넉넉해도 통화와 문자만 쓰면 카메라·저장공간을 키운 최상위 모델은 과해서, 화면과 배터리 중심 모델이 맞아요',combo:1},
+  {q:'집에 편집용 데스크톱이 있는데 밖에서 급하게 컷 편집만 하고 싶어요',budget:'낮음',use:'영상 편집',have:'집에 편집용 데스크톱',t:'p',sp:['저장공간 넉넉한 폰 + 편집 앱 안내','휴대용 편집 랩탑 추가 구매','8K 편집용 워크스테이션'],why:'집에 편집 기기가 있으면 밖에서는 폰으로 컷과 자막만 손보면 되니, 같은 목적에 예산을 두 번 쓰지 않는 게 맞아요',combo:1},
+  {q:'헬스장에서 운동 기록만 남기고 싶은데 폰은 최신이라 그대로 쓸 거예요',budget:'중간',use:'운동·건강',have:'최신 폰',t:'w',sp:['운동 기록 기본 모델','운동 전용 고급 모델','셀룰러 최고급 모델'],why:'폰이 최신이면 폰을 바꿀 이유가 없고 운동 기록은 차는 워치에서만 쌓이니, 워치만 더하면 목적이 끝나요',combo:1},
+  {q:'브이로그를 폰으로 찍고 편집도 폰으로 끝내고 싶어요',budget:'중간',use:'영상 편집',have:'폰 하나, 컴퓨터 없음',t:'p',sp:['저장공간 큰 모델 + 큰 화면','저장공간 128GB 기본 모델','작은 화면 경량 모델'],why:'촬영과 편집을 한 기기로 끝내야 하면 저장공간과 화면이 큰 폰이 랩탑보다 동선이 짧고 예산도 한 번만 써요',combo:1},
+  {q:'워치를 차고 등산 다니는데 산에서 길도 찾고 기록도 남기고 싶어요',budget:'높음',use:'운동·건강',have:'폰 지참',t:'w',sp:['위성 위치 + 긴 배터리 상위 모델','알림만 되는 기본 모델','배터리 짧은 패션 모델'],why:'산에서는 폰을 꺼내기 어려워서 등산 경로와 기록을 손목에서 보려면 위성 위치와 배터리가 긴 상위 워치가 필요해요',combo:1}];
 const TOURQ=[
-  {q:'"I want a phone with a great camera for my trip!"',a:['카메라 좋은 폰 추천 + 여권 확인 후 택스리펀 안내','한국어로만 빠르게 설명하기','외국인은 응대가 어렵다고 하기'],t:'p'},
-  {q:'"Can I get a tax refund on this laptop?"',a:['여권 확인 후 택스리펀 절차 안내','택스리펀은 없다고 하기','공항에서 알아서 하라고 하기'],t:'l'},
-  {q:'"Does this watch work with my phone from my country?"',a:['기기 호환·언어 설정 가능 여부 확인해서 안내','무조건 된다고 하기','잘 모르겠다고 돌려보내기'],t:'w'}];
+  {q:'"I want a phone with a great camera for my trip!"',a:['카메라 좋은 폰 추천 + 여권 확인 후 택스리펀 안내','한국어로만 빠르게 설명하기','외국인은 응대가 어렵다고 하기'],t:'p',why:'외국인 손님은 카메라 성능과 택스리펀을 함께 챙겨야 만족하고, 한국어로만 설명하면 안내가 끝나지 않아요'},
+  {q:'"Can I get a tax refund on this laptop?"',a:['여권 확인 후 택스리펀 절차 안내','택스리펀은 없다고 하기','공항에서 알아서 하라고 하기'],t:'l',why:'택스리펀은 여권 확인이 출발점이고, 공항에서 하라고 미루면 손님이 환급을 못 받고 돌아가요'},
+  {q:'"Does this watch work with my phone from my country?"',a:['기기 호환·언어 설정 가능 여부 확인해서 안내','무조건 된다고 하기','잘 모르겠다고 돌려보내기'],t:'w',why:'국가별 주파수와 언어 설정을 확인해야 하고, 무조건 된다고 하면 나중에 반품으로 돌아와요'}];
 const CORPQ=[
-  {q:'직원 20명이 쓸 노트북을 한 번에 사고 싶어요',a:['법인(비즈니스) 담당팀 연결 + 견적·세금계산서 안내','매장 재고를 다 꺼내서 바로 팔기','온라인에서 알아서 사라고 하기']},
-  {q:'회사 폰 30대를 업무용으로 세팅해서 받고 싶어요',a:['비즈니스팀 연결해 기기 관리·일괄 세팅 안내','한 대씩 직접 세팅해준다고 약속','개인 구매로 하라고 하기']}];
+  {q:'직원 20명이 쓸 노트북을 한 번에 사고 싶어요',a:['법인(비즈니스) 담당팀 연결 + 견적·세금계산서 안내','매장 재고를 다 꺼내서 바로 팔기','온라인에서 알아서 사라고 하기'],why:'20대는 개인 판매로 처리하면 세금계산서·보증·납기가 안 맞아서 법인팀 견적이 정답이에요'},
+  {q:'회사 폰 30대를 업무용으로 세팅해서 받고 싶어요',a:['비즈니스팀 연결해 기기 관리·일괄 세팅 안내','한 대씩 직접 세팅해준다고 약속','개인 구매로 하라고 하기'],why:'기기 관리와 일괄 세팅은 비즈니스팀만 제공할 수 있어서, 매장에서 한 대씩 약속하면 지킬 수 없어요'}];
 const ESCQ=[
-  {q:'수리 실패라니 말이 돼요? 책임자 나오라고 해요!',a:['진심으로 사과하고 매니저에게 에스컬레이션','규정이라 어쩔 수 없다고 단호히 말하기','못 들은 척 다른 손님 응대하기']},
-  {q:'아까 직원이 반품 된다고 했잖아요! 매니저 불러요!',a:['안내가 엇갈린 점 사과하고 매니저 연결','그 직원이 잘못 말한 거라고 하기','반품 불가라고만 반복하기']},
-  {q:'한 시간이나 기다렸어요! 책임자 어딨어요?!',a:['기다리게 한 점 사과하고 매니저가 직접 응대하게 연결','다들 기다린다고 말하기','번호표 다시 뽑으라고 하기']}];
+  {q:'수리 실패라니 말이 돼요? 책임자 나오라고 해요!',a:['진심으로 사과하고 매니저에게 에스컬레이션','규정이라 어쩔 수 없다고 단호히 말하기','못 들은 척 다른 손님 응대하기'],why:'항의는 사과와 매니저 연결이 먼저이고, 규정을 앞세우면 감정만 커져요'},
+  {q:'아까 직원이 반품 된다고 했잖아요! 매니저 불러요!',a:['안내가 엇갈린 점 사과하고 매니저 연결','그 직원이 잘못 말한 거라고 하기','반품 불가라고만 반복하기'],why:'안내가 엇갈린 책임은 매장에 있어서 사과하고 매니저가 이어받아야 신뢰가 돌아와요'},
+  {q:'한 시간이나 기다렸어요! 책임자 어딨어요?!',a:['기다리게 한 점 사과하고 매니저가 직접 응대하게 연결','다들 기다린다고 말하기','번호표 다시 뽑으라고 하기'],why:'기다린 시간에 대한 사과가 먼저이고, 다른 손님을 핑계로 대면 항의가 더 커져요'}];
 const RETQ=[
-  {q:'산 지 3일 됐는데 마음에 안 들어요',a:['구매일·구성품·상태 확인 후 반품 접수','개봉했으니 무조건 안 된다고 하기','온라인으로 하라고 돌려보내기']},
-  {q:'선물 받았는데 다른 색으로 바꾸고 싶어요',a:['영수증·구매 기간 확인 후 교환 안내','선물은 교환 불가라고 하기','중고로 팔라고 하기']}];
+  {q:'산 지 3일 됐는데 마음에 안 들어요',a:['구매일·구성품·상태 확인 후 반품 접수','개봉했으니 무조건 안 된다고 하기','온라인으로 하라고 돌려보내기'],why:'반품은 구매일·구성품·상태로 판단하니 그것부터 확인해야 접수 여부를 정확히 알려줄 수 있어요'},
+  {q:'선물 받았는데 다른 색으로 바꾸고 싶어요',a:['영수증·구매 기간 확인 후 교환 안내','선물은 교환 불가라고 하기','중고로 팔라고 하기'],why:'선물 교환은 영수증과 구매 기간이 기준이라, 불가라고 단정하면 손님을 잃어요'}];
 const TRADEQ=[
-  {q:'쓰던 폰을 반납하고 새 폰을 사고 싶어요',a:['상태(화면·배터리·침수)를 점검하고 보상가를 안내하기','보지도 않고 최고가를 약속하기','중고 사이트에 팔라고 하기']},
-  {q:'화면에 금이 갔는데 보상 판매가 되나요?',a:['파손 상태를 반영한 보상가를 정직하게 안내하기','파손은 무조건 0원이라고 하기','멀쩡한 걸로 처리해 주겠다고 하기']},
-  {q:'보상 판매 전에 뭘 해야 하나요?',a:['백업 후 계정 로그아웃과 초기화를 도와드리기','그냥 두고 가라고 하기','유심만 빼면 된다고 하기']}];
+  {q:'쓰던 폰을 반납하고 새 폰을 사고 싶어요',a:['상태(화면·배터리·침수)를 점검하고 보상가를 안내하기','보지도 않고 최고가를 약속하기','중고 사이트에 팔라고 하기'],why:'보상가는 화면·배터리·침수 상태로 정해져서, 점검 없이 최고가를 약속하면 매장이 손해를 봐요'},
+  {q:'화면에 금이 갔는데 보상 판매가 되나요?',a:['파손 상태를 반영한 보상가를 정직하게 안내하기','파손은 무조건 0원이라고 하기','멀쩡한 걸로 처리해 주겠다고 하기'],why:'파손은 감액 사유라 0원도 정상가도 아니어서, 상태를 반영해 정직하게 알려야 해요'},
+  {q:'보상 판매 전에 뭘 해야 하나요?',a:['백업 후 계정 로그아웃과 초기화를 도와드리기','그냥 두고 가라고 하기','유심만 빼면 된다고 하기'],why:'계정 로그아웃과 초기화를 안 하면 새 주인이 기기를 못 쓰고 개인정보도 그대로 남아요'}];
 const LOSTQ=[
-  {q:'폰을 잃어버렸어요! 어떡하죠?',a:['기기 찾기로 위치 확인 후 분실 모드를 켜도록 돕기','새 폰부터 사라고 하기','경찰서에 가라고만 하기']},
-  {q:'폰을 도난당했는데 안의 사진이 걱정돼요',a:['분실 모드와 원격 잠금·지우기 방법을 안내하기','어쩔 수 없다고 하기','비밀번호를 알려 달라고 하기']},
-  {q:'주운 폰인데 잠겨 있어요. 풀어 주세요',a:['잠금은 풀 수 없고 주인에게 돌려주는 방법을 안내하기','돈을 받고 풀어 주기','초기화해서 쓰라고 하기']}];
+  {q:'폰을 잃어버렸어요! 어떡하죠?',a:['기기 찾기로 위치 확인 후 분실 모드를 켜도록 돕기','새 폰부터 사라고 하기','경찰서에 가라고만 하기'],why:'기기 찾기와 분실 모드가 첫 단계이고, 새 폰 권유는 아직 되찾을 수 있는 기회를 버리는 일이에요'},
+  {q:'폰을 도난당했는데 안의 사진이 걱정돼요',a:['분실 모드와 원격 잠금·지우기 방법을 안내하기','어쩔 수 없다고 하기','비밀번호를 알려 달라고 하기'],why:'원격 잠금과 지우기로 개인정보를 지킬 수 있고, 비밀번호를 알려 달라는 요구는 위험해요'},
+  {q:'주운 폰인데 잠겨 있어요. 풀어 주세요',a:['잠금은 풀 수 없고 주인에게 돌려주는 방법을 안내하기','돈을 받고 풀어 주기','초기화해서 쓰라고 하기'],why:'남의 기기 잠금 해제는 불법이고, 주인에게 돌려주는 안내만이 맞는 대응이에요'}];
 const GIFTQ=[
-  {q:'부모님 선물인데 설정이 어려울까 걱정이에요',a:['매장에서 초기 설정과 글자 크기를 맞춰 드리기','설명서를 읽으라고 하기','더 비싼 모델을 권하기']},
-  {q:'선물할 건데 받는 분이 마음에 안 들어 하면요?',a:['선물용 교환 영수증과 교환 기간을 안내하기','교환은 절대 안 된다고 하기','그럼 사지 말라고 하기']}];
+  {q:'부모님 선물인데 설정이 어려울까 걱정이에요',a:['매장에서 초기 설정과 글자 크기를 맞춰 드리기','설명서를 읽으라고 하기','더 비싼 모델을 권하기'],why:'매장에서 초기 설정과 글자 크기를 맞춰 드리면 걱정이 바로 풀리고, 더 비싼 모델은 답이 아니에요'},
+  {q:'선물할 건데 받는 분이 마음에 안 들어 하면요?',a:['선물용 교환 영수증과 교환 기간을 안내하기','교환은 절대 안 된다고 하기','그럼 사지 말라고 하기'],why:'선물용 교환 영수증과 기간을 알려주면 받는 분이 편하게 바꿀 수 있어요'}];
 const FIXQ=[
-  {q:'충전이 갑자기 안 돼요',a:[{t:'충전 포트 이물질 청소',x:1},{t:'액정 교체',x:'s'},{t:'새 폰 판매',x:0}]},
-  {q:'하루도 안 가서 배터리가 0%예요',a:[{t:'배터리 성능 확인 후 교체',x:'b'},{t:'액정 교체',x:'s'},{t:'그냥 충전 자주 하라고 하기',x:0}]},
-  {q:'화면에 줄이 가고 터치가 안 돼요',a:[{t:'디스플레이 교체',x:'s'},{t:'배터리 교체',x:'b'},{t:'재부팅만 시키기',x:0}]},
-  {q:'배터리가 부풀어서 화면이 들떠요',a:[{t:'즉시 배터리 교체 (안전 우선)',x:'b'},{t:'화면만 눌러서 붙이기',x:0},{t:'액정 교체',x:'s'}]},
-  {q:'떨어뜨렸더니 화면이 깨졌어요',a:[{t:'액정 교체',x:'s'},{t:'배터리 교체',x:'b'},{t:'테이프로 붙이기',x:0}]},
-  {q:'소리가 안 나요',a:[{t:'무음 스위치·볼륨·블루투스 연결 확인',x:1},{t:'액정 교체',x:'s'},{t:'배터리 교체',x:'b'}]}];
+  {q:'충전이 갑자기 안 돼요',why:'충전 불량은 포트 이물질이 가장 흔한 원인이라 청소로 풀리고, 액정 교체나 신품 판매는 과한 처방이에요',a:[{t:'충전 포트 이물질 청소',x:1},{t:'액정 교체',x:'s'},{t:'새 폰 판매',x:0}]},
+  {q:'하루도 안 가서 배터리가 0%예요',why:'배터리 성능 수치로 교체 시점을 판단해야 하고, 액정은 충전과 무관해요',a:[{t:'배터리 성능 확인 후 교체',x:'b'},{t:'액정 교체',x:'s'},{t:'그냥 충전 자주 하라고 하기',x:0}]},
+  {q:'화면에 줄이 가고 터치가 안 돼요',why:'줄과 터치 불량은 디스플레이 모듈 증상이라 배터리 교체로는 풀리지 않아요',a:[{t:'디스플레이 교체',x:'s'},{t:'배터리 교체',x:'b'},{t:'재부팅만 시키기',x:0}]},
+  {q:'배터리가 부풀어서 화면이 들떠요',why:'부푼 배터리는 안전 문제라 화면을 눌러 붙이면 안 되고 즉시 교체가 원칙이에요',a:[{t:'즉시 배터리 교체 (안전 우선)',x:'b'},{t:'화면만 눌러서 붙이기',x:0},{t:'액정 교체',x:'s'}]},
+  {q:'떨어뜨렸더니 화면이 깨졌어요',why:'떨어뜨려 깨진 화면은 물리 충격으로 액정이 깨진 것이라 액정 교체가 맞고, 테이프는 임시방편이에요',a:[{t:'액정 교체',x:'s'},{t:'배터리 교체',x:'b'},{t:'테이프로 붙이기',x:0}]},
+  {q:'소리가 안 나요',why:'무음 스위치·볼륨·블루투스 연결이 원인인 경우가 대부분이라 부품 교체 전에 확인해야 해요',a:[{t:'무음 스위치·볼륨·블루투스 연결 확인',x:1},{t:'액정 교체',x:'s'},{t:'배터리 교체',x:'b'}]}];
 const DAYS=[
   {goal:120,dur:120,min:3.2,types:['pick','buy'],title:'첫 영업일',tip:'픽업과 구입 상담부터 시작해요'},
   {goal:200,dur:130,min:3.2,types:['pick','buy','fix'],open:'repair',backup:1,fail:0.10,title:'수리 센터 오픈',tip:'수리 전엔 꼭 데이터 백업을 확인해요. 가끔 당일 수리가 실패해요'},
@@ -841,7 +858,7 @@ function spawnCust(){ if(dayState!=='run') return; const cfg=dayCfg(S.day); cons
   if(type==='corp'){ c.cq=pickQ(CORPQ); }
   if(type==='esc'){ c.eq=pickQ(ESCQ); c.pat=c.patMax=24; }
   if(type==='ret'){ const r=Math.random(), early=S.day<7; c.sub=early?(r<0.45?'trade':r<0.8?'lost':'gift'):(r<0.25?'trade':r<0.45?'lost':r<0.6?'gift':''); const QS={trade:TRADEQ,lost:LOSTQ,gift:GIFTQ}[c.sub]||RETQ; c.rq=QS[Math.floor(Math.random()*QS.length)]; c.want='pwl'[Math.floor(Math.random()*3)]; }
-  if(type==='fix'&&cfg.walkin&&!GSPOT.occ&&Math.random()<cfg.walkin){ c.walkin=1; sp.occ=null; c.spot=GSPOT; GSPOT.occ=c; c.wp=[new THREE.Vector3(0,0,8),new THREE.Vector3(GSPOT.x,0,GSPOT.z)]; c.pat=c.patMax=30; } if(type==='buy') c.bq=pickQ(BUYQ);
+  if(type==='fix'&&cfg.walkin&&!GSPOT.occ&&Math.random()<cfg.walkin){ c.walkin=1; sp.occ=null; c.spot=GSPOT; GSPOT.occ=c; c.wp=[new THREE.Vector3(0,0,8),new THREE.Vector3(GSPOT.x,0,GSPOT.z)]; c.pat=c.patMax=30; } if(type==='buy'){ const BQ=pickBuyQ(); c.bq=BQ.q; c.bqC=BQ.combo; }
   if(dayEv==='rain'){ c.pat=c.patMax=Math.round(c.patMax*1.4); } if(S.up.chk){ c.pat=c.patMax=c.patMax*(1+0.08*S.up.chk); }
   c.el.className='lb'; $('labels').appendChild(c.el); ch.g.position.copy(c.pos); custs.push(c); addAura(c); }
 const faceI=(k,s,cl)=>'<u class="'+cl+'" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></u>'; let curFace=null;
@@ -860,42 +877,49 @@ let quizOpen=false;
 function quizBtns(opts,col){ return opts.map((o,i)=>'<button data-qa="'+i+'" style="background:linear-gradient('+col[0]+','+col[1]+');box-shadow:0 4px 0 '+col[2]+';font-size:15px;padding:10px 8px">'+o.t+'</button>').join(''); }
 const mgmtOpen=()=>$('modal').classList.contains('on')&&!quizOpen;
 const qBusy=()=>{ if(quizOpen){ toast('진행 중인 응대를 먼저 마쳐 주세요',1.8); return true; } return false; };
-function pickQ(arr){ if(!arr||!arr.length) return null; if(arr.length<=2) return arr[Math.floor(Math.random()*arr.length)]; const rc=arr.__rc||(Object.defineProperty(arr,'__rc',{value:[],enumerable:false}),arr.__rc); const keep=Math.min(arr.length-1,Math.max(1,Math.floor(arr.length/2))); const pool=arr.filter(x=>!rc.includes(x)); const q=pool[Math.floor(Math.random()*pool.length)]; rc.push(q); while(rc.length>keep) rc.shift(); return q; }
+function pickQ(arr){ if(!arr||!arr.length) return null;
+  const rc=arr.__rc||(Object.defineProperty(arr,'__rc',{value:[],enumerable:false}),arr.__rc);
+  const keep=Math.min(arr.length-1,Math.max(1,Math.floor(arr.length/2)));
+  const last=rc.length?rc[rc.length-1]:null;
+  let pool=arr.filter(x=>!rc.includes(x)); if(!pool.length) pool=arr;
+  if(last&&pool.length>1){ const f=pool.filter(x=>x!==last); if(f.length) pool=f; }
+  const q=pool[Math.floor(Math.random()*pool.length)]; rc.push(q); while(rc.length>keep) rc.shift(); return q; }
+function pickBuyQ(){ const combo=S.day>=7&&Math.random()<0.7; return {q:pickQ(combo?BUYC:BUYQ),combo:combo?1:0}; }
 function openQuiz(c){ if(mgmtOpen()) return; quizOpen=true; c.st='consult'; curFace=c.face; const qcBtn='<button id="qClose" class="gray" style="font-size:14px;margin-top:6px">잠시 후 응대 (닫기)</button>';
   if(c.walkin&&c.spot===GSPOT){ const free=SPOTS.find(s=>s.type==='fix'&&s.on&&!s.occ); const tl=dayT;
     const opts=[{t:'오늘 현장 대기 등록 (대기 길어요)',k:'wait'},{t:'가장 빠른 날로 수리 예약 잡아드리기',k:'book'},{t:'예약 없으면 안 된다고 돌려보내기',k:'no'}];
     openModal('<h2>입구 안내</h2><p style="font-size:15px"><b>"예약 없이 왔는데 오늘 수리 되나요?"</b><br><small>수리 자리: '+(free?'비어 있음':'꽉 참')+' · 남은 영업 '+Math.ceil(tl)+'초</small></p>'+quizBtns(opts,['#5aa8ff','#2f6fd8','#1c3f9a'])+qcBtn);
     $('mbox').onclick=e=>{ if(e.target.id==='qClose'){ closeQuiz(); c.st='wait'; c.reopenT=3.0; return; } const b=e.target.closest('[data-qa]'); if(!b) return; const o=opts[+b.dataset.qa]; closeQuiz(); GSPOT.occ=null;
-      if(o.k==='wait'){ const f=SPOTS.find(s=>s.type==='fix'&&s.on&&!s.occ); if(f&&tl>35){ c.spot=f; f.occ=c; c.st='wait'; c.walkin=2; c.wp=[new THREE.Vector3(2.3,0,1.5),new THREE.Vector3(f.x,0,f.z)]; c.st='enter'; c.pat=c.patMax=34; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'기다릴게요!','say'); if(!c.want&&!c.diag) c.want=fixPart(); }
-        else { c.miss=true; toast(f?'영업 종료가 가까워서 오늘 수리는 무리였어요':'수리 자리가 꽉 차서 한참 기다리다 지쳤어요'); custLeave(c,false); } }
-      else if(o.k==='book'){ c.quiet=1; S.stats.ok++; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'예약 고마워요!','say'); custLeave(c,true,0); }
-      else { c.miss=true; toast('예약 안내 없이 돌려보내면 민원이 들어와요'); custLeave(c,false); } }; return; }
+      if(o.k==='wait'){ const f=SPOTS.find(s=>s.type==='fix'&&s.on&&!s.occ); if(f&&tl>35){ c.spot=f; f.occ=c; c.st='wait'; c.walkin=2; c.wp=[new THREE.Vector3(2.3,0,1.5),new THREE.Vector3(f.x,0,f.z)]; c.st='enter'; c.pat=c.patMax=34; toast('✔ 오늘 안에 수리 가능한지 확인하고 대기로 잡아 드렸어요',3); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'기다릴게요!','say'); if(!c.want&&!c.diag) c.want=fixPart(); }
+        else { c.miss=true; toast('✘ '+(f?'영업 종료가 가까워서 오늘 수리는 무리였어요':'수리 자리가 꽉 차서 한참 기다리다 지쳤어요')+' — 영업 종료가 가까우면 다음 날 예약이 손님에게 이득이에요',3.8); custLeave(c,false); } }
+      else if(o.k==='book'){ c.quiet=1; S.stats.ok++; toast('✔ 예약으로 잡아 드리면 헛걸음 없이 수리 일정을 지킬 수 있어요',3); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'예약 고마워요!','say'); custLeave(c,true,0); }
+      else { c.miss=true; toast('✘ 예약 안내 없이 돌려보내면 민원이 들어와요 — 예약으로 잡아 드리면 헛걸음 없이 수리 일정을 지킬 수 있어요',3.6); custLeave(c,false); } }; return; }
   if(c.type==='tour'||c.type==='corp'||c.type==='esc'){ const Q=c.tq||c.cq||c.eq; const opts=shuffle(Q.a.map((t,i)=>({t,ok:i===0})));
     const title={tour:'외국인 손님',corp:'법인 고객',esc:'항의 손님 · 에스컬레이션'}[c.type], col={tour:['#5ad1ff','#2f9fd8','#1c6a9a'],corp:['#ffd23f','#e0a800','#8a6a00'],esc:['#ff7a6a','#e8342a','#8a0f1f']}[c.type];
     openModal('<h2>'+title+'</h2><p style="font-size:16px"><b>'+(c.type==='tour'?Q.q:'"'+Q.q+'"')+'</b>'+(c.type==='esc'&&hasCrew('mgr')?'<br><small>매니저가 매장에 있어요</small>':'')+'</p>'+quizBtns(opts,col));
     $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz();
-      if(c.type==='tour'){ if(ok){ S.stats.ok++; c.happy=1; if(Q.t){ c.want=Q.t; c.st='want'; c.pat=Math.max(c.pat,30); c.specOk=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'Thank you!!','say'); } else custLeave(c,true,25); } else { c.miss=true; toast('아쉬워요… 정답: '+Q.a[0]); custLeave(c,false); } }
-      else if(c.type==='corp'){ if(ok){ S.stats.ok++; c.happy=1; bigBanner('법인 계약 성사!','대량 구매 견적 전달'); custLeave(c,true,160); } else { c.miss=true; toast('아쉬워요… 정답: '+Q.a[0]); custLeave(c,false); } }
-      else { if(ok){ S.stats.ok++; if(hasCrew('mgr')){ c.mgr=1; c.st='mgrwait'; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'매니저님 오시는 중…','say'); } else { c.quiet=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'…알겠어요, 다음엔 잘 부탁해요','say'); custLeave(c,true,0); } } else { c.miss=true; dayComp++; toast('항의가 더 커졌어요! 민원 2건 · 정답: '+Q.a[0]); custLeave(c,false); } } }; return; }
+      if(c.type==='tour'){ if(ok){ S.stats.ok++; c.happy=1; toast('✔ '+Q.why,3.2); if(Q.t){ c.want=Q.t; c.st='want'; c.pat=Math.max(c.pat,30); c.specOk=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'Thank you!!','say'); } else custLeave(c,true,25); } else { c.miss=true; toast('✘ 정답: '+Q.a[0]+' — '+Q.why,3.8); custLeave(c,false); } }
+      else if(c.type==='corp'){ if(ok){ S.stats.ok++; c.happy=1; toast('✔ '+Q.why,3.2); bigBanner('법인 계약 성사!','대량 구매 견적 전달'); custLeave(c,true,160); } else { c.miss=true; toast('✘ 정답: '+Q.a[0]+' — '+Q.why,3.8); custLeave(c,false); } }
+      else { if(ok){ S.stats.ok++; toast('✔ '+Q.why,3.2); if(hasCrew('mgr')){ c.mgr=1; c.st='mgrwait'; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'매니저님 오시는 중…','say'); } else { c.quiet=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'…알겠어요, 다음엔 잘 부탁해요','say'); custLeave(c,true,0); } } else { c.miss=true; dayComp++; toast('✘ 항의가 더 커졌어요! 민원 2건 · 정답: '+Q.a[0]+' — '+Q.why,4); custLeave(c,false); } } }; return; }
   if(c.type==='ret'){ const opts=shuffle(c.rq.a.map((t,i)=>({t,ok:i===0})));
     openModal('<h2>'+({trade:'♻️ 보상 판매',lost:'🚨 분실·도난 상담',gift:'🎁 선물 구매 상담'}[c.sub]||'반품·교환 문의')+'</h2><p style="font-size:16px"><b>"'+c.rq.q+'"</b></p>'+quizBtns(opts,['#ff9ad5','#e8508f','#a02a60']));
-    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); if(ok&&c.sub){ S.stats.ok++; c.happy=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),c.sub==='lost'?'덕분에 안심했어요':'잘 알려줘서 고마워요','say'); custLeave(c,true,c.sub==='trade'?55:c.sub==='gift'?45:20); } else if(ok){ S.stats.ok++; c.happy=1; const src=srcOf(c.want); fly(makeItem(c.want),c.pos.clone().setY(1.2),()=>new THREE.Vector3(src.x,1.2,src.z),0.6,()=>{ if(src.n<src.max){ src.n++; layoutSrc(src); } }); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'친절하게 처리해줘서 고마워요','say'); custLeave(c,true,0); } else { c.miss=true; toast('아쉬워요… 정답: '+c.rq.a[0]); custLeave(c,false); } }; return; }
+    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); if(ok&&c.sub){ S.stats.ok++; c.happy=1; toast('✔ '+c.rq.why,3.2); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),c.sub==='lost'?'덕분에 안심했어요':'잘 알려줘서 고마워요','say'); custLeave(c,true,c.sub==='trade'?55:c.sub==='gift'?45:20); } else if(ok){ S.stats.ok++; c.happy=1; toast('✔ '+c.rq.why,3.2); const src=srcOf(c.want); fly(makeItem(c.want),c.pos.clone().setY(1.2),()=>new THREE.Vector3(src.x,1.2,src.z),0.6,()=>{ if(src.n<src.max){ src.n++; layoutSrc(src); } }); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'친절하게 처리해줘서 고마워요','say'); custLeave(c,true,0); } else { c.miss=true; toast('✘ 정답: '+c.rq.a[0]+' — '+c.rq.why,3.8); custLeave(c,false); } }; return; }
   if(c.type==='fix'){ const opts=shuffle(c.diag.a.map((o,i)=>Object.assign({ok:i===0},o)));
     openModal('<h2>수리 진단</h2><p style="font-size:16px"><b>"'+c.diag.q+'"</b><br><small>원인이 뭘까요?</small></p>'+opts.map((o,i)=>'<button data-qa="'+i+'" style="background:linear-gradient(#7bea62,#2faa45);box-shadow:0 4px 0 #1d7a2a;font-size:15px;padding:10px 8px">'+o.t+'</button>').join(''));
-    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const o=opts[+b.dataset.qa]; closeQuiz(); if(o.ok){ S.stats.ok++; c.happy=1; sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); if(o.x===1){ bigBanner('정확한 진단!','바로 해결했어요'); c.waited=c.patMax-c.pat; S.stats.fix++; custLeave(c,true,25); } else { c.want=o.x; c.st='wait'; c.pat=Math.max(c.pat,28); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),IT[o.x].n+' 부품이 필요해요','say'); } } else { c.miss=true; snd('ui',0.4,0.6); toast('오진이에요… 정답: '+c.diag.a[0].t); custLeave(c,false); } }; return; }
+    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const o=opts[+b.dataset.qa]; closeQuiz(); if(o.ok){ S.stats.ok++; c.happy=1; toast('✔ '+c.diag.why,3.2); sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); if(o.x===1){ bigBanner('정확한 진단!','바로 해결했어요'); c.waited=c.patMax-c.pat; S.stats.fix++; custLeave(c,true,25); } else { c.want=o.x; c.st='wait'; c.pat=Math.max(c.pat,28); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),IT[o.x].n+' 부품이 필요해요','say'); } } else { c.miss=true; snd('ui',0.4,0.6); toast('✘ 오진이에요 — 정답: '+c.diag.a[0].t+'\n'+c.diag.why,3.8); custLeave(c,false); } }; return; }
   if(c.type==='sw'&&c.q.d){ openKB(c); return; }
   if(c.type==='sw'){ const opts=shuffle(c.q.a.map((t,i)=>({t,ok:i===0})));
     openModal('<h2>소프트웨어 상담</h2><p style="font-size:16px"><b>"'+c.q.q+'"</b><br><small>어떻게 안내할까요?</small></p>'+opts.map((o,i)=>'<button class="qa" data-qa="'+i+'" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a;font-size:15px;padding:10px 8px">'+o.t+'</button>').join(''));
-    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); if(ok){ c.happy=1; S.stats.ok++; sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); bigBanner('정답!','고객 만족 ★★★★★'); custLeave(c,true,30); } else { c.miss=true; snd('ui',0.4,0.6); toast('아쉬워요… 정답: '+c.q.a[0]); custLeave(c,false); } }; }
+    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); if(ok){ c.happy=1; S.stats.ok++; sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); toast('✔ '+c.q.why,3.2); bigBanner('정답!','고객 만족 ★★★★★'); custLeave(c,true,30); } else { c.miss=true; snd('ui',0.4,0.6); toast('✘ 정답: '+c.q.a[0]+' — '+c.q.why,3.8); custLeave(c,false); } }; }
   else { const T=c.bq.t; const opts=shuffle(['p','l','w']);
-    openModal('<h2>구입 상담</h2><p style="font-size:16px"><b>"'+c.bq.q+'"</b><br><small>어떤 제품을 추천할까요?</small></p>'+opts.map(t=>'<button data-qa="'+t+'" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">'+IT[t].n+'</button>').join(''));
-    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const pick=b.dataset.qa; closeQuiz(); if(pick===T){ c.happy=1; S.stats.ok++; c.want=T; if(c.spec&&c.bq.sp){ setTimeout(()=>openSpec(c),250); } else { c.st='want'; c.pat=Math.max(c.pat,30); sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'딱 원하던 거예요!','say'); } } else { c.miss=true; snd('ui',0.4,0.6); toast('"'+IT[pick].n+'"는 안 맞았어요… 정답: '+IT[T].n); custLeave(c,false); } }; } }
+    openModal('<h2>구입 상담</h2><p style="font-size:16px"><b>"'+c.bq.q+'"</b><br><small>어떤 제품을 추천할까요?'+(c.bq.combo?' · '+c.bq.budget+' 예산 / '+c.bq.use+' / 보유: '+c.bq.have:'')+'</small></p>'+opts.map(t=>'<button data-qa="'+t+'" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">'+IT[t].n+'</button>').join(''));
+    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const pick=b.dataset.qa; closeQuiz(); if(pick===T){ c.happy=1; S.stats.ok++; c.want=T; toast('✔ '+c.bq.why,3.2); if(c.spec&&c.bq.sp){ setTimeout(()=>openSpec(c),250); } else { c.st='want'; c.pat=Math.max(c.pat,30); sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'딱 원하던 거예요!','say'); } } else { c.miss=true; snd('ui',0.4,0.6); toast('✘ "'+IT[pick].n+'"는 안 맞았어요 — 정답: '+IT[T].n+'\n'+c.bq.why,3.8); custLeave(c,false); } }; } }
 function openSpec(c){ quizOpen=true; c.st='consult'; const opts=shuffle(c.bq.sp.map((t,i)=>({t,ok:i===0})));
   openModal('<h2>스펙 추천</h2><p style="font-size:15px"><b>'+IT[c.want].n+'</b> 좋아요! 그럼 어떤 구성으로?<br><small>"'+c.bq.q+'"</small></p>'+quizBtns(opts,['#ffcf4d','#ff8a1a','#b85a00']));
-  $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); c.st='want'; c.pat=Math.max(c.pat,30); if(ok){ c.specOk=1; S.stats.ok++; sparkle(c.pos.x,1.6,c.pos.z,'#ffd23f'); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'제 용도에 딱이에요!','say'); } else { c.happy=0; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'음… 이게 맞나?','say'); toast('추천 스펙이 아쉬웠어요. 정답: '+c.bq.sp[0]); } }; }
-function openBackup(c,then){ quizOpen=true; const opts=shuffle([{t:'데이터 백업 여부 확인하고 진행',ok:1},{t:'바로 수리 진행',ok:0},{t:'데이터는 손님 책임이니 생략',ok:0}]);
+  $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); c.st='want'; c.pat=Math.max(c.pat,30); if(ok){ c.specOk=1; S.stats.ok++; toast('✔ '+c.bq.why,3.2); sparkle(c.pos.x,1.6,c.pos.z,'#ffd23f'); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'제 용도에 딱이에요!','say'); } else { c.happy=0; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'음… 이게 맞나?','say'); toast('✘ 정답: '+c.bq.sp[0]+' — '+c.bq.why,3.8); } }; }
+function openBackup(c,then){ quizOpen=true; const opts=shuffle([{t:'데이터 백업 여부 확인하고 진행',ok:1,w:'수리 중 데이터가 유실될 수 있어서 백업 확인이 먼저예요'},{t:'바로 수리 진행',ok:0,w:'수리 중 데이터가 유실될 수 있어서 백업 확인이 먼저예요'},{t:'데이터는 손님 책임이니 생략',ok:0,w:'수리 중 데이터가 유실될 수 있어서 백업 확인이 먼저예요'}]);
   openModal('<h2>수리 전 확인</h2><p style="font-size:15px">이 손님은 <b>사진·데이터가 중요해요</b>.<br><small>수리 중 데이터가 유실될 수 있어요</small></p>'+quizBtns(opts,['#7bea62','#2faa45','#1d7a2a']));
-  $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); c.backed=ok; if(ok){ S.stats.ok++; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'백업 확인 완료','say'); } then(); }; }
+  $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz(); c.backed=ok; const W=opts[+b.dataset.qa].w; if(ok){ S.stats.ok++; toast('✔ '+W,3); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'백업 확인 완료','say'); } else toast('✘ 정답: 데이터 백업 여부 확인 — '+W,3.6); then(); }; }
 /* ---- regional ranking (AI rivals) ---- */
 const RIVX=[[['인천듀티테크',.6],['스카이게이트',.84],['에어디지털',1.05],['트래블기어',1.28],['글로벌면세',1.5]],[['브루클린테크',.62],['소호디지털',.86],['타임스퀘어몰',1.08],['맨해튼기어',1.32],['노바 NYC',1.62]],[['캠퍼스스토어',.62],['링타워',.86],['키노트홀',1.08],['디자인랩',1.32],['노바 레전드',1.65]]]; const RIV=[[['동성로폰마트',.55],['반월당수리점',.78],['중앙로모바일',.97],['대구폰닥터',1.18],['수성통신',1.42]],[['서면테크',.6],['해운대디지털',.82],['광안리기어',1.02],['센텀픽셀',1.24],['부산테크원',1.48]],[['강남메가테크',.62],['명동플래그원',.86],['홍대디지털',1.08],['성수스토어',1.32],['여의도노바',1.6]]];
 RIV.push(...RIVX); const STGD=[[0,1,2,3],[4,5,6,7],[8,9,10],[11,12,13,14],[15,16,17,18],[19,20,21,22]];
@@ -990,27 +1014,27 @@ function alertTick(){ const el=$('stockAl'); if(!el) return; const out=[], low=[
   soonP.slice(0,2).forEach(o=>{ h+='<b class="wn">⏳ '+o.nm+' 곧 품절 (약 '+o.e+'초)</b>'; });
   if(lowN.length) h+='<b class="lw">⚠️ 부족: '+lowN.join('·')+'</b>'; if(needRestock()&&!hasCrew('runner')) h+='<b class="rs">🧺 진열대 비는 중 · 창고에서 보충</b>';
   if(el._h!==h){ el._h=h; el.innerHTML=h; } el.style.display=h&&live?'flex':'none'; }
-function openStockout(c){ curFace=c.face; quizOpen=true; c.st0=c.st; c.st='consult'; const t=c.want, inc=incoming(t)>0; const opts=shuffle([{k:'res',t:'다른 매장 재고를 조회해서 예약해 드리기'},{k:'wait',t:'입고될 때까지 잠시 기다려 달라고 하기'},{k:'no',t:'재고 없다고만 하고 돌려보내기'}]);
+function openStockout(c){ curFace=c.face; quizOpen=true; c.st0=c.st; c.st='consult'; const t=c.want, inc=incoming(t)>0; const opts=shuffle([{k:'res',t:'다른 매장 재고를 조회해서 예약해 드리기',w:'매장에 재고가 없을 때는 다른 매장 예약이 손님을 붙잡는 방법이에요'},{k:'wait',t:'입고될 때까지 잠시 기다려 달라고 하기',w:'오늘 들어올 물량이 없는데 기다리라고 하면 손님이 헛걸음해요'},{k:'no',t:'재고 없다고만 하고 돌려보내기',w:'대안 없이 돌려보내면 손님과 리뷰를 함께 잃어요'}]);
   openModal('<h2>재고 없음!</h2><p style="font-size:15px"><b>'+IT[t].n+'</b> 재고가 매장에 하나도 없어요.<br><small>'+(inc?'지금 배송 중인 물량이 있어요':'입고 예정도 없어요')+' · 어떻게 안내할까요?</small></p>'+quizBtns(opts,['#4fe0c8','#16a58c','#0b6e5c']));
   $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const o=opts[+b.dataset.qa]; closeQuiz(); const P=new THREE.Vector3(c.pos.x,2.4,c.pos.z);
-    if(o.k==='res'){ S.stats.ok++; c.happy=0; floatText(P,'예약해 주셔서 감사해요','say'); toast('다른 매장 예약으로 연결했어요 (예약 수수료만 받아요)',2.6); custLeave(c,true,8); }
-    else if(o.k==='wait'){ c.st=c.st0; if(inc){ c.pat=c.patMax; floatText(P,'네, 기다릴게요','say'); toast('입고되면 바로 전달하세요!',2.4); } else { c.pat=Math.min(c.pat,c.patMax*0.35); floatText(P,'언제 들어오는데요…?','bad'); toast('입고 예정이 없어요. 퀵 발주하거나 예약으로 안내하세요',3.2); c.soAsked=0; setTimeout(()=>{ c.soAsked=0; },6000); c.soAsked=1; } }
-    else { c.miss=true; toast('아쉬워요… 대안(예약·입고 안내)을 제시해야 해요',3); custLeave(c,false); } }; }
+    if(o.k==='res'){ S.stats.ok++; c.happy=0; floatText(P,'예약해 주셔서 감사해요','say'); toast('✔ 다른 매장 예약으로 연결했어요 (예약 수수료만 받아요)\n'+o.w,3.4); custLeave(c,true,8); }
+    else if(o.k==='wait'){ c.st=c.st0; if(inc){ c.pat=c.patMax; floatText(P,'네, 기다릴게요','say'); toast('입고되면 바로 전달하세요!',2.4); } else { c.pat=Math.min(c.pat,c.patMax*0.35); floatText(P,'언제 들어오는데요…?','bad'); toast('✘ 입고 예정이 없어요. 퀵 발주하거나 예약으로 안내하세요 — '+o.w,3.6); c.soAsked=0; setTimeout(()=>{ c.soAsked=0; },6000); c.soAsked=1; } }
+    else { c.miss=true; toast('✘ 대안(예약·입고 안내)을 제시해야 해요 — '+o.w,3.4); custLeave(c,false); } }; }
 /* ---- Today-at session: 오늘의 클래스 ---- */
 const CLSQ=[
- {n:'인물 사진 잘 찍는 법',q:[['배경을 흐리게 하려면?',['인물 사진 모드로 피사체에 가까이','플래시를 항상 켜기','줌을 끝까지 당기기']],['역광에서 얼굴이 어두울 땐?',['화면을 눌러 노출을 올리기','렌즈를 손으로 가리기','무조건 다른 곳에서 찍기']],['흔들림을 줄이려면?',['두 손으로 잡고 팔꿈치 붙이기','한 손으로 멀리 뻗기','걸으면서 찍기']]]},
- {n:'노트북 단축키 클래스',q:[['실행 취소는?',['Cmd/Ctrl + Z','Cmd/Ctrl + P','Cmd/Ctrl + Q']],['창을 빠르게 전환하려면?',['Cmd/Alt + Tab','전원 버튼','스페이스 길게']],['화면 일부만 캡처하려면?',['영역 지정 캡처 단축키','모니터 사진 찍기','화면 밝기 낮추기']]]},
- {n:'워치로 건강 관리',q:[['운동 기록을 시작하려면?',['운동 앱에서 종목 선택','시계를 흔들기','알람 맞추기']],['수면 측정을 하려면?',['잘 때 차고 수면 모드 켜기','충전기에 올려두기','비행기 모드 켜기']],['배터리를 오래 쓰려면?',['저전력 모드 사용','화면 밝기 최대로','알림 전부 켜기']]]},
- {n:'어린이 코딩 교실',q:[['아이들에게 먼저 알려줄 것은?',['블록을 순서대로 놓는 법','복잡한 문법','타자 속도']],['막힌 아이를 도울 땐?',['힌트를 주고 스스로 풀게 하기','답을 대신 입력해 주기','다음 시간에 하자고 하기']],['수업 마무리는?',['만든 작품을 서로 보여주기','그냥 끝내기','숙제 많이 내기']]]}];
+ {n:'인물 사진 잘 찍는 법',q:[['배경을 흐리게 하려면?',['인물 사진 모드로 피사체에 가까이','플래시를 항상 켜기','줌을 끝까지 당기기'],'인물 사진 모드는 소프트웨어로 배경을 흐리게 만들어 주고, 가까이 갈수록 경계가 자연스러워요'],['역광에서 얼굴이 어두울 땐?',['화면을 눌러 노출을 올리기','렌즈를 손으로 가리기','무조건 다른 곳에서 찍기'],'역광에서는 노출을 얼굴 기준으로 올려야 얼굴이 살고 배경만 밝게 남아요'],['흔들림을 줄이려면?',['두 손으로 잡고 팔꿈치 붙이기','한 손으로 멀리 뻗기','걸으면서 찍기'],'팔꿈치를 몸에 붙이면 카메라가 몸통에 고정돼 흔들림이 가장 적어요']]},
+ {n:'노트북 단축키 클래스',q:[['실행 취소는?',['Cmd/Ctrl + Z','Cmd/Ctrl + P','Cmd/Ctrl + Q'],'실행 취소는 Z(undo), P는 인쇄, Q는 종료라서 헷갈리면 작업이 날아가요'],['창을 빠르게 전환하려면?',['Cmd/Alt + Tab','전원 버튼','스페이스 길게'],'창 전환은 Tab 계열 단축키의 기본 기능이고, 전원 버튼은 잠자기로 들어가요'],['화면 일부만 캡처하려면?',['영역 지정 캡처 단축키','모니터 사진 찍기','화면 밝기 낮추기'],'영역 지정 캡처는 필요한 부분만 저장할 수 있어서 사진으로 찍는 것보다 선명해요']]},
+ {n:'워치로 건강 관리',q:[['운동 기록을 시작하려면?',['운동 앱에서 종목 선택','시계를 흔들기','알람 맞추기'],'운동 기록은 종목을 골라야 측정이 시작되고, 알람과는 다른 기능이에요'],['수면 측정을 하려면?',['잘 때 차고 수면 모드 켜기','충전기에 올려두기','비행기 모드 켜기'],'수면 측정은 착용 상태에서만 되고, 충전 중에는 기록되지 않아요'],['배터리를 오래 쓰려면?',['저전력 모드 사용','화면 밝기 최대로','알림 전부 켜기'],'저전력 모드가 센서와 화면 주기를 줄여서 배터리가 가장 오래 가요']]},
+ {n:'어린이 코딩 교실',q:[['아이들에게 먼저 알려줄 것은?',['블록을 순서대로 놓는 법','복잡한 문법','타자 속도'],'코딩은 순서대로 생각하는 힘이 먼저라 블록 놓기부터 시작해야 이해가 이어져요'],['막힌 아이를 도울 땐?',['힌트를 주고 스스로 풀게 하기','답을 대신 입력해 주기','다음 시간에 하자고 하기'],'힌트만 주면 아이가 스스로 원인을 찾는 힘을 기르고, 답을 대신 넣으면 배움이 남지 않아요'],['수업 마무리는?',['만든 작품을 서로 보여주기','그냥 끝내기','숙제 많이 내기'],'서로 보여주는 시간이 성취감과 다음 수업 동기를 만들어요']]}];
 let cls=null, clsDone=false; const CLSP={x:-0.6,z:-2.9};
 const clsRing=new THREE.Mesh(new THREE.RingGeometry(0.6,0.78,32),new THREE.MeshBasicMaterial({color:'#ff7ab8',transparent:true,opacity:0.9,depthWrite:false})); clsRing.rotation.x=-Math.PI/2; clsRing.position.set(CLSP.x,0.125,CLSP.z); clsRing.visible=false; scene.add(clsRing);
 function clsStart(){ clsDone=true; const Q=pickQ(CLSQ); const MD=['Casual_Female','Casual2_Male','OldClassy_Female','Casual3_Male']; cls={Q,t:32,npcs:[-1.5,-0.6,0.3].map((x,i)=>{ const ch=makeChar(MD[(i+S.day)%4],{tint:['#ff7aa8','#f7c948','#46b37a'][i]}); ch.g.position.set(x,0,-1.75); ch.g.rotation.y=Math.PI; return ch; })};
   clsRing.visible=true; bigBanner('📚 오늘의 클래스',Q.n+' · 분홍 원에서 진행하세요'); snd('level_up',0.45,1.3); }
 function clsEnd(ok,msg){ if(!cls) return; cls.npcs.forEach(ch=>{ scene.remove(ch.g); }); clsRing.visible=false; const base=(30+20*STG); if(ok>0){ const pay=Math.round(base*ok*priceMul()); cashVal+=pay; rebuildCash(); if(dayState==='run'){ dayRev+=pay; for(let i=0;i<ok;i++){ dayRevs.push(5); dayNps.push(10); S.reviews.push(5); } while(S.reviews.length>14) S.reviews.shift(); } S.stats.cls=(S.stats.cls||0)+1; setTimeout(()=>bigBanner(ok===3?'클래스 대성공!':'클래스 완료',msg||('참가자 리뷰 ★5 ×'+ok+' · 액세서리 매출 +$'+pay)),200); confetti(CLSP.x,2.4,CLSP.z); }
   else { if(dayState==='run'){ dayRevs.push(3); dayNps.push(5); } toast(msg||'클래스가 취소됐어요… 참가자들이 아쉬워해요',3); } cls=null; }
-function openClass(){ quizOpen=true; const Q=cls.Q; let i=0, ok=0; const ask=()=>{ const [q,a]=Q.q[i]; const opts=shuffle(a.map((t,k)=>({t,ok:k===0})));
+function openClass(){ quizOpen=true; const Q=cls.Q; let i=0, ok=0; const ask=()=>{ const [q,a,why]=Q.q[i]; const opts=shuffle(a.map((t,k)=>({t,ok:k===0})));
     openModal('<h2>📚 '+Q.n+'</h2><p style="font-size:12px;margin:0">질문 '+(i+1)+'/3 · 참가자가 물어봐요</p><p style="font-size:16px"><b>"'+q+'"</b></p>'+quizBtns(opts,['#ff9ad5','#e8508f','#a02a60']));
-    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; if(opts[+b.dataset.qa].ok){ ok++; snd('ui',0.4,1.4); } else snd('ui',0.4,0.6); i++; if(i<3) ask(); else { closeQuiz(); clsEnd(ok,ok?null:'설명이 다 틀렸어요… 참가자들이 실망했어요'); } }; }; ask(); }
+    $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; if(opts[+b.dataset.qa].ok){ ok++; snd('ui',0.4,1.4); toast('✔ '+why,2.6); } else { snd('ui',0.4,0.6); toast('✘ 방금 답이 아쉬웠어요 — '+why,3.2); } i++; if(i<3) ask(); else { closeQuiz(); clsEnd(ok,ok?null:'설명이 다 틀렸어요… 참가자들이 실망했어요'); } }; }; ask(); }
 function clsTick(dt){ if(dayState!=='run'){ if(cls){ cls.npcs.forEach(ch=>scene.remove(ch.g)); clsRing.visible=false; cls=null; } return; }
   const cfg=dayCfg(S.day); if(!cls&&!clsDone&&STG>=1&&dayT<cfg.dur*0.6&&dayT>40&&!quizOpen) clsStart(); if(!cls) return;
   cls.npcs.forEach(ch=>animChar(ch,0,dt,false)); clsRing.scale.setScalar(1+0.08*Math.sin(performance.now()/160)); if(quizOpen) return; cls.t-=dt;
@@ -1085,15 +1109,15 @@ function openRepair(c,then){ if(mgmtOpen()){ c.st='wait'; return; } quizOpen=tru
     render(); }; }
 /* ---- error-code knowledge base (flagship) ---- */
 const ERRQ=[
-  {q:'복원하다가 E-401 오류가 떠요',k:'E-401 복원',d:['[E-401] 복원 중 연결 끊김 — 케이블·포트 바꿔서 재시도','[E-410] 서버 인증 실패 — 날짜/시간 확인','[E-041] 저장 공간 부족 — 파일 정리','[E-401] 업데이트 중 연결 끊김 — 와이파이 재연결']},
-  {q:'업데이트하는데 E-17이 떠요',k:'E-17 업데이트',d:['[E-17] 업데이트 서버 연결 실패 — 네트워크 바꿔서 재시도','[E-71] 배터리 과열 보호 — 식힌 뒤 충전','[E-117] 서명 만료 — 최신 버전으로 복원','[E-17] 백업 서버 연결 실패 — 클라우드 재로그인']},
-  {q:'E-53 뜨면서 지문 인식이 안 돼요',k:'E-53 지문',d:['[E-53] 생체 센서 인증 실패 — 정품 센서 확인 후 수리 접수','[E-35] 셀룰러 활성화 오류 — 유심 재장착','[E-503] 서버 점검 중 — 잠시 후 재시도','[E-53] 카메라 모듈 인식 실패 — 카메라 수리 접수']},
-  {q:'중고로 샀는데 E-9 활성화 화면에서 막혀요',k:'E-9 활성화',d:['[E-9] 활성화 잠금 — 이전 소유자 계정 해제 필요 안내','[E-99] 저장장치 손상 — 기기 교체','[E-90] 카메라 오류 — 재시동','[E-9] 비밀번호 분실 — 초기화 진행']},
-  {q:'사진 백업하는데 E-28이 떠요',k:'E-28 백업',d:['[E-28] 클라우드 용량 초과 — 저장 공간 플랜·정리 안내','[E-82] 와이파이 칩 오류 — 수리 접수','[E-280] 계정 정지 — 고객센터 연결','[E-28] 사진 앱 손상 — 앱 재설치']}];
+  {q:'복원하다가 E-401 오류가 떠요',k:'E-401 복원',why:'E-401은 복원 중 연결이 끊긴 오류라 케이블과 포트를 바꿔 다시 시도하는 것이 해결 순서예요',d:['[E-401] 복원 중 연결 끊김 — 케이블·포트 바꿔서 재시도','[E-410] 서버 인증 실패 — 날짜/시간 확인','[E-041] 저장 공간 부족 — 파일 정리','[E-401] 업데이트 중 연결 끊김 — 와이파이 재연결']},
+  {q:'업데이트하는데 E-17이 떠요',k:'E-17 업데이트',why:'E-17은 업데이트 서버 연결 실패라 네트워크를 바꿔 재시도해야 하고, 과열·서명 오류와는 원인이 달라요',d:['[E-17] 업데이트 서버 연결 실패 — 네트워크 바꿔서 재시도','[E-71] 배터리 과열 보호 — 식힌 뒤 충전','[E-117] 서명 만료 — 최신 버전으로 복원','[E-17] 백업 서버 연결 실패 — 클라우드 재로그인']},
+  {q:'E-53 뜨면서 지문 인식이 안 돼요',k:'E-53 지문',why:'E-53은 생체 센서 인증 실패라 정품 센서를 확인하고 수리로 넘겨야 하고, 카메라 모듈 오류와 헷갈리면 안 돼요',d:['[E-53] 생체 센서 인증 실패 — 정품 센서 확인 후 수리 접수','[E-35] 셀룰러 활성화 오류 — 유심 재장착','[E-503] 서버 점검 중 — 잠시 후 재시도','[E-53] 카메라 모듈 인식 실패 — 카메라 수리 접수']},
+  {q:'중고로 샀는데 E-9 활성화 화면에서 막혀요',k:'E-9 활성화',why:'E-9는 활성화 잠금이라 이전 소유자의 계정 해제만이 답이고, 초기화를 진행하면 오히려 잠금이 남아요',d:['[E-9] 활성화 잠금 — 이전 소유자 계정 해제 필요 안내','[E-99] 저장장치 손상 — 기기 교체','[E-90] 카메라 오류 — 재시동','[E-9] 비밀번호 분실 — 초기화 진행']},
+  {q:'사진 백업하는데 E-28이 떠요',k:'E-28 백업',why:'E-28은 클라우드 용량 초과라 저장 공간 플랜과 정리를 안내해야 하고, 계정 정지나 앱 손상이 아니에요',d:['[E-28] 클라우드 용량 초과 — 저장 공간 플랜·정리 안내','[E-82] 와이파이 칩 오류 — 수리 접수','[E-280] 계정 정지 — 고객센터 연결','[E-28] 사진 앱 손상 — 앱 재설치']}];
 function openKB(c){ const docs=shuffle(c.q.d.map((t,i)=>({t,ok:i===0})));
   openModal('<h2>오류 코드 상담</h2><p style="font-size:16px"><b>"'+c.q.q+'"</b><br><small>지식 문서에서 정확한 해결법을 찾아요</small></p><div class="kbs">🔍 <span>'+c.q.k+'</span></div><button id="kbGo" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">지식 문서 검색</button>');
   $('kbGo').onclick=e=>{ e.stopPropagation(); snd('ui',0.4); $('mbox').innerHTML='<h2>검색 결과</h2><p style="font-size:12px;margin:2px 0 4px">"'+c.q.k+'" 관련 문서 '+docs.length+'건 · 손님 증상과 정확히 맞는 문서를 고르세요</p>'+docs.map((o,i)=>'<button class="kbd" data-qa="'+i+'">📄 '+o.t+'</button>').join(''); };
-  $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=docs[+b.dataset.qa].ok; closeQuiz(); if(ok){ c.happy=1; S.stats.ok++; sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); bigBanner('해결!','정확한 문서를 찾았어요'); custLeave(c,true,45); } else { c.miss=true; snd('ui',0.4,0.6); toast('다른 문서였어요… 정답: '+c.q.d[0],3.5); custLeave(c,false); } }; }
+  $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=docs[+b.dataset.qa].ok; closeQuiz(); if(ok){ c.happy=1; S.stats.ok++; sparkle(c.pos.x,1.6,c.pos.z,'#7bea62'); toast('✔ '+c.q.why,3.4); bigBanner('해결!','정확한 문서를 찾았어요'); custLeave(c,true,45); } else { c.miss=true; snd('ui',0.4,0.6); toast('✘ 다른 문서였어요 — 정답: '+c.q.d[0]+'\n'+c.q.why,3.8); custLeave(c,false); } }; }
 
 function closeQuiz(){ curFace=null; quizOpen=false; $('modal').classList.remove('on'); $('mbox').onclick=null; }
 
@@ -1455,7 +1479,7 @@ function beginPlay(){ if(S.mid){ S.mid=0; setTimeout(()=>toast('지난 영업이
 { titleOn=false; titleK=0; document.body.classList.remove('title');
   const _tt=$('title'); if(_tt) _tt.style.display='none'; beginPlay(); }
 addEventListener('pagehide',save); document.addEventListener('visibilitychange',()=>{ if(document.hidden) save(); });
-window.__H={go:()=>$('dayGo')&&$('dayGo').click(),stockWarn:()=>({log:useLog,beg:useBeg,warn:useWarn,t:time,rate:t2=>useRate(t2)}),endNow:()=>{dayT=0.01},dstate:()=>dayState,S,player,custs,cam,PADS,SPOTS,SRC,get money(){return money;},set money(v){money=v;},cashVal:()=>cashVal,unlock,openInv,openRepair,openKB,ERRQ,openWorld,openAch,clsStart,openStockout,restockAll,dock:()=>S.dock,openAttend,leave:c=>custLeave(c,true,15),serve:(c,ok,pay)=>custLeave(c,ok,pay),stat:()=>({rev:dayRev,comp:dayComp,walk:dayWalk,rate:dayRating(),nps:npsOf(dayNps),t:dayT,n:dayRevs.length}),cfg:()=>dayCfg(S.day),hit:()=>comboHit(),pushNps:v=>{dayNps.push(v);dayRevs.push(v>=9?5:v>=7?4:2);},ranking,myRank,SRCs:()=>SRC};
+window.__H={go:()=>$('dayGo')&&$('dayGo').click(),stockWarn:()=>({log:useLog,beg:useBeg,warn:useWarn,t:time,rate:t2=>useRate(t2)}),endNow:()=>{dayT=0.01},dstate:()=>dayState,S,player,custs,cam,PADS,SPOTS,SRC,get money(){return money;},set money(v){money=v;},cashVal:()=>cashVal,unlock,openInv,openRepair,openKB,ERRQ,openWorld,openAch,clsStart,openStockout,openQuiz,restockAll,qSim:(n)=>{ const r={combo:0,base:0,seq:[]}; for(let i=0;i<n;i++){ const B=pickBuyQ(); if(B.combo) r.combo++; else r.base++; r.seq.push(B.q.q); } let dup=0; for(let i=1;i<r.seq.length;i++) if(r.seq[i]===r.seq[i-1]) dup++; return {combo:r.combo,base:r.base,dup:dup,ratio:Math.round(r.combo/n*1000)/10,first:r.seq.slice(0,5)}; },qRep:(name,n)=>{ const arr={SWQ,SWQ2,BUYQ,BUYC,FIXQ,TOURQ,CORPQ,ESCQ,RETQ,TRADEQ,LOSTQ,GIFTQ,ERRQ,CLSQ}[name]; if(!arr) return {err:'no array'}; let dup=0,prev=null; const seq=[]; for(let i=0;i<n;i++){ const q=pickQ(arr); if(prev&&q===prev) dup++; prev=q; seq.push(q.q||q.n); } return {dup:dup,n:n,pool:arr.length,uniq:new Set(seq).size,first:seq.slice(0,4)}; },buyInfo:()=>custs.filter(c=>c.type==='buy').map(c=>({combo:c.bqC,q:c.bq&&c.bq.q,t:c.bq&&c.bq.t})),dock:()=>S.dock,openAttend,leave:c=>custLeave(c,true,15),serve:(c,ok,pay)=>custLeave(c,ok,pay),stat:()=>({rev:dayRev,comp:dayComp,walk:dayWalk,rate:dayRating(),nps:npsOf(dayNps),t:dayT,n:dayRevs.length}),cfg:()=>dayCfg(S.day),hit:()=>comboHit(),pushNps:v=>{dayNps.push(v);dayRevs.push(v>=9?5:v>=7?4:2);},ranking,myRank,SRCs:()=>SRC};
 
 /* ---- AI 조작 패널 / QA 헬퍼 ---- */
 $('aitog').onclick=function(){ $('aip').classList.toggle('min'); $('aitog').textContent=$('aip').classList.contains('min')?'+':'–'; };
