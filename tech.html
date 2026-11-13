@@ -380,9 +380,13 @@ function storeCounter(x,z,w,acc,g,top){ rbox(w,0.86,0.66,'#fafbfd',x,0.53,z,g,0.
 function dispTable(w,ht,d,x,z,g){ rbox(w,0.1,d,WOOD,x,ht-0.05,z,g,0.05); box(w-0.28,ht-0.12,d-0.3,WOOD2,x,(ht-0.1)/2+0.02,z,g); box(w*0.46,ht-0.26,0.03,'#fbfbfd',x,(ht-0.1)/2+0.03,z+(d-0.3)/2+0.012,g); box(w*0.46,ht-0.26,0.03,'#fbfbfd',x,(ht-0.1)/2+0.03,z-(d-0.3)/2-0.012,g); glowStrip(w-0.3,0.03,GLOW,x,0.05,z+(d-0.3)/2+0.02,g); glowStrip(w-0.3,0.03,GLOW,x,0.05,z-(d-0.3)/2-0.02,g); const lp=lightPool(x,z,w/2+0.35,d/2+0.5,0.22); lp.material.color=new THREE.Color('#ffdf9a'); if(g&&g!==scene){ scene.remove(lp); g.add(lp); } }
 let TSDT=null; function treeShadow(x,z,r){ if(!TSDT) TSDT=canvasTex((g,w,h)=>{ const gr=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2); gr.addColorStop(0,'rgba(26,38,26,.5)'); gr.addColorStop(.6,'rgba(26,38,26,.22)'); gr.addColorStop(1,'rgba(26,38,26,0)'); g.fillStyle=gr; g.fillRect(0,0,w,h); },64,64);
   const m=new THREE.Mesh(new THREE.PlaneGeometry(r*2,r*2),new THREE.MeshBasicMaterial({map:TSDT,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2})); m.rotation.x=-Math.PI/2; m.position.set(x,FLOOR_Y.pool,z); m.renderOrder=1; scene.add(m); return m; }
-function planterTree(x,z){ box(1.5,0.45,1.5,'#e9e4da',x,0.227,z); treeShadow(x,z,1.05); box(1.62,0.07,1.62,'#c89a62',x,0.48,z); box(1.2,0.03,1.2,'#4a3a2a',x,0.5,z);
-  const t=new THREE.Mesh(gget('tr',()=>new THREE.CylinderGeometry(0.13,0.19,1,10)),tmat('#7a5030')); t.position.set(x,1.25,z); t.scale.set(1.1,1.5,1.1); t.castShadow=true; scene.add(t);
-  [[0,2.45,0,0.85],[-0.45,2.15,0.25,0.6],[0.45,2.2,-0.2,0.62],[0.15,2.0,0.45,0.5],[-0.2,2.25,-0.45,0.55]].forEach(([dx,y,dz,r],k)=>{ const b=new THREE.Mesh(gget('bl',()=>new THREE.SphereGeometry(1,16,12)),tmat(['#4f9e45','#3f8a3a','#62b153'][k%3])); b.position.set(x+dx,y,z+dz); b.scale.set(r,r*0.85,r); b.castShadow=true; scene.add(b); }); ob(x-0.8,x+0.8,z-0.8,z+0.8); }
+/* v2.7: 가로수길 화분나무 깜빡임(Z-fighting) 수정 —
+   ① 화분 베이스를 바닥 타일 위(y 0.095)에 정확히 올려 교차면 제거 ② 가짜 그림자 판 중복 제거
+   ③ 나뭇잎은 그림자를 받지 않게 해 셀프 섀도우 반짝임 제거 (실시간 그림자는 바닥에만) */
+function planterTree(x,z){ const LIFT=0.095;   // 바닥 타일 상면
+  box(1.5,0.45,1.5,'#e9e4da',x,LIFT+0.225,z); box(1.62,0.07,1.62,'#c89a62',x,LIFT+0.47,z); box(1.2,0.03,1.2,'#4a3a2a',x,LIFT+0.52,z);
+  const t=new THREE.Mesh(gget('tr',()=>new THREE.CylinderGeometry(0.13,0.19,1,10)),tmat('#7a5030')); t.position.set(x,LIFT+1.20,z); t.scale.set(1.1,1.5,1.1); t.castShadow=true; scene.add(t);
+  [[0,2.40,0,0.85],[-0.45,2.10,0.25,0.6],[0.45,2.15,-0.2,0.62],[0.15,1.95,0.45,0.5],[-0.2,2.20,-0.45,0.55]].forEach(([dx,y,dz,r],k)=>{ const b=new THREE.Mesh(gget('bl',()=>new THREE.SphereGeometry(1,16,12)),tmat(['#4f9e45','#3f8a3a','#62b153'][k%3])); b.position.set(x+dx,y+LIFT,z+dz); b.scale.set(r,r*0.85,r); b.castShadow=true; b.receiveShadow=false; scene.add(b); }); ob(x-0.8,x+0.8,z-0.8,z+0.8); }
 function canvasTex(draw,w,h){ const cv=document.createElement('canvas'); cv.width=w; cv.height=h; draw(cv.getContext('2d'),w,h); const t=new THREE.CanvasTexture(cv); t.anisotropy=4; return t; }
 
 /* ---------- assets ---------- */
@@ -510,7 +514,7 @@ function addFace(head,f,o){
     eyes.push(e); });
   /* 눈썹: 짧고 살짝 기울인 판 — 표정이 살아난다 */
   [-1,1].forEach(s=>{ const b=new THREE.Mesh(new THREE.BoxGeometry(f.w*0.17,f.w*0.030,f.w*0.018),dark);
-    b.position.set(f.cx+s*f.w*0.17,f.y1+f.h*0.82,ez-f.w*0.004); b.rotation.z=s*0.12; head.add(b); });
+    b.position.set(f.cx+s*f.w*0.17,f.y1+f.h*0.82,ez-f.w*0.004); b.rotation.z=-s*0.10; head.add(b); });
   return eyes; }
 const gmat=(c,sh)=>new THREE.MeshPhongMaterial({color:c,shininess:sh==null?16:sh,specular:0x1a1a1a});
 /* 액세서리: 머리(비니·야구모자·헤드폰·안경·선글라스)는 머리뼈에, 가방은 몸통 좌표계에 붙인다 */
@@ -552,7 +556,7 @@ function addGear(kind,ch,head,f,o){
     [-1,1].forEach(s=>{ const st=add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.030,bh*0.22,bh*0.020),m2),ch.inner);
       st.position.set(s*bh*0.070,bh*0.60,bh*0.055); }); }
   else if(kind==='tote'){ const bh=ch.bodyH||1.7, m=gmat(o.accC||'#a8743e'), m2=gmat(c2);
-    const bg=new THREE.Group(); ch.inner.add(bg); bg.position.set(bh*0.155,bh*0.40,0);
+    const bg=new THREE.Group(); ch.inner.add(bg); bg.position.set(bh*0.215,bh*0.38,bh*0.02);
     add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.075,bh*0.14,bh*0.055),m),bg).position.set(0,0,0);
     const hd=add(new THREE.Mesh(new THREE.TorusGeometry(bh*0.038,bh*0.008,5,12,Math.PI),m2),bg); hd.position.set(0,bh*0.07,0); }
 }
