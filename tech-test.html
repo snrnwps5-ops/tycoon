@@ -2248,6 +2248,9 @@ openBoh:(t)=>openBoh(t||'in'),bohScan:(i)=>bohScanStart(i),bohHit:()=>bohScanHit
 taa:()=>({stg:STG,done:clsDone,at:+TAA_AT.toFixed(1),t:dayT,sess:cls?{n:cls.seats,ti:cls.Q.n,ok:cls.ok,t:+cls.t.toFixed(1),noShow:cls.noShow,standby:cls.standby}:null,topic:cls?cls.Q.n:null}),
 taaStart:()=>{ const c=clsStart(); return c?{n:c.seats,ti:c.Q.n}:null; },taaEnd:(ok)=>{ clsEnd(ok==null?3:ok); return clsDone; },taaPlan:()=>taaPlan(),
 npcCount:()=>scene.children.length };
+window.__H.nav=()=>({pen:window.__NAVPEN||0,ob:OB.length,sig:PATH.sig,grid:PATH.w+'x'+PATH.h,pad:PATH.pad});
+window.__H.obList=()=>OB.map(b=>({x1:b.x1,x2:b.x2,z1:b.z1,z2:b.z2,off:!!b.off}));
+window.__H.pathTo=(x,z)=>pathFind(player.pos.x,player.pos.z,x,z);
 
 /* ---- AI 조작 패널 / QA 헬퍼 ---- */
 $('aitog').onclick=function(){ $('aip').classList.toggle('min'); $('aitog').textContent=$('aip').classList.contains('min')?'+':'–'; };
