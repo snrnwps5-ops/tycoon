@@ -39,7 +39,9 @@ function load(n){ return new Promise(res=>L.parse(b64(AB['q:'+n]),'',g=>res(g)))
   }
   const ab=new THREE.Box3(); holders.forEach(h=>ab.expandByObject(h)); const c=ab.getCenter(new THREE.Vector3()); const s=ab.getSize(new THREE.Vector3());
   const dist=(Math.max(s.x,s.y*innerWidth/innerHeight)/2)/Math.tan(30*Math.PI/360)+0.6;
-  if(HEAD){ cam.position.set(c.x,c.y+0.55,dist*0.35); cam.lookAt(c.x,c.y+0.55,c.z); }
+  if(HEAD){ let hb=null; holders[Math.min(2,holders.length-1)].traverse(o=>{ if(o.name==='Head') hb=o; });
+    const hp=new THREE.Vector3(); if(hb) hb.getWorldPosition(hp); else hp.set(c.x,c.y+0.6,c.z);
+    cam.position.set(hp.x,hp.y+0.12,hp.z+0.62); cam.lookAt(hp.x,hp.y+0.10,hp.z); }
   else { cam.position.set(c.x,c.y,dist); cam.lookAt(c.x,c.y,c.z); }
   function tick(){ requestAnimationFrame(tick); renderer.render(scene,cam); } tick();
   window.__ok=1;
