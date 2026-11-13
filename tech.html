@@ -544,9 +544,9 @@ function addGear(kind,ch,head,f,o){
     cup.position.set(C-R*1.0,HY-R*0.05,HZ); cup.rotation.z=Math.PI/2;
     const arm=add(new THREE.Mesh(new THREE.BoxGeometry(R*0.10,R*0.10,R*0.62),gmat(c2)),head);
     arm.position.set(C-R*0.78,HY-R*0.30,HZ+R*0.36); arm.rotation.y=-0.35; }
-  else if(kind==='glasses'||kind==='sun'){ const m=gmat(kind==='sun'?'#14161d':'#1d2433');
+  else if(kind==='glasses'||kind==='sun'){ const m=gmat(kind==='sun'?'#14161d':'#d8b25a',kind==='sun'?16:60);
     const GZ=f.z2+f.w*0.030, GY=f.y1+f.h*0.30;
-    [-1,1].forEach(s=>{ const g2=add(new THREE.Mesh(new THREE.TorusGeometry(f.w*0.115,f.w*0.022,6,16),m),head);
+    [-1,1].forEach(s=>{ const g2=add(new THREE.Mesh(new THREE.TorusGeometry(f.w*0.118,f.w*0.016,6,16),m),head);
       g2.position.set(f.cx+s*f.w*0.165,GY,GZ); });
     if(kind==='sun'){ [-1,1].forEach(s=>{ const d=add(new THREE.Mesh(new THREE.CylinderGeometry(f.w*0.105,f.w*0.105,f.w*0.012,14),gmat('#0f1116',40)),head);
       d.position.set(f.cx+s*f.w*0.165,GY,GZ+f.w*0.006); d.rotation.x=Math.PI/2; }); }
