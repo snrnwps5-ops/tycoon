@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>charlab</title>
+<style>html,body{margin:0;height:100%;background:#22252c;overflow:hidden}canvas{display:block}</style>
+</head><body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+<script src="../assets.js"></script>
+<script>
+const AB=window.BUNSIK_ASSETS||{}, A={};
+const MODELS=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Suit_Male','Suit_Female','OldClassy_Male','OldClassy_Female','Casual_Bald','Chef_Male','Chef_Female','Worker_Male','Worker_Female'];
+const CLIPS={};
+const scene=new THREE.Scene(); scene.background=new THREE.Color('#22252c');
+const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(1); renderer.setSize(innerWidth,innerHeight); document.body.appendChild(renderer.domElement);
+const cam=new THREE.PerspectiveCamera(32,innerWidth/innerHeight,0.05,60); cam.position.set(0,1.15,3.1); cam.lookAt(0,0.85,0);
+scene.add(new THREE.HemisphereLight(0xffffff,0x334455,1.0));
+const dl=new THREE.DirectionalLight(0xffffff,0.9); dl.position.set(2,5,4); scene.add(dl);
+function b64(s){ const bin=atob(s); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return u.buffer; }
+const L=new THREE.GLTFLoader();
+function load(n){ return new Promise(res=>L.parse(b64(AB['q:'+n]),'',g=>res(g))); }
+const SKINS=['#f7d2b5','#f2c7a0','#e8b48a','#c98d65','#9a6446'];
+(async()=>{
+  const first=await load('Casual_Male'); first.animations.forEach(a=>CLIPS[a.name]=a); if(!CLIPS['Idle']) console.log('clips',Object.keys(CLIPS));
+  let count=0;
+  for(const n of MODELS){
+    const g = n==='Casual_Male'? first : await load(n);
+    const m=THREE.SkeletonUtils.clone(g.scene);
+    m.traverse(x=>{ if(x.isMesh){ const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString();
+      if(/^Skin$/.test(mt.name||'')) hex=SKINS[count%SKINS.length];
+      x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
+    const holder=new THREE.Group(); holder.add(m);
+    const col=count%5, row=Math.floor(count/5);
+    holder.position.set((col-2)*1.15,0.0,0);
+    scene.add(holder);
+    const label=document.createElement('div');
+    label.textContent=n; label.style.cssText='position:fixed;color:#fff;font:11px monospace;transform:translate(-50%,0);pointer-events:none';
+    label.className='lb';
+    count++;
+    if(count>5) break;
+  }
+  // five at a time, camera slides through rows
+  window.__models=[]; 
+  let idx=0; const all=[];
+  for(const n of MODELS){ all.push(await load(n)); if(!CLIPS['Idle']) all[all.length-1].animations.forEach(a=>CLIPS[a.name]=a); }
+  scene.clear(); scene.add(new THREE.HemisphereLight(0xffffff,0x334455,1.1)); const d2=new THREE.DirectionalLight(0xffffff,0.9); d2.position.set(2,5,4); scene.add(d2);
+  window.__rows=[];
+  MODELS.forEach((n,i)=>{
+    const g=all[i]; const m=THREE.SkeletonUtils.clone(g.scene);
+    m.traverse(x=>{ if(x.isMesh){ const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString();
+      if(/^Skin$/.test(mt.name||'')) hex=SKINS[i%SKINS.length];
+      x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
+    const holder=new THREE.Group(); holder.add(m);
+    const col=i%5, row=Math.floor(i/5);
+    holder.position.set((col-2)*1.12,0,-row*1.5);
+    scene.add(holder);
+    window.__rows.push({n,i,holder});
+  });
+  let t=0;
+  function tick(){ requestAnimationFrame(tick); t+=1/60; cam.position.y=1.15; cam.lookAt(0,0.9,-0.4); renderer.render(scene,cam); }
+  tick();
+  window.__row=function(r){ cam.position.set(0,1.12,3.0); cam.lookAt(0,0.86,-r*1.5); };
+})();
+</script></body></html>
