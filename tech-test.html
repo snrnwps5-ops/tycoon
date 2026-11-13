@@ -496,6 +496,7 @@ const CAM_OFF=new THREE.Vector3(0,20,0);
 const gget=(k,f)=>f?f():null;
 const sun={position:new THREE.Vector3(),target:{position:new THREE.Vector3()}};
 const VIEW={x:0,z:-1.5,s:40,zoom:1,W:0,H:0,cx:0,cy:0};
+let VW=0,VH=0; /* v2.17: 3D 공용 place()/lbPlace()가 쓰는 화면 크기 */
 const ZOOMS=[1,1.55,2.2]; let ZOOMI=0;
 /* ---- v2.5: 카메라 시점 제어 (2D) — 전체 보기 = 매장 전체(ZOOMI 0), 기본 = 플레이어 추적(ZOOMI 1) ---- */
 let CAMPZ=1;
@@ -515,7 +516,7 @@ function fitScale(){ const W=innerWidth,H=innerHeight;
   return Math.max(17,Math.min(112,Math.min((W-20)/15.6,usable/15.8))); }
 function resize(){ const W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,2);
   cv.width=Math.max(1,Math.round(W*dpr)); cv.height=Math.max(1,Math.round(H*dpr)); cv.style.width=W+'px'; cv.style.height=H+'px';
-  ctx2.setTransform(dpr,0,0,dpr,0,0); VIEW.W=W; VIEW.H=H; VIEW.s=fitScale(); }
+  ctx2.setTransform(dpr,0,0,dpr,0,0); VIEW.W=W; VIEW.H=H; VIEW.s=fitScale(); VW=W; VH=H; }
 addEventListener('resize',resize); resize();
 window.__proj=function(x,y,z){ const s=VIEW.s*VIEW.zoom,W=VIEW.W||1,H=VIEW.H||1;
   return { x:((VIEW.cx+(x-VIEW.x)*s)/W)*2-1, y:1-((VIEW.cy+(z-VIEW.z)*s-(y||0)*s*0.62)/H)*2 }; };
