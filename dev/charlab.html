@@ -1,50 +1,51 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>charlab</title>
-<style>html,body{margin:0;height:100%;background:#22252c;overflow:hidden}canvas{display:block}</style>
+<html><head><meta charset="utf-8"><title>techchar</title>
+<style>html,body{margin:0;height:100%;background:#20242b;overflow:hidden}canvas{display:block}#hud{position:fixed;left:8px;bottom:6px;color:#fff;font:12px monospace;white-space:pre}</style>
 </head><body>
+<div id="hud"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
 <script src="../assets.js"></script>
 <script>
-const AB=window.BUNSIK_ASSETS||{};
-const MODELS=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Suit_Male','Suit_Female','OldClassy_Male','OldClassy_Female','Casual_Bald','Chef_Male','Chef_Female','Worker_Male','Worker_Female'];
-const Q=new URLSearchParams(location.search); const ROW=+(Q.get('row')||0), HEAD=Q.get('head')==='1';
-const scene=new THREE.Scene(); scene.background=new THREE.Color('#22252c');
-const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(1); renderer.setSize(innerWidth,innerHeight); document.body.appendChild(renderer.domElement);
-const cam=new THREE.PerspectiveCamera(30,innerWidth/innerHeight,0.05,200);
+const Q=new URLSearchParams(location.search);
+const PAGE=+(Q.get('p')||0), HEAD=Q.get('head')==='1', ZOOM=+(Q.get('z')||1);
+const AB=window.BUNSIK_ASSETS||{}, A={};
+const QN=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Casual_Bald','OldClassy_Male','OldClassy_Female','Suit_Male','Suit_Female','Worker_Male','Worker_Female','Chef_Female'];
+const b64=x=>{ const bin=atob(x), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u.buffer; };
+const scene=new THREE.Scene(); scene.background=new THREE.Color('#20242b');
+const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(Math.min(2,devicePixelRatio||1));
+renderer.setSize(innerWidth,innerHeight); document.body.appendChild(renderer.domElement);
+const cam=new THREE.PerspectiveCamera(32,innerWidth/innerHeight,0.02,120);
 scene.add(new THREE.HemisphereLight(0xffffff,0x445566,1.05));
-const dl=new THREE.DirectionalLight(0xffffff,0.85); dl.position.set(2,5,6); scene.add(dl);
-function b64(s){ const bin=atob(s); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return u.buffer; }
-const L=new THREE.GLTFLoader();
-const SKINS=['#f7d2b5','#f2c7a0','#e8b48a'];
-function load(n){ return new Promise(res=>L.parse(b64(AB['q:'+n]),'',g=>res(g))); }
+const dl=new THREE.DirectionalLight(0xffffff,0.85); dl.position.set(2,6,7); scene.add(dl);
 (async()=>{
-  const names=MODELS.slice(ROW*5,ROW*5+5);
-  const holders=[];
-  for(let i=0;i<names.length;i++){
-    const g=await load(names[i]);
-    const m=THREE.SkeletonUtils.clone(g.scene);
-    m.traverse(x=>{ if(x.isMesh){ const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString();
-      if(/^Skin$/.test(mt.name||'')) hex=SKINS[i%SKINS.length];
-      if(Q.get('face')==='1') hex = /Face/.test(mt.name||'')?'#ff0000':( /Hair/.test(mt.name||'')?'#333333':'#c8c8c8');
-      x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
-    const holder=new THREE.Group(); holder.add(m); scene.add(holder);
-    holder.updateMatrixWorld(true);
-    let box=new THREE.Box3().setFromObject(m); let sz=box.getSize(new THREE.Vector3());
-    const sc=1.7/sz.y; m.scale.multiplyScalar(sc); holder.updateMatrixWorld(true);
-    box=new THREE.Box3().setFromObject(m); m.position.y=-box.min.y; holder.position.x=(i-2)*0.9;
-    holders.push(holder);
-    const d=document.createElement('div'); d.textContent=names[i];
-    d.style.cssText='position:fixed;left:'+(9+i*19)+'%;bottom:4px;color:#fff;font:12px monospace'; document.body.appendChild(d);
-  }
-  const ab=new THREE.Box3(); holders.forEach(h=>ab.expandByObject(h)); const c=ab.getCenter(new THREE.Vector3()); const s=ab.getSize(new THREE.Vector3());
-  const dist=(Math.max(s.x,s.y*innerWidth/innerHeight)/2)/Math.tan(30*Math.PI/360)+0.6;
-  if(HEAD){ let hb=null; holders[Math.min(2,holders.length-1)].traverse(o=>{ if(o.name==='Head') hb=o; });
-    const hp=new THREE.Vector3(); if(hb) hb.getWorldPosition(hp); else hp.set(c.x,c.y+0.6,c.z);
-    cam.position.set(hp.x,hp.y+0.12,hp.z+0.62); cam.lookAt(hp.x,hp.y+0.10,hp.z); }
-  else { cam.position.set(c.x,c.y,dist); cam.lookAt(c.x,c.y,c.z); }
-  function tick(){ requestAnimationFrame(tick); renderer.render(scene,cam); } tick();
+  await new Promise(res=>{ const L=new THREE.GLTFLoader(); let n=0; const done=()=>{ if(++n>=QN.length) res(); };
+    QN.forEach(k=>{ const d=AB['q:'+k]; if(!d){ done(); return; } L.parse(b64(d),'',g=>{ A['q:'+k]=g; done(); },()=>done()); }); setTimeout(res,20000); });
+  const t=await (await fetch('../tech.html')).text();
+  const a=t.indexOf('/* ---------- characters ---------- */'), b=t.indexOf('/* ---------- world ---------- */');
+  (0,eval)(t.slice(a,b));
+  const LOOKSET=[
+    {tint:'#4a4f5c',hair:'#2a2330',acc:'beanie',accC:'#b07aff',accC2:'#3a2a6a',model:'Casual_Male'},
+    {tint:'#5ad1ff',hair:'#1d2433',acc:'phones',accC:'#2f3442',accC2:'#1d2433',model:'Casual2_Male'},
+    {tint:'#2f3a5a',hair:'#6a4a2a',acc:'glasses',accC:'#1d2433',accC2:'#1d2433',model:'Suit_Female'},
+    {tint:'#ff7aa8',hair:'#c8955a',acc:'backpack',accC:'#4a7bd0',accC2:'#2a3a5a',model:'Casual3_Female'},
+    {tint:'#e8473d',hair:'#1d2433',acc:'sun',accC:'#14161d',accC2:'#0f1116',model:'Casual_Female'},
+    {tint:'#3a4a6a',hair:'#3a2a20',acc:'tote',accC:'#a8743e',accC2:'#6a4a2a',model:'Suit_Male'}
+  ];
+  const chs=[]; const list=[];
+  if(PAGE===0){ LOOKSET.forEach((o,i)=>list.push([o.model,o])); }
+  else if(PAGE===1){ ['Casual_Male','Casual2_Female','Casual3_Male','Suit_Female','OldClassy_Male'].forEach((m,i)=>list.push([m,{tint:['#e8473d','#46b37a','#f7c948','#9ee7ff','#ff7aa8'][i],hair:['#2a2330','#5a3a22','#c8955a','#6a4a2a','#e0c060'][i]}])); }
+  else { list.push(['Suit_Male',{tint:'#8a8f99',hair:'#3a2a20',acc:'cap',accC:'#e8473d',accC2:'#1d2433'}]); }
+  list.forEach((it,i)=>{ const ch=makeChar(it[0],it[1]); ch.g.position.set((i-(list.length-1)/2)*0.95,0,0); ch.g.rotation.y=0; chs.push(ch); });
+  const box=new THREE.Box3(); chs.forEach(c=>box.expandByObject(c.g)); const c=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
+  if(HEAD){ const ch=chs[2]||chs[0]; const hp=new THREE.Vector3(); let hb=null; ch.m.traverse(o=>{ if(o.isBone&&o.name==='Head') hb=o; }); if(hb) hb.getWorldPosition(hp);
+    const f=ch.face||{}; const fx=f.cx||0, fy=f.y1||0;
+    cam.position.set(ch.g.position.x, 1.55, 1.15); cam.lookAt(ch.g.position.x, 1.45, 0); }
+  else { const d=(Math.max(s.x,s.y*innerWidth/innerHeight)*0.62)/Math.tan(32*Math.PI/360)+0.5; cam.position.set(c.x,c.y+0.05,d/ZOOM); cam.lookAt(c.x,c.y,0); }
+  const hud=document.getElementById('hud');
+  hud.textContent='page '+PAGE+'  models: '+(list.map(l=>l[0]).join(', '))+'\nfaceErr='+(window.__FACEERR||0);
+  let t2=0; (function tick(){ requestAnimationFrame(tick); t2+=1/60; chs.forEach(ch=>{ animChar(ch,0,1/60,false); }); renderer.render(scene,cam); })();
   window.__ok=1;
 })();
 </script></body></html>

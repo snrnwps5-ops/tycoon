@@ -1049,7 +1049,8 @@ const HOME={greet:[-1.6,3.3],runner:[-3.2,-6.4],tech:[3.6,-6.4],spec:[1.6,-3.2],
 function satEmo(v){ v=v==null?70:v; return v>=80?'😄':v>=60?'🙂':v>=45?'😐':v>=30?'😟':'😫'; }
 function removeStaff(s){ scene.remove(s.ch.g); s.el.remove(); if(s.job) s.job.claim=null; staff.splice(staff.indexOf(s),1); }
 function addStaff(kind,crew){ if(staff.some(s=>s.crew===crew)) return; const dup=staff.filter(s=>s.kind===kind).length; const MD={greet:'Casual_Female',runner:'Casual2_Male',tech:'Worker_Male',spec:'Casual3_Female',mgr:'Suit_Male'}[kind];
-  const ch=makeChar(MD,{tint:kind==='mgr'?null:STAFFC,pants:'#2a2d38',hat:STAFFC}); const h=[HOME[kind][0]+dup*0.9,HOME[kind][1]]; const s={kind,crew,home:h,ch,pos:new THREE.Vector3(h[0],0,h[1]),stack:[],state:'idle',speed:0,face:Math.PI,t:0,wp:[],job:null,el:document.createElement('div')};
+  const ACC={greet:{acc:'headset',accC:'#2f6fd8',accC2:'#1d2433'},runner:{acc:'cap',accC:STAFFC,accC2:'#1d2433'},spec:{acc:'glasses',accC:'#1d2433',accC2:'#1d2433'}}[kind]||{};
+  const ch=makeChar(MD,Object.assign({tint:kind==='mgr'?null:STAFFC,pants:'#2a2d38',hat:STAFFC},ACC)); const h=[HOME[kind][0]+dup*0.9,HOME[kind][1]]; const s={kind,crew,home:h,ch,pos:new THREE.Vector3(h[0],0,h[1]),stack:[],state:'idle',speed:0,face:Math.PI,t:0,wp:[],job:null,el:document.createElement('div')};
   s.el.className='ntag'; s.el.innerHTML='<i style="background:'+ROLES[kind].c+'">'+ROLES[kind].ic+'</i>'+crew.name+' <span class="se">'+satEmo(crew.sat)+'</span>'; $('labels').appendChild(s.el); ch.g.position.copy(s.pos); staff.push(s); }
 S.crew.forEach(c=>addStaff(c.role,c));
 
@@ -1063,10 +1064,27 @@ function SPCM(c){ if(c.spType==='rush'){ const left=c.t0?Math.max(0,Math.ceil(c.
 const REQ={tour:c=>c.want?IT[c.want].n+' box please!':c.st==='consult'?'상담 중… 🧑‍💼':'Excuse me! (외국인 손님)',corp:c=>'법인 구매 문의',esc:c=>c.mgr?'매니저와 이야기 중…':'책임자 불러주세요!!',ret:c=>TP(c)+(c.sub==='trade'?'♻️ 보상 판매 문의':c.sub==='lost'?'🚨 분실·도난 상담':c.sub==='gift'?'🎁 선물 구매 상담':'반품 문의 · '+IT[c.want].n),pick:c=>c.st==='xfer'?'데이터 옮기는 중… 옆에 있어 주세요':TP(c)+'픽업 · '+IT[c.want].n+(c.xfer?' + 데이터 이전':''),buy:c=>c.want?IT[c.want].n+' 박스 가져다주세요':c.st==='consult'?'상담 중… 🧑‍💼':'구입 상담 원해요',fix:c=>c.walkin&&c.spot===GSPOT?'예약 없이 왔어요 · 수리 문의':c.st==='repair'?'수리 중…':TP(c)+(c.data?'[데이터 중요] ':'')+(c.mine===1?'🙋 직접 수리 · ':'')+(c.diag&&!c.want?'진단 필요: '+c.diag.q:({b:'배터리 교체',s:'액정 파손',c:'카메라 고장'})[c.want]+(c.want&&partAvail(c.want)<=0?' · 부품 없음 ⚠':'')),sw:c=>TP(c)+'상담: '+c.q.q};
 function priceMul(){ return (S.vipPass?1.25:1)*(1+0.08*S.up.price)*(S.unl.includes('flag')?1.5:1)*(0.7+rating()*0.1); }
 function rating(){ const a=S.reviews; return Math.min(5,(a.length?a.reduce((x,y)=>x+y,0)/a.length:4)+intBonus()+opBonus()); }
+/* ---- v2.7: 손님 외형 바리에이션 — 기존 캐주얼/정장/노신사 + 힙스터·비즈니스 우먼·학생·패셔니스타 ---- */
+const SHIRTS=['#e8473d','#46b37a','#f7c948','#ff7aa8','#9b6bff','#ff9f43'];
+const BASE_MD=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Suit_Male','Suit_Female','OldClassy_Male','OldClassy_Female'];
+const LOOKS=[
+  {id:'hip',     n:'힙스터',      models:['Casual_Male','Casual2_Male','Casual3_Male','Casual2_Female'], acc:'beanie',   hair:['#2a2330','#5a3a22','#8a5a2a'], shirt:['#2f3442','#4a4f5c','#e8473d','#7a6a50'], c1:'#b07aff', c2:'#3a2a6a'},
+  {id:'phones',  n:'음악 청년',   models:['Casual2_Male','Casual3_Male','Casual_Male'],            acc:'phones',   hair:['#1d2433','#3a2a20','#6a4a2a'], shirt:['#5ad1ff','#b07aff','#f7c948','#ff7aa8'], c1:'#2f3442', c2:'#1d2433'},
+  {id:'bizw',    n:'비즈니스 우먼', models:['Suit_Female','Casual_Female','OldClassy_Female'],      acc:'glasses',  hair:['#2a2330','#6a4a2a','#3a2a20'], shirt:['#2f3a5a','#8a8f99','#b07aff','#f4f0e2'], c1:'#1d2433', c2:'#1d2433'},
+  {id:'student', n:'학생',        models:['Casual2_Female','Casual3_Female','Casual2_Male','Casual3_Male'], acc:'backpack', hair:['#2a2330','#5a3a22','#c8955a'], shirt:['#ff7aa8','#5ad1ff','#7bea62','#ffd23f'], c1:'#4a7bd0', c2:'#2a3a5a'},
+  {id:'fashion', n:'패셔니스타',   models:['Casual_Female','OldClassy_Female','Suit_Female'],      acc:'sun',      hair:['#1d2433','#a05a2a','#e0c060'], shirt:['#e8473d','#ff7aa8','#9b6bff','#1d2433'], c1:'#14161d', c2:'#0f1116'},
+  {id:'tote',    n:'출근길 직장인', models:['Suit_Male','Suit_Female','Casual_Male'],               acc:'tote',     hair:['#2a2330','#3a2a20'], shirt:['#3a4a6a','#6a6f7a','#8a8f99'], c1:'#a8743e', c2:'#6a4a2a'}
+];
+const pick1=a=>a[Math.floor(Math.random()*a.length)];
+/* 55%는 기존 스타일, 45%는 새 외형 — 손님마다 모자·안경·가방·헤어 컬러가 달라진다 */
+function lookFor(){ if(!LOOKS.length||Math.random()<0.55) return null; const L=pick1(LOOKS);
+  return {look:L,model:pick1(L.models),tint:pick1(L.shirt),hair:pick1(L.hair),acc:L.acc,accC:L.c1,accC2:L.c2}; }
 function spawnCust(){ if(dayState!=='run') return; const cfg=dayCfg(S.day); const SMAP={ret:'pick',esc:'pick',tour:'buy',corp:'buy'}; const free=SPOTS.filter(s=>s.on&&!s.occ&&(cfg.types.includes(s.type)||Object.keys(SMAP).some(t=>SMAP[t]===s.type&&cfg.types.includes(t)))); if(!free.length) return; const types=[...new Set(free.map(s=>s.type))]; Object.keys(SMAP).forEach(t=>{ if(cfg.types.includes(t)&&types.includes(SMAP[t])) types.push(t); }); const base=types.filter(t=>cfg.types.includes(t)); types.length=0; base.forEach(t=>types.push(t)); let tot=0; const W=t=>TYPEW[t]*(cfg.rush&&t==='pick'?3:1); types.forEach(t=>tot+=W(t)); let r=Math.random()*tot, type=types[0]; for(const t of types){ r-=W(t); if(r<=0){ type=t; break; } }
   const stype=SMAP[type]||type; const sp=free.filter(s=>s.type===stype)[Math.floor(Math.random()*free.filter(s=>s.type===stype).length)];
-  const MODELS=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Suit_Male','Suit_Female','OldClassy_Male','OldClassy_Female'];
-  const ch=makeChar(MODELS[Math.floor(Math.random()*MODELS.length)],{tint:Math.random()<0.6?['#e8473d','#46b37a','#f7c948','#ff7aa8','#9b6bff','#ff9f43'][Math.floor(Math.random()*6)]:null});
+  const LK=lookFor();
+  const ch=makeChar(LK?LK.model:BASE_MD[Math.floor(Math.random()*BASE_MD.length)],
+    LK?{tint:LK.tint,hair:LK.hair,acc:LK.acc,accC:LK.accC,accC2:LK.accC2,look:LK.look}
+      :{tint:Math.random()<0.6?pick1(SHIRTS):null});
   const c={ch,type,spot:sp,pos:new THREE.Vector3(Math.random()<0.5?14:-14,0,11.2),wp:[new THREE.Vector3(0,0,8),new THREE.Vector3(0,0,4.6),new THREE.Vector3(sp.x,0,sp.z)],st:'enter',pat:40,patMax:40,face:0,el:document.createElement('div'),want:null,q:null,happy:0};
   sp.occ=c; if(type==='pick') c.want='pwl'[Math.floor(Math.random()*3)]; if(type==='fix'){ if(cfg.diag&&Math.random()<cfg.diag){ c.diag=pickQ(FIXQ); } else c.want=fixPart(); } if(type==='sw') c.q=(STG>=2&&Math.random()<0.4)?pickQ(ERRQ):(cfg.policy&&Math.random()<0.4)?pickQ(SWQ2):pickQ(SWQ);
   if(cfg.tough&&Math.random()<cfg.tough){ c.tough=1; c.pat=c.patMax=22; }

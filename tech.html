@@ -464,17 +464,107 @@ const TIERS=[
   {name:'직장인',models:['Suit_Male','Suit_Female'],tint:null,mult:3.5,lines:['출장엔 여기죠','편하게 잤어요','좋은 호텔이군요']},
   {name:'VIP',models:['OldClassy_Male','OldClassy_Female','Suit_Male'],tint:null,mult:6,lines:['훌륭하군!','팁이라네','다음에도 묵겠소']}
 ];
+/* ---- v2.7: 눈 리뉴얼(동공·하이라이트·깜빡임) + 헤어/액세서리 ---- */
+const FACEC={}; const EYEGEO=new THREE.SphereGeometry(1,12,9);
+/* Face 메시 안에서 세로로 긴 '눈 알갱이' 판만 지운다 (눈썹·얼굴판은 남긴다) */
+function stripEyes(geo){ if(!geo||!geo.index||geo.userData._noEyes) return; geo.userData._noEyes=1;
+  const pos=geo.attributes.position, idx=geo.index.array, n=pos.count;
+  const map=new Map(), par=new Int32Array(n);
+  for(let i=0;i<n;i++){ const k=Math.round(pos.getX(i)*700)+'|'+Math.round(pos.getY(i)*700)+'|'+Math.round(pos.getZ(i)*700);
+    let r=map.get(k); if(r==null){ r=i; map.set(k,i); } par[i]=i; if(r!==i) par[i]=r; }
+  const find=a=>{ while(par[a]!==a){ par[a]=par[par[a]]; a=par[a]; } return a; };
+  const uni=(a,b)=>{ a=find(a); b=find(b); if(a!==b) par[a]=b; };
+  for(let t=0;t<idx.length;t+=3){ uni(idx[t],idx[t+1]); uni(idx[t+1],idx[t+2]); }
+  const cc=new Map();
+  for(let i=0;i<n;i++){ const r=find(i); let c=cc.get(r); if(!c){ c={n:0,x1:9,x2:-9,y1:9,y2:-9}; cc.set(r,c); } const x=pos.getX(i),y=pos.getY(i); c.n++;
+    if(x<c.x1)c.x1=x; if(x>c.x2)c.x2=x; if(y<c.y1)c.y1=y; if(y>c.y2)c.y2=y; }
+  const eye=new Set(); cc.forEach((c,r)=>{ if(c.n<600&&(c.y2-c.y1)>(c.x2-c.x1)*1.35) eye.add(r); });
+  if(!eye.size) return;
+  const keep=[]; for(let t=0;t<idx.length;t+=3){ const a=find(idx[t]),b=find(idx[t+1]),c=find(idx[t+2]); if(eye.has(a)||eye.has(b)||eye.has(c)) continue; keep.push(idx[t],idx[t+1],idx[t+2]); }
+  if(keep.length){ geo.setIndex(keep); geo.computeBoundingSphere(); } }
+/* 얼굴판(눈·눈썹 판)을 머리뼈 좌표로 재서 눈 위치 기준으로 쓴다 — 모델마다 한 번만 */
+function faceInfo(model,g,m,head,faceMesh){ if(FACEC[model]) return FACEC[model];
+  g.updateMatrixWorld(true);
+  const bb=new THREE.Box3().setFromObject(faceMesh);
+  const inv=new THREE.Matrix4().copy(head.matrixWorld).invert();
+  const a=bb.min.clone().applyMatrix4(inv), b=bb.max.clone().applyMatrix4(inv);
+  const f={x1:Math.min(a.x,b.x),x2:Math.max(a.x,b.x),y1:Math.min(a.y,b.y),y2:Math.max(a.y,b.y),z2:Math.max(a.z,b.z)};
+  f.w=f.x2-f.x1; f.h=f.y2-f.y1; f.cx=(f.x1+f.x2)/2;
+  f.R=f.w*0.667; f.hy=f.y2-f.w*0.167; f.hz=f.z2-f.w*0.60;
+  stripEyes(faceMesh.geometry);
+  FACEC[model]=f; return f; }
+function addFace(head,f,o){
+  const dark=new THREE.MeshBasicMaterial({color:o.eye||'#2b2233'});
+  const lite=new THREE.MeshBasicMaterial({color:'#ffffff'});
+  const ew=f.w*0.215, eh=f.w*0.255, ex=f.w*0.17, ey=f.y1+f.h*0.28, ez=f.z2+f.w*0.022;
+  const eyes=[];
+  [-1,1].forEach(s=>{ const e=new THREE.Group(); e.position.set(f.cx+s*ex,ey,ez); head.add(e);
+    const ball=new THREE.Mesh(EYEGEO,dark); ball.scale.set(ew*0.5,eh*0.5,ew*0.26); e.add(ball);
+    const hl=new THREE.Mesh(EYEGEO,lite); hl.scale.set(ew*0.15,eh*0.15,ew*0.11); hl.position.set(ew*0.18,eh*0.22,ew*0.15); e.add(hl);
+    eyes.push(e); });
+  return eyes; }
+const gmat=(c,sh)=>new THREE.MeshPhongMaterial({color:c,shininess:sh==null?16:sh,specular:0x1a1a1a});
+/* 액세서리: 머리(비니·야구모자·헤드폰·안경·선글라스)는 머리뼈에, 가방은 몸통 좌표계에 붙인다 */
+function addGear(kind,ch,head,f,o){
+  const add=(msh,par)=>{ par.add(msh); msh.castShadow=true; return msh; };
+  const R=f.R, HY=f.hy, HZ=f.hz, C=f.cx;
+  const c1=o.accC||'#2f3442', c2=o.accC2||'#1d2433';
+  if(kind==='beanie'){ const m=gmat(o.accC||'#b07aff');
+    add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.94,R*1.03,R*0.70,16),m),head).position.set(C,HY+R*0.50,HZ);
+    add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.05,R*1.05,R*0.17,16),gmat(c2)),head).position.set(C,HY+R*0.19,HZ);
+    add(new THREE.Mesh(EYEGEO,gmat('#f4f0e2')),head).position.set(C,HY+R*0.92,HZ).scale.setScalar(R*0.11); }
+  else if(kind==='cap'){ const m=gmat(o.accC||'#e8473d');
+    add(new THREE.Mesh(new THREE.SphereGeometry(R*1.02,16,10,0,Math.PI*2,0,Math.PI*0.46),m),head).position.set(C,HY,HZ);
+    add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.05,R*1.06,R*0.10,16),m),head).position.set(C,HY+R*0.20,HZ);
+    const br=add(new THREE.Mesh(new THREE.BoxGeometry(R*1.15,R*0.07,R*0.78),gmat(c2)),head);
+    br.position.set(C,HY+R*0.16,HZ+R*0.82); br.rotation.x=0.12; }
+  else if(kind==='phones'){ const m=gmat(c1);
+    add(new THREE.Mesh(new THREE.TorusGeometry(R*1.03,R*0.085,6,20,Math.PI),m),head).position.set(C,HY-R*0.05,HZ);
+    [-1,1].forEach(s=>{ const cup=add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.27,R*0.27,R*0.13,12),gmat(c2)),head);
+      cup.position.set(C+s*R*1.0,HY-R*0.05,HZ); cup.rotation.z=Math.PI/2; }); }
+  else if(kind==='headset'){ const m=gmat(c1);
+    add(new THREE.Mesh(new THREE.TorusGeometry(R*1.03,R*0.075,6,20,Math.PI),m),head).position.set(C,HY-R*0.05,HZ);
+    const cup=add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.25,R*0.25,R*0.12,12),gmat(c2)),head);
+    cup.position.set(C-R*1.0,HY-R*0.05,HZ); cup.rotation.z=Math.PI/2;
+    const arm=add(new THREE.Mesh(new THREE.BoxGeometry(R*0.10,R*0.10,R*0.62),gmat(c2)),head);
+    arm.position.set(C-R*0.78,HY-R*0.30,HZ+R*0.36); arm.rotation.y=-0.35; }
+  else if(kind==='glasses'||kind==='sun'){ const m=gmat(kind==='sun'?'#14161d':'#1d2433');
+    [-1,1].forEach(s=>{ const g2=add(new THREE.Mesh(new THREE.TorusGeometry(R*0.20,R*0.035,6,16),m),head);
+      g2.position.set(C+s*R*0.30,HY-R*0.16,HZ+R*0.62); });
+    if(kind==='sun'){ [-1,1].forEach(s=>{ const d=add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.19,R*0.19,R*0.02,14),gmat('#0f1116',40)),head);
+      d.position.set(C+s*R*0.30,HY-R*0.16,HZ+R*0.63); d.rotation.x=Math.PI/2; }); }
+    add(new THREE.Mesh(new THREE.BoxGeometry(R*0.22,R*0.035,R*0.035),m),head).position.set(C,HY-R*0.14,HZ+R*0.62);
+    [-1,1].forEach(s=>{ add(new THREE.Mesh(new THREE.BoxGeometry(R*0.16,R*0.03,R*0.03),m),head).position.set(C+s*R*0.50,HY-R*0.12,HZ+R*0.52); }); }
+  else if(kind==='backpack'){ const bh=ch.bodyH||1.4, m=gmat(o.accC||'#4a7bd0'), m2=gmat(c2);
+    const bp=new THREE.Group(); ch.inner.add(bp); bp.position.set(0,bh*0.58,-bh*0.135);
+    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.22,bh*0.26,bh*0.12),m),bp).position.set(0,0,0);
+    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.19,bh*0.07,bh*0.10),m2),bp).position.set(0,bh*0.09,-bh*0.01);
+    [-1,1].forEach(s=>{ const st=add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.035,bh*0.26,bh*0.02),m2),ch.inner);
+      st.position.set(s*bh*0.075,bh*0.60,bh*0.075); }); }
+  else if(kind==='tote'){ const bh=ch.bodyH||1.4, m=gmat(o.accC||'#a8743e'), m2=gmat(c2);
+    const bg=new THREE.Group(); ch.inner.add(bg); bg.position.set(bh*0.20,bh*0.36,bh*0.01);
+    add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.14,bh*0.17,bh*0.07),m),bg).position.set(0,0,0);
+    const hd=add(new THREE.Mesh(new THREE.TorusGeometry(bh*0.055,R*0.02,5,12,Math.PI),m2),bg); hd.position.set(0,bh*0.085,0); }
+}
 function playA(ch,n,f){ if(!ch.acts[n]||ch.cur===n) return; const a=ch.acts[n]; a.reset(); a.enabled=true; a.setEffectiveWeight(1); a.fadeIn(f==null?0.15:f).play(); if(ch.cur&&ch.acts[ch.cur]) ch.acts[ch.cur].fadeOut(f==null?0.15:f); ch.cur=n; }
 function makeChar(model,o){ o=o||{}; const G=A['q:'+model]||A['q:Casual_Male']; const g=new THREE.Group(), inner=new THREE.Group(); g.add(inner); scene.add(g);
   const m=THREE.SkeletonUtils.clone(G.scene); m.scale.setScalar(1.25/QH); inner.add(m);
   const skin=o.skin||SKINS[Math.floor(Math.random()*SKINS.length)];
-  m.traverse(x=>{ if(x.isMesh){ x.castShadow=true; x.frustumCulled=false; const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString(); const n=mt.name||'';
+  let head=null, faceM=null;
+  m.traverse(x=>{ if(x.isBone&&x.name==='Head') head=x;
+    if(x.isMesh){ x.castShadow=true; x.frustumCulled=false; const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString(); const n=mt.name||'';
     if(/^Skin$/.test(n)) hex=skin; if(o.tint&&/Shirt|Clothes/.test(n)) hex=o.tint; if(o.pants&&/Pants/.test(n)) hex=o.pants; if(o.hat&&/Hat/.test(n)) hex=o.hat;
+    if(o.hair&&/^Hair$/.test(n)) hex=o.hair; if(/^Face$/.test(n)) faceM=x;
     x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
   const mixer=new THREE.AnimationMixer(m), acts={}; Object.keys(CLIPS).forEach(k=>acts[k]=mixer.clipAction(CLIPS[k]));
   const stackG=new THREE.Group(); stackG.position.set(0,0.78,0.38); g.add(stackG);
-  const ch={g,inner,m,mixer,acts,cur:null,stackG,jump:0}; playA(ch,'Idle',0); mixer.update(Math.random()); return ch; }
-function animChar(ch,speed,dt,carry){ const mv=speed>0.3, run=speed>5; const n=mv?(carry?(run?'Run_Carry':'Walk_Carry'):(run?'Run':'Walk')):(carry?'Walk_Carry':'Idle'); playA(ch,n);
+  const ch={g,inner,m,mixer,acts,cur:null,stackG,jump:0,look:o.look||null,hair:o.hair||null,eyeL:null,blinkT:1.5+Math.random()*3,blinkK:0};
+  try{ ch.bodyH=new THREE.Box3().setFromObject(m).getSize(new THREE.Vector3()).y||1.4; }catch(e){ ch.bodyH=1.4; }
+  if(head&&faceM){ try{ const f=faceInfo(model,g,m,head,faceM); ch.face=f; ch.eyeL=addFace(head,f,o); if(o.acc) addGear(o.acc,ch,head,f,o); }catch(e){ window.__FACEERR=(window.__FACEERR||0)+1; } }
+  playA(ch,'Idle',0); mixer.update(Math.random()); return ch; }
+function animChar(ch,speed,dt,carry){ if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4.2; ch.blinkK=1; }
+  if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.10,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); for(let i=0;i<ch.eyeL.length;i++) ch.eyeL[i].scale.y=k; } }
+  const mv=speed>0.3, run=speed>5; const n=mv?(carry?(run?'Run_Carry':'Walk_Carry'):(run?'Run':'Walk')):(carry?'Walk_Carry':'Idle'); playA(ch,n);
   const a=ch.acts[n]; if(a) a.timeScale=mv?Math.min(1.8,Math.max(0.7,speed/(run?6:3.2))):(n==='Walk_Carry'?0:1); ch.mixer.update(dt);
   let y=0; if(ch.jump>0){ ch.jump=Math.max(0,ch.jump-dt*2.2); y=Math.sin((1-ch.jump)*Math.PI)*0.4; } ch.inner.position.y=y; }
 
@@ -975,7 +1065,8 @@ const HOME={greet:[-1.6,3.3],runner:[-3.2,-6.4],tech:[3.6,-6.4],spec:[1.6,-3.2],
 function satEmo(v){ v=v==null?70:v; return v>=80?'😄':v>=60?'🙂':v>=45?'😐':v>=30?'😟':'😫'; }
 function removeStaff(s){ scene.remove(s.ch.g); s.el.remove(); if(s.job) s.job.claim=null; staff.splice(staff.indexOf(s),1); }
 function addStaff(kind,crew){ if(staff.some(s=>s.crew===crew)) return; const dup=staff.filter(s=>s.kind===kind).length; const MD={greet:'Casual_Female',runner:'Casual2_Male',tech:'Worker_Male',spec:'Casual3_Female',mgr:'Suit_Male'}[kind];
-  const ch=makeChar(MD,{tint:kind==='mgr'?null:STAFFC,pants:'#2a2d38',hat:STAFFC}); const h=[HOME[kind][0]+dup*0.9,HOME[kind][1]]; const s={kind,crew,home:h,ch,pos:new THREE.Vector3(h[0],0,h[1]),stack:[],state:'idle',speed:0,face:Math.PI,t:0,wp:[],job:null,el:document.createElement('div')};
+  const ACC={greet:{acc:'headset',accC:'#2f6fd8',accC2:'#1d2433'},runner:{acc:'cap',accC:STAFFC,accC2:'#1d2433'},spec:{acc:'glasses',accC:'#1d2433',accC2:'#1d2433'}}[kind]||{};
+  const ch=makeChar(MD,Object.assign({tint:kind==='mgr'?null:STAFFC,pants:'#2a2d38',hat:STAFFC},ACC)); const h=[HOME[kind][0]+dup*0.9,HOME[kind][1]]; const s={kind,crew,home:h,ch,pos:new THREE.Vector3(h[0],0,h[1]),stack:[],state:'idle',speed:0,face:Math.PI,t:0,wp:[],job:null,el:document.createElement('div')};
   s.el.className='ntag'; s.el.innerHTML='<i style="background:'+ROLES[kind].c+'">'+ROLES[kind].ic+'</i>'+crew.name+' <span class="se">'+satEmo(crew.sat)+'</span>'; $('labels').appendChild(s.el); ch.g.position.copy(s.pos); staff.push(s); }
 S.crew.forEach(c=>addStaff(c.role,c));
 
@@ -989,10 +1080,27 @@ function SPCM(c){ if(c.spType==='rush'){ const left=c.t0?Math.max(0,Math.ceil(c.
 const REQ={tour:c=>c.want?IT[c.want].n+' box please!':c.st==='consult'?'상담 중… 🧑‍💼':'Excuse me! (외국인 손님)',corp:c=>'법인 구매 문의',esc:c=>c.mgr?'매니저와 이야기 중…':'책임자 불러주세요!!',ret:c=>TP(c)+(c.sub==='trade'?'♻️ 보상 판매 문의':c.sub==='lost'?'🚨 분실·도난 상담':c.sub==='gift'?'🎁 선물 구매 상담':'반품 문의 · '+IT[c.want].n),pick:c=>c.st==='xfer'?'데이터 옮기는 중… 옆에 있어 주세요':TP(c)+'픽업 · '+IT[c.want].n+(c.xfer?' + 데이터 이전':''),buy:c=>c.want?IT[c.want].n+' 박스 가져다주세요':c.st==='consult'?'상담 중… 🧑‍💼':'구입 상담 원해요',fix:c=>c.walkin&&c.spot===GSPOT?'예약 없이 왔어요 · 수리 문의':c.st==='repair'?'수리 중…':TP(c)+(c.data?'[데이터 중요] ':'')+(c.mine===1?'🙋 직접 수리 · ':'')+(c.diag&&!c.want?'진단 필요: '+c.diag.q:({b:'배터리 교체',s:'액정 파손',c:'카메라 고장'})[c.want]+(c.want&&partAvail(c.want)<=0?' · 부품 없음 ⚠':'')),sw:c=>TP(c)+'상담: '+c.q.q};
 function priceMul(){ return (S.vipPass?1.25:1)*(1+0.08*S.up.price)*(S.unl.includes('flag')?1.5:1)*(0.7+rating()*0.1); }
 function rating(){ const a=S.reviews; return Math.min(5,(a.length?a.reduce((x,y)=>x+y,0)/a.length:4)+intBonus()+opBonus()); }
+/* ---- v2.7: 손님 외형 바리에이션 — 기존 캐주얼/정장/노신사 + 힙스터·비즈니스 우먼·학생·패셔니스타 ---- */
+const SHIRTS=['#e8473d','#46b37a','#f7c948','#ff7aa8','#9b6bff','#ff9f43'];
+const BASE_MD=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Suit_Male','Suit_Female','OldClassy_Male','OldClassy_Female'];
+const LOOKS=[
+  {id:'hip',     n:'힙스터',      models:['Casual_Male','Casual2_Male','Casual3_Male','Casual2_Female'], acc:'beanie',   hair:['#2a2330','#5a3a22','#8a5a2a'], shirt:['#2f3442','#4a4f5c','#e8473d','#7a6a50'], c1:'#b07aff', c2:'#3a2a6a'},
+  {id:'phones',  n:'음악 청년',   models:['Casual2_Male','Casual3_Male','Casual_Male'],            acc:'phones',   hair:['#1d2433','#3a2a20','#6a4a2a'], shirt:['#5ad1ff','#b07aff','#f7c948','#ff7aa8'], c1:'#2f3442', c2:'#1d2433'},
+  {id:'bizw',    n:'비즈니스 우먼', models:['Suit_Female','Casual_Female','OldClassy_Female'],      acc:'glasses',  hair:['#2a2330','#6a4a2a','#3a2a20'], shirt:['#2f3a5a','#8a8f99','#b07aff','#f4f0e2'], c1:'#1d2433', c2:'#1d2433'},
+  {id:'student', n:'학생',        models:['Casual2_Female','Casual3_Female','Casual2_Male','Casual3_Male'], acc:'backpack', hair:['#2a2330','#5a3a22','#c8955a'], shirt:['#ff7aa8','#5ad1ff','#7bea62','#ffd23f'], c1:'#4a7bd0', c2:'#2a3a5a'},
+  {id:'fashion', n:'패셔니스타',   models:['Casual_Female','OldClassy_Female','Suit_Female'],      acc:'sun',      hair:['#1d2433','#a05a2a','#e0c060'], shirt:['#e8473d','#ff7aa8','#9b6bff','#1d2433'], c1:'#14161d', c2:'#0f1116'},
+  {id:'tote',    n:'출근길 직장인', models:['Suit_Male','Suit_Female','Casual_Male'],               acc:'tote',     hair:['#2a2330','#3a2a20'], shirt:['#3a4a6a','#6a6f7a','#8a8f99'], c1:'#a8743e', c2:'#6a4a2a'}
+];
+const pick1=a=>a[Math.floor(Math.random()*a.length)];
+/* 55%는 기존 스타일, 45%는 새 외형 — 손님마다 모자·안경·가방·헤어 컬러가 달라진다 */
+function lookFor(){ if(!LOOKS.length||Math.random()<0.55) return null; const L=pick1(LOOKS);
+  return {look:L,model:pick1(L.models),tint:pick1(L.shirt),hair:pick1(L.hair),acc:L.acc,accC:L.c1,accC2:L.c2}; }
 function spawnCust(){ if(dayState!=='run') return; const cfg=dayCfg(S.day); const SMAP={ret:'pick',esc:'pick',tour:'buy',corp:'buy'}; const free=SPOTS.filter(s=>s.on&&!s.occ&&(cfg.types.includes(s.type)||Object.keys(SMAP).some(t=>SMAP[t]===s.type&&cfg.types.includes(t)))); if(!free.length) return; const types=[...new Set(free.map(s=>s.type))]; Object.keys(SMAP).forEach(t=>{ if(cfg.types.includes(t)&&types.includes(SMAP[t])) types.push(t); }); const base=types.filter(t=>cfg.types.includes(t)); types.length=0; base.forEach(t=>types.push(t)); let tot=0; const W=t=>TYPEW[t]*(cfg.rush&&t==='pick'?3:1); types.forEach(t=>tot+=W(t)); let r=Math.random()*tot, type=types[0]; for(const t of types){ r-=W(t); if(r<=0){ type=t; break; } }
   const stype=SMAP[type]||type; const sp=free.filter(s=>s.type===stype)[Math.floor(Math.random()*free.filter(s=>s.type===stype).length)];
-  const MODELS=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Suit_Male','Suit_Female','OldClassy_Male','OldClassy_Female'];
-  const ch=makeChar(MODELS[Math.floor(Math.random()*MODELS.length)],{tint:Math.random()<0.6?['#e8473d','#46b37a','#f7c948','#ff7aa8','#9b6bff','#ff9f43'][Math.floor(Math.random()*6)]:null});
+  const LK=lookFor();
+  const ch=makeChar(LK?LK.model:BASE_MD[Math.floor(Math.random()*BASE_MD.length)],
+    LK?{tint:LK.tint,hair:LK.hair,acc:LK.acc,accC:LK.accC,accC2:LK.accC2,look:LK.look}
+      :{tint:Math.random()<0.6?pick1(SHIRTS):null});
   const c={ch,type,spot:sp,pos:new THREE.Vector3(Math.random()<0.5?14:-14,0,11.2),wp:[new THREE.Vector3(0,0,8),new THREE.Vector3(0,0,4.6),new THREE.Vector3(sp.x,0,sp.z)],st:'enter',pat:40,patMax:40,face:0,el:document.createElement('div'),want:null,q:null,happy:0};
   sp.occ=c; if(type==='pick') c.want='pwl'[Math.floor(Math.random()*3)]; if(type==='fix'){ if(cfg.diag&&Math.random()<cfg.diag){ c.diag=pickQ(FIXQ); } else c.want=fixPart(); } if(type==='sw') c.q=(STG>=2&&Math.random()<0.4)?pickQ(ERRQ):(cfg.policy&&Math.random()<0.4)?pickQ(SWQ2):pickQ(SWQ);
   if(cfg.tough&&Math.random()<cfg.tough){ c.tough=1; c.pat=c.patMax=22; }
