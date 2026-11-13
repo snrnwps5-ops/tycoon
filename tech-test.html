@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<script>try{(function(){var V='1794540015';fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=(t||'').trim();if(!t||t===V)return;if(location.search.indexOf('b='+t)>=0)return;location.replace(location.pathname+'?b='+t+(location.hash||''));}).catch(function(){});})();}catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
@@ -1857,7 +1859,7 @@ if($('camBase')) $('camBase').onclick=function(){ camSetMode('base'); };
 
 /* ---- 배송 트럭 / 퀵 오토바이 입고 연출 (재고 로직 arrive() 는 그대로) ---- */
 const TRUCK={jobs:[]};
-const TRKD={lane:8.4,quickLane:7.2,stop:2.8,quickStop:1.4,inX:-16,quickX:12};
+const TRKD={lane:7.6,quickLane:7.0,stop:2.6,quickStop:1.6,inX:-16,quickX:12};
 function truckAdd(t,q,quick){
   const wait=TRUCK.jobs.reduce((a,j)=>Math.max(a,j.delay+(j.ph==='wait'?(j.quick?0.7:1.4):0)+j.tt),0);
   const job={t:t,q:Math.max(1,Math.min(5,q||1)),quick:!!quick,ph:'wait',tt:0,delay:TRUCK.jobs.length?Math.max(0.6,wait*0.55):0,
