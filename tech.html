@@ -484,10 +484,12 @@ function stripEyes(geo){ if(!geo||!geo.index||geo.userData._noEyes) return; geo.
   if(keep.length){ geo.setIndex(keep); geo.computeBoundingSphere(); } }
 /* 얼굴판(눈·눈썹 판)을 머리뼈 좌표로 재서 눈 위치 기준으로 쓴다 — 모델마다 한 번만 */
 /* 얼굴판 좌표: 바인드 공간의 정점을 머리뼈 로컬 좌표로 옮겨 잰다 (스킨 행렬 없이도 정확) */
+function attrNorm(a){ const d=a.data||null, arr=(d&&d.array)||a.array||null, nm=(a.normalized!=null?a.normalized:(d?d.normalized:false));
+  if(!nm||!arr) return 1; if(arr instanceof Int16Array) return 1/32767; if(arr instanceof Int8Array) return 1/127; if(arr instanceof Uint16Array) return 1/65535; if(arr instanceof Uint8Array) return 1/255; return 1; }
 function faceBoxLocal(faceMesh,head){ const pos=faceMesh.geometry.attributes.position, sk=faceMesh.skeleton, bi=sk?sk.bones.indexOf(head):-1;
   const M=new THREE.Matrix4(); if(sk&&bi>=0) M.copy(sk.boneInverses[bi]).multiply(faceMesh.bindMatrix||new THREE.Matrix4()); else M.copy(head.matrixWorld).invert();
-  const v=new THREE.Vector3(), b=new THREE.Box3(); b.makeEmpty();
-  for(let i=0;i<pos.count;i++){ v.set(pos.getX(i),pos.getY(i),pos.getZ(i)).applyMatrix4(M); b.expandByPoint(v); }
+  const k=attrNorm(pos), v=new THREE.Vector3(), b=new THREE.Box3(); b.makeEmpty();
+  for(let i=0;i<pos.count;i++){ v.set(pos.getX(i)*k,pos.getY(i)*k,pos.getZ(i)*k).applyMatrix4(M); b.expandByPoint(v); }
   return b; }
 function faceInfo(model,g,m,head,faceMesh){ if(FACEC[model]) return FACEC[model];
   g.updateMatrixWorld(true);
