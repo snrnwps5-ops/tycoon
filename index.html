@@ -596,7 +596,7 @@ function animChar(ch,speed,dt,carry){ if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=
   let y=0; if(ch.jump>0){ ch.jump=Math.max(0,ch.jump-dt*2.2); y=Math.sin((1-ch.jump)*Math.PI)*0.4; } ch.inner.position.y=y; }
 
 /* ---------- world ---------- */
-const OB=[]; const ob=(x1,x2,z1,z2)=>OB.push({x1,x2,z1,z2});
+const OB=[]; const ob=(x1,x2,z1,z2)=>{ const b={x1,x2,z1,z2}; OB.push(b); return b; };
 const WALLM=[];  // v2.5: 인테리어 벽 색 교체용 (벽 재질·반복·원본 텍스처)
 { const gr=new THREE.Mesh(new THREE.PlaneGeometry(120,120),mat(THM.ground)); gr.rotation.x=-Math.PI/2; gr.receiveShadow=true; scene.add(gr); }
 // street
