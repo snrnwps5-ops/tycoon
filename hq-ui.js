@@ -16,7 +16,6 @@ var rnd=function(a){ return a[Math.floor(Math.random()*a.length)]; };
 var clamp=function(v,a,b){ return Math.max(a,Math.min(b,v)); };
 function S(){ return A.S; }
 function call(name){ var f=A[name]; if(typeof f!=='function') return undefined; try{ return f.apply(null,[].slice.call(arguments,1)); }catch(e){ console.warn('HQUI adapter '+name,e); } }
-
 /* ---------------- schema ---------------- */
 /* v2.25: openDay를 게임 스테이지 개막일과 1:1로 맞췄습니다. S.day는 0부터 시작하므로 openDay = 그 지점의 첫 영업일 인덱스입니다.
    daegu 0(DAY 1) · busan 4(DAY 5) · seoul 8(DAY 9) · icn 11(DAY 12) · nyc 15(DAY 16) — tech.html의 STAGE_OF(d<4,8,11,15,19)와 같은 경계입니다. */
@@ -32,15 +31,19 @@ function ensure(){ var s=S();
   if(!s.branches||typeof s.branches!=='object') s.branches={};
   BRANCHES.forEach(function(b){ var o=s.branches[b.id]; if(!o) o=s.branches[b.id]={}; if(o.lv==null) o.lv=1; if(o.staff==null) o.staff=2; if(o.nps==null) o.nps=20; if(o.mgr===undefined) o.mgr=null; if(o.visitDay===undefined) o.visitDay=-1; });
   if(!Array.isArray(s.hqStaff)) s.hqStaff=[];
+  if(!s.hq||typeof s.hq!=='object') s.hq={};
+  if(!Array.isArray(s.hq.clears)) s.hq.clears=[];
+  if(!s.hq.buff||typeof s.hq.buff!=='object') s.hq.buff={spd:0,auto:0,rsu:0};
   if(!s.interview||typeof s.interview!=='object') s.interview={};
   var iv=s.interview; if(!Array.isArray(iv.pool)) iv.pool=[]; if(!Array.isArray(iv.log)) iv.log=[]; if(iv.cur===undefined) iv.cur=null; if(iv.n==null) iv.n=0;
   return s; }
 function branchOpen(b){ return (S().day||0)>=b.openDay; }
 function branchIncome(id){ ensure(); var b=BRANCHES.filter(function(x){ return x.id===id; })[0]; if(!b||!branchOpen(b)) return 0; var o=S().branches[id];
-  return Math.round(b.base*(1+0.35*(o.lv-1))*(1+0.08*o.staff)*(o.mgr?1.2:1)*(0.8+clamp(o.nps,-100,100)/250)); }
+  var bAuto=(S().hq&&S().hq.buff&&S().hq.buff.auto)?(1+S().hq.buff.auto):1;
+  return Math.round(b.base*(1+0.35*(o.lv-1))*(1+0.08*o.staff)*(o.mgr?1.2:1)*(0.8+clamp(o.nps,-100,100)/250)*bAuto); }
 /* v2.25: 현재 플레이 중인 매장(스테이지) 판정 — 게임의 STAGE_OF와 같은 경계(d<4/8/11/15/19)를 씁니다. */
 function stageOfDay(d){ d=d||0; return d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; }
-function currentBranch(){ var st=stageOfDay(S().day||0); return BRANCHES.filter(function(b){ return b.stage===st; })[0]||null; }
+function currentBranch(){ var s=S(), curStg=(s&&s.curStage!=null)?s.curStage:stageOfDay((s&&s.day)||0); return BRANCHES.filter(function(b){ return b.stage===curStg; })[0]||BRANCHES[0]; }
 function currentBranchId(){ var b=currentBranch(); return b?b.id:null; }
 /* 현재 매장은 플레이어가 직접 영업하므로 자동 매출에서 빼고, 오픈된 '다른' 지점의 일일 자동 매출만 합산합니다.
    curStageId에는 지점 id('busan') 또는 스테이지 번호(1)를 넣을 수 있고, 생략하면 S.day에서 현재 매장을 구합니다. */
@@ -53,7 +56,6 @@ function otherBranchesIncome(curStageId){
 }
 function autoIncomeTotal(){ return otherBranchesIncome(); }
 function npsShare(id){ var o=S().branches[id]; return Math.round(o.nps*(0.5+0.1*o.staff)); }
-
 /* ---------------- overlay ---------------- */
 var CSS='\
 #hqui{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(8,14,34,.62);padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px);box-sizing:border-box;font-family:"Noto Sans KR",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}\
@@ -117,6 +119,14 @@ var CSS='\
 .ivb.them{align-self:flex-start;background:#fff;color:#2a3344;border:1px solid #e6ddcb;border-bottom-left-radius:4px}\
 .ivdots{display:inline-flex;gap:4px;align-items:center}\
 .ivdots s{width:6px;height:6px;border-radius:50%;background:#8a96a8;display:block;animation:ivdot 1s infinite}\
+/* ---- v2.30: 멀티 지점 이동 및 본사 게이트 미션 ---- */\
+.hqdir{background:#fff;border-radius:14px;padding:9px 11px;margin-bottom:8px;box-shadow:0 2px 0 rgba(0,0,0,.06);display:flex;flex-direction:column;gap:3px;border-left:4px solid #2f6fd8}\
+.hqdir.done{border-left-color:#2faa45;background:#f6fcf7;opacity:.88}\
+.hqdir .dh{display:flex;justify-content:space-between;align-items:center;font:900 13px "Noto Sans KR",sans-serif;color:#1b2748}\
+.hqdir .dc{font:700 11px/1.4 "Noto Sans KR",sans-serif;color:#5a6578}\
+.hqdir .dr{font:700 11px "Noto Sans KR",sans-serif;color:#2faa45;margin-bottom:2px}\
+.hqdir .hqbtn{min-height:34px;padding:4px 6px;font-size:12px;border-radius:10px}\
+.hqbtn.tr{background:linear-gradient(#2f6fd8,#17349a);color:#fff;box-shadow:0 3px 0 #0e1e55}\
 .ivdots s:nth-child(2){animation-delay:.15s}.ivdots s:nth-child(3){animation-delay:.3s}\
 @keyframes ivdot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}\
 .ivchips{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 0}\
@@ -279,6 +289,32 @@ function ivOffer(){ var s=S(), c=s.interview.cur; var packs=[{k:'a',n:'기본형
 /* =====================================================================
    2. 지점 관리 대시보드
    ===================================================================== */
+
+/* =====================================================================
+   v2.30: 본사 게이트 미션 (HQ Directives) — 프랜차이즈 네트워크 미션
+   ===================================================================== */
+var HQ_DIRECTIVES=[
+  {id:'d1', icon:'🏙️', title:'대구 동성로점 안정화', cond:'대구점 시설 Lv.2 이상 & 지점 NPS +20',
+   ok:function(s){ var o=s.branches.daegu; return !!(o && o.lv>=2 && o.nps>=20); },
+   rew:'보너스 +$300 · 본사 신뢰도↑',
+   grant:function(s){ call('setMoney',(call('getMoney')||0)+300); }
+  },
+  {id:'d2', icon:'🌊', title:'부산 센텀점 프랜차이즈 확장', cond:'부산점 직원 3명 이상 & 지점 NPS +30',
+   ok:function(s){ var o=s.branches.busan; return !!(o && o.staff>=3 && o.nps>=30); },
+   rew:'전 지점 직원 이동속도 +5%',
+   grant:function(s){ s.hq.buff.spd=(s.hq.buff.spd||0)+0.05; }
+  },
+  {id:'d3', icon:'🏬', title:'서울 강남 본점 플래그십 승격', cond:'운영 지점 통합 평균 NPS +35 달성',
+   ok:function(s){ var open=BRANCHES.filter(branchOpen); var avg=open.length?Math.round(open.reduce(function(a,b){ return a+s.branches[b.id].nps; },0)/open.length):0; return avg>=35; },
+   rew:'본사 RSU 주식 보너스 +$1,000',
+   grant:function(s){ call('setMoney',(call('getMoney')||0)+1000); }
+  },
+  {id:'d4', icon:'🛒', title:'뉴욕 메가 아울렛 글로벌 물류망', cond:'타 지점 일일 자동 매출 $1,000 돌파',
+   ok:function(s){ return otherBranchesIncome()>=1000; },
+   rew:'타 지점 일일 자동 매출 +15%',
+   grant:function(s){ s.hq.buff.auto=(s.hq.buff.auto||0)+0.15; }
+  }
+];
 function openBranchModal(done){ ensure(); onClose=done||null; brRender(); }
 function brRender(){ var s=S(), day=s.day||0; var open=BRANCHES.filter(branchOpen); var tot=otherBranchesIncome(), curId=currentBranchId();
   var nps=open.length?Math.round(open.reduce(function(a,b){ return a+s.branches[b.id].nps; },0)/open.length):0;
@@ -290,13 +326,45 @@ function brRender(){ var s=S(), day=s.day||0; var open=BRANCHES.filter(branchOpe
       '<div class="m"><span>지점장</span><b>'+(o.mgr?esc(o.mgr):'공석')+'</b></div><div class="m"><span>직원</span><b>'+o.staff+'명</b></div><div class="m"><span>지점 NPS</span><b style="color:'+(o.nps>=50?'#2faa45':o.nps>=0?'#e89a10':'#e8342a')+'">'+(o.nps>0?'+':'')+o.nps+'</b></div><div class="m"><span>통합 NPS 기여</span><b>'+(npsShare(b.id)>0?'+':'')+npsShare(b.id)+'</b></div><div class="m"><span>시설 레벨</span><b>Lv.'+o.lv+(o.lv>=CFG.upMax?' MAX':'')+'</b></div>'+
       '<button class="hqbtn y" data-hq="up" data-id="'+b.id+'" '+(o.lv>=CFG.upMax||money<cu?'disabled':'')+'>'+(o.lv>=CFG.upMax?'업그레이드 완료':'업그레이드 '+fmt(cu))+'</button>'+
       '<button class="hqbtn b" data-hq="staff" data-id="'+b.id+'" '+(o.staff>=CFG.staffMax||money<cs?'disabled':'')+'>'+(o.staff>=CFG.staffMax?'직원 정원 가득':'직원 +1 '+fmt(cs))+'</button>'+
-      '<button class="hqbtn" data-hq="visit" data-id="'+b.id+'" '+(visited?'disabled':'')+'>'+(visited?'오늘 시찰 완료':'시찰 방문')+'</button></div>'; }).join('');
-  var body='<div class="hqsum"><div><b>'+fmt(tot)+'</b><small>타 지점 자동 매출 합계</small></div><div><b>'+open.length+'/'+BRANCHES.length+'</b><small>운영 지점</small></div><div><b>'+(nps>0?'+':'')+nps+'</b><small>평균 지점 NPS</small></div></div><div class="hqgrid">'+cards+'</div><div style="font:700 11px/1.5 \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin:8px 0 2px">현재 매장은 직접 영업하므로 자동 매출에서 빠져요 · 타 지점 자동 매출은 하루 영업이 끝날 때 현금으로 정산돼요 · 시찰은 지점마다 하루 한 번</div>';
+      '<button class="hqbtn" data-hq="visit" data-id="'+b.id+'" '+(visited?'disabled':'')+'>'+(visited?'오늘 시찰 완료':'시찰 방문')+'</button>'+
+      (!here?'<button class="hqbtn tr" data-hq="travel" data-stage="'+b.stage+'" data-name="'+esc(b.name)+'">✈️ 이 매장으로 이동</button>':'')+
+      '</div>'; }).join('');
+  var dirs=HQ_DIRECTIVES.map(function(d){
+    var cleared=s.hq&&s.hq.clears&&s.hq.clears.indexOf(d.id)>=0;
+    var can=!cleared&&d.ok(s);
+    return '<div class="hqdir'+(cleared?' done':'')+'">'+
+      '<div class="dh"><span>'+d.icon+' <b>'+esc(d.title)+'</b></span><em class="hqtag '+(cleared?'gd':can?'wn':'gy')+'">'+(cleared?'완수 완료':can?'승인 가능':'진행 중')+'</em></div>'+
+      '<div class="dc">'+esc(d.cond)+'</div>'+
+      '<div class="dr">보상: <b>'+esc(d.rew)+'</b></div>'+
+      (cleared?'<button class="hqbtn g" disabled>완수 보상 획득됨</button>':
+       can?'<button class="hqbtn y" data-hq="claimDir" data-dir="'+d.id+'">🏆 본사 승인 & 보상 수령</button>':
+       '<button class="hqbtn g" disabled>조건 달성 필요</button>')+
+      '</div>';
+  }).join('');
+  var body='<div class="hqsum"><div><b>'+fmt(tot)+'</b><small>타 지점 일일 자동 매출</small></div><div><b>'+open.length+'/'+BRANCHES.length+'</b><small>운영 지점</small></div><div><b>'+(nps>0?'+':'')+nps+'</b><small>통합 평균 NPS</small></div></div>'+
+    '<div class="hqgrid">'+cards+'</div>'+
+    '<div style="margin:12px 0 6px;display:flex;align-items:center;justify-content:space-between"><b style="font:900 13px \'Noto Sans KR\',sans-serif;color:#1b2748">📋 본사 게이트 미션 (HQ Directives)</b><small style="font:700 11px \'Noto Sans KR\',sans-serif;color:#8a7a6a">달성 시 전 지점 버프·RSU 보너스</small></div>'+
+    '<div>'+dirs+'</div>'+
+    '<div style="font:700 11px/1.5 \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin:8px 0 2px">현재 매장은 직접 영업하므로 자동 매출에서 빠져요 · 타 지점 자동 매출은 하루 영업 마감 시 정산돼요</div>';
   var find=function(t){ var id=t.getAttribute('data-id'); return {b:BRANCHES.filter(function(x){ return x.id===id; })[0],o:s.branches[id]}; };
   show('지점 관리 대시보드','보유 현금 '+fmt(call('getMoney')||0),body,'<button class="hqbtn g" data-hq="close">닫기</button>',
     {up:function(t){ var r=find(t), c=CFG.upCost(r.b,r.o.lv); if(r.o.lv>=CFG.upMax) return; if(!pay(c)){ msg('현금이 부족해요'); return; } r.o.lv++; sfx('level_up',0.45,1.2); brRender(); msg(r.b.name+' 시설 Lv.'+r.o.lv+' · 자동 매출이 올랐어요',true); },
      staff:function(t){ var r=find(t), c=CFG.staffCost(r.b,r.o.staff); if(r.o.staff>=CFG.staffMax) return; if(!pay(c)){ msg('현금이 부족해요'); return; } r.o.staff++; sfx('coin',0.45,1.1); brRender(); msg(r.b.name+' 직원 '+r.o.staff+'명',true); },
-     visit:function(t){ var r=find(t); if(r.o.visitDay===day) return; r.o.visitDay=day; brVisit(r.b,r.o); }}); }
+     visit:function(t){ var r=find(t); if(r.o.visitDay===day) return; r.o.visitDay=day; brVisit(r.b,r.o); },
+     travel:function(t){ var stg=+t.getAttribute('data-stage'); call('switchBranch',stg); close(); },
+     claimDir:function(t){
+       var did=t.getAttribute('data-dir');
+       var targetD=HQ_DIRECTIVES.filter(function(x){ return x.id===did; })[0];
+       if(!targetD||!s.hq) return;
+       s.hq.clears=s.hq.clears||[];
+       if(s.hq.clears.indexOf(did)>=0) return;
+       targetD.grant(s);
+       s.hq.clears.push(did);
+       call('save');
+       sfx('level_up',0.5,1.2);
+       brRender();
+       msg('🎉 '+targetD.title+' 완수! 보상을 지급받았어요',true);
+     }}); }
 function pay(c){ var m=call('getMoney'); if(typeof m!=='number'||m<c) return false; call('setMoney',m-c); call('save'); return true; }
 var VISITS=[
  {q:'진열대에 가격표가 빠진 제품이 여러 개 보입니다.',a:[['직원과 함께 바로 채우고 점검표에 추가하기',1],['지점장에게 메신저로 지적만 남기기',0],['못 본 척 지나가기',-1]]},

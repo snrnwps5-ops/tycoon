@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794640000';
+<script>try{(function(){var V='1794660000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -372,7 +372,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.29</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.30</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -548,7 +548,9 @@ STS=['대구','부산','서울','인천','뉴욕','본사'],
 STK=['동네 슈퍼스토어','몰 메가플라자','초대형 플래그십','공항 면세스토어','글로벌 메가아울렛','글로벌 본사 물류센터'],
 STC=['DAEGU','BUSAN','SEOUL GANGNAM','INCHEON AIRPORT','NEW YORK','GLOBAL LOGISTICS'],
 STI=['🏙️','🌊','🏬','✈️','🛒','🌐'];
-const STG=STAGE_OF(S.day||0);
+const maxStage=STAGE_OF(S.day||0);
+if(S.curStage==null||S.curStage>maxStage) S.curStage=maxStage;
+const STG=S.curStage;
 const TS=[
   {name:'대구 동성로점',sign:'MEGA TECH SUPERSTORE',signBg:'#1d2433',signLine:'#5ad1ff',ground:'#363c4a',floor:['#c9a27a','#bb946c','#9a7550'],wall:['#f3ead8','#e6dac2','#c9b48e'],cap:'#36b39b',table:'table_medium',acc:'#36b39b',promo:['#36b39b','#2f6fd8'],out:'street'},
   {name:'부산 센텀점',sign:'ELECTRO MART',signBg:'#ffffff',signFg:'#1d2433',signLine:'#2f6fd8',ground:'#d9dde3',floor:['#cfd5dd','#c3c9d2','#aab2bd'],wall:['#ffffff','#f1f3f6','#c9ced8'],cap:'#2f6fd8',table:'table_medium',acc:'#2f6fd8',promo:['#2f6fd8','#b07aff'],out:'mall'},
@@ -557,6 +559,62 @@ const TS=[
   {name:'뉴욕 메가 아울렛',sign:'BEST BUY & WALMART',signBg:'#003b64',signFg:'#ffffff',signLine:'#ffc220',ground:'#1b2233',floor:['#ece8e2','#e3ded6','#c2bbb0'],wall:['#fbfaf7','#efece6','#bdb5a8'],cap:'#003b64',table:'table_medium_long',acc:'#ffc220',promo:['#003b64','#ffc220'],out:'city'},
   {name:'메가 테크 글로벌 본사',sign:'MEGA GLOBAL LOGISTICS',signBg:'#0b1626',signFg:'#ffffff',signLine:'#2f6fd8',ground:'#86c46e',floor:['#f1efea','#e8e5df','#c8c3ba'],wall:['#ffffff','#f3f3f1','#c9c9c4'],cap:'#0b1626',table:'table_medium_long',acc:'#2f6fd8',promo:['#0b1626','#2f6fd8'],out:'campus'}][STG];
 THM.ground=TS.ground; if(STG===0) THM.wood=['#c98a52','#b97a45','#d49860','#c08048'];
+
+/* ===== v2.30: 멀티 지점 프랜차이즈 — 매장 간 자유 이동 및 지점별 독립 스냅샷 보존 ===== */
+function switchBranch(targetStage){
+  if(typeof dayState!=='undefined'&&dayState==='run'){
+    toast('⚠️ 영업 중에는 지점을 이동할 수 없어요. 오늘 영업을 마친 뒤 이동해 주세요!',3.5);
+    return false;
+  }
+  if(targetStage===STG){
+    toast('📍 이미 현재 계신 매장이에요 ('+STN[STG]+')',2);
+    return false;
+  }
+  const maxS=STAGE_OF(S.day||0);
+  if(targetStage>maxS){
+    toast('🔒 아직 개점하지 않은 매장이에요 (DAY '+(STGD[targetStage][0]+1)+' 개점)',3);
+    return false;
+  }
+  // 1. 현재 지점 상태를 스냅샷에 백업
+  S.branchSnap=S.branchSnap||{};
+  S.branchSnap[STG]={
+    crew:S.crew?JSON.parse(JSON.stringify(S.crew)):[],
+    inv:S.inv?Object.assign({},S.inv):{},
+    unl:S.unl?S.unl.slice():[],
+    decor:S.decor?Object.assign({},S.decor):{},
+    shelf:S.shelf?Object.assign({},S.shelf):{}
+  };
+
+  // 2. 대상 지점 상태 복원 또는 초기화
+  if(S.branchSnap[targetStage]){
+    const sn=S.branchSnap[targetStage];
+    S.crew=sn.crew?JSON.parse(JSON.stringify(sn.crew)):[];
+    S.inv=sn.inv?Object.assign({},sn.inv):{p:10,l:6,w:8,b:6,s:6,c:6};
+    S.unl=sn.unl?sn.unl.slice():['repair','support','table2','decor','flag'];
+    S.decor=sn.decor?Object.assign({},sn.decor):{};
+    S.shelf=sn.shelf?Object.assign({},sn.shelf):{};
+  } else {
+    // 첫 방문 지점 세팅
+    S.inv={p:16,l:10,w:12,b:8,s:8,c:8};
+    S.unl=['repair','support','table2','decor','flag'];
+    S.decor={};
+    S.shelf={};
+    const baseNames=[['하준','민준'],['서연','도윤'],['지호','예준'],['시우','하은'],['준우','서준'],['노바 마스터','수석 엔지니어']][targetStage]||['크루1','크루2'];
+    S.crew=[
+      {role:'runner',name:baseNames[0],lv:1,sat:85,wage:25*(targetStage+1),spd:1.0+0.05*targetStage,acc:0.88,hiredDay:S.day||0,face:targetStage%9},
+      {role:'tech',name:baseNames[1],lv:1,sat:85,wage:30*(targetStage+1),spd:1.0+0.05*targetStage,acc:0.88,hiredDay:S.day||0,face:(targetStage+3)%9}
+    ];
+  }
+
+  // 3. 현재 지점 변경
+  S.curStage=targetStage;
+  save();
+  try{ sessionStorage.setItem('tech-skip','1'); }catch(e){}
+  toast('✈️ '+STN[targetStage]+'(으)로 이동합니다…',2.5);
+  setTimeout(()=>{ location.reload(); },380);
+  return true;
+}
+
 function closeModalUI(){ if(window.HUBOPEN) window.HUB_LOCK=1; /* v2.10: 물류 모달을 닫았을 때 발판 위에 서 있어도 즉시 재개방되지 않도록 */ $('modal').classList.remove('on'); $('modal').classList.remove('canClose'); $('mbox').onclick=null; window.__mX=null; curFace=null; if(quizOpen) quizOpen=false; initAudio(); if(window.__rts){ window.__rts=0; setTimeout(startDayModal,150); } }
 function openModal(h,opt){ if(curFace!=null&&h.indexOf('<h2')===0) h='<div style="margin-bottom:2px">'+faceI(curFace,76,'fm')+'</div>'+h; $('mbox').innerHTML=h; $('modal').classList.add('on'); window.__mX=(opt&&opt.onClose)||null; $('modal').classList.toggle('canClose',!!window.__mX||(h.indexOf('id="mOk"')>=0)); const b=$('mOk'); if(b) b.onclick=()=>closeModalUI(); }
 function modalX(){ if(typeof window.__mX==='function'){ const f=window.__mX; window.__mX=null; f(); return; } closeModalUI(); }
@@ -1198,6 +1256,7 @@ if(window.HQUI){
     toast: function(m,s){ try{ toast(m,s); }catch(e){} },
     onOpen: function(){ quizOpen = true; },
     onClose: function(){ quizOpen = false; },
+    switchBranch: switchBranch,
     onHire: function(rec, cand){
       // 합격자를 S.crew에 추가 가능한지 확인
       const maxCrew = 3 + (S.up.cap||0);
@@ -1382,7 +1441,7 @@ function ranking(g){ const base=STGD[g].reduce((a,d)=>a+dayCfg(d).goal,0)*rivPro
 function myRank(g){ return ranking(g).findIndex(x=>x.me)+1; }
 const WPOS=[[205,452],[240,505],[168,358],[100,408],[272,138],[88,104]];
 const WFEAT=['스마트폰·가전 특가전, 현장 개통·수리 상담, 동네 단골 손님 응대, 박스 배달 기초','대형 가전 아일랜드 진열, 주말 쇼핑몰 세일 러시, 스펙 비교 상담, 대용량 재고 발주','AI 가전·플래그십 스마트폰 체험존, 법인 B2B 대량 납품, 프리미엄 고객 케어, 초대형 복합 매장','✈ 출국 여행객 모바일 면세 특가, 탑승 마감 초고속 결제(1.5배), 환전·유심 번들 세일','🛒 블랙프라이데이 창고 대방출, 초대형 TV·게이밍 PC 번들, 지게차 물류 회전, VIP 대량 결제(3배)','🌐 전 세계 지점 물류 관제, 대형 제조사 총판 직거래, 글로벌 세일즈 서밋 파동, 최종 운영 평가'];
-function wState(i){ const cur=STAGE_OF(S.day); return i<cur?'done':i===cur?'cur':i===cur+1?'next':'lock'; }
+function wState(i){ const cur=STG, maxS=STAGE_OF(S.day); return i===cur?'cur':i<=maxS?'done':i===maxS+1?'next':'lock'; }
 function openWorld(sel,animFrom){ const cur=animFrom!=null?animFrom:STAGE_OF(S.day); const st=i=>i<cur?'done':i===cur?'cur':i===cur+1?'next':'lock'; if(sel==null) sel=cur;
   const P=WPOS; let pathD='M'+P[0][0]+','+P[0][1]; for(let i=1;i<P.length;i++){ const [x0,y0]=P[i-1],[x1,y1]=P[i]; const mx=(x0+x1)/2+(i===4?80:i===2?-40:20), my=(y0+y1)/2+(i===4?40:0); pathD+=' Q'+mx+','+my+' '+x1+','+y1; }
   let s='<svg viewBox="0 0 360 560" class="wsvg"><defs><linearGradient id="oc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fb8f0"/><stop offset="1" stop-color="#8fd3f7"/></linearGradient></defs><rect width="360" height="560" rx="18" fill="url(#oc)"/>';
@@ -2750,7 +2809,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.29';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.30';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -2769,10 +2828,13 @@ function openRoad(R){ // R:{theme:[bg,paper,plate],stars,stages:[{name,state,bad
   upd(); const cn=el.querySelector('[data-rn="'+sel+'"]'); if(cn) cn.scrollIntoView({block:'center'});
   el.onclick=e=>{ const q=e.target.closest('[data-rn]'); if(q){ sel=+q.dataset.rn; try{ snd('ui',0.3); }catch(_){} upd(); } };
   $('rdGo').onclick=()=>{ try{ initAudio(); snd('level_up',0.5,1.2); }catch(_){} if(R.go(sel)!==false){ el.classList.add('out'); setTimeout(()=>el.remove(),520); } }; }
-function techRoad(){ const cur=STAGE_OF(S.day); const TH=i=>{ let t=''; try{ t=localStorage.getItem('tech-th'+i)||''; }catch(e){} return t; };
+function techRoad(){ const cur=STG, maxS=STAGE_OF(S.day); const TH=i=>{ let t=''; try{ t=localStorage.getItem('tech-th'+i)||''; }catch(e){} return t; };
   const stages=STN.map((nm,i)=>{ const ds=STGD[i]||[], st=ds.reduce((a,d)=>a+(S.dayStars[d]||0),0), k=wState(i);
-    return {name:nm,state:k,badge:k==='done'?'클리어 ★'+st+'/'+ds.length*3:k==='cur'?'진행 DAY '+(S.day-ds[0]+1)+'/'+ds.length+(i===5?'+':''):k==='next'?'다음 매장':'잠김',desc:STK[i]+' · '+WFEAT[i]+(k==='next'?' · DAY '+ds[0]+' 클리어하면 열려요':''),thumb:'st'+i+'.jpg',filter:k==='lock'?'grayscale(1) brightness(.7)':k==='next'?'grayscale(.6) brightness(.85)':''}; });
-  openRoad({theme:['#0b1c66','#17349a','linear-gradient(#5aa8ff,#2f6fd8)'],stars:'★ '+S.dayStars.reduce((a,b)=>a+(b||0),0),stages,sel:cur,label:i=>'▶ 영업 시작',go:i=>{ titleOn=false; document.body.classList.remove('title'); setTimeout(beginPlay,450); }}); }
+    return {name:nm,state:k,badge:k==='done'?'운영 중 · ★'+st+'/'+ds.length*3:k==='cur'?'현재 매장 · DAY '+(S.day-ds[0]+1)+'/'+ds.length+(i===5?'+':''):k==='next'?'다음 매장':'잠김',desc:STK[i]+' · '+WFEAT[i]+(k==='next'?' · DAY '+ds[0]+' 클리어하면 열려요':''),thumb:'st'+i+'.jpg',filter:k==='lock'?'grayscale(1) brightness(.7)':k==='next'?'grayscale(.6) brightness(.85)':''}; });
+  openRoad({theme:['#0b1c66','#17349a','linear-gradient(#5aa8ff,#2f6fd8)'],stars:'★ '+S.dayStars.reduce((a,b)=>a+(b||0),0),stages,sel:cur,
+    label:i=>(i===STG?'▶ 현재 매장 영업 시작':i<=maxS?'✈️ '+STS[i]+' 매장으로 이동':''),
+    go:i=>{ if(i===STG){ titleOn=false; document.body.classList.remove('title'); setTimeout(beginPlay,450); } else { switchBranch(i); return false; } }
+  }); }
 function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이브 링크로 불러왔어요 · DAY '+(S.day+1),3.6); }catch(e){} },700); } if(S.mid){ S.mid=0; setTimeout(()=>toast('지난 영업이 도중에 끝나서 DAY '+(S.day+1)+'을 처음부터 다시 시작해요',4.5),900); } document.documentElement.style.background=document.body.style.background=TS.ground; const first=!S.seen; if(first){ S.seen=1; setTimeout(()=>{ bigBanner('테크 스토어 오픈!','오늘부터 사장님이에요'); confetti(0,2,3); },300); } if(newStarter) setTimeout(()=>{ bigBanner('첫 직원 하준 합류!','픽업·박스 전달을 같이 해줘요'); snd('level_up',0.5,1.1); },first?2300:500); setTimeout(()=>{ if(openOffline(startDayModal)) return; startDayModal(); },(first?1600:400)+(newStarter?2300:0)); }
 { titleOn=false; titleK=0; document.body.classList.remove('title');
   const _tt=$('title'); if(_tt) _tt.style.display='none'; beginPlay(); }
@@ -2810,7 +2872,7 @@ window.__H.scoutForce=(name)=>{ const c=(scoutPool()||[]).filter(x=>!name||x.nam
 window.__H.scoutPick=()=>{ const c=scoutEligible(); return c?{name:c.name,lv:c.lv||1,dept:scoutDept(c)}:null; };
 window.__H.honor=()=>hqHallList();
 window.__H.obList=()=>OB.map(b=>({x1:b.x1,x2:b.x2,z1:b.z1,z2:b.z2,off:!!b.off}));
-window.__H.pathTo=(x,z)=>pathFind(player.pos.x,player.pos.z,x,z);
+window.__H.pathTo=(x,z)=>pathFind(player.pos.x,player.pos.z,x,z); window.__H.switchBranch=switchBranch;
 
 /* ---- AI 조작 패널 / QA 헬퍼 ---- */
 $('aitog').onclick=function(){ $('aip').classList.toggle('min'); $('aitog').textContent=$('aip').classList.contains('min')?'+':'–'; };
