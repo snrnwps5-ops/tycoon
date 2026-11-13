@@ -1752,10 +1752,10 @@ function debris(r){ r.planks.children.forEach(pl=>{ if(!pl.geometry||pl.geometry
 function popIn(obj){ try{ if(!obj||!obj.scale) return; obj.scale.y=0.01; pops.push({o:obj,t:0}); }catch(e){} } const pops=[];
 /* ---------- labels / fx ---------- */
 const v3=new THREE.Vector3(); const fts=[];
-function place(el,p,y){ v3.set(p.x,y,p.z).project(cam); el.style.left=((v3.x+1)/2*innerWidth)+'px'; el.style.top=((1-v3.y)/2*innerHeight)+'px'; }
+function place(el,p,y){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el.style.left=((v3.x+1)/2*W)+'px'; el.style.top=((1-v3.y)/2*H)+'px'; }
 /* ---- v2.1: 손님 말풍선 겹침 완화 (화면 60px 이내 → 위로 밀기) + 플레이어와 가까운 손님을 맨 위로 ---- */
 const LBV=[];
-function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); el._sx=(v3.x+1)/2*innerWidth; el._sy=(1-v3.y)/2*innerHeight; el._oy=0; el._d=d||0; LBV.push(el); }
+function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el._sx=(v3.x+1)/2*W; el._sy=(1-v3.y)/2*H; el._oy=0; el._d=d||0; LBV.push(el); }
 function lbFlush(){ if(!LBV.length) return; const L=LBV.slice().sort((a,b)=>a._sy-b._sy); const NH=42, NW=64;
   for(let i=0;i<L.length;i++){ const a=L[i];
     for(let pass=0;pass<5;pass++){ let hit=null;
@@ -1770,7 +1770,7 @@ let toastT=0, toastLock=0; function toast(m,s,force){ if(toastLock>0&&!force) re
 function qToast(m,s){ toastLock=Math.max(toastLock,s||3); toast(m,s,1); }  // 상담 결과 이유는 잠깐 덮어쓰지 않음
 const parts=[]; function sparkle(x,y,z,c){ for(let k=0;k<10;k++){ const m=new THREE.Mesh(gget('sp',()=>new THREE.OctahedronGeometry(0.08)),new THREE.MeshBasicMaterial({color:c||'#ffe14d',transparent:true})); m.position.set(x,y,z); scene.add(m); parts.push({m,v:new THREE.Vector3((Math.random()-0.5)*3,2+Math.random()*2,(Math.random()-0.5)*3),t:0}); } }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }
-function flyToHud(p){ v3.set(p.x,p.y,p.z).project(cam); const el=document.createElement('div'); el.style.cssText='position:fixed;z-index:9;width:26px;height:16px;border-radius:3px;background:#5cc94a;border:2px solid #fff;left:'+((v3.x+1)/2*innerWidth)+'px;top:'+((1-v3.y)/2*innerHeight)+'px;transition:all .5s cubic-bezier(.5,0,.8,.6)'; document.body.appendChild(el);
+function flyToHud(p){ v3.set(p.x,p.y,p.z).project(cam); const el=document.createElement('div'); el.style.cssText='position:fixed;z-index:9;width:26px;height:16px;border-radius:3px;background:#5cc94a;border:2px solid #fff;left:'+((v3.x+1)/2*(VW||innerWidth))+'px;top:'+((1-v3.y)/2*(VH||innerHeight))+'px;transition:all .5s cubic-bezier(.5,0,.8,.6)'; document.body.appendChild(el);
   const pr=$('cashPill').getBoundingClientRect(); requestAnimationFrame(()=>{ el.style.left=(pr.left+30)+'px'; el.style.top=(pr.top+10)+'px'; el.style.transform='scale(.6)'; }); setTimeout(()=>{ el.remove(); $('cashPill').classList.remove('bump'); void $('cashPill').offsetWidth; $('cashPill').classList.add('bump'); },520); }
 function gainXP(n){ S.xp+=n; const need=6+S.lvl*4; if(S.xp>=need){ S.xp-=need; S.lvl++; toast('매장 레벨 '+S.lvl+'!'); sfxLevel(); sparkle(player.pos.x,1.5,player.pos.z,'#7bea62'); } }
 
@@ -2083,7 +2083,7 @@ function camSpan(vh,a,zoom){
   _camSp.dzMin=dzMin; _camSp.dzMax=dzMax; _camSp.dxMin=dxMin; _camSp.dxMax=dxMax;
   return _camSp;
 }
-function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const h=innerHeight-r.top; if(h>0&&h<innerHeight*0.4) CAMUI.marPx=Math.round(h+4); }catch(e){} }
+function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const H=VH||innerHeight, h=H-r.top; if(h>0&&h<H*0.4) CAMUI.marPx=Math.round(h+4); }catch(e){} }
 /* v2.17: 캐릭터 추적 카메라 — 플레이어를 화면 세로 45~50%(황금 조작 구역)에 두고 X·Z를 함께 따라간다.
    카메라가 기울어(요 27.6°) 있어 z만 따라가면 캐릭터가 대각선으로 흘러가므로,
    화면 '위쪽' 지면 단위벡터 U(0.4639, 0.8859)를 따라 camT를 움직인다 → 클램프가 걸려도 캐릭터는 가로 중앙을 유지한다.
@@ -2511,7 +2511,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
     $('tShare').onclick=()=>{ const d={title:'테크 스토어 타이쿤',text:'테크 스토어 타이쿤 같이 해볼래? 수리하고, 상담하고, 매장을 키우는 게임이야',url:APPURL}; if(navigator.share){ navigator.share(d).catch(()=>{}); return; }
       sheet('<h3>🔗 친구에게 공유</h3><div>아래 주소를 보내면 바로 플레이할 수 있어요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>'); $('tsC').onclick=copy; }; } }
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else offResume(); });
-window.__H={camdbg:()=>{ try{ const a=innerWidth/Math.max(1,innerHeight), vh=camVH(), sp=camSpan(vh,a,cam.zoom); return {vh:+vh.toFixed(3),mar:CAMUI.marPx,a:+a.toFixed(4),zoom:+cam.zoom.toFixed(3),tz:+camT.z.toFixed(3),tx:+camT.x.toFixed(3),dzMax:+sp.dzMax.toFixed(3),dzMin:+sp.dzMin.toFixed(3),dxMax:+sp.dxMax.toFixed(3),dxMin:+sp.dxMin.toFixed(3),W:innerWidth,H:innerHeight}; }catch(e){ return 'err '+e; } },tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
+window.__H={camdbg:()=>{ try{ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)), vh=camVH(), sp=camSpan(vh,a,cam.zoom); return {vh:+vh.toFixed(3),mar:CAMUI.marPx,a:+a.toFixed(4),zoom:+cam.zoom.toFixed(3),tz:+camT.z.toFixed(3),tx:+camT.x.toFixed(3),dzMax:+sp.dzMax.toFixed(3),dzMin:+sp.dzMin.toFixed(3),dxMax:+sp.dxMax.toFixed(3),dxMin:+sp.dxMin.toFixed(3),W:innerWidth,H:innerHeight}; }catch(e){ return 'err '+e; } },tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
 probe:(wx,wz,secs)=>{ const dt=1/60, n=Math.max(1,Math.round((secs||1)*60)), sp=5.6*(1+0.1*S.up.spd);
   const l=Math.hypot(wx,wz)||1, k=sp*dt/l; const tr=[]; let stall=0, jump=0, prev=[player.pos.x,player.pos.z];
   for(let i=0;i<n;i++){ const ox=player.pos.x, oz=player.pos.z;
