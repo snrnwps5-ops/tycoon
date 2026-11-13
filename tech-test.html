@@ -54,7 +54,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 #toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 #evt{position:fixed;left:50%;top:calc(104px + env(safe-area-inset-top));transform:translateX(-50%) scale(.6);opacity:0;z-index:7;display:flex;align-items:center;gap:8px;padding:7px 12px 9px 14px;border-radius:15px;background:linear-gradient(#ff5a3a,#e8243a);border:3px solid #ffd23f;box-shadow:0 4px 0 #8a0f1f;transition:all .3s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
 #evt.on{opacity:1;transform:translateX(-50%) scale(1)}#evt b{font-family:var(--d);font-size:20px;color:#fff;white-space:nowrap}#evt span{font:900 11px var(--b);color:#ffe9a0;white-space:nowrap}#evt em{font-style:normal;font-family:var(--d);font-size:22px;color:#3a1a00;background:#ffd23f;border-radius:10px;padding:1px 8px}
-#bbar{position:fixed;left:12px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:6;display:flex;gap:8px}
+#bbar{position:fixed;left:12px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:6;display:flex;gap:8px}
 .bb{position:relative;width:70px;height:68px;border:0;border-radius:18px;color:#fff;font-family:var(--d);font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0}
 .msrow{display:flex;align-items:center;gap:10px;text-align:left;background:#fff;border-radius:14px;padding:9px 10px;margin:7px 0;box-shadow:0 2px 0 #e6d2b0}.msrow .tx{flex:1}.msrow b{display:block;font-family:var(--d);font-size:15px;color:#4a2a10}.msrow .bar{height:8px;border-radius:4px;background:#eadcc4;margin-top:5px;overflow:hidden}.msrow .bar s{display:block;height:100%;background:linear-gradient(90deg,#7bea62,#2faa45)}.msrow small{font:700 11px var(--b);color:#8a6a4a}.msrow button{width:auto!important;margin:0!important;padding:8px 10px!important;font-size:14px!important;min-width:70px}.msrow button:disabled{filter:grayscale(1);opacity:.55}
 .stc{display:flex;gap:10px;align-items:center;text-align:left;border-radius:16px;padding:10px;margin:8px 0;background:#fff;box-shadow:0 3px 0 #e6d2b0}.stc .ic{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--d);color:#fff;font-size:22px;flex:none}.stc b{display:block;font-family:var(--d);font-size:17px;color:#4a2a10}.stc small{font:700 12px var(--b);color:#8a6a4a}.stc button{width:auto!important;margin:0!important;padding:8px 12px!important;font-size:15px!important}.stc.lock{opacity:.55}
@@ -1078,8 +1078,8 @@ if(window.HQUI){
     setMoney: function(v){ money = v; S.money = money; },
     save: save,
     snd: snd,
-    onOpen: function(){ quizOpen = true; },
-    onClose: function(){ quizOpen = false; },
+    onOpen: function(){ window.__hqPause = 1; quizOpen = true; },
+    onClose: function(){ window.__hqPause = 0; quizOpen = false; },
     onHire: function(rec, cand){
       // 합격자를 S.crew에 추가 가능한지 확인
       const maxCrew = 3 + (S.up.cap||0);
@@ -1795,7 +1795,7 @@ function openOpt(){
 }
 function openCrew(){ openModal(crewHTML()); $('mbox').onclick=e=>{ if(slotClick(e)) return;
   if(e.target.closest('[data-hqiv]')){ if(window.HQUI){ snd('ui',0.4); openIvPick(); } return; }
-  const hqt=e.target.closest('[data-hqtr]'); if(hqt){ const hc=S.crew[+hqt.dataset.hqtr]; if(hc&&window.HQUI){ snd('ui',0.4); openHqTransferModal(hc,function(){ openCrew(); }); } return; }
+  const hqt=e.target.closest('[data-hqtr]'); if(hqt){ const hc=S.crew[+hqt.dataset.hqtr]; if(hc&&window.HQUI){ snd('ui',0.4); closeModalUI(); openHqTransferModal(hc,function(){ openCrew(); }); } return; }
   const hb=e.target.closest('[data-hire]'), tb=e.target.closest('[data-tr]');
   if(hb){ const [r,i]=hb.dataset.hire.split(':'); const c=candidates(r)[+i]; const cost=c.wage*5; if(money<cost) return; money-=cost; delete c.tag; S.crew.push(c); addStaff(r,c); snd('level_up',0.5,1.1); bigBanner(c.name+' 채용!',ROLES[r].n+' 담당이 합류했어요'); confetti(player.pos.x,2.5,player.pos.z); save(); openCrew(); }
   const rb=e.target.closest('[data-rs2]'); if(rb){ const cur=S.crew.find(c=>c.role===rb.dataset.rs2); const rc=Math.round(cur.wage*3); if(money<rc) return; money-=rc; cur.wage=Math.round(cur.wage*1.15); cur.sat=Math.min(100,(cur.sat==null?70:cur.sat)+20); snd('coin',0.5); refreshTags(); save(); openCrew(); return; }
@@ -1806,7 +1806,7 @@ function openIvPick(){ let h='<h2>🎙️ AI 채용 면접실</h2><p style="marg
   Object.keys(ROLES).forEach(r=>{ const R=ROLES[r], lockD=ROLE_UNLOCK[r], lock=S.day<lockD;
     h+='<div class="crow'+(lock?' lock':'')+'"><h4><i style="background:'+R.c+'">'+R.ic+'</i>'+R.n+'</h4><small>'+R.d+'</small><div class="cand" style="border-top:0"><div class="cn">'+(lock?'DAY '+(lockD+1)+'부터 면접 가능':'지금 면접 볼 수 있어요')+'</div><button data-ivp="'+r+'" '+(lock?'disabled':'')+'>면접 시작</button></div></div>'; });
   openModal(h+'</div><button class="gray" id="mOk">닫기</button>');
-  $('mbox').onclick=e=>{ const b=e.target.closest('[data-ivp]'); if(!b) return; snd('ui',0.4); openInterviewModal(b.dataset.ivp,function(){ openCrew(); }); }; }
+  $('mbox').onclick=e=>{ const b=e.target.closest('[data-ivp]'); if(!b) return; snd('ui',0.4); closeModalUI(); openInterviewModal(b.dataset.ivp,function(){ openCrew(); }); }; }
 $('branchBtn').onclick=()=>{ initAudio(); if(quizOpen) return; snd('ui',0.4); if(window.HQUI) openBranchModal(); };
 $('crewBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openCrew(); };
 $('msBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openMs(); };
@@ -1972,7 +1972,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   // cash
   cashT-=dt; if(cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; if(dayState==='run'||dayState==='end') dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
   // customers
-  if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); spawnT-=dt*loadK()*(cfg.spawn||1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=(S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5; spawnCust(); } }
+  if(dayState==='run'&&!window.__hqPause){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); spawnT-=dt*loadK()*(cfg.spawn||1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=(S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5; spawnCust(); } }
   else if(dayState==='end'){ dayEndT-=dt; if(dayEndT<=0&&!quizOpen){ dayState='result'; showResult(); } }
   { const cfg=dayCfg(S.day); $('dbDay').textContent=(STG+1)+'-'+(S.day-[0,4,8,11,15,19][STG]+1); const tt=Math.max(0,Math.ceil(dayState==='run'?dayT:cfg.dur)); $('dbT').textContent=Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0'); $('dbT').classList.toggle('low',dayState==='run'&&dayT<20); $('dbRev').textContent='$'+dayRev+'/$'+cfg.goal; $('dbComp').textContent='민원 '+dayComp+'/3'; $('dbComp').classList.toggle('bad',dayComp>=2); $('dbFill').style.width=Math.min(100,dayRev/cfg.goal*100)+'%'; }
   for(let k=custs.length-1;k>=0;k--){ const c=custs[k]; c.speed=0;
@@ -2068,7 +2068,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   $('rate').textContent=(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1)); { const nv=npsOf(dayNps); const rm=$('rooms'); rm.textContent='NPS '+(nv==null?'—':(nv>0?'+':'')+nv); rm.style.background=nv==null?'':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'; } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
-  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(new THREE.Vector3(player.pos.x*0.85,0,player.pos.z+0.6),1-Math.exp(-dt*5)); cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
+  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(new THREE.Vector3(player.pos.x*0.85,0,player.pos.z-1.4),1-Math.exp(-dt*5)); cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
   if(!window.__NR) renderer.render(scene,cam); requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
