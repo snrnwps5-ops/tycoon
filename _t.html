@@ -2063,8 +2063,8 @@ function camClampT(dt){
   let tz=px.z-1.8;
   const tzMax=(CAMS.z1+marM)-sp.dzMax, tzMin=(CAMS.z0-0.6)-sp.dzMin;
   if(tzMin<=tzMax) tz=Math.max(tzMin,Math.min(tzMax,tz)); else tz=tzMax;
-  /* 가로: 매장이 화면을 벗어나지 않게 두고, 플레이어가 화면 밖으로 밀리지 않을 만큼만 따라간다 */
-  let tx=px.x*0.85;
+  /* 가로: 매장을 화면 가운데에 고정하고, 플레이어가 화면 밖으로 밀릴 때만 따라간다 */
+  let tx=0;
   const txMin=(CAMS.x1+1.2)-sp.dxMax, txMax=(CAMS.x0-1.2)-sp.dxMin;
   if(txMin<=txMax) tx=Math.max(txMin,Math.min(txMax,tx));
   const U=0.62*hw, cz=(px.z-tz)*Xz;
