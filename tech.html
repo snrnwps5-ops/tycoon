@@ -1148,7 +1148,7 @@ function warnOff(t){ const w=useWarn[t]; if(w) w.on=0; }
 function useResetDay(){ useLog={}; useBeg={}; useWarn={}; }
 let restockTipT=0;
 function inv2Tick(dt){ const run=hasCrew('runner');
-  if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.6) receiveDock(); else if(run&&DOCK.t>6){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); } }
+  if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.6) receiveDock(); else if(run&&DOCK.t>22){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); }   /* v2.6: BOH 검수 시간을 남기려고 재고 담당의 자동 입고를 22초로 늦춤 (Lv2는 9초 뒤 BOH 자동 검수) */ }
   const nr=needRestock(), near=Math.hypot(player.pos.x-REST.x,player.pos.z-REST.z)<1.4;
   REST.m.visible=true;
   if(nr){
@@ -1328,7 +1328,7 @@ function bohTick(dt){ bohScanTick(dt);
   if(dayState!=='run') return;
   if(S.dock&&S.dock.length){ S.dock.forEach(o=>{ if(o._t==null) o._t=time; });
     const cr=bohCrew();
-    if(cr){ for(let i=0;i<S.dock.length;i++){ const o=S.dock[i]; if(time-(o._t==null?time:o._t)>BOH_AUTO){ bohAutoInspect(i,cr); break; } } } }
+    if(cr&&!BOHSCAN.on){ for(let i=0;i<S.dock.length;i++){ const o=S.dock[i]; if(time-(o._t==null?time:o._t)>BOH_AUTO){ bohAutoInspect(i,cr); break; } } } }
   if(window.BOHOPEN||quizOpen||$('modal').classList.contains('on')) return;
   if(Math.hypot(player.pos.x-BOHP.x,player.pos.z-BOHP.z)<1.25) openBoh('in'); }
 addEventListener('keydown',function(e){ if(!BOHSCAN.on) return; if(e.key===' '||e.code==='Space'){ e.preventDefault(); bohScanHit(); } });
