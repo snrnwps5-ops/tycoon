@@ -92,8 +92,26 @@ html,body{margin:0;padding:0;background:#0b1020;overflow:hidden}
       }, 1200);
     })();
   }
-  f.src = 'tech.html?camh=' + Date.now();
-  f.addEventListener('load', boot);
+  // 큰 자산(assets.js)을 먼저 받아 두어 iframe의 45초 부트 타임아웃을 피한다
+  var tag = document.getElementById('tag');
+  function preload(u, next){
+    var t=Date.now();
+    fetch(u, {cache:'force-cache'}).then(function(r){
+      var reader = r.body && r.body.getReader ? r.body.getReader() : null;
+      if(!reader) return r.blob();
+      var got = 0;
+      return (function pump(){ return reader.read().then(function(x){
+        if(x.done) return got;
+        got += x.value.length;
+        tag.textContent = W+'x'+H+' · '+u+' '+Math.round(got/1048576*10)/10+'MB '+(Math.round((Date.now()-t)/100)/10)+'s';
+        return pump();
+      }); })();
+    }).then(function(){ next(); }).catch(function(e){ tag.textContent='preload fail '+u+' '+e; next(); });
+  }
+  preload('assets.js', function(){
+    f.src = 'tech.html?camh=' + Date.now();
+    f.addEventListener('load', boot);
+  });
   setTimeout(function(){ if(!API.ready && !API.win){ API.win=f.contentWindow; API.doc=f.contentDocument; API.dismiss(); } }, 150);
 })();
 </script>
