@@ -43,8 +43,11 @@ const dl=new THREE.DirectionalLight(0xffffff,0.85); dl.position.set(2,6,7); scen
     const f=ch.face||{}; const fx=f.cx||0, fy=f.y1||0;
     cam.position.set(ch.g.position.x, 1.55, 1.15); cam.lookAt(ch.g.position.x, 1.45, 0); }
   else { const d=(Math.max(s.x,s.y*innerWidth/innerHeight)*0.62)/Math.tan(32*Math.PI/360)+0.5; cam.position.set(c.x,c.y+0.05,d/ZOOM); cam.lookAt(c.x,c.y,0); }
+  window.__chs=chs;
   const hud=document.getElementById('hud');
-  hud.textContent='page '+PAGE+'  models: '+(list.map(l=>l[0]).join(', '))+'\nfaceErr='+(window.__FACEERR||0);
+  const dbg=chs.map(ch=>{ const f=ch.face||{}; let hk=0; ch.m.traverse(o=>{ if(o.isBone&&o.name==='Head') hk=o.children.length; });
+    return ch.look?'':''; });
+  hud.textContent='page '+PAGE+'  models: '+(list.map(l=>l[0]).join(', '))+'\nfaceErr='+(window.__FACEERR||0)+' '+(window.__FACEERRM||'')+'\n'+chs.map((ch,i)=>{ const f=ch.face; if(!f) return i+': noface'; return i+': cx'+f.cx.toFixed(2)+' y'+f.y1.toFixed(2)+'/'+f.y2.toFixed(2)+' z'+f.z2.toFixed(2)+' w'+f.w.toFixed(2)+' eyeL'+(ch.eyeL?ch.eyeL.length:0); }).join('\n');
   let t2=0; (function tick(){ requestAnimationFrame(tick); t2+=1/60; chs.forEach(ch=>{ animChar(ch,0,1/60,false); }); renderer.render(scene,cam); })();
   window.__ok=1;
 })();

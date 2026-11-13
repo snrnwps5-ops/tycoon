@@ -512,7 +512,7 @@ function addGear(kind,ch,head,f,o){
   if(kind==='beanie'){ const m=gmat(o.accC||'#b07aff');
     add(new THREE.Mesh(new THREE.CylinderGeometry(R*0.94,R*1.03,R*0.70,16),m),head).position.set(C,HY+R*0.50,HZ);
     add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.05,R*1.05,R*0.17,16),gmat(c2)),head).position.set(C,HY+R*0.19,HZ);
-    add(new THREE.Mesh(EYEGEO,gmat('#f4f0e2')),head).position.set(C,HY+R*0.92,HZ).scale.setScalar(R*0.11); }
+    const pom=add(new THREE.Mesh(EYEGEO,gmat('#f4f0e2')),head); pom.position.set(C,HY+R*0.92,HZ); pom.scale.setScalar(R*0.11); }
   else if(kind==='cap'){ const m=gmat(o.accC||'#e8473d');
     add(new THREE.Mesh(new THREE.SphereGeometry(R*1.02,16,10,0,Math.PI*2,0,Math.PI*0.46),m),head).position.set(C,HY,HZ);
     add(new THREE.Mesh(new THREE.CylinderGeometry(R*1.05,R*1.06,R*0.10,16),m),head).position.set(C,HY+R*0.20,HZ);
@@ -560,7 +560,7 @@ function makeChar(model,o){ o=o||{}; const G=A['q:'+model]||A['q:Casual_Male']; 
   const stackG=new THREE.Group(); stackG.position.set(0,0.78,0.38); g.add(stackG);
   const ch={g,inner,m,mixer,acts,cur:null,stackG,jump:0,look:o.look||null,hair:o.hair||null,eyeL:null,blinkT:1.5+Math.random()*3,blinkK:0};
   try{ ch.bodyH=new THREE.Box3().setFromObject(m).getSize(new THREE.Vector3()).y||1.4; }catch(e){ ch.bodyH=1.4; }
-  if(head&&faceM){ try{ const f=faceInfo(model,g,m,head,faceM); ch.face=f; ch.eyeL=addFace(head,f,o); if(o.acc) addGear(o.acc,ch,head,f,o); }catch(e){ window.__FACEERR=(window.__FACEERR||0)+1; } }
+  if(head&&faceM){ try{ const f=faceInfo(model,g,m,head,faceM); ch.face=f; ch.eyeL=addFace(head,f,o); if(o.acc) addGear(o.acc,ch,head,f,o); }catch(e){ window.__FACEERR=(window.__FACEERR||0)+1; window.__FACEERRM=String(e&&e.message||e); } }
   playA(ch,'Idle',0); mixer.update(Math.random()); return ch; }
 function animChar(ch,speed,dt,carry){ if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4.2; ch.blinkK=1; }
   if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.10,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); for(let i=0;i<ch.eyeL.length;i++) ch.eyeL[i].scale.y=k; } }
