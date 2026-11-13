@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794576000';
+<script>try{(function(){var V='1794590000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 :root{--d:'Black Han Sans','Noto Sans KR',-apple-system,sans-serif;--b:'Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 html,body{margin:0;height:100%;overflow:hidden;background:#0a1650;touch-action:none;font-family:var(--b)}
+/* v2.23: iOS 26 홈 화면 앱 하단 띠(WebKit 301108) 우회 — tech.html과 동일 */
+@media (display-mode: standalone){html{min-height:min(100lvh,calc(100% + env(safe-area-inset-top)))}}
 canvas#c{position:fixed;inset:0;width:100vw!important;height:100vh!important;min-height:100dvh;display:block;z-index:1}/* v2.17: 3D 캔버스를 기기 화면 전체에 강제 밀착 — iOS innerHeight(792px)와 실제 화면(852px)의 차이로 생기던 하단 회색 띠 0px */
 #hud{position:fixed;left:0;right:0;top:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px;z-index:5;pointer-events:none}
 #hud>*{pointer-events:auto}

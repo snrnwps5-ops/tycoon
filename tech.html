@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794585000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794590000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 :root{--d:'Black Han Sans','Noto Sans KR',-apple-system,sans-serif;--b:'Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 html,body{margin:0;height:100%;overflow:hidden;background:#0a1650;touch-action:none;font-family:var(--b)}
+/* v2.23: iOS 26 홈 화면 앱은 페이지가 화면보다 짧으면 뷰포트를 상태바 높이만큼 짧게 준다(WebKit 301108) — 고정 요소가 그 아래로는 그려지지 않아 하단 띠가 생긴다.
+   문서를 화면 높이만큼 키우면 iOS가 전체 뷰포트를 준다. min()은 상태바가 불투명한 기기에서 스크롤이 생기지 않게 하는 상한. 요소를 화면보다 크게 늘리는 방식(v2.17·v2.19)은 효과가 없어 쓰지 않는다. */
+@media (display-mode: standalone){html{min-height:min(100lvh,calc(100% + env(safe-area-inset-top)))}}
+html.sa{min-height:min(100lvh,calc(100% + env(safe-area-inset-top)))}
 canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;height:100%!important;min-height:100%;display:block;z-index:1}/* v2.19: PWA 풀스크린에서 100vh 제한 해제 — 홈 인디케이터 바닥(852px)까지 캔버스 100% 밀착 */
 #hud{position:fixed;left:0;right:0;top:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px;z-index:5;pointer-events:none}
 #hud>*{pointer-events:auto}
@@ -272,7 +276,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.22</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.23</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -369,16 +373,21 @@ renderer.setPixelRatio(Math.min(devicePixelRatio||1,2)); renderer.shadowMap.enab
 const scene=new THREE.Scene(); scene.background=new THREE.Color(THM.ground);
 const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,200); const CAM_OFF=new THREE.Vector3(5.5,17,10.5);
 let VW=0,VH=0;
-function resize(){ /* v2.19: PWA 홈화면 웹앱과 사파리 모두 하드웨어 전체 화면(screen.height)까지 버퍼를 채운다 */
-  const el=$('c');
-  const w=Math.round(Math.max(window.innerWidth||0,document.documentElement.clientWidth||0,320));
-  const h=Math.round(Math.max(window.innerHeight||0,document.documentElement.clientHeight||0,(window.screen&&window.screen.height)||0,480));
-  VW=w; VH=h; const a=w/h; renderer.setSize(w,h,false); const vh=camVH(); cam.left=-vh*a/2; cam.right=vh*a/2; cam.top=vh/2; cam.bottom=-vh/2; cam.updateProjectionMatrix(); try{ camMeasureUI(); }catch(e){} if(window.__camReady){ try{ camPose(); }catch(e){} } }
+function resize(){ /* v2.23: 버퍼·화각·라벨 좌표를 '실제로 보이는 캔버스 박스'에 맞춘다. screen.height로 키우면(v2.19) 보이는 영역보다 큰 화면을 가정해
+     그림이 눌리고, 화면 아래쪽 캐릭터·말풍선 위치가 어긋난다. 하단 띠 자체는 위 CSS(html min-height)로 뷰포트를 넓혀서 없앤다. */
+  const el=$('c'); let r=null; try{ r=el.getBoundingClientRect(); }catch(e){}
+  const w=Math.max(200,Math.round((r&&r.width)||window.innerWidth||document.documentElement.clientWidth||320));
+  const h=Math.max(200,Math.round((r&&r.height)||window.innerHeight||document.documentElement.clientHeight||480));
+  if(w!==VW||h!==VH){ VW=w; VH=h; const a=w/h; renderer.setSize(w,h,false); const vh=camVH(); cam.left=-vh*a/2; cam.right=vh*a/2; cam.top=vh/2; cam.bottom=-vh/2; cam.updateProjectionMatrix(); if(window.__camReady){ try{ camPose(); }catch(e){} } }
+  try{ camMeasureUI(); }catch(e){} }
+try{ if(navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)) document.documentElement.classList.add('sa'); }catch(e){}
 /* ---- v2.5: 시점 제어 — 기본 쿼터뷰 / 전체 보기(탑다운 하이 앵글) / 핀치 줌 0.7~1.3 ---- */
 const CAMB={x:5.5,y:17,z:10.5};
 function camFit(){ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)), vh=camVH(), vw=vh*a; return Math.max(0.2,Math.min(1,Math.min(vw/15.9,vh/16.9))); }
 function camFullPose(full,pz){ if(full){ CAM_OFF.set(-0.7,30,11.5); cam.zoom=Math.max(0.18,Math.min(1.3,camFit()*(pz||1))); } else { CAM_OFF.set(CAMB.x,CAMB.y,CAMB.z); cam.zoom=Math.max(0.7,Math.min(1.3,pz||1)); } try{ cam.updateProjectionMatrix(); }catch(e){} }
 addEventListener('resize',resize); if(window.visualViewport) try{ visualViewport.addEventListener('resize',()=>resize()); }catch(e){} resize();
+/* v2.23: 홈 화면 앱은 실행 직후 뷰포트 높이가 한 번 바뀔 수 있다 — resize 이벤트 없이 바뀌어도 따라가게 한다 */
+try{ [80,400,1200,3000].forEach(t=>setTimeout(resize,t)); addEventListener('pageshow',()=>resize()); addEventListener('orientationchange',()=>setTimeout(resize,250)); if(window.ResizeObserver) new ResizeObserver(()=>resize()).observe($('c')); }catch(e){}
 scene.add(new THREE.HemisphereLight(0xfffaf2,0x9a9aa8,0.8));
 const sun=new THREE.DirectionalLight(0xfff1dc,0.72); sun.position.set(10,22,8); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048); sun.shadow.bias=-0.0005; sun.shadow.normalBias=0.035;
 Object.assign(sun.shadow.camera,{left:-20,right:20,top:20,bottom:-20,near:1,far:70}); scene.add(sun); scene.add(sun.target);
@@ -2079,7 +2088,7 @@ function camSpan(vh,a,zoom){
   _camSp.dzMin=dzMin; _camSp.dzMax=dzMax; _camSp.dxMin=dxMin; _camSp.dxMax=dxMax;
   return _camSp;
 }
-function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const H=VH||innerHeight, h=H-r.top; if(h>0&&h<H*0.4) CAMUI.marPx=Math.round(h+4); }catch(e){} }
+function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const H=VH||innerHeight, h=H-r.top; if(h>0&&h<H*0.4) CAMUI.marPx=Math.round(h+4); const d=$('dayBar'); if(d){ const t=d.getBoundingClientRect().bottom; if(t>0&&t<H*0.4) CAMUI.topPx=Math.round(t); } }catch(e){} }
 /* v2.17: 캐릭터 추적 카메라 — 플레이어를 화면 세로 45~50%(황금 조작 구역)에 두고 X·Z를 함께 따라간다.
    카메라가 기울어(요 27.6°) 있어 z만 따라가면 캐릭터가 대각선으로 흘러가므로,
    화면 '위쪽' 지면 단위벡터 U(0.4639, 0.8859)를 따라 camT를 움직인다 → 클램프가 걸려도 캐릭터는 가로 중앙을 유지한다.
@@ -2089,12 +2098,45 @@ const CAMU={x:0.4639,z:0.8859};
 const CAMT=window.__CAMT||(window.__CAMT={s:0,tzMin:-6.2,tzMax:2.8,txMin:-6.0,txMax:6.0});
 function camClampT(dt){
   if(Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01){ _camNew.set(player.pos.x*0.85,0,player.pos.z-1.8); return _camNew; } // 2D 탑다운은 그대로
-  const px=player.pos, K=window.__CAMT||CAMT;
-  const sLo=Math.max((K.tzMin-px.z)/CAMU.z,(K.txMin-px.x)/CAMU.x);
-  const sHi=Math.min((K.tzMax-px.z)/CAMU.z,(K.txMax-px.x)/CAMU.x);
-  let s=(K.s||0); if(sLo>sHi) s=(sLo+sHi)/2; else s=Math.max(sLo,Math.min(sHi,s));
-  _camNew.set(px.x+CAMU.x*s,0,px.z+CAMU.z*s); return _camNew;
+  /* v2.23: ① v2.20의 기본 목표(가로 0.8배 추적 · 세로는 매장 안쪽에 가둠) → ② 그래도 플레이어가 화면 안전 영역
+     (좌우 여백 · 위쪽 HUD/DAY 바 아래 · 아래쪽 버튼 바 위)을 벗어나면 벗어난 만큼 카메라를 옮긴다.
+     ②가 항상 마지막이라 어떤 화면비·줌에서도 캐릭터가 화면 밖이나 버튼 뒤로 사라지지 않는다.
+     (v2.17의 U축 미끄럼 방식은 범위가 충돌하면 캐릭터가 왼쪽 화면 밖까지 밀렸다: x=-6.6,z=5.6에서 화면 x=-39px) */
+  const px=player.pos, K=window.__CAMT||CAMT, W=VW||innerWidth, H=Math.max(1,VH||innerHeight), vh=camVH(), zoom=cam.zoom||1, hw=vh*(W/H)/2/zoom, hh=vh/2/zoom, s=K.s||0;
+  _camO.copy(CAM_OFF).normalize(); _camX.crossVectors(_camUp,_camO).normalize(); _camY.crossVectors(_camO,_camX);
+  const Xx=_camX.x, Xz=_camX.z, Yx=_camY.x, Yz=_camY.z, Yy=_camY.y, yy=Yx*Yx+Yz*Yz||1;
+  let tx=px.x*0.8, tz=Math.min(-1.0,Math.max(-4.5,px.z*0.35-1.2))+s;   // ① v2.20 기본 목표(도로가 덜 보이는 쪽)
+  const upx=vh/zoom/H;                                        // 화면 1px = 월드 몇 m
+  const mB=((CAMUI.marPx||76)+16)*upx, mT=((CAMUI.topPx||170)+10)*upx, mS=Math.min(hw*0.45,40*upx);
+  const u=(px.x-tx)*Xx+(px.z-tz)*Xz, v=(px.x-tx)*Yx+(px.z-tz)*Yz;   // 플레이어 발의 화면 좌표(월드 단위, 중심 기준)
+  const uMax=Math.min(hw-mS,hw*0.45), vLo=-hh+mB+1.0, vHi=hh-mT-1.9*Yy;   // 가로는 화면 가운데 45% 폭 안, 아래는 버튼 바 위 1m, 위는 머리(1.9m)까지 여백 안
+  let du=0, dv=0;
+  if(u>uMax) du=u-uMax; else if(u<-uMax) du=u+uMax;
+  if(vLo<=vHi){ if(v<vLo) dv=v-vLo; else if(v>vHi) dv=v-vHi; } else dv=v-(vLo+vHi)/2;
+  if(du||dv){ tx+=du*Xx+dv*Yx/yy; tz+=du*Xz+dv*Yz/yy; }
+  _camNew.set(tx,0,tz); return _camNew;
 }
+/* v2.23: 가림 페이드 — 카메라와 플레이어 사이를 막는 키 큰 물체(오른쪽 벽 게시판, 정면 유리 현수막, 간판 등)를
+   플레이어가 그 뒤에 있는 동안만 반투명하게 한다. 허벅지·가슴·머리 높이 세 줄의 시선을 검사하고, 높이 1.35m 이하인 낮은 벽·카운터는 대상에서 뺀다. */
+const OCC={ok:true,t:0,rt:0,f:0,list:[],cur:new Set(),on:new Map(),rc:null,p:new THREE.Vector3(),n:new THREE.Vector3()};
+function occTick(){ if(!OCC.ok) return; try{
+  if(!THREE.Raycaster||!THREE.Box3||!scene||!scene.traverse||!player||!player.ch){ OCC.ok=false; return; }
+  const now=performance.now(), top=Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01||(typeof CAMV!=='undefined'&&CAMV.mode==='full');
+  if(now-OCC.rt>3000||!OCC.list.length){ OCC.rt=now; try{ camMeasureUI(); }catch(e){}
+    const skip=new Set(); player.ch.g.traverse(o=>skip.add(o)); const L=[], bb=new THREE.Box3();
+    scene.traverse(o=>{ if(!o.isMesh||o.isSkinnedMesh||skip.has(o)||!o.material||Array.isArray(o.material)||!o.geometry) return;
+      if(o.userData.occ===undefined){ bb.setFromObject(o); const sx=bb.max.x-bb.min.x, sy=bb.max.y-bb.min.y, sz=bb.max.z-bb.min.z; o.userData.occ=(bb.max.y>1.35&&sy>0.05&&Math.max(sx,sy,sz)>=0.9&&Math.max(sx,sz)<30)?1:0; }
+      if(o.userData.occ) L.push(o); }); OCC.list=L; }
+  if(now-OCC.t>110){ OCC.t=now; const hit=new Set();
+    if(!top){ const rc=OCC.rc||(OCC.rc=new THREE.Raycaster());
+      for(let i=0;i<3;i++){ OCC.p.set(player.pos.x,i===0?0.5:i===1?1.0:1.55,player.pos.z); OCC.n.copy(OCC.p).project(cam); rc.setFromCamera(OCC.n,cam); const d=rc.ray.origin.distanceTo(OCC.p)-0.2; rc.far=d;
+        const hs=rc.intersectObjects(OCC.list,false); for(let k=0;k<hs.length;k++){ const o=hs[k].object; if(hs[k].distance<d&&o.visible) hit.add(o); } } }
+    hit.forEach(o=>{ if(!OCC.on.has(o)){ const om=o.material, m=om.clone(); m.transparent=true; m.depthWrite=false; const base=(om.opacity==null?1:om.opacity); m.opacity=base; o.material=m; OCC.on.set(o,{m:m,om:om,base:base}); } });
+    OCC.cur=hit; }
+  const k=Math.min(1,Math.max(0.016,(now-(OCC.f||now))/1000)*10); OCC.f=now;
+  OCC.on.forEach((st,o)=>{ const inn=OCC.cur.has(o), want=inn?Math.min(st.base,0.22):st.base; st.m.opacity+=(want-st.m.opacity)*k;
+    if(!inn&&Math.abs(st.m.opacity-st.base)<0.03){ if(o.material===st.m) o.material=st.om; try{ st.m.dispose(); }catch(e){} OCC.on.delete(o); } });
+ }catch(e){ OCC.ok=false; try{ OCC.on.forEach((st,o)=>{ if(o.material===st.m) o.material=st.om; }); OCC.on.clear(); }catch(_){} } }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
 function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now; time+=dt;
   // player
@@ -2107,7 +2149,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
     player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
   player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
-  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); truckTick(dt); intTick();
+  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt); intTick();
   SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
     if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; useStock(s.t); layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
   // cash
@@ -2212,7 +2254,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   $('rate').textContent=(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1)); { const nv=npsOf(dayNps); const rm=$('rooms'); rm.textContent='NPS '+(nv==null?'—':(nv>0?'+':'')+nv); rm.style.background=nv==null?'':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'; } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
-  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else { const cz = Math.min(-1.0, Math.max(-4.5, player.pos.z*0.35 - 1.2)); camT.lerp(new THREE.Vector3(player.pos.x*0.8, 0, cz), 1-Math.exp(-dt*5)); } /* v2.20: 출입구 하향 이동 시 도로 노출 방지 Z축 가둠 */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
+  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.23: v2.20의 Z축 가둠을 기본 목표로 쓰되, 캐릭터가 화면 밖·버튼 뒤로 나가면 그만큼만 따라간다(camClampT) */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
   if(!window.__NR) renderer.render(scene,cam); requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
