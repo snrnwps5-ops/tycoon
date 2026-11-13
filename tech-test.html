@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794593000';
+<script>try{(function(){var V='1794610000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -31,9 +31,11 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 :root{--d:'Black Han Sans','Noto Sans KR',-apple-system,sans-serif;--b:'Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 html,body{margin:0;height:100%;overflow:hidden;background:#0a1650;touch-action:none;font-family:var(--b)}
-/* v2.23: iOS 26 홈 화면 앱 하단 띠(WebKit 301108) 우회 — tech.html과 동일 */
+/* v2.23: iOS 26 홈 화면 앱은 페이지가 화면보다 짧으면 뷰포트를 상태바 높이만큼 짧게 준다(WebKit 301108) — 고정 요소가 그 아래로는 그려지지 않아 하단 띠가 생긴다.
+   문서를 화면 높이만큼 키우면 iOS가 전체 뷰포트를 준다. min()은 상태바가 불투명한 기기에서 스크롤이 생기지 않게 하는 상한. 요소를 화면보다 크게 늘리는 방식(v2.17·v2.19)은 효과가 없어 쓰지 않는다. */
 @media (display-mode: standalone){html{min-height:min(100lvh,calc(100% + env(safe-area-inset-top)))}}
-canvas#c{position:fixed;inset:0;width:100vw!important;height:100vh!important;min-height:100dvh;display:block;z-index:1}/* v2.17: 3D 캔버스를 기기 화면 전체에 강제 밀착 — iOS innerHeight(792px)와 실제 화면(852px)의 차이로 생기던 하단 회색 띠 0px */
+html.sa{min-height:min(100lvh,calc(100% + env(safe-area-inset-top)))}
+canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;height:100%!important;min-height:100%;display:block;z-index:1}/* v2.19: PWA 풀스크린에서 100vh 제한 해제 — 홈 인디케이터 바닥(852px)까지 캔버스 100% 밀착 */
 #hud{position:fixed;left:0;right:0;top:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:8px;z-index:5;pointer-events:none}
 #hud>*{pointer-events:auto}
 .star{position:relative;width:46px;height:46px;flex:none}
@@ -305,7 +307,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.17</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.25</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -2014,11 +2016,7 @@ const camT=new THREE.Vector3(0,0,1.2); let last=performance.now(), spawnT=0.5, s
    · camMeasureUI(): 하단 버튼 바가 덮는 화면 높이를 재서, 그 뒤쪽까지만 바깥 바닥이 지나가게 한다 */
 const CAMS={x0:-7,x1:7,z0:-9,z1:6};            // 매장 내부 경계 (가로 14m · 깊이 15m)
 const CAMUI={marPx:76};                        // 하단 버튼 바가 덮는 화면 높이(px)
-function camVH(){ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight));
-  /* v2.17: 화면 세로 지면 깊이 14.2m 피팅 — v2.13의 17.5m(전체 조감도)에서 당겨
-     캐릭터·테이블이 시원하게 크게 보이는 모바일 타이쿤 구도 (폰 세로 vh≈11.0m).
-     지면 깊이 = vh*(1.08+0.464a) (CAM_OFF 5.5/17/10.5 실측 계수) → vh = 14.2/(1.08+0.464a) */
-  return Math.max(8.4,Math.min(15.0,14.2/(1.08+0.464*a))); }
+function camVH(){ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)); return a<1?17:12; }
 const _camO=new THREE.Vector3(), _camX=new THREE.Vector3(), _camY=new THREE.Vector3(), _camUp=new THREE.Vector3(0,1,0), _camSp={dzMin:0,dzMax:0,dxMin:0,dxMax:0}, _camT=new THREE.Vector3(), _camNew=new THREE.Vector3();
 function camSpan(vh,a,zoom){
   const z=zoom||1, hw=vh*a/2/z, hh=vh/2/z;
@@ -2035,7 +2033,7 @@ function camSpan(vh,a,zoom){
   _camSp.dzMin=dzMin; _camSp.dzMax=dzMax; _camSp.dxMin=dxMin; _camSp.dxMax=dxMax;
   return _camSp;
 }
-function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const H=VH||innerHeight, h=H-r.top; if(h>0&&h<H*0.4) CAMUI.marPx=Math.round(h+4); }catch(e){} }
+function camMeasureUI(){ try{ const b=$('bbar'); if(!b) return; const r=b.getBoundingClientRect(); const H=VH||innerHeight, h=H-r.top; if(h>0&&h<H*0.4) CAMUI.marPx=Math.round(h+4); const d=$('dayBar'); if(d){ const t=d.getBoundingClientRect().bottom; if(t>0&&t<H*0.4) CAMUI.topPx=Math.round(t); } }catch(e){} }
 /* v2.17: 캐릭터 추적 카메라 — 플레이어를 화면 세로 45~50%(황금 조작 구역)에 두고 X·Z를 함께 따라간다.
    카메라가 기울어(요 27.6°) 있어 z만 따라가면 캐릭터가 대각선으로 흘러가므로,
    화면 '위쪽' 지면 단위벡터 U(0.4639, 0.8859)를 따라 camT를 움직인다 → 클램프가 걸려도 캐릭터는 가로 중앙을 유지한다.
@@ -2045,12 +2043,45 @@ const CAMU={x:0.4639,z:0.8859};
 const CAMT=window.__CAMT||(window.__CAMT={s:0,tzMin:-6.2,tzMax:2.8,txMin:-6.0,txMax:6.0});
 function camClampT(dt){
   if(Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01){ _camNew.set(player.pos.x*0.85,0,player.pos.z-1.8); return _camNew; } // 2D 탑다운은 그대로
-  const px=player.pos, K=window.__CAMT||CAMT;
-  const sLo=Math.max((K.tzMin-px.z)/CAMU.z,(K.txMin-px.x)/CAMU.x);
-  const sHi=Math.min((K.tzMax-px.z)/CAMU.z,(K.txMax-px.x)/CAMU.x);
-  let s=(K.s||0); if(sLo>sHi) s=(sLo+sHi)/2; else s=Math.max(sLo,Math.min(sHi,s));
-  _camNew.set(px.x+CAMU.x*s,0,px.z+CAMU.z*s); return _camNew;
+  /* v2.23~24: ① 플레이어 추적(가로 0.85배 · 세로 z-1.8, 범위 -6.2~1.5) → ② 그래도 플레이어가 화면 안전 영역
+     (좌우 여백 · 위쪽 HUD/DAY 바 아래 · 아래쪽 버튼 바 위)을 벗어나면 벗어난 만큼 카메라를 옮긴다.
+     ②가 항상 마지막이라 어떤 화면비·줌에서도 캐릭터가 화면 밖이나 버튼 뒤로 사라지지 않는다.
+     (v2.17의 U축 미끄럼 방식은 범위가 충돌하면 캐릭터가 왼쪽 화면 밖까지 밀렸다: x=-6.6,z=5.6에서 화면 x=-39px) */
+  const px=player.pos, K=window.__CAMT||CAMT, W=VW||innerWidth, H=Math.max(1,VH||innerHeight), vh=camVH(), zoom=cam.zoom||1, hw=vh*(W/H)/2/zoom, hh=vh/2/zoom, s=K.s||0;
+  _camO.copy(CAM_OFF).normalize(); _camX.crossVectors(_camUp,_camO).normalize(); _camY.crossVectors(_camO,_camX);
+  const Xx=_camX.x, Xz=_camX.z, Yx=_camY.x, Yz=_camY.z, Yy=_camY.y, yy=Yx*Yx+Yz*Yz||1;
+  let tx=px.x*0.85, tz=Math.min(1.5,Math.max(-6.2,px.z-1.8))+s;   // ① v2.24: 플레이어를 화면 가운데 근처로 따라간다(v1.x 방식). 세로는 뒷벽~입구 앞까지만
+  const upx=vh/zoom/H;                                        // 화면 1px = 월드 몇 m
+  const mB=((CAMUI.marPx||76)+16)*upx, mT=((CAMUI.topPx||170)+10)*upx, mS=Math.min(hw*0.45,40*upx);
+  const u=(px.x-tx)*Xx+(px.z-tz)*Xz, v=(px.x-tx)*Yx+(px.z-tz)*Yz;   // 플레이어 발의 화면 좌표(월드 단위, 중심 기준)
+  const uMax=Math.min(hw-mS,hw*0.45), vLo=-hh+mB+1.0, vHi=hh-mT-1.9*Yy;   // 가로는 화면 가운데 45% 폭 안, 아래는 버튼 바 위 1m, 위는 머리(1.9m)까지 여백 안
+  let du=0, dv=0;
+  if(u>uMax) du=u-uMax; else if(u<-uMax) du=u+uMax;
+  if(vLo<=vHi){ if(v<vLo) dv=v-vLo; else if(v>vHi) dv=v-vHi; } else dv=v-(vLo+vHi)/2;
+  if(du||dv){ tx+=du*Xx+dv*Yx/yy; tz+=du*Xz+dv*Yz/yy; }
+  _camNew.set(tx,0,tz); return _camNew;
 }
+/* v2.23: 가림 페이드 — 카메라와 플레이어 사이를 막는 키 큰 물체(오른쪽 벽 게시판, 정면 유리 현수막, 간판 등)를
+   플레이어가 그 뒤에 있는 동안만 반투명하게 한다. 허벅지·가슴·머리 높이 세 줄의 시선을 검사하고, 높이 1.35m 이하인 낮은 벽·카운터는 대상에서 뺀다. */
+const OCC={ok:true,t:0,rt:0,f:0,list:[],cur:new Set(),on:new Map(),rc:null,p:new THREE.Vector3(),n:new THREE.Vector3()};
+function occTick(){ if(!OCC.ok) return; try{
+  if(!THREE.Raycaster||!THREE.Box3||!scene||!scene.traverse||!player||!player.ch){ OCC.ok=false; return; }
+  const now=performance.now(), top=Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01||(typeof CAMV!=='undefined'&&CAMV.mode==='full');
+  if(now-OCC.rt>3000||!OCC.list.length){ OCC.rt=now; try{ camMeasureUI(); }catch(e){}
+    const skip=new Set(); player.ch.g.traverse(o=>skip.add(o)); const L=[], bb=new THREE.Box3();
+    scene.traverse(o=>{ if(!o.isMesh||o.isSkinnedMesh||skip.has(o)||!o.material||Array.isArray(o.material)||!o.geometry) return;
+      if(o.userData.occ===undefined){ bb.setFromObject(o); const sx=bb.max.x-bb.min.x, sy=bb.max.y-bb.min.y, sz=bb.max.z-bb.min.z; o.userData.occ=(bb.max.y>1.35&&sy>0.05&&Math.max(sx,sy,sz)>=0.9&&Math.max(sx,sz)<30)?1:0; }
+      if(o.userData.occ) L.push(o); }); OCC.list=L; }
+  if(now-OCC.t>110){ OCC.t=now; const hit=new Set();
+    if(!top){ const rc=OCC.rc||(OCC.rc=new THREE.Raycaster());
+      for(let i=0;i<3;i++){ OCC.p.set(player.pos.x,i===0?0.5:i===1?1.0:1.55,player.pos.z); OCC.n.copy(OCC.p).project(cam); rc.setFromCamera(OCC.n,cam); const d=rc.ray.origin.distanceTo(OCC.p)-0.2; rc.far=d;
+        const hs=rc.intersectObjects(OCC.list,false); for(let k=0;k<hs.length;k++){ const o=hs[k].object; if(hs[k].distance<d&&o.visible) hit.add(o); } } }
+    hit.forEach(o=>{ if(!OCC.on.has(o)){ const om=o.material, m=om.clone(); m.transparent=true; m.depthWrite=false; const base=(om.opacity==null?1:om.opacity); m.opacity=base; o.material=m; OCC.on.set(o,{m:m,om:om,base:base}); } });
+    OCC.cur=hit; }
+  const k=Math.min(1,Math.max(0.016,(now-(OCC.f||now))/1000)*10); OCC.f=now;
+  OCC.on.forEach((st,o)=>{ const inn=OCC.cur.has(o), want=inn?Math.min(st.base,0.22):st.base; st.m.opacity+=(want-st.m.opacity)*k;
+    if(!inn&&Math.abs(st.m.opacity-st.base)<0.03){ if(o.material===st.m) o.material=st.om; try{ st.m.dispose(); }catch(e){} OCC.on.delete(o); } });
+ }catch(e){ OCC.ok=false; try{ OCC.on.forEach((st,o)=>{ if(o.material===st.m) o.material=st.om; }); OCC.on.clear(); }catch(_){} } }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
 function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now; time+=dt;
   // player (2D: 화면 방향 = 월드 방향, A* 자동 이동 경로 지원)
@@ -2064,7 +2095,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
     player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
   player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
-  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); truckTick(dt); intTick();
+  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt); intTick();
   SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
     if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; useStock(s.t); layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
   // cash
@@ -2169,7 +2200,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   $('rate').textContent=(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1)); { const nv=npsOf(dayNps); const rm=$('rooms'); rm.textContent='NPS '+(nv==null?'—':(nv>0?'+':'')+nv); rm.style.background=nv==null?'':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'; } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
-  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.13: 해상도 자율 클램핑 — 화면 아래에 바깥 도로가 새지 않는다 */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
+  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.23: v2.20의 Z축 가둠을 기본 목표로 쓰되, 캐릭터가 화면 밖·버튼 뒤로 나가면 그만큼만 따라간다(camClampT) */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
   if(!window.__NR) renderer.render(scene,cam); requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
@@ -2273,13 +2304,16 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   const crewLines=[]; const load=dayRevs.length/(S.crew.length+1); S.crew.slice().forEach(cr=>{ if(cr.sat==null) cr.sat=70; let d=-3-Math.round(Math.max(0,load-8)*1.5)+(stars>=3?6:stars>=1?3:0)+(dayComp===0?2:-dayComp*2); cr.sat=Math.max(0,Math.min(100,cr.sat+d)); if(cr.sat<30&&Math.random()<0.5){ S.crew.splice(S.crew.indexOf(cr),1); const st=staff.find(s=>s.crew===cr); if(st) removeStaff(st); crewLines.push('<div class="dstat no"><span>😢 '+cr.name+'('+ROLES[cr.role].n+') 퇴사</span><b>만족도 '+cr.sat+'</b></div>'); } else if(cr.sat<45) crewLines.push('<div class="dstat no"><span>😟 '+cr.name+' 퇴사 위험</span><b>만족도 '+cr.sat+'</b></div>'); });
   const RG=STAGE_OF(S.day), rk0=myRank(RG); S.best[S.day]=Math.max(S.best[S.day]||0,dayRev); const rk1=myRank(RG); let r1b=0; if(rk1===1&&!S.r1[RG]){ S.r1[RG]=1; r1b=150; money+=r1b; } S.orders.forEach(o=>{ if(!o.ex) o.ready=1; });
   if(!clear) S.fails=(S.fails||0)+1; if(clear){ S.lastProfit=Math.round(dayRev-dayOrd-wages-rent); S.dayStars[S.day]=Math.max(S.dayStars[S.day]||0,stars); money+=bonus; S.bp[S.day]=(S.bp[S.day]||0)+bonus; confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); } else snd('ui',0.5,0.5);
+  /* v2.25: 지점 일일 자동 매출 실정산 — 현재 매장은 직접 영업 중이라 빼고, 오픈된 '다른' 지점의 자동 매출을 현금에 합산한다(클리어 여부와 관계없이 지점은 계속 돈다). */
+  let brInc=0; try{ if(window.HQUI&&typeof HQUI.autoIncomeTotal==='function') brInc=Math.max(0,Math.round(HQUI.autoIncomeTotal()||0)); }catch(e){ brInc=0; }
+  if(brInc>0) money+=brInc;
   const moneySnap=Math.floor(money); shownMoney=money; /* v2.10: 정산 시점 현금 스냅샷 — 영수증 '종료 현금'과 HUD '보유 현금'을 일치 */
-  const collected=Math.floor(dayColl), other=moneySnap-(dayCash0+collected-dayOrd-Math.min(wages+rent,dayCash0+collected-dayOrd+0)+bonus+npsB+r1b), rc=(l,v,c)=>'<div><span>'+l+'</span><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>';
-  const receipt='<details class="rcp"><summary>🧾 정산 영수증 보기</summary>'+rc('시작 현금','$'+dayCash0)+rc('오늘 매출 (목표 판정 기준)','$'+dayRev)+rc('└ 회수한 현금','+$'+collected,'#2faa45')+rc('└ 계산대에 남은 현금','$'+Math.floor(cashVal)+' (다음 영업에 그대로 남아요)')+rc('발주비','-$'+dayOrd,'#e8342a')+rc('직원 급여','-$'+wages,'#e8342a')+(rent?rc('임대료','-$'+rent,'#e8342a'):'')+(bonus?rc('클리어 보너스','+$'+bonus,'#2faa45'):bonusFull?rc('클리어 보너스','이미 받음'):'')+(npsB?rc('입소문 보너스','+$'+npsB,'#2faa45'):'')+(r1b?rc('지역 1위 보너스','+$'+r1b,'#2faa45'):'')+(Math.abs(other)>=1?rc('그 외 (업그레이드·채용·확장·미션 등)',(other>0?'+$':'-$')+Math.abs(other)):'')+rc('<b>종료 현금</b>','<b>$'+moneySnap+'</b>')+'<small>별 조건: ★ 목표·평점·민원 통과 / ★★ 매출 130% / ★★★ 매출 160% + 민원 0건<br>평점은 오늘 응대한 손님 기준이고, 화면 위 "누적"은 최근 14명 평균이에요</small></details>';
+  const collected=Math.floor(dayColl), other=moneySnap-(dayCash0+collected-dayOrd-Math.min(wages+rent,dayCash0+collected-dayOrd+0)+bonus+npsB+r1b+brInc), rc=(l,v,c)=>'<div><span>'+l+'</span><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>';
+  const receipt='<details class="rcp"><summary>🧾 정산 영수증 보기</summary>'+rc('시작 현금','$'+dayCash0)+rc('오늘 매출 (목표 판정 기준)','$'+dayRev)+rc('└ 회수한 현금','+$'+collected,'#2faa45')+rc('└ 계산대에 남은 현금','$'+Math.floor(cashVal)+' (다음 영업에 그대로 남아요)')+rc('발주비','-$'+dayOrd,'#e8342a')+rc('직원 급여','-$'+wages,'#e8342a')+(rent?rc('임대료','-$'+rent,'#e8342a'):'')+(brInc?rc('지점 자동 매출 합계','+$'+brInc,'#2faa45'):'')+(bonus?rc('클리어 보너스','+$'+bonus,'#2faa45'):bonusFull?rc('클리어 보너스','이미 받음'):'')+(npsB?rc('입소문 보너스','+$'+npsB,'#2faa45'):'')+(r1b?rc('지역 1위 보너스','+$'+r1b,'#2faa45'):'')+(Math.abs(other)>=1?rc('그 외 (업그레이드·채용·확장·미션 등)',(other>0?'+$':'-$')+Math.abs(other)):'')+rc('<b>종료 현금</b>','<b>$'+moneySnap+'</b>')+'<small>별 조건: ★ 목표·평점·민원 통과 / ★★ 매출 130% / ★★★ 매출 160% + 민원 0건<br>평점은 오늘 응대한 손님 기준이고, 화면 위 "누적"은 최근 14명 평균이에요</small></details>';
   openModal('<h2>'+(clear?'DAY '+(S.day+1)+' 클리어!':'DAY '+(S.day+1)+' 실패…')+'</h2><div class="dres">'+[1,2,3].map(k=>'<i class="'+(k<=stars?'on':'')+'">★</i>').join('')+'</div>'+
     '<div class="dstat '+(okRev?'ok':'no')+'"><span>매출 $'+dayRev+' / 목표 $'+cfg.goal+'</span><b>'+(okRev?'달성':'부족')+'</b></div>'+
     '<div class="dstat '+(okRate?'ok':'no')+'"><span>오늘 서비스 평점 ★'+r.toFixed(1)+' / 최소 ★'+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</span><b>'+(okRate?'통과':'미달')+'</b></div>'+
-    (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+S.crew.length+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+
+    (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+S.crew.length+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+(brInc?'<div class="dstat ok"><span>지점 자동 매출 합계</span><b>+$'+brInc+'</b></div>':'')+
     receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+(stars<2?'매출 $'+Math.round(cfg.goal*1.3):'매출 $'+Math.round(cfg.goal*1.6)+' + 민원 0건')+'</p>':'</p>')+'<button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button>'));
   $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
   const go=next=>{ $('modal').classList.remove('on'); if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; } setTimeout(startDayModal,300); };

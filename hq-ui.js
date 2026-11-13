@@ -3,7 +3,8 @@
    - 자체 오버레이(#hqui)를 쓰므로 기존 #modal / quizOpen 흐름과 충돌하지 않습니다.
    - 게임 상태는 HQUI.init(어댑터)로만 접근합니다. 전역 변수에 직접 손대지 않습니다.
    - 신규 저장 필드: S.branches, S.hqStaff, S.interview (없으면 기본값 생성, 기존 필드 변경 없음)
-   - 지점 매출의 실제 지급(송금)은 하지 않습니다. HQUI.branchIncome(id)로 값만 제공합니다.
+   - 지점 매출 값은 HQUI.branchIncome(id) / HQUI.otherBranchesIncome()가 제공하고,
+     실제 현금 정산(입금)은 하루 영업이 끝날 때 tech.html의 showResult()가 합니다(v2.25).
    ===================================================================== */
 (function(){
 'use strict';
@@ -17,12 +18,14 @@ function S(){ return A.S; }
 function call(name){ var f=A[name]; if(typeof f!=='function') return undefined; try{ return f.apply(null,[].slice.call(arguments,1)); }catch(e){ console.warn('HQUI adapter '+name,e); } }
 
 /* ---------------- schema ---------------- */
+/* v2.25: openDay를 게임 스테이지 개막일과 1:1로 맞췄습니다. S.day는 0부터 시작하므로 openDay = 그 지점의 첫 영업일 인덱스입니다.
+   daegu 0(DAY 1) · busan 4(DAY 5) · seoul 8(DAY 9) · icn 11(DAY 12) · nyc 15(DAY 16) — tech.html의 STAGE_OF(d<4,8,11,15,19)와 같은 경계입니다. */
 var BRANCHES=[
-  {id:'daegu', name:'대구 동성로점', icon:'🏙️', base:120, openDay:4},
-  {id:'busan', name:'부산 센텀점', icon:'🌊', base:260, openDay:8},
-  {id:'seoul', name:'서울 강남스퀘어점', icon:'🗼', base:520, openDay:11},
-  {id:'icn',   name:'인천공항점', icon:'✈️', base:820, openDay:15},
-  {id:'nyc',   name:'뉴욕 타임스퀘어점', icon:'🗽', base:1200, openDay:19}
+  {id:'daegu', name:'대구 동성로점', icon:'🏙️', base:120, openDay:0,  stage:0},
+  {id:'busan', name:'부산 센텀점', icon:'🌊', base:260, openDay:4,  stage:1},
+  {id:'seoul', name:'서울 강남스퀘어점', icon:'🗼', base:520, openDay:8,  stage:2},
+  {id:'icn',   name:'인천공항점', icon:'✈️', base:820, openDay:11, stage:3},
+  {id:'nyc',   name:'뉴욕 타임스퀘어점', icon:'🗽', base:1200, openDay:15, stage:4}
 ];
 var CFG={ upMax:5, upCost:function(b,lv){ return Math.round(b.base*4*Math.pow(1.7,lv-1)); }, visitNps:3, staffMax:6, staffCost:function(b,n){ return Math.round(b.base*1.5*(1+n*0.4)); } };
 function ensure(){ var s=S();
@@ -35,6 +38,20 @@ function ensure(){ var s=S();
 function branchOpen(b){ return (S().day||0)>=b.openDay; }
 function branchIncome(id){ ensure(); var b=BRANCHES.filter(function(x){ return x.id===id; })[0]; if(!b||!branchOpen(b)) return 0; var o=S().branches[id];
   return Math.round(b.base*(1+0.35*(o.lv-1))*(1+0.08*o.staff)*(o.mgr?1.2:1)*(0.8+clamp(o.nps,-100,100)/250)); }
+/* v2.25: 현재 플레이 중인 매장(스테이지) 판정 — 게임의 STAGE_OF와 같은 경계(d<4/8/11/15/19)를 씁니다. */
+function stageOfDay(d){ d=d||0; return d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; }
+function currentBranch(){ var st=stageOfDay(S().day||0); return BRANCHES.filter(function(b){ return b.stage===st; })[0]||null; }
+function currentBranchId(){ var b=currentBranch(); return b?b.id:null; }
+/* 현재 매장은 플레이어가 직접 영업하므로 자동 매출에서 빼고, 오픈된 '다른' 지점의 일일 자동 매출만 합산합니다.
+   curStageId에는 지점 id('busan') 또는 스테이지 번호(1)를 넣을 수 있고, 생략하면 S.day에서 현재 매장을 구합니다. */
+function otherBranchesIncome(curStageId){
+  ensure(); var curId=null;
+  if(curStageId==null) curId=currentBranchId();
+  else if(typeof curStageId==='number'){ var sb=BRANCHES.filter(function(b){ return b.stage===curStageId; })[0]; curId=sb?sb.id:null; }
+  else curId=String(curStageId);
+  return BRANCHES.reduce(function(a,b){ return b.id===curId?a:a+branchIncome(b.id); },0);
+}
+function autoIncomeTotal(){ return otherBranchesIncome(); }
 function npsShare(id){ var o=S().branches[id]; return Math.round(o.nps*(0.5+0.1*o.staff)); }
 
 /* ---------------- overlay ---------------- */
@@ -177,16 +194,18 @@ function ivOffer(){ var s=S(), c=s.interview.cur; var packs=[{k:'a',n:'기본형
    2. 지점 관리 대시보드
    ===================================================================== */
 function openBranchModal(done){ ensure(); onClose=done||null; brRender(); }
-function brRender(){ var s=S(), day=s.day||0; var open=BRANCHES.filter(branchOpen); var tot=open.reduce(function(a,b){ return a+branchIncome(b.id); },0);
+function brRender(){ var s=S(), day=s.day||0; var open=BRANCHES.filter(branchOpen); var tot=otherBranchesIncome(), curId=currentBranchId();
   var nps=open.length?Math.round(open.reduce(function(a,b){ return a+s.branches[b.id].nps; },0)/open.length):0;
   var cards=BRANCHES.map(function(b){ var o=s.branches[b.id]; if(!branchOpen(b)) return '<div class="hqbr lock"><h3>🔒 '+b.name+'</h3><div class="m"><span>DAY '+(b.openDay+1)+'부터 운영</span></div></div>';
-    var cu=CFG.upCost(b,o.lv), cs=CFG.staffCost(b,o.staff), visited=o.visitDay===day, money=call('getMoney')||0;
-    return '<div class="hqbr"><h3>'+b.icon+' '+b.name+'</h3><div class="inc">'+fmt(branchIncome(b.id))+' <small>/일 자동 매출</small></div>'+
+    var cu=CFG.upCost(b,o.lv), cs=CFG.staffCost(b,o.staff), visited=o.visitDay===day, money=call('getMoney')||0, here=(b.id===curId);
+    var head='<div class="inc">'+fmt(branchIncome(b.id))+' <small>/일 자동 매출</small></div>';
+    if(here) head='<div class="inc" style="font-size:16px;color:#2f6fd8;line-height:1.3">직접 영업 중<small style="display:block;color:#5a4a3a">자동 매출 정산 제외</small></div>';
+    return '<div class="hqbr"'+(here?' style="box-shadow:0 0 0 3px #2f6fd8,0 3px 0 rgba(0,0,0,.08)"':'')+'><h3>'+b.icon+' '+b.name+(here?' <span class="hqtag">📍 현재 매장</span>':'')+'</h3>'+head+
       '<div class="m"><span>지점장</span><b>'+(o.mgr?esc(o.mgr):'공석')+'</b></div><div class="m"><span>직원</span><b>'+o.staff+'명</b></div><div class="m"><span>지점 NPS</span><b style="color:'+(o.nps>=50?'#2faa45':o.nps>=0?'#e89a10':'#e8342a')+'">'+(o.nps>0?'+':'')+o.nps+'</b></div><div class="m"><span>통합 NPS 기여</span><b>'+(npsShare(b.id)>0?'+':'')+npsShare(b.id)+'</b></div><div class="m"><span>시설 레벨</span><b>Lv.'+o.lv+(o.lv>=CFG.upMax?' MAX':'')+'</b></div>'+
       '<button class="hqbtn y" data-hq="up" data-id="'+b.id+'" '+(o.lv>=CFG.upMax||money<cu?'disabled':'')+'>'+(o.lv>=CFG.upMax?'업그레이드 완료':'업그레이드 '+fmt(cu))+'</button>'+
       '<button class="hqbtn b" data-hq="staff" data-id="'+b.id+'" '+(o.staff>=CFG.staffMax||money<cs?'disabled':'')+'>'+(o.staff>=CFG.staffMax?'직원 정원 가득':'직원 +1 '+fmt(cs))+'</button>'+
       '<button class="hqbtn" data-hq="visit" data-id="'+b.id+'" '+(visited?'disabled':'')+'>'+(visited?'오늘 시찰 완료':'시찰 방문')+'</button></div>'; }).join('');
-  var body='<div class="hqsum"><div><b>'+fmt(tot)+'</b><small>일일 자동 매출 합계</small></div><div><b>'+open.length+'/'+BRANCHES.length+'</b><small>운영 지점</small></div><div><b>'+(nps>0?'+':'')+nps+'</b><small>평균 지점 NPS</small></div></div><div class="hqgrid">'+cards+'</div><div style="font:700 11px/1.5 \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin:8px 0 2px">자동 매출은 하루 영업이 끝날 때 정산돼요 · 시찰은 지점마다 하루 한 번</div>';
+  var body='<div class="hqsum"><div><b>'+fmt(tot)+'</b><small>타 지점 자동 매출 합계</small></div><div><b>'+open.length+'/'+BRANCHES.length+'</b><small>운영 지점</small></div><div><b>'+(nps>0?'+':'')+nps+'</b><small>평균 지점 NPS</small></div></div><div class="hqgrid">'+cards+'</div><div style="font:700 11px/1.5 \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin:8px 0 2px">현재 매장은 직접 영업하므로 자동 매출에서 빠져요 · 타 지점 자동 매출은 하루 영업이 끝날 때 현금으로 정산돼요 · 시찰은 지점마다 하루 한 번</div>';
   var find=function(t){ var id=t.getAttribute('data-id'); return {b:BRANCHES.filter(function(x){ return x.id===id; })[0],o:s.branches[id]}; };
   show('지점 관리 대시보드','보유 현금 '+fmt(call('getMoney')||0),body,'<button class="hqbtn g" data-hq="close">닫기</button>',
     {up:function(t){ var r=find(t), c=CFG.upCost(r.b,r.o.lv); if(r.o.lv>=CFG.upMax) return; if(!pay(c)){ msg('현금이 부족해요'); return; } r.o.lv++; sfx('level_up',0.45,1.2); brRender(); msg(r.b.name+' 시설 Lv.'+r.o.lv+' · 자동 매출이 올랐어요',true); },
@@ -244,6 +263,7 @@ window.HQUI={
   openInterviewModal:openInterviewModal, openBranchModal:openBranchModal, openHqTransferModal:openHqTransferModal,
   close:close, isOpen:isOpen, ensureSchema:ensure,
   branches:BRANCHES, branchIncome:branchIncome, totalBranchIncome:function(){ ensure(); return BRANCHES.reduce(function(a,b){ return a+branchIncome(b.id); },0); },
+  otherBranchesIncome:otherBranchesIncome, autoIncomeTotal:autoIncomeTotal, currentBranchId:currentBranchId, stageOfDay:stageOfDay,
   hqEligible:hqEligible, hqReport:hqReport, config:CFG
 };
 window.openInterviewModal=openInterviewModal; window.openBranchModal=openBranchModal; window.openHqTransferModal=openHqTransferModal;
