@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794590000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794593000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -276,7 +276,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.23</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.24</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -618,8 +618,8 @@ box(120,0.04,4,'#4a4f5c',0,0.02,12.5).castShadow=false; for(let i=-12;i<13;i++) 
 { const pt=canvasTex((g,w,h)=>{ g.fillStyle='#959ba6'; g.fillRect(0,0,w,h); const C=['#c4c8cf','#b6bbc4','#cdd0d6']; for(let y=0;y<4;y++) for(let x=0;x<4;x++){ g.fillStyle=C[(x*3+y*5)%3]; g.fillRect(x*32+2,y*32+2,28,28); } },128,128);
   pt.wrapS=pt.wrapT=THREE.RepeatWrapping; pt.repeat.set(30,2.2); const sw=new THREE.Mesh(new THREE.BoxGeometry(60,0.06,4.4),new THREE.MeshLambertMaterial({map:pt})); sw.position.set(0,0.03,8.4); sw.receiveShadow=true; scene.add(sw);
   /* v2.11: 매장 좌우 인도 포장 — 세로 화면 하단/모서리에 매장 밖 잔디가 비치지 않도록(스테이지 1) */
-  [[-11.01,7.98],[11.01,7.98]].forEach(([cx,w])=>{ const t=pt.clone(); t.needsUpdate=true; t.repeat.set(Math.max(1,Math.round(w/2)),9);
-    const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,18.6),new THREE.MeshLambertMaterial({map:t})); m.position.set(cx,0.03,0); m.receiveShadow=true; scene.add(m); });
+  [[-11.01,7.98],[11.01,7.98]].forEach(([cx,w])=>{ const t=pt.clone(); t.needsUpdate=true; t.repeat.set(Math.max(1,Math.round(w/2)),7.5);
+    /* v2.24: 깊이 18.6→15.5 (z -9.3..6.2). 예전엔 z 6.2~9.3 구간이 정면 인도(sw, 윗면 y=0.06)와 같은 높이로 8.0×3.1m 겹쳐 카메라가 움직일 때 타일이 깜빡였다(z-fighting) */ const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,15.5),new THREE.MeshLambertMaterial({map:t})); m.position.set(cx,0.03,-1.55); m.receiveShadow=true; scene.add(m); });
   /* v2.12: 1스테이지(대구 동성로점) 바깥 도심 전면 포장 — 초록 잔디 영구 삭제.
      기존에는 도로 남쪽(z>14.5)과 매장 밖 월드가 120m 잔디 평면(#7fcf5c) 그대로였다.
      street 모드에서만 ① 160m 아스팔트 ② 도로 건너편 인도·연석 ③ 먼 쪽 도심 블록을 깐다. */
@@ -2098,14 +2098,14 @@ const CAMU={x:0.4639,z:0.8859};
 const CAMT=window.__CAMT||(window.__CAMT={s:0,tzMin:-6.2,tzMax:2.8,txMin:-6.0,txMax:6.0});
 function camClampT(dt){
   if(Math.abs(CAM_OFF.x)+Math.abs(CAM_OFF.z)<0.01){ _camNew.set(player.pos.x*0.85,0,player.pos.z-1.8); return _camNew; } // 2D 탑다운은 그대로
-  /* v2.23: ① v2.20의 기본 목표(가로 0.8배 추적 · 세로는 매장 안쪽에 가둠) → ② 그래도 플레이어가 화면 안전 영역
+  /* v2.23~24: ① 플레이어 추적(가로 0.85배 · 세로 z-1.8, 범위 -6.2~1.5) → ② 그래도 플레이어가 화면 안전 영역
      (좌우 여백 · 위쪽 HUD/DAY 바 아래 · 아래쪽 버튼 바 위)을 벗어나면 벗어난 만큼 카메라를 옮긴다.
      ②가 항상 마지막이라 어떤 화면비·줌에서도 캐릭터가 화면 밖이나 버튼 뒤로 사라지지 않는다.
      (v2.17의 U축 미끄럼 방식은 범위가 충돌하면 캐릭터가 왼쪽 화면 밖까지 밀렸다: x=-6.6,z=5.6에서 화면 x=-39px) */
   const px=player.pos, K=window.__CAMT||CAMT, W=VW||innerWidth, H=Math.max(1,VH||innerHeight), vh=camVH(), zoom=cam.zoom||1, hw=vh*(W/H)/2/zoom, hh=vh/2/zoom, s=K.s||0;
   _camO.copy(CAM_OFF).normalize(); _camX.crossVectors(_camUp,_camO).normalize(); _camY.crossVectors(_camO,_camX);
   const Xx=_camX.x, Xz=_camX.z, Yx=_camY.x, Yz=_camY.z, Yy=_camY.y, yy=Yx*Yx+Yz*Yz||1;
-  let tx=px.x*0.8, tz=Math.min(-1.0,Math.max(-4.5,px.z*0.35-1.2))+s;   // ① v2.20 기본 목표(도로가 덜 보이는 쪽)
+  let tx=px.x*0.85, tz=Math.min(1.5,Math.max(-6.2,px.z-1.8))+s;   // ① v2.24: 플레이어를 화면 가운데 근처로 따라간다(v1.x 방식). 세로는 뒷벽~입구 앞까지만
   const upx=vh/zoom/H;                                        // 화면 1px = 월드 몇 m
   const mB=((CAMUI.marPx||76)+16)*upx, mT=((CAMUI.topPx||170)+10)*upx, mS=Math.min(hw*0.45,40*upx);
   const u=(px.x-tx)*Xx+(px.z-tz)*Xz, v=(px.x-tx)*Yx+(px.z-tz)*Yz;   // 플레이어 발의 화면 좌표(월드 단위, 중심 기준)
