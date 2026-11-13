@@ -2067,7 +2067,7 @@ function camClampT(dt){
   let tx=0;
   const txMin=(CAMS.x1+1.2)-sp.dxMax, txMax=(CAMS.x0-1.2)-sp.dxMin;
   if(txMin<=txMax) tx=Math.max(txMin,Math.min(txMax,tx));
-  const U=0.62*hw, cz=(px.z-tz)*Xz;
+  const U=0.72*hw, cz=(px.z-tz)*Xz;
   tx=Math.max(px.x-(U-cz)/Xx, Math.min(px.x-(-U-cz)/Xx, tx));
   _camNew.set(tx,0,tz); return _camNew;
 }
