@@ -2154,7 +2154,7 @@ let INT_PIN=false;   /* v2.7: 버튼으로 연 경우 발판에서 멀어져도 
 function openInt(pin){ if(!S.unl.includes('decor')){ toast('인테리어는 매장 꾸미기 해금 뒤에 쓸 수 있어요',2.6); return; }
   INT_PIN=!!pin; intOpenState=true; intArmed=false; INT_TAB='floor'; INT_PV=null; intApplyAll(); intRender(); $('intp').classList.add('on'); snd('ui',0.4,1.15); updIntBtn(); }
 function closeInt(){ INT_PIN=false; INT_PV=null; intOpenState=false; const p=$('intp'); if(p) p.classList.remove('on'); intApplyAll(); updIntBtn(); }
-function updIntBtn(){ const b=$('intBtn'); if(!b) return; const on=S.unl.includes('decor'); b.style.display=on?'flex':'none'; b.classList.toggle('on',!!intOpenState); }
+function updIntBtn(){ const b=$('intBtn'); if(!b) return; let on=false, op=false; try{ on=S.unl.includes('decor'); op=!!intOpenState; }catch(e){} b.style.display=on?'flex':'none'; b.classList.toggle('on',op); }
 function intBuy(){ if(!INT_PV) return; const cat=INT_PV.cat, k=INT_PV.k, o=INTSHOP[cat].find(x=>x.k===k), d=intO();
   if(!d.own[k]){ if(money<o.p){ toast('돈이 부족해요 · $'+o.p+' 필요',2.2); snd('ui',0.4,0.5); return; } money-=o.p; d.own[k]=1; }
   d[cat]=k; INT_PV=null; intApplyAll(); intRender(); save(); snd('coin',0.5,1.1);
