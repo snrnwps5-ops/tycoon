@@ -7,57 +7,38 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
 <script src="../assets.js"></script>
 <script>
-const AB=window.BUNSIK_ASSETS||{}, A={};
+const AB=window.BUNSIK_ASSETS||{};
 const MODELS=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Suit_Male','Suit_Female','OldClassy_Male','OldClassy_Female','Casual_Bald','Chef_Male','Chef_Female','Worker_Male','Worker_Female'];
-const CLIPS={};
+const Q=new URLSearchParams(location.search); const ROW=+(Q.get('row')||0), HEAD=Q.get('head')==='1';
 const scene=new THREE.Scene(); scene.background=new THREE.Color('#22252c');
 const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(1); renderer.setSize(innerWidth,innerHeight); document.body.appendChild(renderer.domElement);
-const cam=new THREE.PerspectiveCamera(32,innerWidth/innerHeight,0.05,60); cam.position.set(0,1.15,3.1); cam.lookAt(0,0.85,0);
-scene.add(new THREE.HemisphereLight(0xffffff,0x334455,1.0));
-const dl=new THREE.DirectionalLight(0xffffff,0.9); dl.position.set(2,5,4); scene.add(dl);
+const cam=new THREE.PerspectiveCamera(30,innerWidth/innerHeight,0.05,80);
+scene.add(new THREE.HemisphereLight(0xffffff,0x445566,1.05));
+const dl=new THREE.DirectionalLight(0xffffff,0.85); dl.position.set(2,5,6); scene.add(dl);
 function b64(s){ const bin=atob(s); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return u.buffer; }
 const L=new THREE.GLTFLoader();
+const SKINS=['#f7d2b5','#f2c7a0','#e8b48a'];
 function load(n){ return new Promise(res=>L.parse(b64(AB['q:'+n]),'',g=>res(g))); }
-const SKINS=['#f7d2b5','#f2c7a0','#e8b48a','#c98d65','#9a6446'];
 (async()=>{
-  const first=await load('Casual_Male'); first.animations.forEach(a=>CLIPS[a.name]=a); if(!CLIPS['Idle']) console.log('clips',Object.keys(CLIPS));
-  let count=0;
-  for(const n of MODELS){
-    const g = n==='Casual_Male'? first : await load(n);
+  const names=MODELS.slice(ROW*5,ROW*5+5);
+  const H=1.7;
+  for(let i=0;i<names.length;i++){
+    const g=await load(names[i]);
     const m=THREE.SkeletonUtils.clone(g.scene);
-    m.traverse(x=>{ if(x.isMesh){ const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString();
-      if(/^Skin$/.test(mt.name||'')) hex=SKINS[count%SKINS.length];
-      x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
-    const holder=new THREE.Group(); holder.add(m);
-    const col=count%5, row=Math.floor(count/5);
-    holder.position.set((col-2)*1.15,0.0,0);
-    scene.add(holder);
-    const label=document.createElement('div');
-    label.textContent=n; label.style.cssText='position:fixed;color:#fff;font:11px monospace;transform:translate(-50%,0);pointer-events:none';
-    label.className='lb';
-    count++;
-    if(count>5) break;
-  }
-  // five at a time, camera slides through rows
-  window.__models=[]; 
-  let idx=0; const all=[];
-  for(const n of MODELS){ all.push(await load(n)); if(!CLIPS['Idle']) all[all.length-1].animations.forEach(a=>CLIPS[a.name]=a); }
-  scene.clear(); scene.add(new THREE.HemisphereLight(0xffffff,0x334455,1.1)); const d2=new THREE.DirectionalLight(0xffffff,0.9); d2.position.set(2,5,4); scene.add(d2);
-  window.__rows=[];
-  MODELS.forEach((n,i)=>{
-    const g=all[i]; const m=THREE.SkeletonUtils.clone(g.scene);
     m.traverse(x=>{ if(x.isMesh){ const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString();
       if(/^Skin$/.test(mt.name||'')) hex=SKINS[i%SKINS.length];
       x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
+    const box=new THREE.Box3().setFromObject(m); const sz=box.getSize(new THREE.Vector3());
+    const sc=H/sz.y; m.scale.setScalar(sc); m.position.y=-box.min.y*sc;
     const holder=new THREE.Group(); holder.add(m);
-    const col=i%5, row=Math.floor(i/5);
-    holder.position.set((col-2)*1.12,0,-row*1.5);
+    holder.position.x=(i-2)*0.85; holder.rotation.y=HEAD?0:0;
     scene.add(holder);
-    window.__rows.push({n,i,holder});
-  });
-  let t=0;
-  function tick(){ requestAnimationFrame(tick); t+=1/60; cam.position.y=1.15; cam.lookAt(0,0.9,-0.4); renderer.render(scene,cam); }
-  tick();
-  window.__row=function(r){ cam.position.set(0,1.12,3.0); cam.lookAt(0,0.86,-r*1.5); };
+    const d=document.createElement('div'); d.textContent=names[i];
+    d.style.cssText='position:fixed;left:'+(9+i*19)+'%;bottom:4px;color:#fff;font:12px monospace'; document.body.appendChild(d);
+  }
+  if(HEAD){ cam.position.set(0,1.45,1.9); cam.lookAt(0,1.42,0); }
+  else { cam.position.set(0,1.35,5.2); cam.lookAt(0,0.95,0); }
+  function tick(){ requestAnimationFrame(tick); renderer.render(scene,cam); } tick();
+  window.__ok=1;
 })();
 </script></body></html>
