@@ -2066,11 +2066,12 @@ function camClampT(dt){
   /* 문 앞에 섰을 때만: 플레이어가 하단 바에 가리지 않을 만큼만 남쪽으로 (바 '뒤'로만 바깥 바닥) */
   const keepT=player.pos.z-sp.dzMax+(CAMUI.marPx+18)/pxm, capT=(CAMS.z1+marM)-sp.dzMax;
   if(tz<keepT) tz=Math.min(keepT,capT);
-  /* --- 가로: 매장이 화면에 남도록, 좁은 화면에서는 플레이어를 따라간다 --- */
-  let tx=player.pos.x*0.85;
-  const xHi=(CAMS.x1+1.2)-sp.dxMax, xLo=(CAMS.x0-1.2)-sp.dxMin;
-  if(xLo<=xHi) tx=Math.max(xLo,Math.min(xHi,tx));
-  const Xx=_camX.x, cz=(player.pos.z-tz)*_camX.z, U=0.70*vh*a/2;  // 플레이어를 화면 좌우 70% 안에
+  /* --- 가로: 플레이어를 화면 가운데에 두되(비스듬한 시점 보정), 매장이 화면을 벗어나지 않게 --- */
+  const Xx=_camX.x, cz=(player.pos.z-tz)*_camX.z;
+  let tx=player.pos.x+cz/Xx;
+  const txMin=(CAMS.x1+1.2)-sp.dxMax, txMax=(CAMS.x0-1.2)-sp.dxMin;
+  if(txMin<=txMax) tx=Math.max(txMin,Math.min(txMax,tx));
+  const U=0.62*vh*a/2;                                  // 플레이어를 화면 좌우 62% 안에
   tx=Math.max(player.pos.x-(U-cz)/Xx, Math.min(player.pos.x-(-U-cz)/Xx, tx));
   _camNew.set(tx,0,tz); return _camNew;
 }
