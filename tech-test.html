@@ -2,13 +2,23 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794550761';
+<script>try{(function(){var V='1794551689';
+function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
+if(document.getElementById('__updBar')) return;
+var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
+el.setAttribute('style','position:fixed;left:50%;top:calc(4px + env(safe-area-inset-top));transform:translateX(-50%);z-index:2147483000;padding:9px 18px 11px;border-radius:16px;background:linear-gradient(#ffd23f,#ff9a1a);color:#3a1a00;font:900 15px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;letter-spacing:-.2px;box-shadow:0 4px 0 #b85a00,0 0 0 3px #fff;white-space:nowrap;-webkit-tap-highlight-color:transparent;cursor:pointer;text-align:center');
+el.textContent='🔄 최신 버전 반영하기 (터치)';
+el.onclick=function(){ try{ el.textContent='🔄 반영 중…'; }catch(e){}
+  setTimeout(function(){ location.href=location.pathname+'?b='+encodeURIComponent(t)+(location.hash||''); },60); };
+document.body.appendChild(el); }catch(e){}}
 function chk(){try{fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=(t||'').trim();if(!t||t===V)return;if(location.search.indexOf('b='+t)>=0)return;
-if(window.__updBusy&&window.__updBusy()){window.__pendVer=t;if(window.__updPend){try{window.__updPend(t);}catch(e){}}return;}
-location.replace(location.pathname+'?b='+encodeURIComponent(t)+(location.hash||''));}).catch(function(){});}catch(e){}}
-window.__checkVer=chk;chk();var _vt=0;function rt(){var n=Date.now();if(n-_vt<12000)return;_vt=n;chk();}
+window.__pendVer=t;window.__newV=t;showUpd(t);
+if(window.__updBusy&&window.__updBusy()){if(window.__updPend&&!window.__updToasted){window.__updToasted=1;try{window.__updPend(t);}catch(e){}}return;}
+}).catch(function(){});}catch(e){}}
+window.__checkVer=chk;window.__showUpd=showUpd;chk();var _vt=0;function rt(){var n=Date.now();if(n-_vt<12000)return;_vt=n;chk();}
 document.addEventListener('visibilitychange',function(){if(!document.hidden)rt();});
 addEventListener('pageshow',function(e){if(e&&e.persisted)rt();});
+document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)showUpd(window.__pendVer);});
 })();}catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -293,7 +303,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.11</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.12</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -464,7 +474,7 @@ function offSave(){ S.offAt=Date.now(); save(); }
 let money=S.money;
 const STAGE_OF=d=>d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; const STN=['대구 동성로점','부산 센텀점','서울 강남스퀘어점','인천공항점','뉴욕 타임스퀘어점','노바 테크 본사'], STS=['대구','부산','서울','인천','뉴욕','본사'], STK=['동네 대리점','쇼핑몰 매장','플래그십 스토어','공항 면세점','글로벌 플래그십','본사 쇼룸'], STC=['DAEGU','BUSAN','SEOUL','INCHEON AIRPORT','NEW YORK','SILICON VALLEY'], STI=['🏙️','🌊','🗼','✈️','🗽','🚀']; const STG=STAGE_OF(S.day||0);
 const TS=[
-  {name:'대구 동성로점',sign:'MOBILE SHOP',signBg:'#1d2433',signLine:'#5ad1ff',ground:'#7fcf5c',floor:['#c9a27a','#bb946c','#9a7550'],wall:['#f3ead8','#e6dac2','#c9b48e'],cap:'#36b39b',table:'table_medium',acc:'#36b39b',promo:['#36b39b','#2f6fd8'],out:'street'},
+  {name:'대구 동성로점',sign:'MOBILE SHOP',signBg:'#1d2433',signLine:'#5ad1ff',ground:'#363c4a',floor:['#c9a27a','#bb946c','#9a7550'],wall:['#f3ead8','#e6dac2','#c9b48e'],cap:'#36b39b',table:'table_medium',acc:'#36b39b',promo:['#36b39b','#2f6fd8'],out:'street'},
   {name:'부산 센텀점',sign:'TECH STORE',signBg:'#ffffff',signFg:'#1d2433',signLine:'#2f6fd8',ground:'#d9dde3',floor:['#cfd5dd','#c3c9d2','#aab2bd'],wall:['#ffffff','#f1f3f6','#c9ced8'],cap:'#2f6fd8',table:'table_medium',acc:'#2f6fd8',promo:['#2f6fd8','#b07aff'],out:'mall'},
   {name:'서울 강남스퀘어점',sign:'TECH FLAGSHIP',signBg:'#0f1420',signLine:'#ffd23f',ground:'#cfc8bb',floor:['#c4b9a6','#b8ad99','#9d927f'],wall:['#fbfaf7','#efece6','#c9c2b4'],cap:'#3a3226',table:'table_medium_long',acc:'#ffd23f',promo:['#0f1420','#ff5a8a'],out:'plaza'},
   {name:'인천공항점',sign:'TECH DUTY FREE',signBg:'#0f2a4a',signLine:'#5ad1ff',ground:'#d3d9e2',floor:['#d2d9e2','#c8d0da','#a7b1bf'],wall:['#ffffff','#eef2f7','#c3cbd6'],cap:'#0f2a4a',table:'table_medium_long',acc:'#5ad1ff',promo:['#0f2a4a','#5ad1ff'],out:'airport'},
@@ -527,7 +537,7 @@ function drawOutside(){
   ctx2.fillStyle='#4a4f5c'; ctx2.fillRect(d1.x,d1.y,d2.x-d1.x,d2.y-d1.y);
   ctx2.fillStyle='#ffffff'; for(let x=-28;x<=28;x+=4){ const q=SX(x-0.7,11.6); ctx2.fillRect(q.x,q.y,1.4*q.s,0.14*q.s); }
   const g1=SX(-30,-14), g2=SX(30,-9.15);
-  ctx2.fillStyle='#7fbf63'; ctx2.fillRect(g1.x,g1.y,g2.x-g1.x,g2.y-g1.y);
+  ctx2.fillStyle='#8a9099'; ctx2.fillRect(g1.x,g1.y,g2.x-g1.x,g2.y-g1.y); /* v2.12: 매장 뒤 잔디 -> 보도 포장(3D와 동일) */
 }
 function drawFloor(){
   const p0=SX(-7,-9), p1=SX(7,6);

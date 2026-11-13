@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794549382';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794551689';
+function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
+if(document.getElementById('__updBar')) return;
+var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
+el.setAttribute('style','position:fixed;left:50%;top:calc(4px + env(safe-area-inset-top));transform:translateX(-50%);z-index:2147483000;padding:9px 18px 11px;border-radius:16px;background:linear-gradient(#ffd23f,#ff9a1a);color:#3a1a00;font:900 15px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;letter-spacing:-.2px;box-shadow:0 4px 0 #b85a00,0 0 0 3px #fff;white-space:nowrap;-webkit-tap-highlight-color:transparent;cursor:pointer;text-align:center');
+el.textContent='🔄 최신 버전 반영하기 (터치)';
+el.onclick=function(){ try{ el.textContent='🔄 반영 중…'; }catch(e){}
+  setTimeout(function(){ location.href=location.pathname+'?b='+encodeURIComponent(t)+(location.hash||''); },60); };
+document.body.appendChild(el); }catch(e){}}
 function chk(){try{fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=(t||'').trim();if(!t||t===V)return;if(location.search.indexOf('b='+t)>=0)return;
-if(window.__updBusy&&window.__updBusy()){window.__pendVer=t;if(window.__updPend){try{window.__updPend(t);}catch(e){}}return;}
-location.replace(location.pathname+'?b='+encodeURIComponent(t)+(location.hash||''));}).catch(function(){});}catch(e){}}
-window.__checkVer=chk;chk();var _vt=0;function rt(){var n=Date.now();if(n-_vt<12000)return;_vt=n;chk();}
+window.__pendVer=t;window.__newV=t;showUpd(t);
+if(window.__updBusy&&window.__updBusy()){if(window.__updPend&&!window.__updToasted){window.__updToasted=1;try{window.__updPend(t);}catch(e){}}return;}
+}).catch(function(){});}catch(e){}}
+window.__checkVer=chk;window.__showUpd=showUpd;chk();var _vt=0;function rt(){var n=Date.now();if(n-_vt<12000)return;_vt=n;chk();}
 document.addEventListener('visibilitychange',function(){if(!document.hidden)rt();});
 addEventListener('pageshow',function(e){if(e&&e.persisted)rt();});
+document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)showUpd(window.__pendVer);});
 })();}catch(e){}</script><link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="테크 스토어"><meta name="theme-color" content="#0b1c66"><link rel="apple-touch-icon" href="icon-180.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -262,7 +272,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.11</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.12</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -341,7 +351,7 @@ function offSave(){ S.offAt=Date.now(); save(); }
 let money=S.money;
 const STAGE_OF=d=>d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; const STN=['대구 동성로점','부산 센텀점','서울 강남스퀘어점','인천공항점','뉴욕 타임스퀘어점','노바 테크 본사'], STS=['대구','부산','서울','인천','뉴욕','본사'], STK=['동네 대리점','쇼핑몰 매장','플래그십 스토어','공항 면세점','글로벌 플래그십','본사 쇼룸'], STC=['DAEGU','BUSAN','SEOUL','INCHEON AIRPORT','NEW YORK','SILICON VALLEY'], STI=['🏙️','🌊','🗼','✈️','🗽','🚀']; const STG=STAGE_OF(S.day||0);
 const TS=[
-  {name:'대구 동성로점',sign:'MOBILE SHOP',signBg:'#1d2433',signLine:'#5ad1ff',ground:'#7fcf5c',floor:['#c9a27a','#bb946c','#9a7550'],wall:['#f3ead8','#e6dac2','#c9b48e'],cap:'#36b39b',table:'table_medium',acc:'#36b39b',promo:['#36b39b','#2f6fd8'],out:'street'},
+  {name:'대구 동성로점',sign:'MOBILE SHOP',signBg:'#1d2433',signLine:'#5ad1ff',ground:'#363c4a',floor:['#c9a27a','#bb946c','#9a7550'],wall:['#f3ead8','#e6dac2','#c9b48e'],cap:'#36b39b',table:'table_medium',acc:'#36b39b',promo:['#36b39b','#2f6fd8'],out:'street'},
   {name:'부산 센텀점',sign:'TECH STORE',signBg:'#ffffff',signFg:'#1d2433',signLine:'#2f6fd8',ground:'#d9dde3',floor:['#cfd5dd','#c3c9d2','#aab2bd'],wall:['#ffffff','#f1f3f6','#c9ced8'],cap:'#2f6fd8',table:'table_medium',acc:'#2f6fd8',promo:['#2f6fd8','#b07aff'],out:'mall'},
   {name:'서울 강남스퀘어점',sign:'TECH FLAGSHIP',signBg:'#0f1420',signLine:'#ffd23f',ground:'#cfc8bb',floor:['#c4b9a6','#b8ad99','#9d927f'],wall:['#fbfaf7','#efece6','#c9c2b4'],cap:'#3a3226',table:'table_medium_long',acc:'#ffd23f',promo:['#0f1420','#ff5a8a'],out:'plaza'},
   {name:'인천공항점',sign:'TECH DUTY FREE',signBg:'#0f2a4a',signLine:'#5ad1ff',ground:'#d3d9e2',floor:['#d2d9e2','#c8d0da','#a7b1bf'],wall:['#ffffff','#eef2f7','#c3cbd6'],cap:'#0f2a4a',table:'table_medium_long',acc:'#5ad1ff',promo:['#0f2a4a','#5ad1ff'],out:'airport'},
@@ -595,7 +605,29 @@ box(120,0.04,4,'#4a4f5c',0,0.02,12.5).castShadow=false; for(let i=-12;i<13;i++) 
   pt.wrapS=pt.wrapT=THREE.RepeatWrapping; pt.repeat.set(30,2.2); const sw=new THREE.Mesh(new THREE.BoxGeometry(60,0.06,4.4),new THREE.MeshLambertMaterial({map:pt})); sw.position.set(0,0.03,8.4); sw.receiveShadow=true; scene.add(sw);
   /* v2.11: 매장 좌우 인도 포장 — 세로 화면 하단/모서리에 매장 밖 잔디가 비치지 않도록(스테이지 1) */
   [[-11.01,7.98],[11.01,7.98]].forEach(([cx,w])=>{ const t=pt.clone(); t.needsUpdate=true; t.repeat.set(Math.max(1,Math.round(w/2)),9);
-    const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,18.6),new THREE.MeshLambertMaterial({map:t})); m.position.set(cx,0.03,0); m.receiveShadow=true; scene.add(m); }); }
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,18.6),new THREE.MeshLambertMaterial({map:t})); m.position.set(cx,0.03,0); m.receiveShadow=true; scene.add(m); });
+  /* v2.12: 1스테이지(대구 동성로점) 바깥 도심 전면 포장 — 초록 잔디 영구 삭제.
+     기존에는 도로 남쪽(z>14.5)과 매장 밖 월드가 120m 잔디 평면(#7fcf5c) 그대로였다.
+     street 모드에서만 ① 160m 아스팔트 ② 도로 건너편 인도·연석 ③ 먼 쪽 도심 블록을 깐다. */
+  if(TS.out==='street'){
+    const AS=canvasTex((g,w,h)=>{ g.fillStyle='#3b414c'; g.fillRect(0,0,w,h);
+      for(let i=0;i<300;i++){ g.fillStyle=(i%3)?'rgba(255,255,255,.05)':'rgba(0,0,0,.08)'; g.fillRect((Math.random()*w)|0,(Math.random()*h)|0,2,2); }
+      g.strokeStyle='rgba(18,22,30,.5)'; g.lineWidth=2; g.strokeRect(1,1,w-2,h-2); },128,128);
+    AS.wrapS=AS.wrapT=THREE.RepeatWrapping; AS.repeat.set(40,40);
+    const ag=new THREE.Mesh(new THREE.BoxGeometry(160,0.03,160),new THREE.MeshLambertMaterial({map:AS})); ag.position.set(0,0.015,0); ag.receiveShadow=true; scene.add(ag);
+    /* 도로 건너편(남쪽) 인도 + 연석 — 도로(14.5)와 건너편 건물 앞(16.5) 사이 */
+    const pt2=pt.clone(); pt2.needsUpdate=true; pt2.repeat.set(40,1.2);
+    const fsw=new THREE.Mesh(new THREE.BoxGeometry(160,0.06,2.1),new THREE.MeshLambertMaterial({map:pt2})); fsw.position.set(0,0.03,15.7); fsw.receiveShadow=true; scene.add(fsw);
+    const fcb=box(160,0.16,0.2,'#8a8f98',0,0.08,14.6); fcb.castShadow=false;
+    /* 입구 앞 횡단보도 */
+    for(let i=0;i<7;i++) box(0.52,0.012,3.6,'#e6ebf2',-3.6+i*1.2,0.047,12.5).castShadow=false;
+    /* 먼 쪽 도심 블록 2열 — 화면 하단(남쪽)을 도심으로 채운다 */
+    const ct=canvasTex((g,w,h)=>{ g.fillStyle='#4a5160'; g.fillRect(0,0,w,h); g.fillStyle='#222834'; for(let y=0;y<4;y++) for(let x=0;x<4;x++){ g.fillRect(x*32+7,y*32+9,18,14); } g.fillStyle='rgba(255,255,255,.05)'; g.fillRect(0,0,w,3); },128,128);
+    ct.wrapS=ct.wrapT=THREE.RepeatWrapping;
+    [[-30,25,12,7,10,'#59616f'],[-16,26,11,9,10,'#4e5664'],[0,25,13,6,9,'#636b78'],[15,26,12,10,10,'#525a68'],[30,25,12,7,9,'#5b6371'],
+     [-33,35,14,9,11,'#454d5c'],[-17,36,13,11,11,'#4d5563'],[1,35,14,8,12,'#565e6c'],[18,36,13,10,10,'#48505e'],[34,35,13,9,10,'#59616f']].forEach(([x,z,w,ht,d,c])=>{ const t=ct.clone(); t.needsUpdate=true; t.repeat.set(Math.max(1,Math.round(w/6)),Math.max(1,Math.round(ht/6)));
+      const side=new THREE.MeshLambertMaterial({map:t}); const top=mat('#343b47'); const b=new THREE.Mesh(new THREE.BoxGeometry(w,ht,d),[side,side,top,top,side,side]); b.position.set(x,ht/2,z); b.castShadow=true; b.receiveShadow=true; scene.add(b); });
+  } }
 // checker floor tiles
 function tileTex(a,b,line,n){ const t=canvasTex((g,w,h)=>{ const s=w/n; for(let i=0;i<n;i++) for(let j=0;j<n;j++){ g.fillStyle=(i+j)%2?b:a; g.fillRect(i*s,j*s,s,s); } g.strokeStyle=line; g.lineWidth=2; for(let k=0;k<=n;k++){ g.beginPath(); g.moveTo(k*s,0); g.lineTo(k*s,h); g.stroke(); g.beginPath(); g.moveTo(0,k*s); g.lineTo(w,k*s); g.stroke(); } },128,128); t.wrapS=t.wrapT=THREE.RepeatWrapping; return t; }
 function woodTex(){ const t=canvasTex((g,w,h)=>{ const C=THM.wood; for(let i=0;i<8;i++){ g.fillStyle=C[i%4]; g.fillRect(0,i*h/8,w,h/8); g.fillStyle='rgba(0,0,0,.12)'; g.fillRect(0,i*h/8,w,2); g.fillRect(((i*53)%w),i*h/8,2,h/8); } },128,128); t.wrapS=t.wrapT=THREE.RepeatWrapping; return t; }
@@ -620,7 +652,8 @@ else if(TS.out!=='airport'&&TS.out!=='city') [[-9.5,-6],[-10,0],[-9.5,5],[9.5,-6
 // light store floor
 const FLM=(STG===0)?floorPlane(14,15,woodTex(),[7,7.5],0,-1.5):floorPlane(14,15,tileTex(TS.floor[0],TS.floor[1],TS.floor[2],STG>=2?1:2),STG>=2?[3.5,3.75]:[7,7.5],0,-1.5);
 const FLM0=FLM.material.map;  // v2.5: 인테리어 바닥 교체 후 되돌릴 원본 텍스처
-scene.background=new THREE.Color(TS.ground);
+/* v2.12: street(대구)는 바탕이 도심 포장이라 배경(하늘)을 바탕색으로 쓰면 안 된다 — 옛 잔디색 초록 띠의 원인 */
+scene.background=new THREE.Color(TS.out==='street'?'#a8d8ff':TS.ground);
 // outside per stage
 if(TS.out==='mall'){ // mall corridor + neighbouring shop fronts
   const mt=canvasTex((g,w,h)=>{ g.fillStyle='#c9ced6'; g.fillRect(0,0,w,h); g.fillStyle='#bec4cd'; g.fillRect(0,0,w/2,h/2); g.fillRect(w/2,h/2,w/2,h/2); g.strokeStyle='#c9ced6'; g.lineWidth=2; g.strokeRect(0,0,w,h); },64,64); mt.wrapS=mt.wrapT=THREE.RepeatWrapping; mt.repeat.set(30,30);
