@@ -466,7 +466,7 @@ const VIEW={x:0,z:-1.5,s:40,zoom:1,W:0,H:0,cx:0,cy:0};
 const ZOOMS=[1,1.55,2.2]; let ZOOMI=0;
 /* ---- v2.5: 카메라 시점 제어 (2D) — 전체 보기 = 매장 전체(ZOOMI 0), 기본 = 플레이어 추적(ZOOMI 1) ---- */
 let CAMPZ=1;
-function camFullPose(full,pz){ CAMPZ=pz||1; ZOOMI=full?0:1; }
+function camFullPose(full,pz){ CAMPZ=pz||1; ZOOMI=0; }   // 2D는 항상 매장 전체 기준 + 핀치 배율만 적용
 /* ---- v2.5: 인테리어(바닥·벽) 색 적용 ---- */
 let TSBASE=null;
 function intPaint2(){ if(!TSBASE) TSBASE={floor:TS.floor.slice(),cap:TS.cap,wall:TS.wall.slice()};
