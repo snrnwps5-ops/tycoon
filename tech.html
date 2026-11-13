@@ -483,18 +483,16 @@ function stripEyes(geo){ if(!geo||!geo.index||geo.userData._noEyes) return; geo.
   const keep=[]; for(let t=0;t<idx.length;t+=3){ const a=find(idx[t]),b=find(idx[t+1]),c=find(idx[t+2]); if(eye.has(a)||eye.has(b)||eye.has(c)) continue; keep.push(idx[t],idx[t+1],idx[t+2]); }
   if(keep.length){ geo.setIndex(keep); geo.computeBoundingSphere(); } }
 /* 얼굴판(눈·눈썹 판)을 머리뼈 좌표로 재서 눈 위치 기준으로 쓴다 — 모델마다 한 번만 */
-function skinnedBox(mesh,root){ const pos=mesh.geometry.attributes.position, v=new THREE.Vector3(), b=new THREE.Box3();
-  if(root) root.updateMatrixWorld(true); else mesh.updateMatrixWorld(true);
-  try{ if(mesh.skeleton) mesh.skeleton.update(); }catch(e){}
-  const bt=mesh.applyBoneTransform?mesh.applyBoneTransform.bind(mesh):(mesh.boneTransform?mesh.boneTransform.bind(mesh):null);
-  for(let i=0;i<pos.count;i++){ v.fromBufferAttribute(pos,i); if(bt) bt(i,v); v.applyMatrix4(mesh.matrixWorld); b.expandByPoint(v); }
+/* 얼굴판 좌표: 바인드 공간의 정점을 머리뼈 로컬 좌표로 옮겨 잰다 (스킨 행렬 없이도 정확) */
+function faceBoxLocal(faceMesh,head){ const pos=faceMesh.geometry.attributes.position, sk=faceMesh.skeleton, bi=sk?sk.bones.indexOf(head):-1;
+  const M=new THREE.Matrix4(); if(sk&&bi>=0) M.copy(sk.boneInverses[bi]).multiply(faceMesh.bindMatrix||new THREE.Matrix4()); else M.copy(head.matrixWorld).invert();
+  const v=new THREE.Vector3(), b=new THREE.Box3(); b.makeEmpty();
+  for(let i=0;i<pos.count;i++){ v.set(pos.getX(i),pos.getY(i),pos.getZ(i)).applyMatrix4(M); b.expandByPoint(v); }
   return b; }
 function faceInfo(model,g,m,head,faceMesh){ if(FACEC[model]) return FACEC[model];
   g.updateMatrixWorld(true);
-  const bb=skinnedBox(faceMesh,g);
-  const inv=new THREE.Matrix4().copy(head.matrixWorld).invert();
-  const a=bb.min.clone().applyMatrix4(inv), b=bb.max.clone().applyMatrix4(inv);
-  const f={x1:Math.min(a.x,b.x),x2:Math.max(a.x,b.x),y1:Math.min(a.y,b.y),y2:Math.max(a.y,b.y),z2:Math.max(a.z,b.z)};
+  const bb=faceBoxLocal(faceMesh,head);
+  const f={x1:bb.min.x,x2:bb.max.x,y1:bb.min.y,y2:bb.max.y,z2:bb.max.z};
   f.w=f.x2-f.x1; f.h=f.y2-f.y1; f.cx=(f.x1+f.x2)/2;
   f.R=f.w*0.667; f.hy=f.y2-f.w*0.167; f.hz=f.z2-f.w*0.60;
   stripEyes(faceMesh.geometry);
