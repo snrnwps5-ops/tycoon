@@ -600,6 +600,18 @@ function drawActors(){
     ctx2.beginPath(); ctx2.arc(p.x,p.y,0.34*s,0,Math.PI*2); ctx2.fillStyle=col; ctx2.fill(); ctx2.lineWidth=Math.max(2,s*0.05); ctx2.strokeStyle='#ffffff'; ctx2.stroke();
     if(c.patMax){ const f=Math.max(0,Math.min(1,c.pat/c.patMax)); ctx2.beginPath(); ctx2.arc(p.x,p.y,0.45*s,-Math.PI/2,-Math.PI/2+f*Math.PI*2); ctx2.lineWidth=Math.max(2,s*0.07); ctx2.strokeStyle=f>0.5?'#46c95a':f>0.25?'#ffb020':'#e8342a'; ctx2.stroke(); }
     ctx2.font=Math.max(9,0.3*s)+'px sans-serif'; ctx2.textAlign='center'; ctx2.textBaseline='middle'; ctx2.fillText(EMO[c.type]||'🙂',p.x,p.y+1);
+    /* v2.7: 캐릭터별 헤어 컬러 · 액세서리 포인트 (3D 외형과 맞춤) */
+    { const LK=c.ch&&c.ch.look, HR=c.ch&&c.ch.hair;
+      if(HR){ ctx2.beginPath(); ctx2.arc(p.x,p.y,0.30*s,Math.PI*1.12,Math.PI*1.88); ctx2.lineWidth=Math.max(2,0.10*s); ctx2.strokeStyle=HR; ctx2.stroke(); }
+      if(LK){ const ac=LK.acc;
+        if(ac==='beanie'){ ctx2.beginPath(); ctx2.arc(p.x,p.y,0.25*s,Math.PI,Math.PI*2); ctx2.fillStyle=LK.c1||'#b07aff'; ctx2.fill(); }
+        else if(ac==='cap'){ ctx2.beginPath(); ctx2.arc(p.x,p.y-0.01*s,0.24*s,Math.PI,Math.PI*2); ctx2.fillStyle=LK.c1||'#e8473d'; ctx2.fill();
+          ctx2.fillRect(p.x-0.24*s,p.y-0.03*s,0.48*s,0.05*s); }
+        else if(ac==='phones'){ [-1,1].forEach(function(k){ ctx2.beginPath(); ctx2.arc(p.x+k*0.30*s,p.y,0.075*s,0,6.3); ctx2.fillStyle=LK.c1||'#2f3442'; ctx2.fill(); }); }
+        else if(ac==='glasses'||ac==='sun'){ [-1,1].forEach(function(k){ ctx2.beginPath(); ctx2.arc(p.x+k*0.13*s,p.y-0.02*s,0.07*s,0,6.3); ctx2.fillStyle=ac==='sun'?'#14161d':'#1d2433'; ctx2.fill(); }); }
+        else if(ac==='backpack'){ ctx2.fillStyle=LK.c1||'#4a7bd0'; rrect(ctx2,p.x-0.10*s,p.y+0.22*s,0.20*s,0.13*s,3); ctx2.fill(); }
+        else if(ac==='tote'){ ctx2.fillStyle=LK.c1||'#a8743e'; rrect(ctx2,p.x+0.23*s,p.y-0.02*s,0.13*s,0.17*s,3); ctx2.fill(); }
+      } }
     if(c.claim){ ctx2.beginPath(); ctx2.arc(p.x,p.y,0.5*s,0,Math.PI*2); ctx2.lineWidth=2; ctx2.strokeStyle='rgba(255,255,255,.7)'; ctx2.stroke(); }
   }
   for(const st of staff){
@@ -788,7 +800,7 @@ function makeChar(model,o){ o=o||{};
   const g=new THREE.Group(), inner=new THREE.Group(); g.add(inner); scene.add(g);
   const skin=o.skin||SKINS[Math.floor(Math.random()*SKINS.length)];
   const ch={g:g,inner:inner,m:null,mixer:{update:function(){}},acts:{},cur:null,stackG:new THREE.Group(),jump:0,
-    model:model||'Casual_Male',skin:skin,tint:o.tint||null,pants:o.pants||null,hat:o.hat||null};
+    model:model||'Casual_Male',skin:skin,tint:o.tint||null,pants:o.pants||null,hat:o.hat||null,look:o.look||null,hair:o.hair||null};
   return ch; }
 function animChar(ch,speed,dt,carry){ playA(ch,'Idle',0); if(ch.mixer) ch.mixer.update(dt);
   let y=0; if(ch.jump>0){ ch.jump=Math.max(0,ch.jump-dt*2.2); y=Math.sin((1-ch.jump)*Math.PI)*0.4; } ch.inner.position.y=y; }
