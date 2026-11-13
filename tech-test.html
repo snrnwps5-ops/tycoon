@@ -1661,8 +1661,8 @@ function openOffline(then,plan){
   openModal('<h2>🏢 매장 부재중 오프라인 수익!</h2><p style="margin-top:-4px">자리를 비운 동안 직원들이 매장을 지켰어요</p>'+
     '<div class="dstat"><span>부재 시간</span><b>'+offSpan(o.ms)+'</b></div>'+
     '<div class="dstat"><span>인정 시간 (최대 4시간)</span><b>'+hrs+'시간</b></div>'+
-    '<div class="dstat"><span>일한 직원 '+o.crew.length+'명</span><b style="text-align:right">'+o.crew.join(' · ')+'</b></div>'+
-    '<div class="dstat"><span>계산식</span><b style="text-align:right;font-size:12px">최근 순이익($'+o.base+') × 10% × '+hrs+'시간</b></div>'+
+    '<div class="dstat"><span>일한 직원 '+o.crew.length+'명</span><b style="text-align:right;max-width:60%;line-height:1.25;overflow-wrap:anywhere">'+o.crew.join(' · ')+'</b></div>'+
+    '<div class="dstat"><span>계산식</span><b style="text-align:right;font-size:12px;max-width:66%;line-height:1.25">최근 순이익($'+o.base+') × 10% × '+hrs+'시간</b></div>'+
     '<div class="dstat ok"><span>지급액</span><b style="font-size:19px">+$'+o.gain+'</b></div>'+
     '<button id="offGo">💰 오프라인 수익 수령하기</button>');
   $('offGo').onclick=()=>{ $('offGo').onclick=null; money+=o.gain; S.offAt=Date.now(); save(); snd('coin',0.6); haptic(20);
