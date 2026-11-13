@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794573300';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794576000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -272,7 +272,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.17</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">NOVA</span><h1>테크 스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.18</div></div><div id="load"><div class="t">테크 스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -2062,11 +2062,7 @@ const camT=new THREE.Vector3(0,0,1.2); let last=performance.now(), spawnT=0.5, s
    · camMeasureUI(): 하단 버튼 바가 덮는 화면 높이를 재서, 그 뒤쪽까지만 바깥 바닥이 지나가게 한다 */
 const CAMS={x0:-7,x1:7,z0:-9,z1:6};            // 매장 내부 경계 (가로 14m · 깊이 15m)
 const CAMUI={marPx:76};                        // 하단 버튼 바가 덮는 화면 높이(px)
-function camVH(){ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight));
-  /* v2.17: 화면 세로 지면 깊이 14.2m 피팅 — v2.13의 17.5m(전체 조감도)에서 당겨
-     캐릭터·테이블이 시원하게 크게 보이는 모바일 타이쿤 구도 (폰 세로 vh≈11.0m).
-     지면 깊이 = vh*(1.08+0.464a) (CAM_OFF 5.5/17/10.5 실측 계수) → vh = 14.2/(1.08+0.464a) */
-  return Math.max(8.4,Math.min(15.0,14.2/(1.08+0.464*a))); }
+function camVH(){ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)); return a<1?17:12; }
 const _camO=new THREE.Vector3(), _camX=new THREE.Vector3(), _camY=new THREE.Vector3(), _camUp=new THREE.Vector3(0,1,0), _camSp={dzMin:0,dzMax:0,dxMin:0,dxMax:0}, _camT=new THREE.Vector3(), _camNew=new THREE.Vector3();
 function camSpan(vh,a,zoom){
   const z=zoom||1, hw=vh*a/2/z, hh=vh/2/z;
@@ -2216,7 +2212,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   $('rate').textContent=(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1)); { const nv=npsOf(dayNps); const rm=$('rooms'); rm.textContent='NPS '+(nv==null?'—':(nv>0?'+':'')+nv); rm.style.background=nv==null?'':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'; } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
-  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.13: 해상도 자율 클램핑 — 화면 아래에 바깥 도로가 새지 않는다 */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
+  if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(new THREE.Vector3(player.pos.x*0.85,0,player.pos.z+0.6),1-Math.exp(-dt*5)); /* v2.18: 초기 v1.4 시원하고 탁 트인 와이드 쿼터뷰로 100% 원상복구 */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
   if(!window.__NR) renderer.render(scene,cam); requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
