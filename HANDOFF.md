@@ -6,7 +6,8 @@
 - 저장소: https://github.com/snrnwps5-ops/tycoon (`main` = 배포 소스, `gh-pages`도 같은 커밋으로 함께 push 중)
 - 3D 본편(루트): https://snrnwps5-ops.github.io/tycoon/ — `index.html`이 `tech.html`과 **같은 파일**이라 로비·리다이렉트 없이 바로 실행됩니다(v2.8에서 분식집 로비 삭제)
 - 2D 테스트 모드: https://snrnwps5-ops.github.io/tycoon/tech-test.html (WebGL 불필요, AI QA용)
-- 현재 버전: v2.13, 로직 커밋 `26c8609` (문서 커밋은 그 뒤) · 캐시 버스팅 `1794554794`
+- 현재 버전: v2.26, 로직 커밋 `7ca37bf` (문서 커밋은 그 뒤) · 캐시 버스팅 `1794620000`
+- v2.26 요약(상세는 `NEXT_TASKS.md`의 v2.26 절): 지원자·직원 3D 얼굴(`crew_faces.jpg` 3x3, `c.face` 0~8) · 크루 등급제(주니어/레귤러/시니어)와 매장 T.O. 정원(리드·매니저·시니어 매니저) · **플레이어도 매일 리더십 평가**(`S.myRank/myScore/myWarn`, 85점 승진·25점 미만 경고장, `leadNote` 발령 공문)
 - 캐시: `tech.html`·`index.html`·`tech-test.html` head에 `Cache-Control: no-cache, no-store, must-revalidate`(및 `Pragma`/`Expires`) 메타를 넣고, `version.txt`를 `cache:'no-store'`로 읽어 값이 다를 때 갱신을 안내합니다(세션스토리지 락 없음, 주소에 같은 `b=`가 이미 있으면 다시 돌지 않는 가드만 유지). **v2.12부터는 조용히 `location.replace`로 새로고침하지 않고, 화면 맨 위에 노란 배너 `🔄 최신 버전 반영하기 (터치)`(`#__updBar`, z-index 2147483000)를 띄웁니다** — 홈 화면 앱(PWA)에서 자동 새로고침이 사용자 눈에 띄지 않아 옛 화면이 계속 남던 문제 때문입니다. 배너를 터치하면 `location.href = location.pathname + '?b=<새 버전>'`로 강제 이동합니다(터치 전 60ms 동안 문구가 `반영 중…`으로 바뀜). 홈 화면 앱이 백그라운드에서 돌아올 때(`visibilitychange`)·bfcache 복귀(`pageshow persisted`)·12초 간격으로 다시 확인하고, 영업 중·상담 중이면(`__updBusy`) 예전처럼 `새 버전이 준비됐어요` 토스트를 한 번 띄운 뒤 배너만 남깁니다(자동 새로고침 없음)
 - `version.txt`: 빌드 시각. 머리의 스크립트가 이 값과 자신에 박힌 `var V='숫자'`를 비교해 다르면 `?b=`를 붙여 새로 불러옵니다.
 - **배포할 때마다 아래 값들을 같은 값으로 갱신**해야 합니다: `version.txt`, `tech.html`의 `var V='…'`, `_t2d/part_head.html`의 `var V='…'`(2D 빌드 머리). `index.html`·`tech-test.html`은 빌드가 자동으로 같은 값을 넣으므로 손대지 않습니다. 값이 어긋나면 그 페이지만 계속 `?b=`로 다시 불러오는 것처럼 보입니다.
