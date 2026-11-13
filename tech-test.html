@@ -1222,7 +1222,7 @@ function warnOff(t){ const w=useWarn[t]; if(w) w.on=0; }
 function useResetDay(){ useLog={}; useBeg={}; useWarn={}; }
 let restockTipT=0;
 function inv2Tick(dt){ const run=hasCrew('runner');
-  if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.6) receiveDock(); else if(run&&DOCK.t>22){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); }   /* v2.6: BOH 검수 시간을 남기려고 재고 담당의 자동 입고를 22초로 늦춤 (Lv2는 9초 뒤 BOH 자동 검수) */ }
+  if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.6) receiveDock(); else if(run&&DOCK.t>22&&!BOHSCAN.on){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); }   /* v2.6: BOH 검수 시간을 남기려고 재고 담당의 자동 입고를 22초로 늦춤 (Lv2는 9초 뒤 BOH 자동 검수) */ }
   const nr=needRestock(), near=Math.hypot(player.pos.x-REST.x,player.pos.z-REST.z)<1.4;
   REST.m.visible=true;
   if(nr){
@@ -1312,7 +1312,7 @@ function bohScanHit(){ if(!BOHSCAN.on) return;
 function bohScanAbort(){ BOHSCAN.on=false; BOHSCAN.i=-1; closeModalUI(); setTimeout(()=>openBoh('in'),60); }
 function bohScanEnd(){ const i=BOHSCAN.i, o=S.dock[i], hits=BOHSCAN.hits;
   BOHSCAN.on=false; BOHSCAN.i=-1;
-  if(!o){ closeModalUI(); return; }
+  if(!o){ closeModalUI(); toast('이미 입고 처리된 박스예요',2); if(dayState==='run') setTimeout(()=>openBoh('in'),80); return; }
   S.dock.splice(i,1);
   const q=o.q||1, miss=Math.max(0,3-hits);
   S.boh.scan=(S.boh.scan||0)+1; S.boh.boxes=(S.boh.boxes||0)+1;
