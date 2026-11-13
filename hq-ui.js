@@ -23,9 +23,9 @@ function call(name){ var f=A[name]; if(typeof f!=='function') return undefined; 
 var BRANCHES=[
   {id:'daegu', name:'대구 동성로점', icon:'🏙️', base:120, openDay:0,  stage:0},
   {id:'busan', name:'부산 센텀점', icon:'🌊', base:260, openDay:4,  stage:1},
-  {id:'seoul', name:'서울 강남스퀘어점', icon:'🗼', base:520, openDay:8,  stage:2},
-  {id:'icn',   name:'인천공항점', icon:'✈️', base:820, openDay:11, stage:3},
-  {id:'nyc',   name:'뉴욕 타임스퀘어점', icon:'🗽', base:1200, openDay:15, stage:4}
+  {id:'seoul', name:'서울 강남 본점', icon:'🏬', base:520, openDay:8,  stage:2},
+  {id:'icn',   name:'인천공항 메가스토어', icon:'✈️', base:820, openDay:11, stage:3},
+  {id:'nyc',   name:'뉴욕 메가 아울렛', icon:'🛒', base:1200, openDay:15, stage:4}
 ];
 var CFG={ upMax:5, upCost:function(b,lv){ return Math.round(b.base*4*Math.pow(1.7,lv-1)); }, visitNps:3, staffMax:6, staffCost:function(b,n){ return Math.round(b.base*1.5*(1+n*0.4)); } };
 function ensure(){ var s=S();

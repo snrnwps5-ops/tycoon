@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.28</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.29</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -186,7 +186,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 #leadNote .lnd{background:#eef3fb;border-radius:12px;padding:8px 10px;font:800 12px/1.5 var(--b);color:#2a3344;margin:6px 0 4px}
 #leadNote button{width:100%;margin-top:8px;border:0;border-radius:14px;padding:12px;font-family:var(--d);font-size:18px;color:#fff;background:linear-gradient(#7bea62,#2faa45);box-shadow:0 4px 0 #1d7a2a}
 #leadNote.warn .lnt{color:#a02010}#leadNote.warn button{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00}
-/* ===== v2.28: 본사 스카우트 전직동의서 · 명예의 전당 · AI 키 접기 ===== */
+/* ===== v2.29: 본사 스카우트 전직동의서 · 명예의 전당 · AI 키 접기 ===== */
 #scoutNote{position:fixed;inset:0;z-index:82;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(8,14,34,.68)}
 #scoutNote.on{display:flex;animation:lnf .3s ease-out}
 #scoutNote .snb{width:100%;max-width:390px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:linear-gradient(#fffdf6,#fff5e2);border:3px solid #e8a300;border-radius:18px;padding:14px 14px 12px;box-shadow:0 8px 0 rgba(0,0,0,.28),0 18px 40px rgba(0,0,0,.5);animation:lns .35s cubic-bezier(.2,1.4,.4,1);text-align:left}
@@ -341,7 +341,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.28</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.29</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -419,14 +419,20 @@ function save(){ if(window.__noSave) return; try{ S.money=Math.floor(money); S.l
 /* v2.4: 떠나는 시각을 오프라인 수익의 기준으로 남기고 저장 */
 function offSave(){ S.offAt=Date.now(); save(); }
 let money=S.money;
-const STAGE_OF=d=>d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; const STN=['대구 동성로점','부산 센텀점','서울 강남스퀘어점','인천공항점','뉴욕 타임스퀘어점','노바 테크 본사'], STS=['대구','부산','서울','인천','뉴욕','본사'], STK=['동네 슈퍼스토어','몰 슈퍼스토어','플래그십 슈퍼스토어','공항 메가스토어','글로벌 메가스토어','본사 쇼룸'], STC=['DAEGU','BUSAN','SEOUL','INCHEON AIRPORT','NEW YORK','SILICON VALLEY'], STI=['🏙️','🌊','🗼','✈️','🗽','🚀']; const STG=STAGE_OF(S.day||0);
+const STAGE_OF=d=>d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5;
+const STN=['대구 동성로점','부산 센텀점','서울 강남 본점','인천공항 메가스토어','뉴욕 메가 아울렛','메가 테크 글로벌 본사'],
+STS=['대구','부산','서울','인천','뉴욕','본사'],
+STK=['동네 슈퍼스토어','몰 메가플라자','초대형 플래그십','공항 면세스토어','글로벌 메가아울렛','글로벌 본사 물류센터'],
+STC=['DAEGU','BUSAN','SEOUL GANGNAM','INCHEON AIRPORT','NEW YORK','GLOBAL LOGISTICS'],
+STI=['🏙️','🌊','🏬','✈️','🛒','🌐'];
+const STG=STAGE_OF(S.day||0);
 const TS=[
   {name:'대구 동성로점',sign:'MEGA TECH SUPERSTORE',signBg:'#1d2433',signLine:'#5ad1ff',ground:'#363c4a',floor:['#c9a27a','#bb946c','#9a7550'],wall:['#f3ead8','#e6dac2','#c9b48e'],cap:'#36b39b',table:'table_medium',acc:'#36b39b',promo:['#36b39b','#2f6fd8'],out:'street'},
   {name:'부산 센텀점',sign:'ELECTRO MART',signBg:'#ffffff',signFg:'#1d2433',signLine:'#2f6fd8',ground:'#d9dde3',floor:['#cfd5dd','#c3c9d2','#aab2bd'],wall:['#ffffff','#f1f3f6','#c9ced8'],cap:'#2f6fd8',table:'table_medium',acc:'#2f6fd8',promo:['#2f6fd8','#b07aff'],out:'mall'},
-  {name:'서울 강남스퀘어점',sign:'MEGA FLAGSHIP',signBg:'#0f1420',signLine:'#ffd23f',ground:'#cfc8bb',floor:['#c4b9a6','#b8ad99','#9d927f'],wall:['#fbfaf7','#efece6','#c9c2b4'],cap:'#3a3226',table:'table_medium_long',acc:'#ffd23f',promo:['#0f1420','#ff5a8a'],out:'plaza'},
-  {name:'인천공항점',sign:'MEGA DUTY FREE',signBg:'#0f2a4a',signLine:'#5ad1ff',ground:'#d3d9e2',floor:['#d2d9e2','#c8d0da','#a7b1bf'],wall:['#ffffff','#eef2f7','#c3cbd6'],cap:'#0f2a4a',table:'table_medium_long',acc:'#5ad1ff',promo:['#0f2a4a','#5ad1ff'],out:'airport'},
-  {name:'뉴욕 타임스퀘어점',sign:'MEGA TECH GLOBAL',signBg:'#000000',signFg:'#ffffff',signLine:'#ff5a8a',ground:'#1b2233',floor:['#ece8e2','#e3ded6','#c2bbb0'],wall:['#fbfaf7','#efece6','#bdb5a8'],cap:'#111111',table:'table_medium_long',acc:'#ff5a8a',promo:['#111111','#ff5a8a'],out:'city'},
-  {name:'노바 테크 본사',sign:'NOVA HQ',signBg:'#ffffff',signFg:'#1d1d1f',signLine:'#2f6fd8',ground:'#86c46e',floor:['#f1efea','#e8e5df','#c8c3ba'],wall:['#ffffff','#f3f3f1','#c9c9c4'],cap:'#1d1d1f',table:'table_medium_long',acc:'#2f6fd8',promo:['#1d1d1f','#2f6fd8'],out:'campus'}][STG];
+  {name:'서울 강남 본점',sign:'SAMSUNG STORE GANGNAM',signBg:'#002f6c',signLine:'#5ad1ff',ground:'#cfc8bb',floor:['#c4b9a6','#b8ad99','#9d927f'],wall:['#fbfaf7','#efece6','#c9c2b4'],cap:'#002f6c',table:'table_medium_long',acc:'#5ad1ff',promo:['#002f6c','#5ad1ff'],out:'plaza'},
+  {name:'인천공항 메가스토어',sign:'MEGA DUTY FREE',signBg:'#0f2a4a',signLine:'#5ad1ff',ground:'#d3d9e2',floor:['#d2d9e2','#c8d0da','#a7b1bf'],wall:['#ffffff','#eef2f7','#c3cbd6'],cap:'#0f2a4a',table:'table_medium_long',acc:'#5ad1ff',promo:['#0f2a4a','#5ad1ff'],out:'airport'},
+  {name:'뉴욕 메가 아울렛',sign:'BEST BUY & WALMART',signBg:'#003b64',signFg:'#ffffff',signLine:'#ffc220',ground:'#1b2233',floor:['#ece8e2','#e3ded6','#c2bbb0'],wall:['#fbfaf7','#efece6','#bdb5a8'],cap:'#003b64',table:'table_medium_long',acc:'#ffc220',promo:['#003b64','#ffc220'],out:'city'},
+  {name:'메가 테크 글로벌 본사',sign:'MEGA GLOBAL LOGISTICS',signBg:'#0b1626',signFg:'#ffffff',signLine:'#2f6fd8',ground:'#86c46e',floor:['#f1efea','#e8e5df','#c8c3ba'],wall:['#ffffff','#f3f3f1','#c9c9c4'],cap:'#0b1626',table:'table_medium_long',acc:'#2f6fd8',promo:['#0b1626','#2f6fd8'],out:'campus'}][STG];
 THM.ground=TS.ground; if(STG===0) THM.wood=['#c98a52','#b97a45','#d49860','#c08048'];
 function closeModalUI(){ if(window.HUBOPEN) window.HUB_LOCK=1; /* v2.10: 물류 모달을 닫았을 때 발판 위에 서 있어도 즉시 재개방되지 않도록 */ $('modal').classList.remove('on'); $('modal').classList.remove('canClose'); $('mbox').onclick=null; window.__mX=null; curFace=null; if(quizOpen) quizOpen=false; initAudio(); if(window.__rts){ window.__rts=0; setTimeout(startDayModal,150); } }
 function openModal(h,opt){ if(curFace!=null&&h.indexOf('<h2')===0) h='<div style="margin-bottom:2px">'+faceI(curFace,76,'fm')+'</div>'+h; $('mbox').innerHTML=h; $('modal').classList.add('on'); window.__mX=(opt&&opt.onClose)||null; $('modal').classList.toggle('canClose',!!window.__mX||(h.indexOf('id="mOk"')>=0)); const b=$('mOk'); if(b) b.onclick=()=>closeModalUI(); }
@@ -1037,7 +1043,7 @@ const DAYS=[
   {goal:1100,dur:150,min:3.7,types:['pick','buy','fix','sw','ret','tour','esc'],backup:1,fail:0.12,diag:0.5,walkin:0.4,xfer:0.4,spec:1,tough:0.15,policy:1,title:'반품 & 정책 상담',tip:'반품·교환, 환불·보증·침수 상담이 와요'},
   {goal:1900,dur:160,min:3.7,types:['tour','esc','pick','buy','fix','sw','ret'],backup:1,fail:0.12,walkin:0.4,xfer:0.4,spec:1,diag:0.6,tough:0.2,policy:1,spawn:1.3,title:'주말 피크',tip:'손님이 많아요, 직원을 활용하세요'},
   {goal:2800,dur:160,min:3.8,types:['tour','esc','corp','pick','buy','fix','sw','ret'],backup:1,fail:0.12,walkin:0.4,xfer:0.4,spec:1,diag:0.6,tough:0.25,policy:1,spawn:1.3,title:'법인 고객의 날',tip:'큰 구매가 많아요'},
-  {goal:3600,dur:170,min:4.0,types:['tour','esc','corp','pick','buy','fix','sw','ret'],backup:1,fail:0.12,walkin:0.4,xfer:0.4,spec:1,diag:0.6,tough:0.25,policy:1,spawn:1.5,title:'최종 평가',tip:'플래그십 매장이 되려면 최고 평점이 필요해요'}];
+  {goal:3600,dur:170,min:4.0,types:['tour','esc','corp','pick','buy','fix','sw','ret'],backup:1,fail:0.12,walkin:0.4,xfer:0.4,spec:1,diag:0.6,tough:0.25,policy:1,spawn:1.5,title:'최종 평가',tip:'초대형 슈퍼스토어가 되려면 가전·모바일 전 품목 마진과 최고 평점이 필요해요'}];
 [{goal:3400,flight:0.35,spawn:1.4,title:'공항 첫 출근',tip:'✈ 비행기 손님은 시간이 없어요! 대신 1.5배를 내요'},
  {goal:4200,flight:0.45,spawn:1.5,tough:0.2,title:'탑승 마감 러시',tip:'출발 직전 손님이 몰려요. 빨리빨리!'},
  {goal:4800,flight:0.5,spawn:1.6,title:'환승객 몰림',tip:'외국인 손님과 법인 손님이 많아요'},
@@ -1076,7 +1082,7 @@ const DETQ=[
 const PADS=[
   {id:'table2',x:3.3,z:1.6,price:150,ic:'table',t:'체험 테이블 2',req:null},
   {id:'decor',x:5.0,z:3.6,price:550,ic:'star',t:'매장 꾸미기',req:'table2'},
-  {id:'flag',x:0,z:2.6,price:1200,ic:'star',t:'플래그십 승격',req:'decor'}
+  {id:'flag',x:0,z:2.6,price:1200,ic:'star',t:'슈퍼스토어 승격',req:'decor'}
 ];
 const ICSVG={
   wrench:(g)=>{ g.strokeStyle='#fff'; g.lineWidth=12; g.lineCap='round'; g.beginPath(); g.moveTo(-20,20); g.lineTo(14,-14); g.stroke(); g.beginPath(); g.arc(18,-18,12,0.6,5.2); g.stroke(); },
@@ -1427,7 +1433,7 @@ function myScore(g){ let s=0; S.best.forEach((v,d)=>{ if(v&&STAGE_OF(d)===g) s+=
 function ranking(g){ const base=STGD[g].reduce((a,d)=>a+dayCfg(d).goal,0)*rivProg(g); const L=RIV[g].map(([n,k])=>({n,v:Math.round(base*k/5)*5})); L.push({n:'내 매장 ('+TS.sign+')',v:myScore(g),me:1}); L.sort((a,b)=>b.v-a.v||(a.me?-1:1)); return L; }
 function myRank(g){ return ranking(g).findIndex(x=>x.me)+1; }
 const WPOS=[[205,452],[240,505],[168,358],[100,408],[272,138],[88,104]];
-const WFEAT=['픽업·구입 상담 기초, 수리 센터와 소프트웨어 상담 오픈, 예약 없는 손님 안내','데이터 이전, 스펙 상담, 까다로운 손님, 신제품 출시일 러시, 신모델 수리','반품·정책 상담, 법인 고객, 오류 코드 지식 문서, 넓은 플래그십 매장','✈ 비행기 손님: 시간이 없지만 1.5배 결제, 탑승 마감 러시','👑 VIP 손님: 3배 결제, 실망하면 민원 2건, 밤의 뉴욕','🎤 키노트 웨이브: 발표가 끝날 때마다 손님이 한꺼번에, 최종 평점 4.2'];
+const WFEAT=['스마트폰·가전 특가전, 현장 개통·수리 상담, 동네 단골 손님 응대, 박스 배달 기초','대형 가전 아일랜드 진열, 주말 쇼핑몰 세일 러시, 스펙 비교 상담, 대용량 재고 발주','AI 가전·플래그십 스마트폰 체험존, 법인 B2B 대량 납품, 프리미엄 고객 케어, 초대형 복합 매장','✈ 출국 여행객 모바일 면세 특가, 탑승 마감 초고속 결제(1.5배), 환전·유심 번들 세일','🛒 블랙프라이데이 창고 대방출, 초대형 TV·게이밍 PC 번들, 지게차 물류 회전, VIP 대량 결제(3배)','🌐 전 세계 지점 물류 관제, 대형 제조사 총판 직거래, 글로벌 세일즈 서밋 파동, 최종 운영 평가'];
 function wState(i){ const cur=STAGE_OF(S.day); return i<cur?'done':i===cur?'cur':i===cur+1?'next':'lock'; }
 function openWorld(sel,animFrom){ const cur=animFrom!=null?animFrom:STAGE_OF(S.day); const st=i=>i<cur?'done':i===cur?'cur':i===cur+1?'next':'lock'; if(sel==null) sel=cur;
   const P=WPOS; let pathD='M'+P[0][0]+','+P[0][1]; for(let i=1;i<P.length;i++){ const [x0,y0]=P[i-1],[x1,y1]=P[i]; const mx=(x0+x1)/2+(i===4?80:i===2?-40:20), my=(y0+y1)/2+(i===4?40:0); pathD+=' Q'+mx+','+my+' '+x1+','+y1; }
@@ -1859,7 +1865,7 @@ function leadNote(kind,d){ let el=$('leadNote');
   const b=$('lnOk'); if(b) b.onclick=e=>{ e.stopPropagation(); el.classList.remove('on'); };
 }
 
-/* ================= v2.28: 본사 스카우트 전직동의서 (대구·부산·서울·인천·뉴욕 모든 지점 공통) =================
+/* ================= v2.29: 본사 스카우트 전직동의서 (대구·부산·서울·인천·뉴욕 모든 지점 공통) =================
    - 조건: Lv.2 이상 세일즈/시니어 프로가 매장에 있을 때, 영업 마감 뒤 2영업일 간격으로 본사 발령 공문이 온다
    - [영전 승인]: 스카우트 지원금 +$120 · 직원은 본사로 이동해 명예의 전당 등재 · 매장 T.O. 빈자리 발생
                   → AI 면접실에서 즉시 신규 지원자를 채용해 순환
@@ -2027,7 +2033,7 @@ function slotHTML(){ const ex=extras(), n=slotCount(); let h='<div class="crow">
     h+='<div class="cand"><div class="cn">'+crewFace(c)+'<b>'+c.name+'</b> '+ROLES[c.role].n+' (추가) Lv.'+lv+' '+satEmo(c.sat)+crewTags(c)+'<br>속도 '+stars5(Math.min(1,c.spd/1.3))+' · 정확 '+stars5(c.acc)+' · 급여 $'+c.wage+'/일</div>'+lvHTML(c.role,lv)
       +'<div style="display:flex;flex-direction:column;gap:4px"><button data-xtr="'+xi+'" '+(lv>=5||money<xc?'disabled':'')+'>교육 $'+xc+'</button><button data-xrs="'+xi+'" '+(money<xr?'disabled':'')+'>급여 인상 $'+xr+'</button>'+promBtn(c)+'<button data-xfire="'+xi+'" class="gray" style="background:linear-gradient(#b8c2d0,#8a96a8)">내보내기</button>'+(lv>=3?'<button data-hqtr="'+xi+'" style="min-width:0;background:linear-gradient(#ffd76a,#e8a300);box-shadow:0 3px 0 #a06a00" '+((!window.HQUI||HQUI.hqEligible(c))?'':'disabled')+'>🎖️ 본사 전직 품의서</button>':'')+'</div></div>'; });
   for(let k=ex.length;k<2;k++){ if(k<n){ h+='<div class="cand"><div class="cn"><b>빈 자리</b><br>누구를 뽑을까요?</div><div style="display:flex;flex-direction:column;gap:4px">'+['runner','tech'].map(r=>{ const c=candidates(r)[1], cost=c.wage*5, lock=S.day<ROLE_UNLOCK[r]; return '<button data-xhire="'+r+'" '+(lock||money<cost?'disabled':'')+'>'+ROLES[r].n+' $'+cost+'</button>'; }).join('')+'</div></div>'; }
-    else { const prog=STAGE_OF(S.day)<2&&(k===0||S.slotPaid); h+='<div class="cand"><div class="cn">🔒 '+(prog?'서울 강남스퀘어점에 도착하면 열려요':'상점에서 "직원 자리 +1"을 구매하면 열려요')+'</div>'+(prog?'':'<button data-xshop="1" style="background:linear-gradient(#ff7ab8,#e8348a);box-shadow:0 3px 0 #9a1a5a">상점</button>')+'</div>'; } }
+    else { const prog=STAGE_OF(S.day)<2&&(k===0||S.slotPaid); h+='<div class="cand"><div class="cn">🔒 '+(prog?'서울 강남 본점에 도착하면 열려요':'상점에서 "직원 자리 +1"을 구매하면 열려요')+'</div>'+(prog?'':'<button data-xshop="1" style="background:linear-gradient(#ff7ab8,#e8348a);box-shadow:0 3px 0 #9a1a5a">상점</button>')+'</div>'; } }
   return h+'</div>'; }
 function slotClick(e){ const hb=e.target.closest('[data-xhire]'), fb=e.target.closest('[data-xfire]'), sb=e.target.closest('[data-xshop]'), tb2=e.target.closest('[data-xtr]'), rb2=e.target.closest('[data-xrs]');
   if(tb2){ const c=S.crew[+tb2.dataset.xtr]; if(!c||!c.extra) return true; const lv=c.lv||1, tc=Math.round(c.wage*4*lv); if(money<tc||lv>=5) return true; money-=tc; c.lv=lv+1; c.wage=Math.round(c.wage*1.15); c.sat=Math.min(100,(c.sat==null?70:c.sat)+8); refreshTags(); snd('level_up',0.45,1.3); save(); openCrew(); return true; }
@@ -2513,8 +2519,8 @@ const ACH=[
  {id:'nps5',ic:'📣',n:'입소문 장인',d:'NPS 50 이상으로 5번 마감',g:5,v:()=>S.stats.nps50||0,r:500},
  {id:'crew5',ic:'👥',n:'드림팀',d:'직원 5명 고용',g:5,v:()=>S.crew.length,r:600},
  {id:'rank1',ic:'🏆',n:'지역 챔피언',d:'지역 랭킹 1위 3곳',g:3,v:()=>S.r1.filter(Boolean).length,r:1000},
- {id:'seoul',ic:'🗼',n:'서울 입성',d:'서울 강남스퀘어점 도착',g:1,v:()=>STAGE_OF(S.day)>=2?1:0,r:500},
- {id:'ny',ic:'🗽',n:'세계로',d:'뉴욕 타임스퀘어점 도착',g:1,v:()=>STAGE_OF(S.day)>=4?1:0,r:1500}];
+ {id:'seoul',ic:'🗼',n:'서울 입성',d:'서울 강남 본점 도착',g:1,v:()=>STAGE_OF(S.day)>=2?1:0,r:500},
+ {id:'ny',ic:'🗽',n:'세계로',d:'뉴욕 메가 아울렛 도착',g:1,v:()=>STAGE_OF(S.day)>=4?1:0,r:1500}];
 const achReady=()=>ACH.some(a=>!S.ach[a.id]&&a.v()>=a.g);
 function openAch(){ const rows=ACH.map(a=>({a,p:Math.min(a.g,a.v()),got:!!S.ach[a.id]})).sort((x,y)=>(x.got-y.got)||((y.p>=y.a.g)-(x.p>=x.a.g)));
   openModal('<div>'+spI(8,64)+'</div><h2 style="margin-top:2px">업적 '+ACH.filter(a=>S.ach[a.id]).length+'/'+ACH.length+'</h2><div class="shl">'+rows.map(({a,p,got})=>'<div class="msrow"'+(got?' style="opacity:.55"':'')+'><div class="tx"><b>'+a.ic+' '+a.n+'</b><div class="bar"><s style="width:'+(p/a.g*100)+'%"></s></div><small>'+a.d+' · '+p+'/'+a.g+' · 보상 $'+a.r+'</small></div><button data-ach="'+a.id+'" '+(!got&&p>=a.g?'':'disabled')+'>'+(got?'완료':p>=a.g?'받기':'진행 중')+'</button></div>').join('')+'</div><button class="gray" id="achBack">미션으로</button>');
@@ -2659,11 +2665,11 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   if($('dNext')) $('dNext').onclick=()=>go(true); if($('dRetry')) $('dRetry').onclick=()=>go(false); if($('dUp')) $('dUp').onclick=()=>{ dayState='pre'; save(); window.__rts=1; openUp(); }; save();
   /* v2.26: 승진/경고 발령 공문은 결과창 위에 따로 띄운다(결과창·닫기 흐름을 건드리지 않게) */
   if(promotion) setTimeout(()=>leadNote('up',promotion),700); else if(penalty) setTimeout(()=>leadNote('warn',penalty),700);
-  /* v2.28: 영업 마감 후 본사 스카우트 전직동의서 — 모든 지점 공통 */ setTimeout(()=>scoutTick(0),1300); }
+  /* v2.29: 영업 마감 후 본사 스카우트 전직동의서 — 모든 지점 공통 */ setTimeout(()=>scoutTick(0),1300); }
 function unlock(p){ if(S.unl.includes(p.id)) return; S.unl.push(p.id); p.m.visible=false; snd('level_up',0.55,1.1); sparkle(p.x,0.8,p.z,'#7bea62'); gainXP(3); shakeT=0.3;
   applyUnlocks(); const FOC={repair:[5.2,-4.4,REPG],support:[0.4,-5.0,SUPG],table2:[3.3,-0.6,T2],decor:[0,1,DECOR]}[p.id];
   save(); try{ if(FOC){ focusP.set(FOC[0],0,FOC[1]); focusT=1.6; popIn(FOC[2]); setTimeout(()=>{ try{ confetti(FOC[0],2.5,FOC[1]); }catch(e){} },300); } }catch(e){ console.warn('unlock fx',e); }
-  const MSG={repair:['수리 센터 오픈!','배터리·액정 수리 손님이 와요'],support:['소프트웨어 상담 오픈!','손님 고민을 해결해줘요'],table2:['체험 테이블 추가!','구입 상담 손님이 늘어요'],runner:['재고 직원 고용!','픽업 주문을 대신 처리해요'],tech:['수리 기사 고용!','수리 부품을 대신 가져다줘요'],decor:['매장이 예뻐졌어요!','평점이 올라가요'],flag:['플래그십 매장 승격!','모든 매출 ×1.5']}[p.id];
+  const MSG={repair:['수리 센터 오픈!','배터리·액정 수리 손님이 와요'],support:['소프트웨어 상담 오픈!','손님 고민을 해결해줘요'],table2:['체험 테이블 추가!','구입 상담 손님이 늘어요'],runner:['재고 직원 고용!','픽업 주문을 대신 처리해요'],tech:['수리 기사 고용!','수리 부품을 대신 가져다줘요'],decor:['매장이 예뻐졌어요!','평점이 올라가요'],flag:['슈퍼스토어 승격!','모든 매출 ×1.5']}[p.id];
   if(MSG) setTimeout(()=>bigBanner(MSG[0],MSG[1]),350);
  if(p.id==='decor'){ S.reviews.push(5,5); intApplyAll(); setTimeout(()=>{ try{ openInt(); }catch(e){} },1400); }
   save(); }
@@ -2795,7 +2801,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.28';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.29';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -2805,7 +2811,7 @@ function openRoad(R){ // R:{theme:[bg,paper,plate],stars,stages:[{name,state,bad
   const el=document.createElement('div'); el.id='road'; el.style.setProperty('--rbg',R.theme[0]); el.style.setProperty('--rpaper',R.theme[1]); el.style.setProperty('--rplate',R.theme[2]);
   const n=R.stages.length, RH=262, H=n*RH+40; const pos=R.stages.map((s,i)=>[i%2?68:32,H-130-i*RH]);
   let path=''; for(let i=1;i<n;i++){ const [x0,y0]=pos[i-1],[x1,y1]=pos[i]; path+='<path d="M'+x0+' '+y0+' C'+x0+' '+(y0-RH*0.55)+' '+x1+' '+(y1+RH*0.55)+' '+x1+' '+y1+'" vector-effect="non-scaling-stroke" stroke="rgba(255,255,255,.9)" stroke-width="12" stroke-dasharray="2 26" stroke-linecap="round" fill="none"/>'; }
-  el.innerHTML='<div class="rdTop"><div class="rdTitle">테크 스토어 플래그십 로드맵</div><div class="rdStar">'+R.stars+'</div></div>'+
+  el.innerHTML='<div class="rdTop"><div class="rdTitle">메가 테크 슈퍼스토어 로드맵</div><div class="rdStar">'+R.stars+'</div></div>'+
     '<div class="rdFrame"><div class="rdScroll"><div class="rdIn" style="height:'+H+'px"><svg viewBox="0 0 100 '+H+'" preserveAspectRatio="none">'+path+'</svg>'+
     R.stages.map((s,i)=>'<div class="rdN '+s.state+'" data-rn="'+i+'" style="left:'+pos[i][0]+'%;top:'+pos[i][1]+'px"><div class="im" style="background-image:url('+s.thumb+');'+(s.filter?'filter:'+s.filter:'')+'"></div>'+(s.state==='cur'?'<div class="rdPin">📍</div>':'')+'<div class="bd">'+s.badge+'</div><br><div class="nm">'+(i+1)+'. '+s.name+'</div></div>').join('')+
     '</div></div></div><div class="rdInfo" id="rdInfo"></div><button id="rdGo"></button>';
