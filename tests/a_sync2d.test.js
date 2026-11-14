@@ -5,7 +5,7 @@ module.exports={name:'2D·3D 로직 동기화', static:true, modes:['-'], async 
   assert(a===idx,'index.html이 tech.html과 다릅니다 (cp tech.html index.html)');
   const v=fs.readFileSync(path.join(L.ROOT,'version.txt'),'utf8').trim(); const va=(a.match(/var V='(\d+)'/)||[])[1], vb=(b.match(/var V='(\d+)'/)||[])[1];
   assert(/^\d+$/.test(v),'version.txt는 숫자여야 합니다 (지금: '+v+')'); assert(va===v,'tech.html var V('+va+') ≠ version.txt('+v+')'); assert(vb===v,'tech-test.html var V('+vb+') ≠ version.txt('+v+')');
-  const names=[...new Set((a.match(/function (lv|lp|mgr|staffLook|navFree|scout|rsu|poach)[A-Za-z0-9_]*/g)||[]).map(s=>s.slice(9)))];
+  const names=[...new Set((a.match(/function (lv|lp|mgr|staffLook|navFree|scout|rsu|poach|mkt)[A-Za-z0-9_]*/g)||[]).map(s=>s.slice(9)))];
   const miss=names.filter(n=>b.indexOf('function '+n+'(')<0); assert(!miss.length,'2D 판에 없는 함수: '+miss.join(', '));
   assert(names.length>30,'검사할 함수 목록이 너무 적어요('+names.length+') — 이름 규칙이 바뀌었는지 확인');
 }};
