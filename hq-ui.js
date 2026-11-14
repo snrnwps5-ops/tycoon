@@ -378,7 +378,7 @@ function brVisit(b,o){ var V=rnd(VISITS), opts=V.a.slice().sort(function(){ retu
        show('시찰 방문',b.icon+' '+b.name,'<div class="hqcard" style="text-align:center"><div style="font-size:40px">'+(r>0?'👍':r===0?'😐':'😟')+'</div><h3>'+(r>0?'현장 분위기가 좋아졌어요':r===0?'달라진 게 없어요':'직원 사기가 떨어졌어요')+'</h3><p style="font:700 13px \'Noto Sans KR\',sans-serif;margin:6px 0 0">지점 NPS '+(d>0?'+':'')+d+' → '+(o.nps>0?'+':'')+o.nps+'</p></div>','<button class="hqbtn b" data-hq="back">대시보드로</button>',{back:function(){ brRender(); }}); }}); }
 
 /* =====================================================================
-   3. 직원 자발적 본사 전직 품의서
+   3. 본사 추천 품의서 (v2.34: 직원 자발 지원 → 점장 추천 + 본사 AI 검토)
    ===================================================================== */
 var HQ_DEPT=['본사 R&D 센터','본사 서비스 기획팀','본사 교육팀'];
 function hqEligible(c){ return !!c&&(c.lv||1)>=3&&(c.sat==null?70:c.sat)>=60&&!c.hqDeniedDay; }
@@ -392,13 +392,13 @@ function openHqTransferModal(crew,done){ ensure(); var s=S(); var c=typeof crew=
   if(!c){ show('본사 전직 품의서','','<div class="hqcard" style="text-align:center"><h3>지원한 직원이 없어요</h3><p style="font:700 13px \'Noto Sans KR\',sans-serif">레벨 3 이상이고 만족도 60 이상인 직원이 스스로 지원해요.</p></div>','<button class="hqbtn g" data-hq="close">닫기</button>',{}); return; }
   var R=hqReport(c), role=IV_ROLE[c.role]||c.role, sat=c.sat==null?70:c.sat, wage=c.wage||0, hqPay=Math.round(wage*1.6), rsu=40+(c.lv||1)*20, days=(s.day||0)-(c.hiredDay||0);
   var bars=Object.keys(R.sc).map(function(k){ var v=R.sc[k]; return '<div style="margin:5px 0"><div style="display:flex;justify-content:space-between;font:800 12px \'Noto Sans KR\',sans-serif"><span>'+k+'</span><b>'+v+'</b></div><div class="hqbar"><s style="width:'+v+'%;background:'+(v>=75?'#2faa45':v>=55?'#e89a10':'#e8342a')+'"></s></div></div>'; }).join('');
-  var body='<div class="hqdoc"><div class="hqstamp" id="hqstamp">승인</div><h3>품 의 서</h3><table><tr><td>건명</td><td><b>매장 직원 본사 전직 임용의 건</b></td></tr><tr><td>지원자</td><td>'+esc(c.name)+' ('+role+' · Lv.'+(c.lv||1)+')</td></tr><tr><td>지원 부서</td><td>'+R.dept+'</td></tr><tr><td>지원 경위</td><td>본인 자발적 지원</td></tr></table>'+
+  var body='<div class="hqdoc"><div class="hqstamp" id="hqstamp">승인</div><h3>품 의 서</h3><table><tr><td>건명</td><td><b>매장 직원 본사 전직 임용의 건</b></td></tr><tr><td>지원자</td><td>'+esc(c.name)+' ('+role+' · Lv.'+(c.lv||1)+')</td></tr><tr><td>지원 부서</td><td>'+R.dept+'</td></tr><tr><td>추천 경위</td><td>점장 추천 · 본사 AI 인사팀 검토</td></tr></table>'+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">① 매장 근무 실적</div><table><tr><td>속도 / 정확도</td><td>'+Math.round((c.spd||1)*100)+'% / '+Math.round((c.acc||0.85)*100)+'%</td></tr><tr><td>만족도</td><td>'+sat+' / 100</td></tr><tr><td>현재 일급</td><td>'+fmt(wage)+'</td></tr>'+(c.hiredDay!=null?'<tr><td>근속</td><td>'+Math.max(0,days)+'영업일</td></tr>':'')+'</table>'+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">② 본사 AI 면접관 평가 리포트</div>'+bars+'<div style="margin-top:6px"><span class="hqtag '+(R.avg>=68?'gd':R.avg>=55?'wn':'bd')+'">종합 '+R.avg+'점 · '+R.verdict+'</span></div>'+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">③ 오퍼 조건(안)</div><table><tr><td>본사 기본급</td><td>'+fmt(hqPay)+' /일 (본사 예산)</td></tr><tr><td>RSU 주식 옵션</td><td>'+rsu+'주</td></tr></table>'+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">④ 매장 영향</div><div>승인하면 매장에서 '+role+' 한 명이 빠져요. 대신 본사 인재로 등록되고 매장 급여 '+fmt(wage)+'/일이 줄어요.<br>반려하면 매장에 남지만 만족도가 떨어질 수 있어요.</div>'+
     '<div class="hqsig" id="hqsig"><span>결재자 서명</span>'+signSVG()+'</div></div>';
-  show('본사 전직 품의서','직원이 스스로 본사에 지원했어요 · 최종 결재를 해 주세요',body,
+  show('본사 전직 품의서','점장 추천으로 본사 AI 인사팀이 검토했어요 · 최종 결재를 해 주세요',body,
     '<button class="hqbtn" data-hq="ok">임용 승인<small>본사 R&D 오퍼 서명</small></button><button class="hqbtn r" data-hq="no">매장 유지 반려</button>',
     {ok:function(t){ lock(); $('hqsig').classList.add('go'); sfx('ui',0.4,1.5);
        setTimeout(function(){ $('hqstamp').classList.add('go'); sfx('level_up',0.5,1.1);
