@@ -381,6 +381,8 @@ function brVisit(b,o){ var V=rnd(VISITS), opts=V.a.slice().sort(function(){ retu
    3. 본사 추천 품의서 (v2.34: 직원 자발 지원 → 점장 추천 + 본사 AI 검토)
    ===================================================================== */
 var HQ_DEPT=['본사 R&D 센터','본사 서비스 기획팀','본사 교육팀'];
+function judge(c,avg){ try{ if(typeof window.lvHqJudge==='function') return window.lvHqJudge(c,avg); }catch(e){} return Math.round((avg||0)*0.6+Math.min(100,c.hqi||0)*0.4); }
+function passScore(){ try{ if(window.LVHQ&&window.LVHQ.pass) return window.LVHQ.pass; }catch(e){} return 85; }
 function hqEligible(c){ return !!c&&(c.lv||1)>=3&&(c.sat==null?70:c.sat)>=60&&!c.hqDeniedDay; }
 function hqReport(c){ // 실적에서 결정되는 고정 평가(같은 직원은 같은 결과)
   var seed=0, nm=String(c.name||''); for(var i=0;i<nm.length;i++) seed=(seed*31+nm.charCodeAt(i))%9973; var r=function(k){ return ((seed*(k+7)*131)%100)/100; };
@@ -395,12 +397,17 @@ function openHqTransferModal(crew,done){ ensure(); var s=S(); var c=typeof crew=
   var body='<div class="hqdoc"><div class="hqstamp" id="hqstamp">승인</div><h3>품 의 서</h3><table><tr><td>건명</td><td><b>매장 직원 본사 전직 임용의 건</b></td></tr><tr><td>지원자</td><td>'+esc(c.name)+' ('+role+' · Lv.'+(c.lv||1)+')</td></tr><tr><td>지원 부서</td><td>'+R.dept+'</td></tr><tr><td>추천 경위</td><td>점장 추천 · 본사 AI 인사팀 검토</td></tr></table>'+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">① 매장 근무 실적</div><table><tr><td>속도 / 정확도</td><td>'+Math.round((c.spd||1)*100)+'% / '+Math.round((c.acc||0.85)*100)+'%</td></tr><tr><td>만족도</td><td>'+sat+' / 100</td></tr><tr><td>현재 일급</td><td>'+fmt(wage)+'</td></tr>'+(c.hiredDay!=null?'<tr><td>근속</td><td>'+Math.max(0,days)+'영업일</td></tr>':'')+'</table>'+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">② 본사 AI 면접관 평가 리포트</div>'+bars+'<div style="margin-top:6px"><span class="hqtag '+(R.avg>=68?'gd':R.avg>=55?'wn':'bd')+'">종합 '+R.avg+'점 · '+R.verdict+'</span></div>'+
+    (function(){ var J=judge(c,R.avg), P=passScore(); return '<div style="margin-top:6px"><span class="hqtag '+(J>=P?'gd':'bd')+'">본사 AI 최종 판정 예상 '+J+'점 / 합격선 '+P+'점</span><div style="font:700 11px \'Noto Sans KR\',sans-serif;color:#8a7a6a;margin-top:3px">평가 리포트 60% + 본사 관심도 40% · 합격선 미달이면 승인해도 본사가 보류해요</div></div>'; })()+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">③ 오퍼 조건(안)</div><table><tr><td>본사 기본급</td><td>'+fmt(hqPay)+' /일 (본사 예산)</td></tr><tr><td>RSU 주식 옵션</td><td>'+rsu+'주</td></tr></table>'+
     '<div style="font-weight:900;color:#1b2748;margin-top:8px">④ 매장 영향</div><div>승인하면 매장에서 '+role+' 한 명이 빠져요. 대신 본사 인재로 등록되고 매장 급여 '+fmt(wage)+'/일이 줄어요.<br>반려하면 매장에 남지만 만족도가 떨어질 수 있어요.</div>'+
     '<div class="hqsig" id="hqsig"><span>결재자 서명</span>'+signSVG()+'</div></div>';
   show('본사 전직 품의서','점장 추천으로 본사 AI 인사팀이 검토했어요 · 최종 결재를 해 주세요',body,
     '<button class="hqbtn" data-hq="ok">임용 승인<small>본사 R&D 오퍼 서명</small></button><button class="hqbtn r" data-hq="no">매장 유지 반려</button>',
     {ok:function(t){ lock(); $('hqsig').classList.add('go'); sfx('ui',0.4,1.5);
+       /* v2.36: 본사 AI 최종 판정 — 합격선 미달이면 본사가 보류한다(관심도 -30 · 만족도 -8 · 반려일 기록) */
+       var J=judge(c,R.avg); if(J<passScore()){ setTimeout(function(){ var st=$('hqstamp'); st.textContent='보류'; st.classList.add('no','go'); sfx('ui',0.4,0.6);
+         c.hqi=Math.max(0,(c.hqi||0)-30); c.sat=clamp((c.sat==null?70:c.sat)-8,0,100); c.hqDeniedDay=s.day||0; call('save');
+         msg('본사 AI가 보류했어요 · 판정 '+J+'점 < '+passScore()+'점 · 매장 성과를 더 쌓아 주세요',false); done2(); },1200); return; }
        setTimeout(function(){ $('hqstamp').classList.add('go'); sfx('level_up',0.5,1.1);
          s.hqStaff.push({name:c.name,fromRole:c.role,lv:c.lv||1,dept:R.dept,score:R.avg,pay:hqPay,rsu:rsu,day:s.day||0});
          var handled=call('onTransfer',c,{dept:R.dept,pay:hqPay,rsu:rsu,score:R.avg}); if(handled!==true) c.hqMoved=1; // 어댑터가 S.crew에서 빼 주지 않으면 표시만 남깁니다

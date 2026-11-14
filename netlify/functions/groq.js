@@ -66,16 +66,21 @@ exports.handler = async function (event) {
   const tp = Number(payload.temperature);
 
   try {
-    const upstream = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const base = {
+      model: MODEL,
+      messages,
+      max_tokens: Math.max(1, Math.min(MAX_TOKENS, isFinite(mt) && mt > 0 ? Math.floor(mt) : 250)),
+      temperature: Math.max(0, Math.min(1.2, isFinite(tp) ? tp : 0.7))
+    };
+    const call = (body) => fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-      body: JSON.stringify({
-        model: MODEL,
-        messages,
-        max_tokens: Math.max(1, Math.min(MAX_TOKENS, isFinite(mt) && mt > 0 ? Math.floor(mt) : 250)),
-        temperature: Math.max(0, Math.min(1.2, isFinite(tp) ? tp : 0.7))
-      })
+      body: JSON.stringify(body)
     });
+    /* v2.36: 추론 모델이라 추론을 끄고 부른다(더 빠르고, 짧은 max_tokens 안에서 답이 잘리지 않게).
+       모델이 이 옵션을 거부하면(400) 옵션 없이 한 번 더 부른다. */
+    let upstream = await call(Object.assign({ reasoning_effort: 'none' }, base));
+    if (upstream.status === 400) upstream = await call(base);
     const text = await upstream.text();
     return reply(upstream.status, text);
   } catch (err) {

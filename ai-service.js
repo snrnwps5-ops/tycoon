@@ -22,7 +22,7 @@ var PROXY_ENDPOINT  = 'https://mega-tech-tycoon.netlify.app/.netlify/functions/g
 var DIRECT_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 var MODEL    = 'qwen/qwen3.8-27b';
 var MODEL_LABEL = 'Groq (Qwen 27B)';
-var TIMEOUT  = 11000;
+var TIMEOUT  = 16000;   /* v2.36: 11초 → 16초 (서버 첫 기동이 느린 경우) */
 
 /* 엔진 상태 — ⚙️ 설정 배지와 테스트가 읽는다 */
 var ST = { mode:'idle', ok:0, fail:0, ms:0, err:'', at:0 };
@@ -64,6 +64,14 @@ function offline(){ try{ return (typeof navigator!=='undefined' && navigator.onL
    Groq 호출
    ===================================================================== */
 function callAI(o){
+  o = o || {};
+  /* v2.36: 핑이 아닌 호출은 실패하면 한 번 더 시도한다(서버 첫 기동·일시 오류) */
+  if(o.kind !== 'ping' && !o._retried){
+    return callAI1(o).then(function(r){ if(r && r.ok) return r; if(offline()) return r; return new Promise(function(res){ setTimeout(res, 700); }).then(function(){ var o2 = {}; for(var k in o) o2[k] = o[k]; o2._retried = 1; return callAI1(o2); }); });
+  }
+  return callAI1(o);
+}
+function callAI1(o){
   o = o || {};
   var messages = Array.isArray(o.messages) ? o.messages : [];
   var body = {
@@ -383,4 +391,12 @@ window.TycoonAI = {
   askInterviewer: askInterviewer, interviewReport: interviewReport, directorReport: directorReport,
   fallbackInterview: fbInterview, fallbackReport: fbReport, fallbackDirector: fbDirector
 };
+/* v2.36: 자동 연결 — 게임을 켜면 바로 서버를 깨워 둔다. 설정 창을 열지 않아도 첫 AI 응답이 늦거나 실패하지 않게 한다.
+   실패하면 12초·45초 뒤 다시 시도한다(오프라인이면 하지 않음). */
+(function warm(){
+  var tries = [1500, 12000, 45000], i = 0;
+  function go(){ if(ST.mode === 'live' || i >= tries.length) return; var wait = tries[i++];
+    setTimeout(function(){ if(ST.mode === 'live' || offline()) { if(ST.mode !== 'live') go(); return; } ping().then(function(r){ if(!(r && r.ok)) go(); }).catch(go); }, wait); }
+  try{ if(!(window.__NOWARM)) go(); }catch(e){}
+})();
 })();
