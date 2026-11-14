@@ -1,0 +1,8 @@
+{
+  "name": "mega-tech-tycoon",
+  "private": true,
+  "description": "Netlify 함수 의존성 (게임 자체는 빌드 없이 정적 파일)",
+  "dependencies": {
+    "@netlify/blobs": "^8.2.0"
+  }
+}

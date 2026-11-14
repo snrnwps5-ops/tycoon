@@ -15,7 +15,7 @@ function fileFor(mode){ return 'file://'+path.join(RUN,mode==='2d'?'tech-test.ht
 /* 페이지 열기. opts.state(S 객체에 덮어쓸 값)가 있으면 한 번 열어 저장한 뒤 다시 연다 */
 async function open(browser,mode,opts){ opts=opts||{}; const pg=await browser.newPage(); await pg.setViewport({width:opts.w||393,height:opts.h||852,isMobile:true,hasTouch:true});
   const errs=[]; pg.on('pageerror',e=>errs.push(String(e.message).slice(0,200)));
-  await pg.evaluateOnNewDocument(r=>{ window.__NOWARM=1; window.__NR=r?0:1; },!!opts.render);
+  await pg.evaluateOnNewDocument((r,ft)=>{ window.__NOWARM=1; window.__NR=r?0:1; if(!ft) window.__NOFTUE=1; },!!opts.render,!!opts.ftue);
   const boot=mode==='2d'?6000:13000;
   pg.goto(fileFor(mode)).catch(()=>{}); await W(boot);
   if(opts.state){ await pg.evaluate(st=>{ const S=window.__H.S; Object.assign(S,st); S.seen=1; const x=new Date(); S.att={n:1,d:x.getFullYear()+'-'+(x.getMonth()+1)+'-'+x.getDate()}; S.offer=1;
