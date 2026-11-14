@@ -40,7 +40,7 @@ function ensure(){ var s=S();
 function branchOpen(b){ return (S().day||0)>=b.openDay; }
 function branchIncome(id){ ensure(); var b=BRANCHES.filter(function(x){ return x.id===id; })[0]; if(!b||!branchOpen(b)) return 0; var o=S().branches[id];
   var bAuto=(S().hq&&S().hq.buff&&S().hq.buff.auto)?(1+S().hq.buff.auto):1;
-  return Math.round(b.base*(1+0.35*(o.lv-1))*(1+0.08*o.staff)*(o.mgr?1.2:1)*(0.8+clamp(o.nps,-100,100)/250)*bAuto); }
+  return Math.round(b.base*(1+0.35*(o.lv-1))*(1+0.08*o.staff)*(o.mgr?1.5:1)*(0.8+clamp(o.nps,-100,100)/250)*bAuto); }
 /* v2.25: 현재 플레이 중인 매장(스테이지) 판정 — 게임의 STAGE_OF와 같은 경계(d<4/8/11/15/19)를 씁니다. */
 function stageOfDay(d){ d=d||0; return d<4?0:d<8?1:d<11?2:d<15?3:d<19?4:5; }
 function currentBranch(){ var s=S(), curStg=(s&&s.curStage!=null)?s.curStage:stageOfDay((s&&s.day)||0); return BRANCHES.filter(function(b){ return b.stage===curStg; })[0]||BRANCHES[0]; }
@@ -272,7 +272,7 @@ function ivEnd(c,how,offer){ var s=S(); c.closed=1; s.interview.log.push({id:c.i
   call('save'); }
 function ivOffer(){ var s=S(), c=s.interview.cur; var packs=[{k:'a',n:'기본형',wage:c.wage,rsu:0,vest:0,d:'희망 일급 그대로'},{k:'b',n:'균형형',wage:Math.round(c.wage*0.92),rsu:20,vest:10,d:'일급 -8% + RSU 20주'},{k:'c',n:'주식형',wage:Math.round(c.wage*0.82),rsu:60,vest:20,d:'일급 -18% + RSU 60주'}]; var sel=c.pack||'a';
   var draw=function(){ var p=packs.filter(function(x){ return x.k===sel; })[0];
-    var body=ivHead(c)+'<div id="ivRep">'+ivReportCard(c)+'</div>'+'<div class="hqdoc"><div class="hqstamp" id="hqstamp">합격</div><h3>오퍼 레터</h3><div>'+esc(c.name)+' 님께,<br>노바 테크 스토어 <b>'+IV_ROLE[c.role]+'</b> 직무에 최종 합격하셨음을 알려 드립니다.</div><table><tr><td>기본급(일급)</td><td><b>'+fmt(p.wage)+'</b></td></tr><tr><td>RSU 주식 옵션</td><td><b>'+(p.rsu?p.rsu+'주':'없음')+'</b>'+(p.rsu?' · '+p.vest+'영업일 근속 시 지급':'')+'</td></tr><tr><td>근무 시작</td><td>DAY '+((s.day||0)+1)+'</td></tr></table><div class="hqsig" id="hqsig"><span>대표 서명</span>'+signSVG()+'</div></div><div class="hqoff">'+packs.map(function(x){ return '<button data-hq="pk" data-k="'+x.k+'" class="'+(x.k===sel?'on':'')+'">'+x.n+'<small>'+x.d+'</small></button>'; }).join('')+'</div><div style="font:700 11px \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin-top:6px">RSU는 급여 부담을 줄이지만, 근속 기간을 채우면 주식으로 지급해야 해요</div>';
+    var body=ivHead(c)+'<div id="ivRep">'+ivReportCard(c)+'</div>'+'<div class="hqdoc"><div class="hqstamp" id="hqstamp">합격</div><h3>오퍼 레터</h3><div>'+esc(c.name)+' 님께,<br>메가 테크 슈퍼스토어 <b>'+IV_ROLE[c.role]+'</b> 직무에 최종 합격하셨음을 알려 드립니다.</div><table><tr><td>기본급(일급)</td><td><b>'+fmt(p.wage)+'</b></td></tr><tr><td>RSU 주식 옵션</td><td><b>'+(p.rsu?p.rsu+'주':'없음')+'</b>'+(p.rsu?' · '+p.vest+'영업일 근속 시 지급':'')+'</td></tr><tr><td>근무 시작</td><td>DAY '+((s.day||0)+1)+'</td></tr></table><div class="hqsig" id="hqsig"><span>대표 서명</span>'+signSVG()+'</div></div><div class="hqoff">'+packs.map(function(x){ return '<button data-hq="pk" data-k="'+x.k+'" class="'+(x.k===sel?'on':'')+'">'+x.n+'<small>'+x.d+'</small></button>'; }).join('')+'</div><div style="font:700 11px \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center;margin-top:6px">RSU는 급여 부담을 줄이지만, 근속 기간을 채우면 주식으로 지급해야 해요</div>';
     show('AI 채용 면접실','4차 통과 · 오퍼 조건을 정하고 서명하세요',body,'<button class="hqbtn" data-hq="sign">서명하고 오퍼 보내기</button><button class="hqbtn g" data-hq="back">보류</button>',
       {pk:function(t){ sel=t.getAttribute('data-k'); c.pack=sel; draw(); },
        back:function(){ close(); },
@@ -411,14 +411,46 @@ function openHqTransferModal(crew,done){ ensure(); var s=S(); var c=typeof crew=
   function lock(){ [].forEach.call(document.querySelectorAll('#hqbox .hqf .hqbtn'),function(b){ b.disabled=true; }); }
   function done2(){ var f=document.querySelector('#hqbox .hqf'); if(f) f.innerHTML='<button class="hqbtn b" data-hq="close">확인</button>'; } }
 
+/* ---------------- 에이스 직원 타 지점 점장 파견 (v2.32) ---------------- */
+function openMgrDispatchModal(crew, done){
+  ensure(); onClose=done||null; var s=S(), curId=currentBranchId();
+  var open=BRANCHES.filter(function(b){ return branchOpen(b) && b.id!==curId; });
+  if(!open.length){
+    show('🏢 타 지점 점장 파견', esc(crew.name)+' (Lv.'+(crew.lv||1)+')',
+      '<div class="hqempty">아직 점장을 보낼 수 있는 다른 지점이 열리지 않았어요.<br><small>DAY 5(부산 센텀점)부터 오픈된 타 지점으로 점장을 파견해 일일 자동 매출을 +50% 올릴 수 있어요!</small></div>',
+      '<button class="hqbtn g" data-hq="close">닫기</button>', {});
+    return;
+  }
+  var list=open.map(function(b){
+    var o=s.branches[b.id], hasM=!!o.mgr;
+    return '<div class="hqbr" style="margin-bottom:8px"><h3>'+b.icon+' '+b.name+'</h3>'+
+      '<div class="m"><span>현재 지점장</span><b>'+(hasM?esc(o.mgr):'공석 (자동매출 +50% 가능)')+'</b></div>'+
+      '<div class="m"><span>현재 일일 자동 매출</span><b>'+fmt(branchIncome(b.id))+'</b></div>'+
+      '<button class="hqbtn '+(hasM?'':'b')+'" data-hq="disp" data-id="'+b.id+'" '+(hasM?'disabled':'')+'>'+(hasM?'이미 지점장 있음':'🏢 '+esc(crew.name)+' 점장 발령')+'</button>'+
+      '</div>';
+  }).join('');
+  show('🏢 타 지점 점장 파견', esc(crew.name)+' · Lv.'+(crew.lv||1)+' 에이스',
+    '<p style="margin:0 0 10px;font:700 12px \'Noto Sans KR\',sans-serif;color:#5a4a3a">에이스 직원을 공석인 지점의 점장으로 보내면 해당 지점의 일일 자동 매출이 영구 +50% 상승합니다.</p>'+list,
+    '<button class="hqbtn g" data-hq="close">닫기</button>',
+    {disp:function(t){
+      var id=t.getAttribute('data-id'), b=BRANCHES.filter(function(x){ return x.id===id; })[0];
+      var o=s.branches[id]; if(!b||!o||o.mgr) return;
+      o.mgr=crew.name; o.nps=Math.min(100,(o.nps||20)+5);
+      var idx=s.crew.indexOf(crew); if(idx>=0) s.crew.splice(idx,1);
+      call('removeStaffByCrew',crew);
+      call('save'); sfx('level_up',0.5,1.25); close();
+      call('banner','🏢 '+crew.name+' 점장 부임!',b.name+' 일일 자동 매출 +50% · 지점 NPS +5');
+    }});
+}
+
 /* ---------------- public ---------------- */
 window.HQUI={
   init:function(adapter){ A=adapter||{}; if(!A.S) throw new Error('HQUI.init: S(저장 객체)가 필요해요'); ensure(); mount(); return window.HQUI; },
-  openInterviewModal:openInterviewModal, openBranchModal:openBranchModal, openHqTransferModal:openHqTransferModal,
+  openInterviewModal:openInterviewModal, openBranchModal:openBranchModal, openHqTransferModal:openHqTransferModal, openMgrDispatchModal:openMgrDispatchModal,
   close:close, isOpen:isOpen, ensureSchema:ensure,
   branches:BRANCHES, branchIncome:branchIncome, totalBranchIncome:function(){ ensure(); return BRANCHES.reduce(function(a,b){ return a+branchIncome(b.id); },0); },
   otherBranchesIncome:otherBranchesIncome, autoIncomeTotal:autoIncomeTotal, currentBranchId:currentBranchId, stageOfDay:stageOfDay,
   hqEligible:hqEligible, hqReport:hqReport, config:CFG
 };
-window.openInterviewModal=openInterviewModal; window.openBranchModal=openBranchModal; window.openHqTransferModal=openHqTransferModal;
+window.openInterviewModal=openInterviewModal; window.openBranchModal=openBranchModal; window.openHqTransferModal=openHqTransferModal; window.openMgrDispatchModal=openMgrDispatchModal;
 })();
