@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794680000';
+<script>try{(function(){var V='1794690000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -372,7 +372,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.34</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.35</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -1326,7 +1326,7 @@ function SPCM(c){ if(c.spType==='rush'){ const left=c.t0?Math.max(0,Math.ceil(c.
   if(c.spType==='esc'){ if(hasCrew('mgr')) return '🔥 책임자 불러주세요! (매니저 응대 중)'; return '🔥 책임자 불러주세요! ('+Math.max(0,Math.ceil(c.escT||15))+'초 내 응대)'; }
   return ''; }
 const REQ={tour:c=>c.want?IT[c.want].n+' box please!':c.st==='consult'?'상담 중… 🧑‍💼':'Excuse me! (외국인 손님)',corp:c=>'🏢 법인 대량 발주',esc:c=>c.mgr?'매니저와 이야기 중…':'책임자 불러주세요!!',ret:c=>TP(c)+(c.sub==='trade'?'♻️ 보상 판매 문의':c.sub==='lost'?'🚨 분실·도난 상담':c.sub==='gift'?'🎁 선물 구매 상담':'반품 문의 · '+IT[c.want].n),pick:c=>c.st==='xfer'?'데이터 옮기는 중… 옆에 있어 주세요':TP(c)+'픽업 · '+IT[c.want].n+(c.xfer?' + 데이터 이전':''),buy:c=>c.want?IT[c.want].n+' 박스 가져다주세요':c.st==='consult'?'상담 중… 🧑‍💼':'구입 상담 원해요',fix:c=>c.walkin&&c.spot===GSPOT?'예약 없이 왔어요 · 수리 문의':c.st==='repair'?'수리 중…':TP(c)+(c.data?'[데이터 중요] ':'')+(c.mine===1?'🙋 직접 수리 · ':'')+(c.diag&&!c.want?'진단 필요: '+c.diag.q:({b:'배터리 교체',s:'액정 파손',c:'카메라 고장'})[c.want]+(c.want&&partAvail(c.want)<=0?' · 부품 없음 ⚠':'')),sw:c=>TP(c)+'상담: '+c.q.q};
-function priceMul(){ return (S.vipPass?1.25:1)*(1+0.08*S.up.price)*(S.unl.includes('flag')?1.5:1)*(0.7+rating()*0.1); }
+function priceMul(){ return (1+0.02*(typeof lpDexTier==='function'?lpDexTier():0))*(S.vipPass?1.25:1)*(1+0.08*S.up.price)*(S.unl.includes('flag')?1.5:1)*(0.7+rating()*0.1); }
 function rating(){ const a=S.reviews; return Math.min(5,(a.length?a.reduce((x,y)=>x+y,0)/a.length:4)+intBonus()+opBonus()); }
 /* ---- v2.7: 손님 외형 바리에이션 — 기존 캐주얼/정장/노신사 + 힙스터·비즈니스 우먼·학생·패셔니스타 ---- */
 const SHIRTS=['#e8473d','#46b37a','#f7c948','#ff7aa8','#9b6bff','#ff9f43'];
@@ -1350,7 +1350,7 @@ function spawnCust(){ if(dayState!=='run') return; const cfg=dayCfg(S.day); cons
     LK?{tint:LK.tint,hair:LK.hair,acc:LK.acc,accC:LK.accC,accC2:LK.accC2,look:LK.look}
       :{tint:Math.random()<0.6?pick1(SHIRTS):null});
   const c={ch,type,spot:sp,pos:new THREE.Vector3(Math.random()<0.5?14:-14,0,11.2),wp:[new THREE.Vector3(0,0,8),new THREE.Vector3(0,0,4.6),new THREE.Vector3(sp.x,0,sp.z)],st:'enter',pat:40,patMax:40,face:0,el:document.createElement('div'),want:null,q:null,happy:0};
-  sp.occ=c; if(type==='pick') c.want='pwl'[Math.floor(Math.random()*3)]; if(type==='fix'){ if(cfg.diag&&Math.random()<cfg.diag){ c.diag=pickQ(FIXQ); } else c.want=fixPart(); } if(type==='sw') c.q=(STG>=2&&Math.random()<0.4)?pickQ(ERRQ):(cfg.policy&&Math.random()<0.4)?pickQ(SWQ2):pickQ(SWQ);
+  sp.occ=c; if(LK&&LK.look) c.lookId=LK.look.id; if(type==='pick') c.want='pwl'[Math.floor(Math.random()*3)]; if(type==='fix'){ if(cfg.diag&&Math.random()<cfg.diag){ c.diag=pickQ(FIXQ); } else c.want=fixPart(); } if(type==='sw') c.q=(STG>=2&&Math.random()<0.4)?pickQ(ERRQ):(cfg.policy&&Math.random()<0.4)?pickQ(SWQ2):pickQ(SWQ);
   if(cfg.tough&&Math.random()<cfg.tough){ c.tough=1; c.pat=c.patMax=22; }
   if(cfg.flight&&!c.tough&&Math.random()<cfg.flight){ c.flight=1; c.pat=c.patMax=24; } if(cfg.vip&&!c.tough&&!c.flight&&type!=='esc'&&Math.random()<cfg.vip){ c.vip=1; c.pat=c.patMax=34; }
   if(type==='pick'&&cfg.xfer&&Math.random()<cfg.xfer) c.xfer=1;
@@ -1382,7 +1382,7 @@ function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.soft
   if(c.influ&&dayState==='run'&&!c.softLeave){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } if(!c.softLeave){ S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift(); }
   if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈'); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
   if(ok&&c.type==='ret') hubReturnRma(c);
-  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; pay=Math.round(pay*priceMul()*prM*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(S.boostD===S.day?2:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1)); if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; cashVal+=pay; rebuildCash(); S.stats.srv++; floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); haptic(15,'cashPill'); c.ch.jump=1; gainXP(1);
+  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; pay=Math.round(pay*priceMul()*prM*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(S.boostD===S.day?2:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1)); if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; cashVal+=pay; rebuildCash(); S.stats.srv++; lpCard(c); floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); haptic(15,'cashPill'); c.ch.jump=1; gainXP(1);
     if(c.ch.acts.Victory){ playA(c.ch,'Victory',0.1); c.lock=0.8; } if(S.stats.srv===1) setTimeout(()=>bigBanner('첫 고객 응대!','돈은 계산대 옆에 쌓여요'),300); }
   else if(!ok&&!c.softLeave) floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),c.miss?'다른 매장 가볼게요…':'너무 오래 기다렸어요','bad'); }
 
@@ -2032,7 +2032,7 @@ function msCollectAll(){ const idx=[]; S.ms.forEach((m,i)=>{ if(msProg(m)>=m.goa
   idx.forEach(i=>{ const ks=MSK.filter(k=>used.indexOf(k)<0); const k=ks.length?ks[Math.floor(Math.random()*ks.length)]:MSK[0]; used.push(k); S.ms[i]=newMission(k); });
   money+=sum; gainXP(2*idx.length); snd('level_up',0.5,1.15); haptic(30); bigBanner('🎁 미션 보상 '+idx.length+'건','+$'+sum.toLocaleString()); toast('완료한 미션 '+idx.length+'건을 한 번에 받았어요',2.6); save(); return idx.length; }
 function msHTML(){ const dn=S.ms.filter(m=>msProg(m)>=m.goal), dsum=dn.reduce((a,m)=>a+m.reward,0); return '<h2>미션</h2><button id="msAll" '+(dn.length?'':'disabled')+'>🎁 전체 보상 수령'+(dn.length?' ('+dn.length+'건 · $'+dsum.toLocaleString()+')':' · 완료된 미션 없음')+'</button>'+S.ms.map((m,i)=>{ const p=msProg(m), done=p>=m.goal; return '<div class="msrow"><div class="tx"><b>'+MT[m.k][0].replace('{n}',m.goal.toLocaleString())+'</b><div class="bar"><s style="width:'+(p/m.goal*100)+'%"></s></div><small>'+p.toLocaleString()+' / '+m.goal.toLocaleString()+' · 보상 $'+m.reward.toLocaleString()+'</small></div><button data-ms="'+i+'" '+(done?'':'disabled')+'>'+(done?'받기':'진행 중')+'</button></div>'; }).join('')+'<button id="achGo" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">🏆 업적 '+ACH.filter(a=>S.ach[a.id]).length+'/'+ACH.length+(achReady()?' · 보상 받기!':'')+'</button><button class="gray" id="mOk">닫기</button>'; }
-function openMs(){ openModal(msHTML()); lvMsHook(); const ab=$('msAll'); if(ab) ab.onclick=e=>{ e.stopPropagation(); if(msCollectAll()) openMs(); }; $('achGo').onclick=e=>{ e.stopPropagation(); snd('ui',0.4); openAch(); }; $('mbox').onclick=e=>{ const b=e.target.closest('[data-ms]'); if(!b) return; const i=+b.dataset.ms, m=S.ms[i]; if(msProg(m)<m.goal) return; money+=m.reward; snd('level_up',0.5,1.1); gainXP(2); const ks=MSK.filter(k=>!S.ms.some((x,j)=>j!==i&&x.k===k)); S.ms[i]=newMission(ks[Math.floor(Math.random()*ks.length)]); save(); openMs(); }; }
+function openMs(){ openModal(msHTML()); lvMsHook(); lpMsHook(); const ab=$('msAll'); if(ab) ab.onclick=e=>{ e.stopPropagation(); if(msCollectAll()) openMs(); }; $('achGo').onclick=e=>{ e.stopPropagation(); snd('ui',0.4); openAch(); }; $('mbox').onclick=e=>{ const b=e.target.closest('[data-ms]'); if(!b) return; const i=+b.dataset.ms, m=S.ms[i]; if(msProg(m)<m.goal) return; money+=m.reward; snd('level_up',0.5,1.1); gainXP(2); const ks=MSK.filter(k=>!S.ms.some((x,j)=>j!==i&&x.k===k)); S.ms[i]=newMission(ks[Math.floor(Math.random()*ks.length)]); save(); openMs(); }; }
 function lvHTML(r,lv){ const L=ROLES[r]&&ROLES[r].lv; if(!L) return ''; lv=lv||1; return '<div class="lvt">'+L.map((t,i)=>'<div class="'+(i+1<lv?'dn':i+1===lv?'now':'nx')+'">'+(i+1<lv?'✓ ':'')+t+'</div>').join('')+'</div>'; }
 function leadHTML(){ const cap=toCap(), sc=Math.max(0,Math.min(100,S.myScore||0)), wk=Math.max(0,Math.floor(S.myWarn||0));
   const to=[1,2,3].filter(p=>cap[posKey(p)]>0).map(p=>{ const n=toCount(p), c=cap[posKey(p)]; return '<span class="to'+(n>=c?' full':'')+'">'+CPOSN[p]+' '+n+'/'+c+'</span>'; }).join('<span class="sep"> · </span>');
@@ -2410,7 +2410,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
     player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
   player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
-  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt);
+  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); lpTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt);
   SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
     if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; useStock(s.t); layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
   // cash
@@ -2644,11 +2644,11 @@ function lvOpenGate(st){ const ds=STGD[st]||[], have=lvStageStars(st), need=lvSt
   h+='</div><button class="gray" id="mOk">닫기</button>'; window.__rts=1; openModal(h);
   $('mbox').onclick=e=>{ const b=e.target.closest('[data-rp]'); if(!b) return; e.stopPropagation(); const d=+b.dataset.rp; if(d!==S.day){ if(S.rpBack==null) S.rpBack=S.day; S.day=d; } save(); window.__rts=0; closeModalUI(); setTimeout(startDayModal,200); }; }
 /* ---- ② 오늘 할 일: 실제 날짜가 바뀌면 새로 뽑는 일일 목표 3개 + 모두 달성 상자 + 연속 달성 ---- */
-const LVDN={srv:'고객 {n}명 응대',ok:'상담 정답 {n}번',earn:'매출 ${n} 올리기',fix:'수리 {n}건 완료',clr:'영업 {n}일 클리어'};
+const LVDN={rush:'러시 챌린지 {n}번 성공',srv:'고객 {n}명 응대',ok:'상담 정답 {n}번',earn:'매출 ${n} 올리기',fix:'수리 {n}건 완료',clr:'영업 {n}일 클리어'};
 function lvDayGap(ds){ try{ const p=String(ds).split('-').map(Number), a=new Date(p[0],p[1]-1,p[2]), b=new Date(); b.setHours(0,0,0,0); return Math.round((b-a)/864e5); }catch(e){ return 99; } }
 function lvDaily(){ const t=today();
   if(!S.daily||S.daily.d!==t||!Array.isArray(S.daily.ms)){ const prev=S.daily; if(!(prev&&prev.chest&&lvDayGap(prev.d)===1)) S.dstreak=0;
-    const g=dayCfg(S.day).goal, lv=S.lvl||1, pool=[['srv',6+lv*2],['ok',3+lv],['earn',Math.max(50,Math.round(g*1.5/10)*10)]]; if((S.unl||[]).includes('repair')) pool.push(['fix',2+Math.ceil(lv/2)]);
+    const g=dayCfg(S.day).goal, lv=S.lvl||1, pool=[['srv',6+lv*2],['ok',3+lv],['earn',Math.max(50,Math.round(g*1.5/10)*10)]]; if((S.unl||[]).includes('repair')) pool.push(['fix',2+Math.ceil(lv/2)]); pool.push(['rush',2]);
     for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)), x=pool[i]; pool[i]=pool[j]; pool[j]=x; }
     const rw=Math.max(40,Math.round(g*0.25/10)*10), list=[['clr',2]].concat(pool.slice(0,2));
     S.daily={d:t,chest:0,ms:list.map(a=>({k:a[0],goal:a[1],base:S.stats[a[0]]||0,reward:rw,got:0}))}; save(); }
@@ -2679,7 +2679,7 @@ function lvPreHTML(){ try{ const d=S.day, cfg=dayCfg(d), st=STAGE_OF(d), ss=lvSe
       '<div><span>★</span><b>목표·평점·민원 통과</b></div><div><span>★★</span><b>매출 $'+Math.round(cfg.goal*1.3)+' (130%)</b></div><div><span>★★★</span><b>'+lvStar3(d).t+'</b></div>'+
       (!ss&&st<5?'<div><span>'+STS[st]+' 매장 별</span><b>'+lvStageStars(st)+' / '+lvStarNeed(st)+' 모으면 다음 매장</b></div>':'')+
       ((S.myRank||0)<3?'<div><span>다음 승진</span><b>리더십 85점 + 누적 별 '+LVRANKSTAR[S.myRank||0]+'개 (지금 '+lvTotalStars()+')</b></div>':'')+'</details>';
-    return h; }catch(e){ console.warn('lvPre',e); return ''; } }
+    h+=lpPreLine(); return h; }catch(e){ console.warn('lvPre',e); return ''; } }
 function lvPreBtn(){ try{ return '<button id="dDaily" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00;padding:9px">📅 오늘 할 일 ('+lvDailyDone()+'/3)</button>'; }catch(e){ return ''; } }
 function lvPreBind(){ try{ const b=$('dDaily'); if(b) b.onclick=()=>{ window.__rts=1; snd('ui',0.4); openDaily(); };
     const q=$('rpQuit'); if(q) q.onclick=e=>{ e.stopPropagation(); if(S.rpBack!=null){ S.day=S.rpBack; delete S.rpBack; save(); } $('modal').classList.remove('on'); setTimeout(lvGateOrStart,200); }; }catch(e){} }
@@ -2705,11 +2705,107 @@ function lvScoutAI(c){ try{ const box=document.getElementById('snAI'); if(!box) 
     TycoonAI.callAI({kind:'scout',max_tokens:160,temperature:0.6,messages:[{role:'system',content:'너는 전자제품 유통 본사의 AI 인사 담당자다. 매장 점장에게 이 직원을 본사로 데려가고 싶은 이유를 한국어 존댓말 두 문장으로 말한다. 주어진 수치만 근거로 들고, 인격을 평가하거나 과장하지 않는다.'},
       {role:'user',content:'직원 '+c.name+' · 직무 '+((ROLES[c.role]&&ROLES[c.role].n)||'매장')+' · 레벨 '+(c.lv||1)+' · 정확도 '+Math.round((c.acc||0.85)*100)+'% · 속도 '+Math.round((c.spd||1)*100)+'% · 만족도 '+sat+' · 본사 관심도 '+Math.min(100,Math.round(c.hqi||0))+'/100 · 매장 '+TS.name}]})
       .then(r=>{ const b=document.getElementById('snAI'); if(b&&r&&r.ok&&r.text) b.textContent='🤖 '+String(r.text).trim().slice(0,240); }).catch(()=>{}); }catch(e){} }
+/* ================= v2.35: 게임 루프 — ① 러시 챌린지(영업 중 30~40초마다 짧은 목표) ② 연승 + 보상 상자 ③ 다음 목표 띠 ④ 손님 도감 =================
+   저장 필드(없으면 생성): S.lp{streak,best,chests,fever} · S.dex{카드id:1} · S.stats.rush
+   설계 원칙: 접속을 안 했다고 잃는 것은 없다(연승은 '실패'에만 끊긴다). 유료 상자 없음. */
+var LPC={on:null,next:18,key:'',el:null};
+try{ S.lp=S.lp||{streak:0,best:0,chests:0,fever:0}; S.dex=S.dex||{}; S.stats.rush=S.stats.rush||0;
+  ACH.push({id:'rush25',ic:'⚡',n:'러시 해결사',d:'러시 챌린지 25번 성공',g:25,v:()=>S.stats.rush||0,r:600},
+           {id:'streak7',ic:'🔥',n:'불패 매장',d:'7연승 달성',g:7,v:()=>(S.lp&&S.lp.best)||0,r:800},
+           {id:'dex21',ic:'📖',n:'손님 박사',d:'손님 도감 완성',g:21,v:()=>lpDexN(),r:2500});
+  const st=document.createElement('style'); st.id='lp-css'; st.textContent=
+   '#rushC{position:fixed;left:50%;top:calc(114px + var(--subH,58px) + env(safe-area-inset-top));transform:translateX(-50%);z-index:6;display:none;min-width:210px;max-width:86vw;box-sizing:border-box;padding:6px 12px 8px;border-radius:14px;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00;color:#3a1a00;font:900 13px var(--b);text-align:center;pointer-events:none}'+
+   '#rushC.on{display:block;animation:lpIn .35s cubic-bezier(.2,1.5,.4,1)}#rushC b{font-family:var(--d);font-weight:400;font-size:15px}#rushC i{display:block;height:6px;border-radius:3px;background:rgba(0,0,0,.18);margin-top:4px;overflow:hidden}#rushC s{display:block;height:100%;background:#fff;border-radius:3px}'+
+   '#rushC.ok{background:linear-gradient(#7bea62,#2faa45);box-shadow:0 3px 0 #1d7a2a;color:#fff}#rushC.no{background:linear-gradient(#b8c2d0,#8a96a8);box-shadow:0 3px 0 #5a6578;color:#fff}'+
+   '@keyframes lpIn{0%{transform:translateX(-50%) scale(.6);opacity:0}}'+
+   '.lpbox{margin:8px 0 4px;text-align:left}.lpst{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#ffe9d6,#ffd2a8);border-radius:12px;padding:7px 10px;font:900 13px var(--b);color:#7a3a00;margin-bottom:6px}'+
+   '.lpch{position:relative;border-radius:14px;padding:12px 10px;margin-bottom:6px;text-align:center;font:900 14px var(--b);color:#fff;cursor:pointer;overflow:hidden}'+
+   '.lpch.c{background:linear-gradient(#9aa6b8,#6a7688)}.lpch.r{background:linear-gradient(#5aa8ff,#2f5fd8)}.lpch.e{background:linear-gradient(#c58bff,#7a3ad6)}'+
+   '.lpch .cl{display:block}.lpch .op{display:none}.lpch.open .cl{display:none}.lpch.open .op{display:block;animation:lpPop .45s cubic-bezier(.2,1.6,.4,1)}.lpch small{display:block;font:800 11px var(--b);opacity:.9}'+
+   '.lpch:not(.open){animation:lpWig 1.4s ease-in-out infinite}@keyframes lpWig{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-2deg)}85%{transform:rotate(2deg)}}@keyframes lpPop{0%{transform:scale(.5);opacity:0}}'+
+   '.lpng{background:#fff;border-radius:12px;padding:6px 10px}.lpng h4{margin:2px 0 4px;font:900 12px var(--b);color:#8a6a4a}.lpg{margin:5px 0}.lpg div{display:flex;justify-content:space-between;font:800 12px var(--b);color:#4a3a2a}.lpg i{display:block;height:6px;border-radius:3px;background:#efe6d6;margin-top:3px;overflow:hidden}.lpg s{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#ffcf4d,#ff8a1a)}.lpg.hot s{background:linear-gradient(90deg,#7bea62,#2faa45)}'+
+   '.dexg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:48vh;overflow:auto;margin:6px 0}.dexc{background:#fff;border-radius:12px;padding:8px 4px;text-align:center;font:900 12px var(--b);color:#4a3a2a}.dexc em{display:block;font-style:normal;font-size:26px;line-height:1.2}.dexc small{display:block;font:700 10px var(--b);color:#8a7a6a}.dexc.no{background:#e9e2d2;color:#9a8a7a}.dexc.no em{filter:grayscale(1) brightness(.4);opacity:.5}';
+  document.head.appendChild(st);
+  LPC.el=document.createElement('div'); LPC.el.id='rushC'; (document.getElementById('app')||document.body).appendChild(LPC.el);
+}catch(e){ console.warn('lp init',e); }
+/* ---- ① 러시 챌린지 ---- */
+function lpRushPick(){ const cfg=dayCfg(S.day), T=cfg.types||[], lv=S.lvl||1, L=[];
+  L.push({k:'srv',n:'손님 {g}명 응대',g:Math.min(5,2+Math.floor(lv/5)),t:26});
+  L.push({k:'combo',n:'콤보 ×{g} 만들기',g:Math.min(8,4+Math.floor(lv/6)),t:28});
+  if(T.some(x=>x==='buy'||x==='sw'||x==='tour')) L.push({k:'ok',n:'상담 정답 {g}번',g:2,t:32});
+  if((S.unl||[]).includes('repair')&&T.includes('fix')) L.push({k:'fix',n:'수리 {g}건 완료',g:1,t:38});
+  return L[Math.floor(Math.random()*L.length)]; }
+function lpRushVal(k){ return k==='combo'?combo:(S.stats[k]||0); }
+function lpTick(dt){ try{ if(!LPC.el) return; const el=LPC.el;
+    if(dayState!=='run'){ if(LPC.on&&!LPC.on.done){ LPC.on=null; el.className=''; } return; }
+    const key=S.day+':'+dayCash0; if(LPC.key!==key){ LPC.key=key; LPC.on=null; LPC.next=18; el.className=''; }
+    const cfg=dayCfg(S.day), el2=cfg.dur-dayT; const R=LPC.on;
+    if(!R){ if(el2>=LPC.next&&dayT>14&&!quizOpen){ const P=lpRushPick(); LPC.on={k:P.k,n:P.n.replace('{g}',P.g),g:P.g,t:P.t,left:P.t,base:P.k==='combo'?0:lpRushVal(P.k)}; el.className='on'; snd('ui',0.45,1.5); } return; }
+    if(R.done){ R.hold-=dt; if(R.hold<=0){ LPC.on=null; el.className=''; LPC.next=el2+30+Math.random()*12; } return; }
+    R.left-=dt; const v=R.k==='combo'?combo:lpRushVal(R.k)-R.base, p=Math.min(R.g,Math.max(0,v));
+    if(p>=R.g){ R.done=1; R.hold=1.8; const pay=Math.max(10,Math.round(cfg.goal*0.06/5)*5); money+=pay; S.stats.rush=(S.stats.rush||0)+1; comboT=14;
+      el.className='on ok'; el.innerHTML='<b>⚡ 러시 성공!</b> +$'+pay; snd('coin',0.55,1.3); try{ haptic([8,20,8]); }catch(_){} try{ floatText(player.pos.clone().setY(3.0),'⚡ 러시 +$'+pay,'say'); }catch(_){} return; }
+    if(R.left<=0){ R.done=1; R.hold=1.4; el.className='on no'; el.innerHTML='<b>아깝다!</b> '+p+'/'+R.g+' · 다음 러시를 노려요'; return; }
+    el.innerHTML='<b>⚡ 러시</b> '+R.n+' · <b>'+Math.ceil(R.left)+'초</b><small style="display:block;font-weight:800">'+p+' / '+R.g+'</small><i><s style="width:'+(R.left/R.t*100)+'%"></s></i>';
+  }catch(e){ console.warn('lpTick',e); } }
+/* ---- ④ 손님 도감 (21종) — 처음 응대에 성공하면 등록, 5·10·15·21장마다 보상 + 영구 판매가 +2% ---- */
+var LPDEX=[
+ {id:'t:pick',ic:'📦',n:'픽업 손님',h:'대구 DAY 1'},{id:'t:buy',ic:'🛍️',n:'구입 상담',h:'대구 DAY 1'},{id:'t:fix',ic:'🔧',n:'수리 손님',h:'대구 DAY 2'},{id:'t:sw',ic:'💬',n:'SW 상담',h:'대구 DAY 3'},
+ {id:'t:ret',ic:'↩️',n:'반품·교환',h:'부산 DAY 5'},{id:'t:esc',ic:'🔥',n:'책임자 호출',h:'부산 DAY 6'},{id:'t:tour',ic:'🧳',n:'외국인 관광객',h:'부산 DAY 7'},{id:'t:corp',ic:'🏢',n:'법인 고객',h:'서울 DAY 10'},
+ {id:'s:trade',ic:'♻️',n:'보상 판매',h:'반품 손님 중에'},{id:'s:lost',ic:'🚨',n:'분실·도난',h:'반품 손님 중에'},{id:'s:gift',ic:'🎁',n:'선물 구매',h:'반품 손님 중에'},
+ {id:'x:tough',ic:'😤',n:'까다로운 손님',h:'부산 DAY 6부터'},{id:'x:flight',ic:'✈️',n:'출국 직전 손님',h:'인천공항'},{id:'x:vip',ic:'👑',n:'VIP 손님',h:'뉴욕'},{id:'x:influ',ic:'📸',n:'인플루언서',h:'이벤트 날'},
+ {id:'l:hip',ic:'🧢',n:'힙스터',h:'어디서나 · 운'},{id:'l:phones',ic:'🎧',n:'음악 청년',h:'어디서나 · 운'},{id:'l:bizw',ic:'👓',n:'비즈니스 우먼',h:'어디서나 · 운'},{id:'l:student',ic:'🎒',n:'학생',h:'어디서나 · 운'},{id:'l:fashion',ic:'🕶️',n:'패셔니스타',h:'어디서나 · 운'},{id:'l:tote',ic:'👜',n:'출근길 직장인',h:'어디서나 · 운'}];
+var LPDEXM=[[5,300],[10,800],[15,1500],[21,3000]];
+function lpDexN(){ let n=0; for(const k in (S.dex||{})) if(S.dex[k]) n++; return n; }
+function lpDexTier(){ const n=lpDexN(); return LPDEXM.filter(m=>n>=m[0]).length; }
+function lpCard(c){ try{ if(!c) return; const ids=['t:'+c.type]; if(c.type==='ret'&&c.sub) ids.push('s:'+c.sub); if(c.tough) ids.push('x:tough'); if(c.flight) ids.push('x:flight'); if(c.vip) ids.push('x:vip'); if(c.influ) ids.push('x:influ'); if(c.lookId) ids.push('l:'+c.lookId);
+    ids.forEach(id=>{ if(S.dex[id]) return; const d=LPDEX.find(x=>x.id===id); if(!d) return; const t0=lpDexTier(); S.dex[id]=1; const n=lpDexN();
+      setTimeout(()=>{ toast('📖 새 손님 카드! '+d.ic+' '+d.n+' ('+n+'/'+LPDEX.length+')',2.6); snd('level_up',0.35,1.6); },500);
+      const t1=lpDexTier(); if(t1>t0){ const m=LPDEXM[t1-1]; money+=m[1]; setTimeout(()=>bigBanner('📖 손님 도감 '+m[0]+'장!','+$'+m[1]+' · 판매가 영구 +'+(t1*2)+'%'),1400); } }); }catch(e){ console.warn('lpCard',e); } }
+function openDex(){ const n=lpDexN(), t=lpDexTier(), nx=LPDEXM.find(m=>n<m[0]);
+  let h='<h2>📖 손님 도감 '+n+'/'+LPDEX.length+'</h2><p style="margin-top:-4px">처음 응대에 성공한 손님이 등록돼요 · 지금 판매가 <b>+'+(t*2)+'%</b>'+(nx?'<br>'+nx[0]+'장 모으면 $'+nx[1]+' + 판매가 +2%':'<br>도감 완성!')+'</p><div class="dexg">';
+  LPDEX.forEach(d=>{ const on=!!S.dex[d.id]; h+='<div class="dexc'+(on?'':' no')+'"><em>'+d.ic+'</em>'+(on?d.n:'???')+'<small>'+(on?'등록 완료':d.h)+'</small></div>'; });
+  h+='</div><button class="gray" id="mOk">닫기</button>'; openModal(h); }
+function lpMsHook(){ try{ const a=$('msAll'); if(!a||$('msDex')) return; const b=document.createElement('button'); b.id='msDex'; b.textContent='📖 손님 도감 ('+lpDexN()+'/'+LPDEX.length+')'; b.style.cssText='background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a'; a.parentNode.insertBefore(b,a); b.onclick=e=>{ e.stopPropagation(); snd('ui',0.4); openDex(); }; }catch(e){} }
+/* ---- ② 연승 + 보상 상자 ---- */
+var LPTN={c:'일반 상자',r:'레어 상자',e:'에픽 상자'};
+function lpOnResult(clear,stars,cfg){ const L=S.lp, R={clear:clear,streak:0,sb:0,tier:'',rw:'',lost:0};
+  try{ if(!clear){ R.lost=L.streak||0; L.streak=0; return R; }
+    L.streak=(L.streak||0)+1; L.best=Math.max(L.best||0,L.streak); R.streak=L.streak;
+    if(L.streak>=2){ R.sb=Math.round(cfg.goal*0.05*Math.min(L.streak-1,10)); money+=R.sb; }
+    const roll=Math.random(), odds=stars>=3?[0.25,0.75]:stars===2?[0.5,0.9]:[0.7,0.97]; const tier=roll<odds[0]?'c':roll<odds[1]?'r':'e'; R.tier=tier; L.chests=(L.chests||0)+1;
+    const g=cfg.goal, q=Math.random();
+    if(tier==='c'){ if(q<0.6){ const v=Math.round(g*0.15); money+=v; R.rw='💵 $'+v; } else { Object.keys(S.inv||{}).forEach(t=>{ S.inv[t]+=3; }); R.rw='📦 모든 재고 +3'; } }
+    else if(tier==='r'){ if(q<0.4){ const v=Math.round(g*0.45); money+=v; R.rw='💵 $'+v; } else if(q<0.7){ L.fever=1; R.rw='🔥 다음 영업을 FEVER로 시작'; } else { (S.crew||[]).forEach(c=>{ if(c) c.sat=Math.min(100,(c.sat==null?70:c.sat)+10); }); gainXP(4); R.rw='😊 직원 만족도 +10 · XP +4'; } }
+    else { if(q<0.5){ const v=Math.round(g*1.2); money+=v; R.rw='💰 $'+v; } else { S.boostD=S.day+1; R.rw='📈 다음 영업 매출 2배'; } }
+  }catch(e){ console.warn('lpOnResult',e); }
+  return R; }
+function lpNext(){ const L=[];
+  try{ const need=6+S.lvl*4; L.push({t:'매장 레벨 '+(S.lvl+1),p:S.xp/need,s:S.xp+' / '+need+' XP'});
+    ACH.forEach(a=>{ if(S.ach[a.id]) return; const v=Math.min(a.g,a.v()); L.push({t:a.ic+' '+a.n,p:v/a.g,s:v>=a.g?'받을 수 있어요! $'+a.r:v+' / '+a.g+' · $'+a.r}); });
+    const sd=S.rpBack!=null?S.rpBack:S.day, st=STAGE_OF(sd); if(st<5&&!lvSeason(sd)) L.push({t:'⭐ '+STS[st]+' 매장 별 → 다음 매장',p:lvStageStars(st)/lvStarNeed(st),s:lvStageStars(st)+' / '+lvStarNeed(st)});
+    if((S.myRank||0)<3){ const ns=LVRANKSTAR[S.myRank||0]; L.push({t:'🎖️ '+MYRANKN[(S.myRank||0)+1]+' 승진 별',p:Math.min(1,lvTotalStars()/ns),s:lvTotalStars()+' / '+ns+' (+리더십 85점)'}); }
+    const D=lvDaily(), dd=lvDailyDone(); if(!D.chest) L.push({t:'🎁 오늘의 상자',p:dd/3,s:dd+' / 3'});
+    const dn=lpDexN(), nx=LPDEXM.find(m=>dn<m[0]); if(nx) L.push({t:'📖 손님 도감',p:dn/nx[0],s:dn+' / '+nx[0]+' · $'+nx[1]});
+    const ss=lvSeason(S.day); if(ss){ const ws=lvWeekStars(S.day), tg=ws<7?7:ws<13?13:18; if(ws<18) L.push({t:'🏆 시즌 '+(ws<7?'브론즈':ws<13?'실버':'골드'),p:ws/tg,s:ws+' / '+tg+' 별'}); }
+  }catch(e){ console.warn('lpNext',e); }
+  return L.filter(x=>x.p>0||x.t.indexOf('매장 레벨')>=0).sort((a,b)=>b.p-a.p).slice(0,3); }
+function lpNextHTML(){ const L=lpNext(); if(!L.length) return ''; return '<div class="lpng"><h4>🎯 거의 다 왔어요</h4>'+L.map(x=>'<div class="lpg'+(x.p>=1?' hot':'')+'"><div><span>'+x.t+'</span><b>'+x.s+'</b></div><i><s style="width:'+Math.round(Math.min(1,x.p)*100)+'%"></s></i></div>').join('')+'</div>'; }
+function lpResultHTML(R){ try{ let h='<div class="lpbox">';
+    if(R&&R.clear){ h+='<div class="lpst"><span>🔥 '+R.streak+'연승'+(S.lp.best>R.streak?' <small style="font-weight:700">(최고 '+S.lp.best+')</small>':'')+'</span><b>'+(R.sb?'연승 보너스 +$'+R.sb:'내일도 깨면 연승 보너스!')+'</b></div>';
+      if(R.tier) h+='<div class="lpch '+R.tier+'" onclick="this.classList.add(\'open\')"><span class="cl">🎁 '+LPTN[R.tier]+' · 탭해서 열기<small>별 3개면 레어·에픽 확률이 올라가요</small></span><span class="op">'+LPTN[R.tier]+' ✨ '+R.rw+'<small>이미 지급됐어요</small></span></div>'; }
+    else if(R&&R.lost>=2) h+='<div class="lpst" style="background:#eee;color:#666"><span>💔 '+R.lost+'연승이 끊겼어요</span><b>다시 쌓아 봐요</b></div>';
+    return h+lpNextHTML()+'</div>'; }catch(e){ return ''; } }
+function lpPreLine(){ try{ let h=''; const L=S.lp||{};
+    if(L.fever) h+='<div class="evc" style="border-color:#ff8a1a;background:linear-gradient(#fff0d6,#ffd7a0)"><b style="color:#a04a00">🔥 FEVER로 시작!</b><small style="color:#a04a00">상자 보상 · 영업 시작하자마자 12초 동안 매출 1.4배</small></div>';
+    if((L.streak||0)>=1) h+='<div class="dstat ok"><span>🔥 '+L.streak+'연승 중</span><b>클리어하면 +$'+Math.round(dayCfg(S.day).goal*0.05*Math.min(L.streak,10))+'</b></div>';
+    return h; }catch(e){ return ''; } }
+function lpDayStart(){ try{ LPC.on=null; LPC.next=18; if(LPC.el) LPC.el.className=''; if(S.lp&&S.lp.fever){ S.lp.fever=0; feverT=12; S.stats.fever=(S.stats.fever||0)+1; $('vig').classList.add('fv'); setTimeout(()=>bigBanner('🔥 FEVER 스타트!','12초 동안 매출 1.4배'),900); } }catch(e){} }
 function startDayModal(){ if((S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
   $('dUpg').onclick=()=>{ window.__rts=1; openUp(); }; $('dMap').onclick=()=>{ window.__rts=1; snd('ui',0.4); openWorld(); };
-  $('dayGo').onclick=()=>{ $('modal').classList.remove('on'); initAudio(); useResetDay(); dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 진열대는 창고 재고로 채워져요. 부족하면 하단 [재고]에서 발주!',4.5),2600); } spawnT=0.3; bigBanner('DAY '+(S.day+1),cfg.title); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(5.2,0,-4.4); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } }; }
+  $('dayGo').onclick=()=>{ $('modal').classList.remove('on'); initAudio(); useResetDay(); dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 진열대는 창고 재고로 채워져요. 부족하면 하단 [재고]에서 발주!',4.5),2600); } spawnT=0.3; bigBanner('DAY '+(S.day+1),cfg.title); lpDayStart(); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(5.2,0,-4.4); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } }; }
 function endDay(fail){ if(dayState!=='run') return; dayState='end'; GSPOT.occ=null; dayEndT=1.2; S.lastFail=fail?'comp':null; custs.forEach(c=>{ if(c.st!=='leave'){ c.quiet=1; c.el.style.display='none'; if(c.spot){ c.spot.occ=null; c.spot=null; } c.st='leave'; c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(14,0,11.2)]; } }); if(quizOpen) closeQuiz(); bigBanner(fail?'영업 정지!':'영업 종료!',fail?'민원 3건이 쌓였어요':'오늘 결과를 확인해요'); }
 /* =============================================================
    v2.27: 본사 AI 총괄 디렉터 — 일일 리더십 성적표
@@ -2749,7 +2845,7 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   let stars=lvStars(clear,cfg,r); /* v2.34: ★★★ 조건은 매장마다 다르다(lvStar3) */ S.bp=S.bp||[]; const bonusFull=clear?Math.round(cfg.goal*0.2*stars*(dayEv==='review'?2:1)):0, bonus=Math.max(0,bonusFull-(S.bp[S.day]||0)); const moneyPre=Math.floor(money); const wages=S.crew.reduce((a,c)=>a+c.wage,0), rent=RENT[STG]; money=Math.max(0,money-wages-rent); const nps=npsOf(dayNps); let npsB=0, npsMsg=''; if(nps!=null){ if(nps>=50){ S.stats.nps50=(S.stats.nps50||0)+1; S.womD=S.day+1; S.womK=1.15; npsB=Math.round(cfg.goal*0.1); money+=npsB; npsMsg='입소문 효과! 다음 영업 손님 +15%'; } else if(nps<0){ S.womD=S.day+1; S.womK=0.9; npsMsg='나쁜 입소문… 다음 영업 손님 -10%'; } else npsMsg='추천 손님을 늘리면 입소문 보너스!'; }
   const crewLines=[]; const load=dayRevs.length/(S.crew.length+1); S.crew.slice().forEach(cr=>{ if(cr.sat==null) cr.sat=70; let d=-3-Math.round(Math.max(0,load-8)*1.5)+(stars>=3?6:stars>=1?3:0)+(dayComp===0?2:-dayComp*2); cr.sat=Math.max(0,Math.min(100,cr.sat+d)); if(cr.sat<30&&Math.random()<0.5){ S.crew.splice(S.crew.indexOf(cr),1); const st=staff.find(s=>s.crew===cr); if(st) removeStaff(st); crewLines.push('<div class="dstat no"><span>😢 '+cr.name+'('+ROLES[cr.role].n+') 퇴사</span><b>만족도 '+cr.sat+'</b></div>'); } else if(cr.sat<45) crewLines.push('<div class="dstat no"><span>😟 '+cr.name+' 퇴사 위험</span><b>만족도 '+cr.sat+'</b></div>'); });
   const RG=STAGE_OF(S.day), rk0=myRank(RG); S.best[S.day]=Math.max(S.best[S.day]||0,dayRev); const rk1=myRank(RG); let r1b=0; if(rk1===1&&!S.r1[RG]){ S.r1[RG]=1; r1b=150; money+=r1b; } S.orders.forEach(o=>{ if(!o.ex) o.ready=1; });
-  lvOnResult(clear,stars); if(!clear) S.fails=(S.fails||0)+1; if(clear){ S.lastProfit=Math.round(dayRev-dayOrd-wages-rent); S.dayStars[S.day]=Math.max(S.dayStars[S.day]||0,stars); money+=bonus; S.bp[S.day]=(S.bp[S.day]||0)+bonus; confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); } else snd('ui',0.5,0.5);
+  lvOnResult(clear,stars); const lpRes=lpOnResult(clear,stars,cfg); if(!clear) S.fails=(S.fails||0)+1; if(clear){ S.lastProfit=Math.round(dayRev-dayOrd-wages-rent); S.dayStars[S.day]=Math.max(S.dayStars[S.day]||0,stars); money+=bonus; S.bp[S.day]=(S.bp[S.day]||0)+bonus; confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); } else snd('ui',0.5,0.5);
   /* v2.25: 지점 일일 자동 매출 실정산 — 현재 매장은 직접 영업 중이라 빼고, 오픈된 '다른' 지점의 자동 매출을 현금에 합산한다(클리어 여부와 관계없이 지점은 계속 돈다). */
   let brInc=0; try{ if(window.HQUI&&typeof HQUI.autoIncomeTotal==='function') brInc=Math.max(0,Math.round(HQUI.autoIncomeTotal()||0)); }catch(e){ brInc=0; }
   if(brInc>0) money+=brInc;
@@ -2778,7 +2874,7 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
     '<div class="dstat '+(okRev?'ok':'no')+'"><span>매출 $'+dayRev+' / 목표 $'+cfg.goal+'</span><b>'+(okRev?'달성':'부족')+'</b></div>'+
     '<div class="dstat '+(okRate?'ok':'no')+'"><span>오늘 서비스 평점 ★'+r.toFixed(1)+' / 최소 ★'+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</span><b>'+(okRate?'통과':'미달')+'</b></div>'+
     (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(dLead>0?'ok':dLead<0?'no':'')+'"><span>'+leadLine+'</span><b>'+(promotion?'승진 🎉':penalty?'경고 ⚠️':dLead>0?'▲ '+dLead:dLead<0?'▼ '+dLead:'유지')+'</b></div>'+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+S.crew.length+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+(brInc?'<div class="dstat ok"><span>지점 자동 매출 합계</span><b>+$'+brInc+'</b></div>':'')+
-    '<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+lvStarHint(cfg)+'</p>':'</p>')+'<button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button>'));
+    lpResultHTML(lpRes)+'<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+lvStarHint(cfg)+'</p>':'</p>')+'<button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button>'));
   $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
   try{ dirAIAsk(dirData(clear)); }catch(e){ console.warn('dirAI',e); }
   const go=next=>{ $('modal').classList.remove('on'); if(lvGo(next)) return; if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; } setTimeout(startDayModal,300); };
