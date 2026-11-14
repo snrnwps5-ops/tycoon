@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<script>try{(function(){var V='1794850000';
+function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
+if(document.getElementById('__updBar')) return;
+var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
+el.setAttribute('style','position:fixed;left:50%;top:calc(4px + env(safe-area-inset-top));transform:translateX(-50%);z-index:2147483000;padding:9px 18px 11px;border-radius:16px;background:linear-gradient(#ffd23f,#ff9a1a);color:#3a1a00;font:900 15px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;letter-spacing:-.2px;box-shadow:0 4px 0 #b85a00,0 0 0 3px #fff;white-space:nowrap;-webkit-tap-highlight-color:transparent;cursor:pointer;text-align:center');
+el.textContent='🔄 최신 버전 반영하기 (터치)';
+el.onclick=function(){ try{ el.textContent='🔄 반영 중…'; }catch(e){}
+  setTimeout(function(){ location.href=location.pathname+'?b='+encodeURIComponent(t)+(location.hash||''); },60); };
+document.body.appendChild(el); }catch(e){}}
+function chk(){try{fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){t=(t||'').trim();if(!t||t===V)return;if(location.search.indexOf('b='+t)>=0)return;
+window.__pendVer=t;window.__newV=t;showUpd(t);
+if(window.__updBusy&&window.__updBusy()){if(window.__updPend&&!window.__updToasted){window.__updToasted=1;try{window.__updPend(t);}catch(e){}}return;}
+}).catch(function(){});}catch(e){}}
+window.__checkVer=chk;window.__showUpd=showUpd;chk();var _vt=0;function rt(){var n=Date.now();if(n-_vt<12000)return;_vt=n;chk();}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)rt();});
+addEventListener('pageshow',function(e){if(e&&e.persisted)rt();});
+document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)showUpd(window.__pendVer);});
+})();}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0b1c66">
+<meta name="robots" content="noindex">
+<title>메가 테크 슈퍼스토어 타이쿤 v2.31 · 2D 테스트 모드 (AI QA)</title>
+<link rel="icon" href="icon.jpg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">

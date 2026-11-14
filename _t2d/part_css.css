@@ -1,0 +1,28 @@
+/* ===== 2D 테스트 모드 전용 UI ===== */
+#aip{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:12;width:200px;background:rgba(10,18,38,.88);border:2px solid rgba(255,255,255,.38);border-radius:16px;padding:8px;color:#fff;font:900 12px var(--b);box-shadow:0 6px 18px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#aip.min #aib{display:none}
+#aih{display:flex;align-items:center;gap:6px;margin:0 2px 6px}
+#aih b{font-family:var(--d);font-weight:400;font-size:14px;color:#ffd23f;flex:1}
+#aih span{font:900 10px var(--b);color:#9fc6ff}
+#aih button{width:24px;height:24px;border:0;border-radius:8px;background:rgba(255,255,255,.2);color:#fff;font:900 15px var(--b);padding:0;line-height:1}
+#aib .air{display:flex;gap:6px;margin:5px 0}
+#aib button{flex:1;border:0;border-radius:10px;padding:8px 3px;font:900 12px var(--b);color:#fff;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 3px 0 #1c3f9a;line-height:1.2;letter-spacing:-.3px}
+#aib button.dir{background:linear-gradient(#b8c2d0,#8a96a8);box-shadow:0 3px 0 #5a6578}
+#aib button.warn{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00}
+#aib button:active{transform:translateY(2px);box-shadow:none}
+#aib #aistop{background:linear-gradient(#ff8a7a,#e8342a);box-shadow:0 3px 0 #8a0f1f}
+#aiv{margin-top:6px;font:800 10px/1.5 var(--b);color:#cfe0ff;background:rgba(255,255,255,.1);border-radius:8px;padding:5px 6px;white-space:pre-line}
+/* v2.1: 접을 수 있는 진단 영역 (기본 접힘 · 오류 개수 배지) */
+#diag{margin-top:6px;border-radius:8px;background:rgba(255,255,255,.1);overflow:hidden}
+#diag summary{list-style:none;display:flex;align-items:center;gap:5px;padding:5px 6px;cursor:pointer;font:800 10px var(--b);color:#cfe0ff;-webkit-user-select:none;user-select:none}
+#diag summary::-webkit-details-marker{display:none}
+#diag summary:before{content:'▸';font-size:9px;opacity:.85}
+#diag[open] summary:before{content:'▾'}
+#diag .dt{flex:1;text-align:left}
+#diagB{background:rgba(123,234,98,.26);color:#d8ffcf;border-radius:6px;padding:1px 5px;font:900 9px var(--b);white-space:nowrap}
+#diagB.bad{background:#e8342a;color:#fff}
+#diag #aiv{margin-top:0;border-radius:0;background:transparent}
+#aib .aihint{font:700 9px/1.3 var(--b);color:#9fc6ff;margin:2px 2px 4px}
+@media (max-width:460px){#aip{width:152px;padding:6px}#aib button{font-size:10px;padding:7px 2px}#aiv{font-size:9px}}
+#vig{display:none!important}
+#aib button.go2{background:linear-gradient(#7bea62,#2faa45);box-shadow:0 3px 0 #1d7a2a}
