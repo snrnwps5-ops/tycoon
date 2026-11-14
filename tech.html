@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794700000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794710000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -341,7 +341,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.36</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.37</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1435,7 +1435,7 @@ function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.soft
   if(c.influ&&dayState==='run'&&!c.softLeave){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } if(!c.softLeave){ S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift(); }
   if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈'); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
   if(ok&&c.type==='ret') hubReturnRma(c);
-  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; pay=Math.round(pay*priceMul()*prM*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(S.boostD===S.day?2:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1)); if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; cashVal+=pay; rebuildCash(); S.stats.srv++; lpCard(c); floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); haptic(15,'cashPill'); c.ch.jump=1; gainXP(1);
+  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(S.boostD===S.day?2:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(M>1?Math.pow(M,0.6):M)); /* v2.37: 배수 체감(예: 4배→2.3배, 10배→4배) — 업그레이드·FEVER·VIP가 겹쳐 하루 목표의 20배가 나오던 문제 */ if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; cashVal+=pay; rebuildCash(); S.stats.srv++; lpCard(c); floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); haptic(15,'cashPill'); c.ch.jump=1; gainXP(1);
     if(c.ch.acts.Victory){ playA(c.ch,'Victory',0.1); c.lock=0.8; } if(S.stats.srv===1) setTimeout(()=>bigBanner('첫 고객 응대!','돈은 계산대 옆에 쌓여요'),300); }
   else if(!ok&&!c.softLeave) floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),c.miss?'다른 매장 가볼게요…':'너무 오래 기다렸어요','bad'); }
 
@@ -1478,7 +1478,7 @@ function openQuiz(c){ if(mgmtOpen()) return; quizOpen=true; c.st='consult'; curF
     openModal('<h2>'+title+'</h2><p style="font-size:16px"><b>'+(c.type==='tour'?Q.q:'"'+Q.q+'"')+'</b>'+(c.type==='esc'&&hasCrew('mgr')?'<br><small>매니저가 매장에 있어요</small>':'')+'</p>'+quizBtns(opts,col));
     $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; closeQuiz();
       if(c.type==='tour'){ if(ok){ S.stats.ok++; c.happy=1; qToast('✔ '+Q.why,3.2); if(Q.t){ c.want=Q.t; c.st='want'; c.pat=Math.max(c.pat,30); c.specOk=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'Thank you!!','say'); } else custLeave(c,true,25); } else { c.miss=true; qToast('✘ 정답: '+Q.a[0]+' — '+Q.why,3.8); custLeave(c,false); } }
-      else if(c.type==='corp'){ if(ok){ S.stats.ok++; c.happy=1; const cp=Q.pay||680; qToast('✔ '+Q.why,3.2); bigBanner('🏢 B2B 법인 계약 성사!','대량 납품 매출 +$'+cp); custLeave(c,true,cp); } else { c.miss=true; qToast('✘ 정답: '+Q.a[0]+' — '+Q.why,3.8); custLeave(c,false); } }
+      else if(c.type==='corp'){ if(ok){ S.stats.ok++; c.happy=1; const cp=Math.round(Math.min(Q.pay||680,Math.max(80,dayCfg(S.day).goal*0.06))); /* v2.37: 법인 1건이 하루 목표를 넘기던 문제 */ qToast('✔ '+Q.why,3.2); bigBanner('🏢 B2B 법인 계약 성사!','대량 납품 매출 +$'+cp); custLeave(c,true,cp); } else { c.miss=true; qToast('✘ 정답: '+Q.a[0]+' — '+Q.why,3.8); custLeave(c,false); } }
       else { if(ok){ S.stats.ok++; qToast('✔ '+Q.why,3.2); if(hasCrew('mgr')){ c.mgr=1; c.st='mgrwait'; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'매니저님 오시는 중…','say'); } else { c.quiet=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'…알겠어요, 다음엔 잘 부탁해요','say'); custLeave(c,true,0); } } else { c.miss=true; dayComp++; qToast('✘ 항의가 더 커졌어요! 민원 2건 · 정답: '+Q.a[0]+' — '+Q.why,4); custLeave(c,false); } } }; return; }
   if(c.type==='ret'){ const opts=shuffle(c.rq.a.map((t,i)=>({t,ok:i===0})));
     openModal('<h2>'+({trade:'♻️ 보상 판매',lost:'🚨 분실·도난 상담',gift:'🎁 선물 구매 상담'}[c.sub]||'반품·교환 문의')+'</h2><p style="font-size:16px"><b>"'+c.rq.q+'"</b></p>'+quizBtns(opts,['#ff9ad5','#e8508f','#a02a60']));
@@ -2356,8 +2356,15 @@ function collide(p){
   p.x=Math.max(-6.6,Math.min(6.6,p.x));
   p.z=Math.max(-7.8,Math.min(5.6,p.z));
 }
+/* v2.37: 끼임 방지 — 인천 화분 나무처럼 목표 지점이 장애물 안에 찍히면 영원히 밀고 있던 문제 */
+function navFree(x,z){ const inS=x>=-6.6&&x<=6.6&&z>=-7.8&&z<=5.6; for(let r=0.3;r<=3.01;r+=0.3) for(let k=0;k<16;k++){ const a=k/16*Math.PI*2, px=x+Math.cos(a)*r, pz=z+Math.sin(a)*r; if(inS&&(px<-6.6||px>6.6||pz<-7.8||pz>5.6)) continue; if(!collideBox(px,pz,0.3)) return {x:px,z:pz}; } return null; }
 function walkTo(o,dt,spd){ if(!o.wp||!o.wp.length) return true;
+  { const t0=o.wp[0]; if(!t0._nf){ t0._nf=1; if(collideBox(t0.x,t0.z,0.3)){ const f=navFree(t0.x,t0.z); if(f){ const n=t0.clone?t0.clone():{x:t0.x,y:0,z:t0.z}; n.x=f.x; n.z=f.z; n._nf=1; if(t0.cust) n.cust=t0.cust; o.wp[0]=n; } } } }
   const t=o.wp[0], tdx=t.x-o.pos.x, tdz=t.z-o.pos.z, dist=Math.hypot(tdx,tdz);
+  { const sk=o._sk||(o._sk={x:o.pos.x,z:o.pos.z,t:0,g:0}); sk.t+=dt;
+    if(sk.g>0){ sk.g-=dt; const gl=dist||1e-6, gs=Math.min(spd,gl/dt); o.pos.x+=tdx/gl*gs*dt; o.pos.z+=tdz/gl*gs*dt; o.face=Math.atan2(tdx,tdz); o.speed=gs; if(gl<0.12){ o.wp.shift(); o._np=null; o._npT=null; sk.g=0; sk.t=0; sk.x=o.pos.x; sk.z=o.pos.z; return !o.wp.length; } return false; }
+    if(Math.hypot(o.pos.x-sk.x,o.pos.z-sk.z)>0.25){ sk.x=o.pos.x; sk.z=o.pos.z; sk.t=0; }
+    else if(sk.t>1.5&&dist>0.4){ if(o.wp.length>1&&!t.cust){ o.wp.shift(); o._np=null; o._npT=null; sk.t=0; return false; } if(sk.t>2.5){ sk.g=1.4; sk.t=0; return false; } } }
   /* v2.8: 손님에게 가는 목표(테이블 건너 응대 포함)는 실제 손님과 1.25m 안이면 도착으로 판정 */
   if(t.cust&&o.job){ const jd=Math.hypot(o.job.pos.x-o.pos.x,o.job.pos.z-o.pos.z);
     if(jd<=1.25){ o.wp.length=0; o._np=null; o._npT=null; return true; } }
