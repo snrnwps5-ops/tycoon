@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795160000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795170000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -342,7 +342,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.47</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.48</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -3335,8 +3335,8 @@ function autoCard(){ if(S.day<1) return ''; const rows=AUTO_DEF.map(d=>{ const l
       '<button data-auto="'+d.k+'" style="flex:none;width:96px;height:40px;border:0;border-radius:11px;font:900 13px var(--b);color:#fff;background:'+(mx?'#a9b4c4':ok?'linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a':'#b9b2a4')+'">'+(mx?'MAX':'$'+c)+'</button></div>'; }).join('');
   return '<div id="autoCard" style="margin:6px 0;padding:8px 12px 10px;border-radius:14px;background:linear-gradient(#eafbe9,#cdf0cf);border:2px solid #45b85a;text-align:left"><div style="font:900 15px var(--b);color:#155a24">🤖 자동화 <small style="font-weight:800">· 손으로 하던 일을 하나씩 맡겨요</small></div>'+rows+'</div>'; }
 function invHint(){ try{ const go=$('dayGo'); if(!go||$('invHint')) return; let n=AUTO_DEF.filter(d=>autoLv(d.k)<5&&money>=autoCost(d)).length; if(S.day>=2){ if(!expOwned()&&money>=expCost()) n++; else if(expOwned()&&expLv()<10&&money>=expUpCost()) n++; } if(boxGet()>0) n++;
-    if(!$('autoCard')&&!$('expCard')) return; const d=document.createElement('button'); d.id='invHint'; d.style.cssText='display:block;width:100%;margin:0 0 6px;height:34px;border:0;border-radius:10px;font:900 13px var(--b);color:'+(n?'#fff':'#3a5a40')+';background:'+(n?'linear-gradient(#ff7ab8,#e8348a);box-shadow:0 3px 0 #9a1a5a':'#dfeedd');
-    d.textContent=n?'🛠️ 지금 할 수 있는 투자 '+n+'개 ↓':'🛠️ 매장 투자 · 자동화 보기 ↓'; d.onclick=e=>{ e.stopPropagation(); const c=$('autoCard')||$('expCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }; go.before(d); }catch(e){} }
+    if(!$('autoCard')&&!$('expCard')) return; const d=document.createElement('button'); d.id='invHint'; d.style.cssText='display:block;width:100%;margin:6px 0;height:34px;border:0;border-radius:10px;font:900 13px var(--b);color:'+(n?'#fff':'#3a5a40')+';background:'+(n?'linear-gradient(#ff7ab8,#e8348a);box-shadow:0 3px 0 #9a1a5a':'#dfeedd');
+    d.textContent=n?'🛠️ 지금 할 수 있는 투자 '+n+'개 ↓':'🛠️ 매장 투자 · 자동화 보기 ↓'; d.onclick=e=>{ e.stopPropagation(); const c=$('autoCard')||$('expCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }; const h2=$('mbox').querySelector('h2'); const p1=h2&&h2.nextElementSibling; if(p1&&p1.tagName==='P') p1.after(d); else if(h2) h2.after(d); else go.before(d); }catch(e){} }
 function autoBind(){ document.querySelectorAll('#autoCard [data-auto]').forEach(b=>{ b.onclick=e=>{ e.stopPropagation(); autoBuy(b.dataset.auto); }; }); }
 (function(){ const _s=startDayModal; startDayModal=function(){ const r=_s.apply(this,arguments);
   try{ const go=$('dayGo'); if(go&&!$('autoCard')&&$('modal').classList.contains('on')){ const h=autoCard(); if(h){ (($('expCard'))?$('expCard').insertAdjacentHTML('beforebegin',h):$('mbox').insertAdjacentHTML('beforeend',h)); autoBind(); } invHint(); } }catch(e){} return r; }; })();
