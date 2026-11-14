@@ -1,5 +1,5 @@
 /* ---------- world (2D 평면도 데이터) ---------- */
-const OB=[]; const ob=(x1,x2,z1,z2)=>OB.push({x1:x1,x2:x2,z1:z1,z2:z2});
+var STX=6.6, EXPW=0; const OB=[]; const ob=(x1,x2,z1,z2)=>OB.push({x1:x1,x2:x2,z1:z1,z2:z2});
 const STORE={x1:-7,x2:7,z1:-9,z2:6};
 const WALLS=[[-7,-9,7,-9],[-7,-9,-7,6],[7,-9,7,6],[-7,6,-1.3,6],[1.3,6,7,6]];
 WALLS.forEach(w=>{ const x1=w[0],z1=w[1],x2=w[2],z2=w[3];

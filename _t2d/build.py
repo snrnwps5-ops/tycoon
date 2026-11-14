@@ -5,8 +5,8 @@
 import io, os, re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(ROOT, '..', 'tycoon', 'tech.html')
-OUT = os.path.join(ROOT, '..', 'tycoon', 'tech-test.html')
+SRC = os.path.join(ROOT, '..', 'tech.html')
+OUT = os.path.join(ROOT, '..', 'tech-test.html')
 
 src = io.open(SRC, encoding='utf-8').read()
 
@@ -89,7 +89,7 @@ if not m:
 spm = re.search(r"const sp=([^;]+);", m.group(0))
 spx = spm.group(1) if spm else "5.6*(1+0.1*S.up.spd)*(feverT>0?1.3:1)*Math.min(1,il)"
 new_move = ("  // player (2D: 화면 방향 = 월드 방향, A* 자동 이동 경로 지원)\n"
-  "  let ix=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0), iz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0); if(joy.on){ ix=joy.dx; iz=joy.dy; }\n"
+  "  let ix=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0), iz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0); if(joy.on&&Math.hypot(joy.dx,joy.dy)>0.15){ ix=joy.dx; iz=joy.dy; tapStop(); } else if(!ix&&!iz){ const ti=tapInput(dt); if(ti){ ix=ti[0]; iz=ti[1]; } }\n"
   "  const nvv=navStep(dt); if(nvv){ ix=nvv.ix; iz=nvv.iz; }\n"
   "  const il=Math.hypot(ix,iz); if(il>0.1&&!quizOpen){ const sp=" + spx + "; const k=sp*dt/Math.max(1,il);\n"
   "    const mx=ix*k, mz=iz*k;\n"
@@ -137,6 +137,6 @@ io.open(OUT, 'w', encoding='utf-8').write(text)
 print('written', OUT, len(text), 'chars', text.count('\n'), 'lines')
 
 # v2.8: 루트 index.html = tech.html 완전 동일 사본 (분식집·호텔 로비 삭제, 루트 접속 = 테크 스토어 즉시 실행)
-IDX = os.path.join(ROOT, '..', 'tycoon', 'index.html')
+IDX = os.path.join(ROOT, '..', 'index.html')
 io.open(IDX, 'w', encoding='utf-8').write(src)
 print('synced', IDX, len(src), 'chars')

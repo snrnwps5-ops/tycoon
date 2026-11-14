@@ -1,5 +1,7 @@
 # 자동 테스트 (헤드리스 Chrome)
 
+> 2D 판(tech-test.html)은 `python3 _t2d/build.py`로 만든다. 손으로 고치면 m_build 테스트가 실패한다.
+
 게임을 고친 뒤 **배포 전에 한 번** 돌려 주세요. 3D(`tech.html`)와 2D(`tech-test.html`)를 실제로 띄워서 핵심 흐름이 깨졌는지 확인합니다.
 
 ```bash

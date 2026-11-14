@@ -3210,8 +3210,9 @@ var GFX={lv:0,fr:0,t0:0,bad:0,good:0,warm:0};
 function gfxApply(lv,why){ try{ GFX.lv=lv; const dpr=devicePixelRatio||1; const pr=[Math.min(dpr,2),Math.min(dpr,1.5),1,0.8][lv];
     renderer.setPixelRatio(pr); const shOn=lv<2; if(renderer.shadowMap.enabled!==shOn){ renderer.shadowMap.enabled=shOn; scene.traverse(o=>{ if(o.material){ (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.needsUpdate=true); } }); }
     VW=0; try{ resize(); }catch(_){} try{ localStorage.setItem('tech-gfx',String(lv)); }catch(_){} if(why) console.log('[gfx] 단계',lv,why); }catch(e){} }
-try{ const sv=+(localStorage.getItem('tech-gfx')||0); if(sv>0) gfxApply(Math.min(3,sv)); }catch(e){}
-(function gfxLoop(t){ requestAnimationFrame(gfxLoop); if(document.hidden){ GFX.t0=0; return; } if(!GFX.t0){ GFX.t0=t; GFX.fr=0; return; } GFX.fr++;
+var GFXOK=(function(){ try{ return !!(renderer&&renderer.shadowMap&&renderer.setPixelRatio&&scene&&scene.traverse); }catch(e){ return false; } })();  /* 2D 빌드에는 그림자·해상도 조절이 없다 */
+try{ const sv=+(localStorage.getItem('tech-gfx')||0); if(GFXOK&&sv>0) gfxApply(Math.min(3,sv)); }catch(e){}
+if(GFXOK) (function gfxLoop(t){ requestAnimationFrame(gfxLoop); if(document.hidden){ GFX.t0=0; return; } if(!GFX.t0){ GFX.t0=t; GFX.fr=0; return; } GFX.fr++;
   const el=t-GFX.t0; if(el<3000) return; const fps=GFX.fr*1000/el; GFX.t0=t; GFX.fr=0; GFX.fps=fps; window.__fps=Math.round(fps);
   if(++GFX.warm<3||(typeof dayState!=='undefined'&&dayState!=='run')) return;
   if(fps<40){ GFX.good=0; if(++GFX.bad>=2&&GFX.lv<3){ GFX.bad=0; gfxApply(GFX.lv+1,Math.round(fps)+'fps'); } }
