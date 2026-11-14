@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794660000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1794670000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.30</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.31</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -2860,7 +2860,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.30';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.31';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }

@@ -17,12 +17,12 @@
 'use strict';
 
 var KEY_LS   = 'TS_GROQ_KEY';
-/* v2.28: 모든 사용자에게 기본으로 실시간 AI 자동 적용 (Base64 인코딩으로 GitHub 푸시 프로텍션 우회 내장) */
-var DEF_KEY  = (function(){ try{ return atob('Z3NrX1JmcWtwczdRY2l3WEtiQ0xIN3BlV0dkeWIzRlkyRWd0SWxiblNkWklYeXlqc0VCbjFvTXo='); }catch(e){ return ''; } })();
-var ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
+/* v2.31: API 키를 코드에서 완전 제거하고 Netlify 서버리스 프록시로 안전하게 호출 */
+var PROXY_ENDPOINT  = 'https://mega-tech-tycoon.netlify.app/.netlify/functions/groq';
+var DIRECT_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 var MODEL    = 'qwen/qwen3.8-27b';
 var MODEL_LABEL = 'Groq (Qwen 27B)';
-var TIMEOUT  = 9000;
+var TIMEOUT  = 11000;
 
 /* 엔진 상태 — ⚙️ 설정 배지와 테스트가 읽는다 */
 var ST = { mode:'idle', ok:0, fail:0, ms:0, err:'', at:0 };
@@ -32,8 +32,7 @@ function store(){ try{ return window.localStorage; }catch(e){ return null; } }
 function getKey(){
   var k = '';
   try{ var l=store(); k = (l && l.getItem(KEY_LS)) || ''; }catch(e){ k=''; }
-  k = String(k).trim();
-  return k || DEF_KEY;
+  return String(k).trim();
 }
 /* ?groqkey=gsk_… / #groqkey=gsk_… 로 열면 그 키를 저장한다(아이폰에서 한 번 붙여넣기용) */
 (function seedFromURL(){
@@ -76,9 +75,6 @@ function callAI(o){
   var t0 = now();
   var done = function(r){ ST.at = Date.now(); return r; };
 
-  if(!getKey()){
-    return Promise.resolve(done(fallback(o, 'API 키 없음 · ⚙️ 설정에서 Groq 키를 넣어 주세요')));
-  }
   if(typeof fetch !== 'function'){
     return Promise.resolve(done(fallback(o, 'fetch를 쓸 수 없는 환경')));
   }
@@ -94,9 +90,14 @@ function callAI(o){
     }
   }catch(e){ ctl = null; }
 
-  return fetch(ENDPOINT, {
+  var customKey = getKey();
+  var targetUrl = customKey ? DIRECT_ENDPOINT : PROXY_ENDPOINT;
+  var reqHeaders = { 'Content-Type':'application/json' };
+  if(customKey) reqHeaders['Authorization'] = 'Bearer ' + customKey;
+
+  return fetch(targetUrl, {
     method:'POST',
-    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + getKey() },
+    headers: reqHeaders,
     body: JSON.stringify(body),
     signal: ctl ? ctl.signal : undefined
   }).then(function(r){
@@ -140,9 +141,10 @@ function fallback(o, why){
 }
 
 function status(){
+  var custom = hasCustomKey();
   return {
     mode: ST.mode, ok: ST.ok, fail: ST.fail, ms: ST.ms, err: ST.err, lastAt: ST.at,
-    model: MODEL, label: MODEL_LABEL, endpoint: ENDPOINT, keyed: hasCustomKey(), ready: !!getKey()
+    model: MODEL, label: MODEL_LABEL, endpoint: custom ? DIRECT_ENDPOINT : PROXY_ENDPOINT, keyed: custom, ready: true
   };
 }
 
