@@ -1,0 +1,14 @@
+module.exports={name:'본사 추천 요건 · AI 판정 · T.O.', modes:['3d'], async run({browser,mode,assert}){ const L=require('./lib');
+  const T=await L.open(browser,mode,{state:{day:11,curStage:3,crew:[{role:'runner',name:'미달',spd:1.1,acc:0.94,wage:30,lv:3,sat:88,hqi:70,days:3},{role:'tech',name:'에이스',spd:1.15,acc:0.96,wage:40,lv:4,sat:85,hqi:95,days:10},{role:'spec',name:'애매',spd:1.0,acc:0.88,wage:30,lv:4,sat:76,hqi:70,days:9}]}});
+  await T.toPreDay(); await T.ev(()=>{ document.getElementById('modal').classList.remove('on'); window.__T.openCrew(); }); await L.W(700);
+  const idx=n=>T.ev(n=>window.__H.S.crew.findIndex(c=>c.name===n),n);
+  await T.ev(i=>document.querySelector('[data-hqtr="'+i+'"]').click(),await idx('미달')); await L.W(600);
+  assert(/본사 추천 요건/.test(await T.modalText()),'요건 미달 직원에게 요건 창이 안 떠요');
+  await T.click('mOk'); await L.W(800); await T.ev(i=>document.querySelector('[data-hqtr="'+i+'"]').click(),await idx('애매')); await L.W(900);
+  await T.ev(()=>document.querySelector('#hqbox [data-hq="ok"]').click()); await L.W(2200);
+  assert(await T.ev(()=>/보류/.test((document.getElementById('hqmsg')||{}).textContent||'')),'판정 미달인데 보류되지 않아요');
+  await T.ev(()=>{ const c=document.querySelector('#hqbox [data-hq="close"]'); if(c) c.click(); }); await L.W(900); await T.ev(()=>{ if(!document.querySelector('[data-hqtr]')) window.__T.openCrew(); }); await L.W(700);
+  await T.ev(i=>document.querySelector('[data-hqtr="'+i+'"]').click(),await idx('에이스')); await L.W(900); await T.ev(()=>document.querySelector('#hqbox [data-hq="ok"]').click()); await L.W(2500);
+  assert(await T.ev(()=>(window.__H.S.hqStaff||[]).some(x=>x.name==='에이스')),'판정 통과 직원이 임용되지 않아요');
+  assert(await T.ev(()=>window.__T.scoutPool().length===0),'T.O.를 쓴 뒤에도 스카우트 대상이 있어요');
+  assert(!T.errs.length,'페이지 오류: '+T.errs.join(' | ')); await T.close(); }};

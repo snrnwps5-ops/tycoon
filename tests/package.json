@@ -1,0 +1,7 @@
+{
+  "name": "tycoon-tests",
+  "private": true,
+  "description": "테크 스토어 타이쿤 자동 테스트 (헤드리스 Chrome)",
+  "scripts": { "test": "node run.js", "test:3d": "node run.js --only3d", "test:2d": "node run.js --only2d" },
+  "devDependencies": { "puppeteer-core": "22.15.0", "three": "0.128.0" }
+}
