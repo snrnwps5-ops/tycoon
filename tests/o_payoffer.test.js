@@ -1,0 +1,10 @@
+module.exports={name:'난이도 상향 · 실패 시 부스터 제안 · 부스터는 상한 밖', async run({browser,mode,assert}){ const L=require('./lib');
+  const T=await L.open(browser,mode,{state:{day:5,curStage:1,dayStars:[3,3,3,3,0],sysSeen:{1:1},boostD:-1}});
+  assert(await T.ev(()=>window.__T.dayCfg(5).goal)===Math.round(900*1.25/10)*10,'부산 목표가 1.25배가 아니에요: '+await T.ev(()=>window.__T.dayCfg(5).goal));
+  assert(await T.ev(()=>window.__T.dayCfg(1).goal)===200,'대구 목표는 그대로여야 해요');
+  await T.startDay(); await T.endDay(0.85,0); await L.W(600);
+  const t=await T.modalText(); assert(/거의 다 왔어요/.test(t)&&/부족했어요/.test(t),'실패했는데 부족 금액 안내가 없어요');
+  await T.ev(()=>document.getElementById('poBoost').click()); await L.W(2500);
+  assert(await T.ev(()=>window.__H.S.boostD===window.__H.S.day),'부스터가 적용되지 않았어요');
+  assert(await T.ev(()=>!!document.getElementById('dayGo')||window.__T.st==='run'),'부스터 뒤 재도전 화면으로 가지 않아요');
+  assert(!T.errs.length,'페이지 오류: '+T.errs.join(' | ')); await T.close(); }};
