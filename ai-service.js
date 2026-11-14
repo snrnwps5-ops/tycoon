@@ -373,8 +373,8 @@ function fbDirector(o){
 
 /* ---------------- public ---------------- */
 window.TycoonAI = {
-  MODEL: MODEL, MODEL_LABEL: MODEL_LABEL, ENDPOINT: ENDPOINT, modelLabel: MODEL_LABEL,
-  getKey: getKey, setKey: setKey, hasCustomKey: hasCustomKey, hasKey: function(){ return !!getKey(); }, clearKey: function(){ return setKey(''); },
+  MODEL: MODEL, MODEL_LABEL: MODEL_LABEL, ENDPOINT: PROXY_ENDPOINT, modelLabel: MODEL_LABEL,
+  getKey: getKey, setKey: setKey, hasCustomKey: hasCustomKey, hasKey: function(){ return true; }, clearKey: function(){ return setKey(''); },
   callAI: callAI, ping: ping, status: status,
   askInterviewer: askInterviewer, interviewReport: interviewReport, directorReport: directorReport,
   fallbackInterview: fbInterview, fallbackReport: fbReport, fallbackDirector: fbDirector
