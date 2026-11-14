@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1794850000';
+<script>try{(function(){var V='1794940000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -373,7 +373,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.43</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.44</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -524,13 +524,13 @@ S.lastProfit=Math.floor(S.lastProfit||0); S.offAt=S.offAt||0; S.lastSaveTime=S.l
 const OFF={minMs:5*60*1000,maxH:4,maxMs:30*864e5,base:200,rate:0.10,minGain:10};
 function offCrew(){ return Array.isArray(S.crew)?S.crew.filter(Boolean):(S.crew&&typeof S.crew==='object'?Object.keys(S.crew).map(function(k){ return S.crew[k]; }):[]); }
 function offCalc(now){
-  const crew=offCrew(); if(crew.length<2) return null;                    /* 발동 조건: 직원 2명 이상 */
+  const crew=offCrew(); const _ex=(S.exp&&S.exp[S.curStage])?((S.expLv&&S.expLv[S.curStage])||1):0; if(crew.length<2&&!_ex) return null;                    /* 발동 조건: 직원 2명 이상 */
   const anchor=Math.max(S.offAt||0,S.lastSaveTime||0,S.last||0);           /* 마지막으로 접속해 있던 시각부터 */
   const ms=(now||Date.now())-anchor;
   if(!(ms>=OFF.minMs)||ms>OFF.maxMs) return null;                          /* 5분 미만·음수·30일 초과는 0 */
-  const hours=Math.min(OFF.maxH,ms/3600000);                               /* 인정 시간 최대 4시간 */
+  const hours=Math.min(OFF.maxH*(_ex?2:1),ms/3600000);                               /* 인정 시간 최대 4시간 */
   const base=S.lastProfit>0?Math.floor(S.lastProfit):OFF.base;             /* 최근 클리어한 날 순이익, 기록 없음·적자면 $200 */
-  return {ms:ms,hours:hours,base:base,gain:Math.max(OFF.minGain,Math.floor(base*OFF.rate*hours)),crew:crew.map(function(c){ return c&&c.name; }).filter(Boolean)};
+  return {ms:ms,hours:hours,base:base,gain:Math.max(OFF.minGain,Math.floor(base*OFF.rate*(1+0.5*_ex)*hours)),ex:_ex,crew:crew.map(function(c){ return c&&c.name; }).filter(Boolean)};
 }
 /* 자동 저장이 S.last를 덮어쓰기 전에 접속 시점 기준으로 한 번 계산해 둡니다. */
 let OFFPLAN=(function(){ try{ return offCalc(Date.now()); }catch(e){ return null; } })();
@@ -2437,7 +2437,7 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
     player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
   player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
-  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); lpTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt);
+  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); lpTick(dt); expTick(dt); inv2Tick(dt); clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt);
   SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
     if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; useStock(s.t); layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
   // cash
@@ -2619,9 +2619,9 @@ function openOffline(then,plan){
   const hrs=Math.round(o.hours*10)/10;
   openModal('<h2>🏢 매장 부재중 오프라인 수익!</h2><p style="margin-top:-4px">자리를 비운 동안 직원들이 매장을 지켰어요</p>'+
     '<div class="dstat"><span>부재 시간</span><b>'+offSpan(o.ms)+'</b></div>'+
-    '<div class="dstat"><span>인정 시간 (최대 4시간)</span><b>'+hrs+'시간</b></div>'+
+    '<div class="dstat"><span>인정 시간 (최대 '+(o.ex?8:4)+'시간)</span><b>'+hrs+'시간</b></div>'+(o.ex?'<div class="dstat"><span>🖥️ 체험존 Lv.'+o.ex+'</span><b>수익 ×'+(1+0.5*o.ex)+'</b></div>':'')+
     '<div class="dstat"><span>일한 직원 '+o.crew.length+'명</span><b style="text-align:right;max-width:60%;line-height:1.25;overflow-wrap:anywhere">'+o.crew.join(' · ')+'</b></div>'+
-    '<div class="dstat"><span>계산식</span><b style="text-align:right;font-size:12px;max-width:66%;line-height:1.25">최근 순이익($'+o.base+') × 10% × '+hrs+'시간</b></div>'+
+    '<div class="dstat"><span>계산식</span><b style="text-align:right;font-size:12px;max-width:66%;line-height:1.25">최근 순이익($'+o.base+') × 10%'+(o.ex?' × '+(1+0.5*o.ex):'')+' × '+hrs+'시간</b></div>'+
     '<div class="dstat ok"><span>지급액</span><b style="font-size:19px">+$'+o.gain+'</b></div>'+
     '<button id="offGo">💰 오프라인 수익 수령하기</button>');
   $('offGo').onclick=()=>{ $('offGo').onclick=null; money+=o.gain; S.offAt=Date.now(); save(); snd('coin',0.6); haptic(20);
@@ -3189,29 +3189,55 @@ function expBuild(anim){ try{ if(EXP.on) return; EXP.on=true; if(typeof floorPla
     OB.forEach(b=>{ if(Math.abs(b.x1-6.82)<0.03&&Math.abs(b.x2-7.18)<0.03&&b.z1<-8.9&&b.z2>5.9) b.off=true; });
     /* 새 바닥 · 벽 */
     const t0=(typeof FLM0!=='undefined'&&FLM0)?FLM0.clone():null; let fl=null;
-    if(t0){ t0.needsUpdate=true; fl=floorPlane(W+0.2,15.4,t0,[Math.max(1,(FLM0.repeat.x||7)*W/14.4),FLM0.repeat.y||8],7.1+W/2,-1.5); }
+    if(t0){ t0.needsUpdate=true; fl=floorPlane(W,15.4,t0,[Math.max(1,(FLM0.repeat.x||7)*W/14.4),FLM0.repeat.y||8],7.2+W/2,-1.5,0.066); fl.renderOrder=1; if(fl.material){ fl.material.polygonOffset=true; fl.material.polygonOffsetFactor=-1; fl.material.polygonOffsetUnits=-1; } }
     wall(7,-9,X2,-9); wall(X2,-9,X2,6); wall(7,6,X2,6);
     /* 체험존: 시연 테이블 3개 · 화분 · 바닥 표시 */
     const tbl=(x,z)=>{ box(1.7,0.78,0.95,'#f3e9d6',x,0.39,z); box(1.76,0.06,1.0,'#ffffff',x,0.8,z); box(0.5,0.03,0.34,'#1b1f27',x-0.45,0.84,z); const sc=box(0.5,0.32,0.03,'#2a6df0',x-0.45,1.0,z-0.16); sc.rotation.x=-0.25; box(0.16,0.02,0.32,'#20242c',x+0.2,0.84,z+0.05); box(0.16,0.02,0.32,'#d9dde5',x+0.5,0.84,z-0.05); ob(x-0.9,x+0.9,z-0.52,z+0.52); };
     tbl(9.9,-6); tbl(9.9,-2.2); tbl(9.9,1.6);
     [[12,-8.3],[12,5.2],[7.8,-8.3]].forEach(([x,z])=>{ box(0.5,0.45,0.5,'#c8743c',x,0.23,z); const l=new THREE.Mesh(new THREE.SphereGeometry(0.45,12,10),mat('#4fb06a')); add(l,x,0.85,z); ob(x-0.3,x+0.3,z-0.3,z+0.3); });
     try{ const st=canvasTex((g,w,h)=>{ g.fillStyle='rgba(0,0,0,0)'; g.clearRect(0,0,w,h); g.fillStyle='#ffd23f'; g.font='900 64px sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('NEW ZONE',w/2,h/2); },512,128);
-      const sg=new THREE.Mesh(new THREE.PlaneGeometry(3.6,0.9),new THREE.MeshBasicMaterial({map:st,transparent:true})); sg.rotation.x=-Math.PI/2; sg.position.set(9.9,0.1,4.2); scene.add(sg); }catch(_){}
+      const sg=new THREE.Mesh(new THREE.PlaneGeometry(3.6,0.9),new THREE.MeshBasicMaterial({map:st,transparent:true})); sg.rotation.x=-Math.PI/2; sg.position.set(9.9,0.115,4.2); scene.add(sg); }catch(_){}
     if(anim&&fl){ fl.scale.x=0.02; let k=0; const iv=setInterval(()=>{ k=Math.min(1,k+0.06); fl.scale.x=0.02+0.98*k; if(k>=1) clearInterval(iv); },30); }
   }catch(e){ console.warn('expBuild',e); } }
 function expBuy(){ const c=expCost(); if(expOwned()) return; if(money<c){ toast('💰 $'+(c-money)+' 더 모으면 확장할 수 있어요',2.5); return; }
   money-=c; S.exp=S.exp||{}; S.exp[STG]=1; try{ save(); }catch(_){} $('modal').classList.remove('on');
   try{ if(typeof camSetMode==='function') camSetMode('full'); }catch(_){} expBuild(true);
-  try{ bigBanner('🏗️ 매장 확장 완료!','체험존이 생겼어요 · 손님이 20% 더 와요'); confetti(9.9,2,-1); snd('level_up',0.6,1.1); }catch(_){}
+  try{ bigBanner('🏗️ 매장 확장 완료!','체험존 손님이 알아서 돈을 내요 · 손님 +20%'); confetti(9.9,2,-1); snd('level_up',0.6,1.1); }catch(_){}
   setTimeout(()=>{ try{ if(typeof camSetMode==='function') camSetMode('base'); }catch(_){} startDayModal(); },2600); }
-function expCard(){ if(expOwned()||S.day<2) return ''; const c=expCost(), p=Math.min(100,Math.round(money/c*100)), ok=money>=c;
+function expCard(){ if(S.day<2) return ''; if(expOwned()){ const c=expUpCost(), lv=expLv(), ok=money>=c, mx=lv>=10;
+    return '<div id="expCard" style="margin:6px 0;padding:10px 12px;border-radius:14px;background:linear-gradient(#e8f4ff,#cfe6ff);border:2px solid #4a9cf0;text-align:left">'+
+      '<div style="font:900 15px var(--b);color:#123a6a">🖥️ 체험존 Lv.'+lv+' <small style="font-weight:800">· 손님이 알아서 방문 · 방문당 $'+expPay()+'</small></div>'+
+      '<div style="font:800 12px var(--b);color:#2a4a7a;margin:3px 0 6px">업그레이드하면 방문당 수익과 부재중 수익(최대 8시간)이 늘어요</div>'+
+      '<button id="expGo" style="width:100%;height:42px;border:0;border-radius:12px;font:900 15px var(--b);color:#fff;background:'+(ok&&!mx?'linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 3px 0 #1c3f9a':'#a9b4c4')+'">'+(mx?'최고 단계':ok?'$'+c+' · Lv.'+(lv+1)+'로 업그레이드':'$'+money+' / $'+c+' 모으는 중')+'</button></div>'; } const c=expCost(), p=Math.min(100,Math.round(money/c*100)), ok=money>=c;
   return '<div id="expCard" style="margin:6px 0;padding:10px 12px;border-radius:14px;background:linear-gradient(#fff6d6,#ffe9a8);border:2px solid #f0b400;text-align:left">'+
     '<div style="font:900 15px var(--b);color:#5a3a00">🏗️ 매장 확장 공사 <small style="font-weight:800">· 체험존 · 손님 +20%</small></div>'+
     '<div style="height:10px;border-radius:6px;background:#fff;margin:6px 0;overflow:hidden"><i style="display:block;height:100%;width:'+p+'%;background:linear-gradient(90deg,#ffb020,#ff7a00)"></i></div>'+
     '<button id="expGo" style="width:100%;height:42px;border:0;border-radius:12px;font:900 15px var(--b);color:#fff;background:'+(ok?'linear-gradient(#ffb020,#e07000);box-shadow:0 3px 0 #9a4a00':'#b9b2a4')+'">'+(ok?'$'+c+'로 확장하기':'$'+money+' / $'+c+' 모으는 중')+'</button></div>'; }
 (function(){ const _s=startDayModal; startDayModal=function(){ const r=_s.apply(this,arguments);
-  try{ const go=$('dayGo'); if(go&&!$('expCard')&&$('modal').classList.contains('on')){ const h=expCard(); if(h){ go.insertAdjacentHTML('beforebegin',h); $('expGo').onclick=e=>{ e.stopPropagation(); expBuy(); }; } } }catch(e){} return r; }; })();
+  try{ const go=$('dayGo'); if(go&&!$('expCard')&&$('modal').classList.contains('on')){ const h=expCard(); if(h){ go.insertAdjacentHTML('beforebegin',h); expBind(); } } }catch(e){} return r; }; })();
 if(expOwned()) expBuild(false);
+/* ===== v2.44: 체험존 = 방치 수익존 — 손님이 알아서 들어와 시연 테이블을 쓰고 돈을 내고 간다. 업그레이드할수록 방문당 수익↑, 부재중 수익도 커진다 ===== */
+var EXV={list:[],t:0};
+function expLv(){ return (S.expLv&&S.expLv[STG])||1; }
+function expPay(){ try{ return Math.max(3*expLv(),Math.round(dayCfg(S.day).goal*0.01*expLv())); }catch(e){ return 10; } }
+function expUpCost(){ try{ return Math.max(300,Math.round(dayCfg(S.day).goal*1.2*expLv()/50)*50); }catch(e){ return 600; } }
+var EXT=[[9.9,-6],[9.9,-2.2],[9.9,1.6]];
+function expVisitor(i){ try{ const ch=makeChar(BASE_MD[Math.floor(Math.random()*BASE_MD.length)],{tint:pick1(SHIRTS)}); const v={ch,i,pos:new THREE.Vector3(14,0,11.2),wp:[],st:'idle',t:1+i*2.5+Math.random()*2,face:0,speed:0}; ch.g.position.copy(v.pos); ch.g.visible=false; return v; }catch(e){ return null; } }
+function expRoute(a,b){ const p=pathFind(a.x,a.z,b.x,b.z,0.3); return (p&&p.length?p:[b]).map(q=>new THREE.Vector3(q.x,0,q.z)); }
+function expTick(dt){ try{ if(!EXP.on||typeof makeChar!=='function'||!STX||STX<8) return;
+    if(!EXV.list.length){ for(let i=0;i<EXT.length;i++){ const v=expVisitor(i); if(v) EXV.list.push(v); } }
+    const run=dayState==='run';
+    EXV.list.forEach(v=>{ const T=EXT[v.i], spot=new THREE.Vector3(T[0],0,T[1]+0.85);
+      if(v.st==='idle'){ v.ch.g.visible=false; if(!run) return; v.t-=dt; if(v.t>0) return; v.pos.set(Math.random()<0.5?3.5:-3.5,0,9.4); v.wp=[new THREE.Vector3(0,0,8),new THREE.Vector3(0,0,4.6)].concat(expRoute({x:0,z:4.6},spot)); v.st='in'; v.ch.g.visible=true; }
+      else if(v.st==='in'){ if(walkTo(v,dt,3.3)){ v.st='use'; v.t=4+Math.random()*2; v.face=Math.PI; } }
+      else if(v.st==='use'){ v.speed=0; v.t-=dt; if(v.t<=0){ const pay=expPay(); money+=pay; if(run){ dayRev+=pay; try{ dayRevs.push(5); }catch(_){} } try{ floatText(new THREE.Vector3(v.pos.x,2.4,v.pos.z),'+$'+pay,'say'); snd('coin',0.12,1.3); }catch(_){} v.st='out'; v.wp=expRoute(v.pos,{x:0,z:4.6}).concat([new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?3.5:-3.5,0,9.4)]); } }
+      else if(v.st==='out'){ if(walkTo(v,dt,3.3)){ v.st='idle'; v.t=1.5+Math.random()*3; } }
+      v.ch.g.position.copy(v.pos); v.ch.g.rotation.y=angLerp(v.ch.g.rotation.y,v.face,Math.min(1,dt*10)); animChar(v.ch,v.st==='use'?0:(v.speed||2.6),dt,false); });
+  }catch(e){ if(!EXV.err){ EXV.err=1; console.warn('expTick',e); } } }
+function expUp(){ const c=expUpCost(); if(money<c){ toast('💰 $'+(c-money)+' 더 모으면 업그레이드할 수 있어요',2.5); return; } if(expLv()>=10){ toast('체험존이 최고 단계예요',2); return; }
+  money-=c; S.expLv=S.expLv||{}; S.expLv[STG]=expLv()+1; try{ save(); }catch(_){} snd('level_up',0.5,1.2); try{ bigBanner('🖥️ 체험존 Lv.'+expLv()+'!','방문당 $'+expPay()+' · 부재중 수익도 늘어요'); }catch(_){}
+  const card=$('expCard'); if(card){ card.outerHTML=expCard(); expBind(); } }
+function expBind(){ const g=$('expGo'); if(g) g.onclick=e=>{ e.stopPropagation(); expOwned()?expUp():expBuy(); }; }
 function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!FTSKIP&&!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
@@ -3458,7 +3484,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
 { titleOn=false; titleK=0; document.body.classList.remove('title');
   const _tt=$('title'); if(_tt) _tt.style.display='none'; beginPlay(); }
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else offResume(); });
-try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),expCost:()=>expCost(),get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:()=>{ quizOpen=true; openModal('<h2>테스트 상담</h2>'+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
+try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),expCost:()=>expCost(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:()=>{ quizOpen=true; openModal('<h2>테스트 상담</h2>'+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
 window.__H={camdbg:()=>{ try{ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)), vh=camVH(), sp=camSpan(vh,a,cam.zoom); return {vh:+vh.toFixed(3),mar:CAMUI.marPx,a:+a.toFixed(4),zoom:+cam.zoom.toFixed(3),tz:+camT.z.toFixed(3),tx:+camT.x.toFixed(3),dzMax:+sp.dzMax.toFixed(3),dzMin:+sp.dzMin.toFixed(3),dxMax:+sp.dxMax.toFixed(3),dxMin:+sp.dxMin.toFixed(3),W:innerWidth,H:innerHeight}; }catch(e){ return 'err '+e; } },tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
 probe:(wx,wz,secs)=>{ const dt=1/60, n=Math.max(1,Math.round((secs||1)*60)), sp=5.6*(1+0.1*S.up.spd);
   const l=Math.hypot(wx,wz)||1, k=sp*dt/l; const tr=[]; let stall=0, jump=0, prev=[player.pos.x,player.pos.z];

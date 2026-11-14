@@ -1,4 +1,4 @@
-module.exports={name:'매장 확장 · 체험존 · 손님 +20%', async run({browser,mode,assert}){ const L=require('./lib');
+module.exports={name:'매장 확장 · 체험존 방치 수익 · 업그레이드 · 부재중 수익', async run({browser,mode,assert}){ const L=require('./lib');
   let T=await L.open(browser,mode,{state:{day:2,money:5000,dayStars:[3,3],exp:{}}}); await T.toPreDay(); await L.W(500);
   assert(await T.ev(()=>!!document.getElementById('expCard')),'영업 준비 화면에 매장 확장 카드가 없어요');
   const m0=await T.ev(()=>window.__T.mktSpawnMul()), c=await T.ev(()=>window.__T.expCost());
@@ -10,10 +10,21 @@ module.exports={name:'매장 확장 · 체험존 · 손님 +20%', async run({bro
   if(mode==='3d'){ await T.startDay(); await L.W(500);
     const x=await T.ev(()=>{ const T=window.__T, xy=T.proj(9.9,-4.1); T.tapGo(xy[0],xy[1]); return 1; }); await L.W(9000);
     const p=await T.ev(()=>{ const p=window.__T.player.pos; return [p.x,p.z]; });
-    assert(p[0]>8.5,'확장한 체험존으로 걸어 들어가지 못해요 (x='+p[0].toFixed(2)+')'); }
+    assert(p[0]>8.5,'확장한 체험존으로 걸어 들어가지 못해요 (x='+p[0].toFixed(2)+')');
+    await T.ev(()=>{ window.__TS=8; }); let used=false; for(let i=0;i<40&&!used;i++){ await L.W(1000); used=await T.ev(()=>window.__T.EXV.list.some(v=>v.st==='use'||v.st==='out')); }
+    await T.ev(()=>{ window.__TS=1; }); assert(used,'체험존 손님이 테이블까지 오지 않아요'); }
+  // 업그레이드
+  { const lv0=await T.ev(()=>((window.__H.S.expLv||{})[0])||1), m0=await T.ev(()=>window.__T.money), p0=await T.ev(()=>window.__T.expPay());
+    await T.ev(()=>{ window.__T.money; }); await T.ev(()=>window.__T.expUp()); await L.W(300);
+    const r2=await T.ev(()=>({lv:(window.__H.S.expLv||{})[0],m:window.__T.money,p:window.__T.expPay()}));
+    if(m0>=600){ assert(r2.lv===lv0+1,'체험존 업그레이드가 안 돼요'); assert(r2.p>p0,'업그레이드했는데 방문당 수익이 그대로예요'); } }
   assert(!T.errs.length,'페이지 오류: '+T.errs.join(' | ')); await T.close();
   // 돈이 모자라면 진행 막대만
   T=await L.open(browser,mode,{state:{day:2,money:100,dayStars:[3,3],exp:{}}}); await T.toPreDay(); await L.W(500);
   await T.ev(()=>document.getElementById('expGo').click()); await L.W(500);
   assert(await T.ev(()=>!(window.__H.S.exp&&window.__H.S.exp[0])&&window.__T.money===100),'돈이 모자란데 확장이 됐어요');
+  await T.close();
+  // 부재중 수익: 체험존이 있으면 직원 1명이어도, 최대 8시간, 레벨 배수
+  const t=Date.now()-3*3600e3; T=await L.open(browser,mode,{state:{day:3,dayStars:[3,3,3],exp:{0:1},expLv:{0:3},last:t,offAt:t,lastSaveTime:t,lastProfit:300}}); await L.W(1500);
+  const mt=await T.modalText(); assert(/체험존 Lv\.3/.test(mt)&&/최대 8시간/.test(mt)&&/\+\$225/.test(mt),'체험존 부재중 수익이 이상해요: '+mt.slice(0,160));
   await T.close(); }};
