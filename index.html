@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795200000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795210000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -342,7 +342,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.51</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.52</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -2884,7 +2884,7 @@ function lpOnResult(clear,stars,cfg){ const L=S.lp, R={clear:clear,streak:0,sb:0
   try{ if(!clear){ R.lost=L.streak||0; L.streak=0; return R; }
     L.streak=(L.streak||0)+1; L.best=Math.max(L.best||0,L.streak); R.streak=L.streak;
     if(L.streak>=2){ R.sb=Math.round(cfg.goal*0.05*Math.min(L.streak-1,10)); money+=R.sb; }
-    const roll=Math.random(), odds=stars>=3?[0.25,0.75]:stars===2?[0.5,0.9]:[0.7,0.97]; const tier=roll<odds[0]?'c':roll<odds[1]?'r':'e'; R.tier=tier; L.chests=(L.chests||0)+1;
+    const roll=Math.min(0.999,Math.random()+Math.min(0.24,Math.max(0,(L.streak||1)-1)*0.06)), odds=stars>=3?[0.25,0.75]:stars===2?[0.5,0.9]:[0.7,0.97]; const tier=roll<odds[0]?'c':roll<odds[1]?'r':'e'; R.tier=tier; L.chests=(L.chests||0)+1;
     const g=cfg.goal, q=Math.random();
     if(tier==='c'){ if(q<0.6){ const v=Math.round(g*0.15); money+=v; R.rw='💵 $'+v; } else { Object.keys(S.inv||{}).forEach(t=>{ S.inv[t]+=3; }); R.rw='📦 모든 재고 +3'; } }
     else if(tier==='r'){ if(q<0.4){ const v=Math.round(g*0.45); money+=v; R.rw='💵 $'+v; } else if(q<0.7){ L.fever=1; R.rw='🔥 다음 영업을 FEVER로 시작'; } else { (S.crew||[]).forEach(c=>{ if(c) c.sat=Math.min(100,(c.sat==null?70:c.sat)+10); }); gainXP(4); R.rw='😊 직원 만족도 +10 · XP +4'; } }
@@ -2903,7 +2903,7 @@ function lpNext(){ const L=[];
   return L.filter(x=>x.p>0||x.t.indexOf('매장 레벨')>=0).sort((a,b)=>b.p-a.p).slice(0,3); }
 function lpNextHTML(){ const L=lpNext(); if(!L.length) return ''; return '<div class="lpng"><h4>🎯 거의 다 왔어요</h4>'+L.map(x=>'<div class="lpg'+(x.p>=1?' hot':'')+'"><div><span>'+x.t+'</span><b>'+x.s+'</b></div><i><s style="width:'+Math.round(Math.min(1,x.p)*100)+'%"></s></i></div>').join('')+'</div>'; }
 function lpResultHTML(R){ try{ let h='<div class="lpbox">';
-    if(R&&R.clear){ h+='<div class="lpst"><span>🔥 '+R.streak+'연승'+(S.lp.best>R.streak?' <small style="font-weight:700">(최고 '+S.lp.best+')</small>':'')+'</span><b>'+(R.sb?'연승 보너스 +$'+R.sb:'내일도 깨면 연승 보너스!')+'</b></div>';
+    if(R&&R.clear){ h+='<div class="lpst"><span>🔥 '+R.streak+'연승'+(R.streak>=2?' · 🎁 상자 확률 +'+Math.min(24,(R.streak-1)*6)+'%':'')+(S.lp.best>R.streak?' <small style="font-weight:700">(최고 '+S.lp.best+')</small>':'')+'</span><b>'+(R.sb?'연승 보너스 +$'+R.sb:'내일도 깨면 연승 보너스!')+'</b></div>';
       if(R.tier) h+='<div class="lpch '+R.tier+'" onclick="this.classList.add(\'open\')"><span class="cl">🎁 '+LPTN[R.tier]+' · 탭해서 열기<small>별 3개면 레어·에픽 확률이 올라가요</small></span><span class="op">'+LPTN[R.tier]+' ✨ '+R.rw+'<small>이미 지급됐어요</small></span></div>'; }
     else if(R&&R.lost>=2) h+='<div class="lpst" style="background:#eee;color:#666"><span>💔 '+R.lost+'연승이 끊겼어요</span><b>다시 쌓아 봐요</b></div>';
     return h+lpNextHTML()+'</div>'; }catch(e){ return ''; } }
