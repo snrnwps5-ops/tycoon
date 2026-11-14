@@ -191,11 +191,12 @@ var IV_Q=[
    bad:['여기는 잠깐 거쳐 가는 곳이라고 생각합니다. 급여는 바로 올려 주시나요?','3년이나 있을 생각은 없습니다. 질문은 없어요.'],
    hint:['성장 계획이 구체적인지, 매장에 관심 있는 질문을 하는지 보세요.','오래 일할 의사가 있는지 확인하세요.']}
 ];
-function ivNew(role){ var s=ensure(); s.interview.n++; var q=Math.random(); var tier=q<0.3?'bad':q<0.7?'mid':'good';
+function penOn(){ var s=S(); return (s.poachPen==null?-1:s.poachPen)>=(s.day||0); }  /* v2.40: 경쟁사에 직원을 뺏긴 뒤 평판 패널티 */
+function ivNew(role){ var s=ensure(); s.interview.n++; var q=Math.random(), pen=penOn(); var tier=pen?(q<0.45?'bad':q<0.85?'mid':'good'):(q<0.3?'bad':q<0.7?'mid':'good');
   var base={runner:20,tech:30,spec:35,greet:18,mgr:45}[role]||25; var day=s.day||0;
   // 답변은 실력과 대체로 일치하지만 단계마다 20% 확률로 한 단계 어긋납니다(겉만 번지르르 / 긴장한 실력자)
   var ans=IV_Q.map(function(Q){ var t=tier; if(Math.random()<0.2) t=tier==='good'?'mid':tier==='bad'?'mid':(Math.random()<0.5?'good':'bad'); return {t:t,text:rnd(Q[t]),hint:rnd(Q.hint)}; });
-  return {id:s.interview.n, name:rnd(IV_NAME), face:Math.floor(Math.random()*IV_FACE_N), role:role, tier:tier, ans:ans, stage:0, grade:[], review:2, shown:{}, wage:Math.round(base*(1+day*0.02)*(tier==='good'?1.25:tier==='mid'?1:0.85)), day:day}; }
+  return {id:s.interview.n, name:rnd(IV_NAME), face:Math.floor(Math.random()*IV_FACE_N), role:role, tier:tier, ans:ans, stage:0, grade:[], review:2, shown:{}, wage:Math.round(base*(1+day*0.02)*(tier==='good'?1.25:tier==='mid'?1:0.85)*(pen?1.2:1)), day:day}; }
 function ivStats(c){ var k={good:[1.15,0.95],mid:[1.0,0.88],bad:[0.85,0.78]}[c.tier]; return {spd:k[0],acc:k[1]}; }
 function openInterviewModal(role,done){ ensure(); var s=S(); role=IV_ROLE[role]?role:'runner'; onClose=done||null;
   if(!s.interview.cur||s.interview.cur.role!==role||s.interview.cur.closed) s.interview.cur=ivNew(role);
@@ -255,7 +256,7 @@ function ivRender(){ var s=S(), c=s.interview.cur; if(!c) return;
   if(c.stage>=4){ ivOffer(); return; }
   var a=c.ans[c.stage], Q=IV_Q[c.stage];
   var body=ivHead(c)+'<div class="hqcard"><div class="hqq">'+(c.stage===0?'📄 ':'🎙️ ')+esc(Q.q)+'</div><div class="hqa">'+esc(a.text)+'</div>'+(c.shown[c.stage]?'<div class="hqhint">🔎 AI 면접 보조: '+esc(a.hint)+'</div>':'')+'</div>'+(c.stage>=1?ivChatHTML(c):'')+'<div style="font:700 12px \'Noto Sans KR\',sans-serif;color:#8a7a6a;text-align:center">답변을 듣고 이 단계의 결과를 정하세요 · 재검토 '+c.review+'회 남음</div>';
-  show('AI 채용 면접실',IV_STAGE[c.stage]+' 전형 · 영업과 분리된 공간이에요',body,
+  show('AI 채용 면접실',(penOn()?'⚠️ 인재 유출 평판 패널티 · 우수 지원자 감소 · 몸값 +20% · ':'')+IV_STAGE[c.stage]+' 전형 · 영업과 분리된 공간이에요',body,
     '<button class="hqbtn" data-hq="pass">합격</button><button class="hqbtn y" data-hq="review" '+(c.review<=0||c.shown[c.stage]?'disabled':'')+'>재검토<small>보조 의견 보기</small></button><button class="hqbtn r" data-hq="fail">불합격</button>',
     {pass:function(){ var last=(c.stage===3); c.grade.push(a.t); c.stage++; sfx('ui',0.4,1.3); if(last) ivReportStart(c); ivRender(); },
      review:function(){ c.review--; c.shown[c.stage]=1; sfx('ui',0.4,1.0); ivRender(); },
@@ -279,7 +280,7 @@ function ivOffer(){ var s=S(), c=s.interview.cur; var packs=[{k:'a',n:'기본형
        sign:function(t){ t.disabled=true; $('hqsig').classList.add('go'); sfx('ui',0.4,1.5);
          setTimeout(function(){ var p2=packs.filter(function(x){ return x.k===sel; })[0];
            // 뛰어난 지원자는 조건이 너무 낮으면 거절할 수 있습니다
-           var accept=!(c.tier==='good'&&sel==='c'&&Math.random()<0.5);
+           var accept=penOn()?!(c.tier!=='bad'&&Math.random()<(sel==='c'?0.8:sel==='b'?0.5:0.25)):!(c.tier==='good'&&sel==='c'&&Math.random()<0.5); /* v2.40: 평판 패널티 중엔 오퍼 거절이 잦다 */
            if(!accept){ ivEnd(c,'declined'); sfx('ui',0.4,0.6);
              show('AI 채용 면접실','오퍼 결과','<div class="hqcard" style="text-align:center"><div style="font-size:40px">✉️</div><h3>'+esc(c.name)+' 님이 오퍼를 거절했어요</h3><p style="font:700 13px/1.6 \'Noto Sans KR\',sans-serif;margin:6px 0 0">"다른 곳에서 더 좋은 조건을 받았습니다." 실력 있는 지원자에게는 기본급을 너무 낮추지 마세요.</p></div>','<button class="hqbtn b" data-hq="next">다음 지원자</button><button class="hqbtn g" data-hq="close">나가기</button>',{next:function(){ s.interview.cur=ivNew(c.role); ivRender(); }}); return; }
            var st=$('hqstamp'); if(st) st.classList.add('go'); sfx('level_up',0.5,1.2); ivEnd(c,'hired',p2); msg(c.name+' 님이 오퍼에 서명했어요! 합격자 명단에 등록됐어요',true);
