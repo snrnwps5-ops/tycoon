@@ -1,6 +1,6 @@
 module.exports={name:'난이도 상향 · 실패 시 부스터 제안 · 부스터는 상한 밖', async run({browser,mode,assert}){ const L=require('./lib');
   const T=await L.open(browser,mode,{state:{day:5,curStage:1,dayStars:[3,3,3,3,0],sysSeen:{1:1},boostD:-1}});
-  assert(await T.ev(()=>window.__T.dayCfg(5).goal)===Math.round(900*1.25/10)*10,'부산 목표가 1.25배가 아니에요: '+await T.ev(()=>window.__T.dayCfg(5).goal));
+  assert(await T.ev(()=>window.__T.dayCfg(5).goal===Math.round(900*window.__T.HARDK()[1]/10)*10),'부산 목표에 난이도 배수가 안 걸렸어요: '+await T.ev(()=>window.__T.dayCfg(5).goal));
   assert(await T.ev(()=>window.__T.dayCfg(1).goal)===200,'대구 목표는 그대로여야 해요');
   await T.startDay(); await T.endDay(0.85,0); await L.W(600);
   const t=await T.modalText(); assert(/거의 다 왔어요/.test(t)&&/부족했어요/.test(t),'실패했는데 부족 금액 안내가 없어요');
