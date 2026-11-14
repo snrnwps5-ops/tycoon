@@ -1,6 +1,6 @@
 module.exports={name:'경쟁 시장 · 판매 전략 · 매니저 업무 · 인재 영입', async run({browser,mode,assert}){ const L=require('./lib');
   const crew=[{role:'runner',name:'하준',spd:1,acc:0.9,wage:20,lv:2,sat:80},{role:'tech',name:'서준',spd:1,acc:0.9,wage:20,lv:2,sat:80},{role:'mgr',name:'한유나',spd:1,acc:0.9,wage:30,lv:3,sat:80}];
-  const T=await L.open(browser,mode,{state:{day:5,curStage:1,crew,up:{spd:0,cap:3,chk:0,price:0}}});
+  const T=await L.open(browser,mode,{state:{day:8,curStage:2,crew,up:{spd:0,cap:3,chk:0,price:0},sysSeen:{1:1,2:1}}});
   await T.ev(()=>{ window.__H.S.mkt={mom:{},share:1,evD:-1,ev:null,w:0,l:0,lastIn:-9}; }); await T.toPreDay();
   await T.ev(()=>{ const M=window.__T.mkt(); M.evD=window.__H.S.day; M.ev={n:window.__T.mktRivals()[0].n,t:'대규모 할인전'}; document.getElementById('modal').classList.remove('on'); window.__T.startDayModal(); }); await L.W(700);
   let t=await T.modalText(); assert(/⚔️ .* 대규모 할인전/.test(t),'영업 시작 창에 경쟁사 행사가 없어요'); assert(/오늘의 전략/.test(t),'오늘의 전략 선택이 없어요');

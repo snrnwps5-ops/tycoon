@@ -1,6 +1,6 @@
 module.exports={name:'주가 · RSU 지급 · 경쟁사 스카우트 · 평판 패널티', async run({browser,mode,assert}){ const L=require('./lib');
   const crew=[{role:'runner',name:'하준',spd:1.1,acc:0.94,wage:30,lv:3,sat:40,grade:'A'},{role:'tech',name:'서준',spd:1,acc:0.9,wage:25,lv:2,sat:70,rsu:60,vest:1,rsuT:0,rsuP:100},{role:'spec',name:'지아',spd:1,acc:0.9,wage:25,lv:3,sat:80}];
-  const T=await L.open(browser,mode,{state:{day:6,curStage:1,crew,stock:{p:100,hist:[100],chg:0}}});
+  const T=await L.open(browser,mode,{state:{day:11,curStage:3,crew,stock:{p:100,hist:[100],chg:0},sysSeen:{1:1,2:1,3:1}}});
   await T.startDay(); const m0=await T.ev(()=>window.__T.money);
   await T.endDay(1.5,0); const txt=await T.ev(()=>document.getElementById('mbox').textContent);
   assert(/메가 테크 주가/.test(txt),'결과창에 주가가 없어요'); assert(/RSU 지급 · 서준 60주/.test(txt),'RSU 지급 줄이 없어요');
