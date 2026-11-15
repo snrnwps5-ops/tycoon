@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795500000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795570000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -342,7 +342,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.57</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.58</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -3480,7 +3480,7 @@ function bizBuild(){ if(BIZ.built) return; BIZ.built=true; try{ if(typeof floorP
     const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100); BIZ.cam=cam;
     const lb=document.createElement('div'); lb.id='bizLabels'; lb.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:31;display:none'; document.body.appendChild(lb); BIZ.labels=lb;
   }catch(e){ console.warn('bizBuild',e); BIZ.scene=null; } }
-function bizLabel(){ const el=document.createElement('div'); el.className='ft say'; el.style.cssText+=';position:absolute;transform:translate(-50%,-100%);font-size:11px;white-space:nowrap'; BIZ.labels.appendChild(el); return el; }
+function bizLabel(){ const el=document.createElement('div'); el.className='ft say'; el.style.cssText+=';position:absolute;transform:translate(-50%,-100%);font-size:11px;padding:2px 7px;white-space:nowrap'; BIZ.labels.appendChild(el); return el; }
 function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(6,B.desks), r=Math.min(n,B.reps.length);
     BIZ.deskG.forEach((g,i)=>g.visible=i<n); BIZ.room.visible=B.room>0; BIZ.mgrG.visible=!!B.mgr;
     while(BIZ.reps.length>r){ const R=BIZ.reps.pop(); BIZ.scene.remove(R.ch.g); R.el.remove(); }
@@ -3489,7 +3489,7 @@ function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(
     if(!B.mgr&&BIZ.mgrCh){ BIZ.scene.remove(BIZ.mgrCh.ch.g); BIZ.mgrCh.el.remove(); BIZ.mgrCh=null; }
     const nego=B.deals.filter(d=>d.st==='nego'); BIZ.stk.forEach((s,i)=>s.visible=i<B.deals.length);
     BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ const d=nego.find(x=>x.rep===R.i); R.d=d; const nm=R.i==='m'?'👔 '+B.mgr.name:(B.reps[R.i]||{}).name;
-      R.el.textContent=nm+' · '+(d?(!d.asked&&d.p>=0.5?'❗ 협상 포인트':'📞 '+Math.floor(d.p*100)+'%'):'☕ 대기'); R.el.style.background=d&&!d.asked&&d.p>=0.5?'#ffe14d':R.i==='m'?'#e8ecff':'#fff'; }); }catch(e){ console.warn('bizSync',e); } }
+      R.el.textContent=(R.i==='m'?'👔 ':'')+(d?(!d.asked&&d.p>=0.5?'❗':'📞'+Math.floor(d.p*100)+'%'):'☕'); R.el.style.background=d&&!d.asked&&d.p>=0.5?'#ffe14d':R.i==='m'?'#e8ecff':'#fff'; }); }catch(e){ console.warn('bizSync',e); } }
 /* v2.57: 사무실 사원 모션 — 의자에 앉기(SitDown 마지막 자세 유지) + 협상 중엔 전화기를 귀에 대고 고개 끄덕, 대기 중엔 타이핑 */
 function bizBones(ch){ if(ch.bz) return ch.bz; const b={}; ch.m.traverse(x=>{ if(x.isBone) b[x.name]=x; }); ch.bz=b;
   try{ const ph=new THREE.Mesh(gget('bzph',()=>new THREE.BoxGeometry(0.07,0.15,0.03)),mat(window.__BZPC||'#22262f')); ph.visible=false; (BIZ.scene||ch.g).add(ph); b.phone=ph; }catch(_){}
@@ -3500,21 +3500,21 @@ function bizAnim(R,dt){ const ch=R.ch, b=bizBones(ch), t=performance.now()/1000+
   if(ph&&b.UpperArmR&&b.LowerArmR){ b.UpperArmR.rotation.set(BZ.ua[0],BZ.ua[1],BZ.ua[2]); b.LowerArmR.rotation.set(BZ.la[0],BZ.la[1],BZ.la[2]); if(b.Head) b.Head.rotation.set(BZ.head[0]+Math.sin(t*2.2)*0.08,BZ.head[1],BZ.head[2]); if(b.phone&&b.FistR){ ch.g.updateMatrixWorld(true); const p=b.FistR.getWorldPosition(new THREE.Vector3()), hd=b.Head?b.Head.getWorldPosition(new THREE.Vector3()):p.clone(); const dv=p.clone().sub(hd); dv.y=0; if(dv.lengthSq()<1e-4) dv.set(1,0,0); dv.normalize(); b.phone.position.copy(hd).addScaledVector(dv,0.36); b.phone.position.y=hd.y+0.08; b.phone.rotation.set(0,Math.atan2(dv.x,dv.z),0); b.phone.visible=true; }  /* 큰 머리(치비) 안으로 파묻히지 않게 머리 표면 바깥, 손 쪽에 둔다 */ }
   else { if(b.phone) b.phone.visible=false; if(b.LowerArmL&&b.LowerArmR){ b.LowerArmL.rotation.x+=Math.sin(t*11)*0.12; b.LowerArmR.rotation.x+=Math.sin(t*11+1.6)*0.12; } if(b.Head) b.Head.rotation.x+=Math.sin(t*0.7)*0.05; }
   ch.inner.position.y=0; }
-function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vh=window.__bizVH||Math.max(9.5,11.5/a); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
-    const tg=window.__bizTG?new THREE.Vector3(...window.__bizTG):new THREE.Vector3(0.2,0,0), dir=(window.__bizDir?new THREE.Vector3(...window.__bizDir):new THREE.Vector3(6,11,10)).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,-vh*0.16); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
+function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vp=BIZ.vp||{top:H*0.2,bot:H*0.5}, avH=Math.max(120,vp.bot-vp.top), vh=window.__bizVH||Math.max(13.2/a,10.8*H/avH); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
+    const tg=window.__bizTG?new THREE.Vector3(...window.__bizTG):new THREE.Vector3(0.2,0,0), dir=(window.__bizDir?new THREE.Vector3(...window.__bizDir):new THREE.Vector3(6,11,10)).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,((vp.top+vp.bot)/2+avH*0.04-H/2)*vh/H); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
     BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ bizAnim(R,dt||0.016);
-      const v=new THREE.Vector3(R.ch.g.position.x,2.15,R.ch.g.position.z).project(c); R.el.style.left=((v.x+1)/2*W)+'px'; R.el.style.top=((1-v.y)/2*H)+'px'; R.el.style.display=(v.y<-0.1||v.y>0.82)?'none':'block'; });
+      const v=new THREE.Vector3(R.ch.g.position.x,2.15,R.ch.g.position.z).project(c); R.el.style.left=((v.x+1)/2*W)+'px'; R.el.style.top=((1-v.y)/2*H)+'px'; const sy=(1-v.y)/2*H; R.el.style.display=(sy<vp.top+26||sy>vp.bot-4)?'none':'block'; });
     renderer.render(BIZ.scene,c); BIZ.frames++; }catch(e){ renderer.render(scene,cam); } }
 /* ---- 화면(패널) ---- */
 function bizOpen(){ if(!bizOn()) return; bizBuild(); if(!BIZ.open){ BIZ.pp={x:player.pos.x,z:player.pos.z}; player.pos.x=0; player.pos.z=-60; try{ tapStop(); }catch(_){} if(quizOpen) try{ closeQuiz(); }catch(_){} } BIZ.open=true;  /* v2.57: 사무실에 있는 동안 사장은 매장에 없다 — 손님이 말을 걸지 않게 매장 밖으로 */ document.body.classList.add('biz'); if(BIZ.labels) BIZ.labels.style.display='block'; try{ initAudio(); snd('ui',0.4); }catch(_){}
   let u=$('bizUI'); if(!u){ u=document.createElement('div'); u.id='bizUI'; document.body.appendChild(u);
     const st=document.createElement('style'); st.textContent='#bizUI{position:fixed;left:0;right:0;bottom:0;top:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
-      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 70px) 10px 0;display:flex;align-items:center;gap:8px}#bizUI .bzh b{flex:1;font:900 18px var(--d);color:#fff;text-shadow:0 2px 0 #1b2a5a}'+
-      '#bizUI .bzh button{all:unset;cursor:pointer;border-radius:14px;height:40px;line-height:40px;padding:0 14px;font:900 14px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
-      '#bizUI .bzs{pointer-events:auto;margin-top:auto;max-height:54%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
-      '#bizUI .bzt{display:flex;gap:5px;padding:10px 10px 6px}#bizUI .bzt button{all:unset;cursor:pointer;flex:1;text-align:center;height:36px;line-height:36px;border-radius:12px;font:900 12px var(--b);background:#e8e2d6;color:#5a4a3a}#bizUI .bzt button.on{background:#3443c8;color:#fff}'+
-      '#bizUI .bzl{overflow:auto;padding:4px 10px 12px;-webkit-overflow-scrolling:touch}#bizUI .bzc{background:#fff;border-radius:14px;padding:9px 11px;margin:6px 0;box-shadow:0 2px 0 rgba(0,0,0,.08);font:800 12px var(--b);color:#4a3a2a}'+
-      '#bizUI .bzc h4{margin:0 0 2px;font:900 14px var(--b);color:#1b2a5a}#bizUI .bzc .bzb{display:flex;gap:6px;margin-top:6px}#bizUI .bzc .bzb button{all:unset;box-sizing:border-box;text-align:center;line-height:36px;cursor:pointer;flex:1 1 0;min-width:0;white-space:nowrap;padding:0 6px;height:36px;border-radius:10px;font:900 13px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a}'+
+      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 66px) 8px 0;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:16px;background:rgba(16,22,40,.82);box-shadow:0 3px 10px rgba(0,0,0,.25)}#bizUI .bzh b{flex:1;min-width:0;font:900 16px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bizUI .bzh b small{display:block;font:800 11px var(--b);color:#aab6e8}'+
+      '#bizUI .bzh button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:36px;line-height:36px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
+      '#bizUI .bzs{pointer-events:auto;margin-top:auto;height:50%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
+      '#bizUI .bzt{display:flex;gap:4px;padding:8px 8px 4px;flex:none}#bizUI .bzt button{all:unset;position:relative;cursor:pointer;flex:1;min-width:0;text-align:center;height:44px;border-radius:12px;font:900 11px/1.15 var(--b);background:#ece6da;color:#5a4a3a;display:flex;flex-direction:column;align-items:center;justify-content:center}#bizUI .bzt button i{font-style:normal;font-size:17px}#bizUI .bzt button.on{background:#3443c8;color:#fff}#bizUI .bzt button em{position:absolute;top:2px;right:4px;min-width:16px;height:16px;border-radius:8px;background:#e8342a;color:#fff;font:900 10px/16px var(--b);font-style:normal}'+
+      '#bizUI .bzl{flex:1;min-height:0;overflow:auto;padding:2px 10px 12px;-webkit-overflow-scrolling:touch}#bizUI .bzc{background:#fff;border-radius:14px;padding:9px 11px;margin:6px 0;box-shadow:0 2px 0 rgba(0,0,0,.08);font:800 12px var(--b);color:#4a3a2a}'+
+      '#bizUI .bzc h4{margin:0 0 2px;font:900 14px var(--b);color:#1b2a5a}#bizUI .bzc .bzb{display:flex;gap:6px;margin-top:6px}#bizUI .bzc .bzb button{all:unset;box-sizing:border-box;text-align:center;line-height:34px;cursor:pointer;flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px;height:34px;border-radius:10px;font:900 13px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a}'+
       '#bizUI .bzc .bzb button.bzy{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00}#bizUI .bzc .bzb button.bzg{background:#c9c2b4;box-shadow:none;color:#3a2a1a}#bizUI .bzc .bzb button.bzr{background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}#bizUI .bzp{height:8px;border-radius:5px;background:#e8e2d6;overflow:hidden;margin-top:5px}#bizUI .bzp i{display:block;height:100%;background:linear-gradient(90deg,#5a6cff,#22c0ff)}'+
       '#bizUI .gr{display:inline-block;min-width:20px;text-align:center;border-radius:6px;padding:0 4px;color:#fff;font:900 12px/18px var(--b);margin-right:4px}'+
       'body.biz #bbar,body.biz #shopBtn,body.biz #camctl,body.biz #intBtn,body.biz #boxChip,body.biz #labels,body.biz #joy,body.biz #dayBar,body.biz #hint,body.biz #ftHint,body.biz #ftArrow,body.biz #sub,body.biz #subR,body.biz #combo,body.biz #stockAl,body.biz #toast,body.biz #rushC,body.biz #inboxBtn{visibility:hidden!important}body.biz #big{z-index:41}';
@@ -3547,8 +3547,12 @@ function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizS
       '<div class="bzc"><h4>🧑‍💼 회의실 Lv.'+B.room+'/3</h4>협상 시간 -15% · 성공 확률 +5% (단계마다)<div class="bzb">'+(B.room<3?'<button data-b="room">업그레이드 $'+rc+'</button>':'<button class="bzg">최대</button>')+'</div></div>'+
       (B.log.length?'<div class="bzc"><h4>최근 결과</h4>'+B.log.join('<br>')+'</div>':''); }
   const nl=B.later.filter(l=>now>=l.retry).length, hp=hrPool().length;
-  u.innerHTML='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀 <small style="font:800 12px var(--b);color:#cfd8ff">계약 '+B.won+' · 결렬 '+B.lost+'</small></b><button data-b="close">🏬 매장으로</button></div>'+
-    '<div class="bzs"><div class="bzt">'+[['deal','거래 '+B.deals.length],['later','재영업 '+B.later.length+(nl?'🔔':'')],['team','팀'+(B.mgr?'':' ⚠')],['office','사무실'],['hr','인사'+(hp?' '+hp:'')]].map(([k,n])=>'<button data-b="tab" data-i="'+k+'" class="'+(BIZ.tab===k?'on':'')+'">'+n+'</button>').join('')+'</div><div class="bzl">'+list+'</div></div>';
+  const need=B.deals.filter(d=>(d.st==='new'&&fr!==-1)||(d.st==='nego'&&!d.asked&&d.p>=0.5)).length;
+  const tabs=[['deal','📋','거래',need],['later','📇','재영업',nl],['team','👥','팀',B.mgr?0:'!'],['office','🏢','사무실',0],['hr','🔁','인사',hp]];
+  const head='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀<small>계약 '+B.won+' · 결렬 '+B.lost+' · 사원 '+B.reps.length+'/'+B.desks+(B.mgr?' · 팀장 '+B.mgr.name:'')+'</small></b><button data-b="close">🏬 매장으로</button></div>';
+  const tabH='<div class="bzt">'+tabs.map(([k,ic,n,c])=>'<button data-b="tab" data-i="'+k+'" class="'+(BIZ.tab===k?'on':'')+'"><i>'+ic+'</i>'+n+(c?'<em>'+c+'</em>':'')+'</button>').join('')+'</div>';
+  const sc=(u.querySelector('.bzl')||{}).scrollTop||0; u.innerHTML=head+'<div class="bzs">'+tabH+'<div class="bzl">'+list+'</div></div>'; if(!full){ const l=u.querySelector('.bzl'); if(l) l.scrollTop=sc; }
+  try{ const hb=u.querySelector('.bzh').getBoundingClientRect(), sb=u.querySelector('.bzs').getBoundingClientRect(); BIZ.vp={top:hb.bottom,bot:sb.top}; }catch(_){}
   if(BIZ.tab==='hr') S.hrSeen=1; }
 function bizAct(k,i){ const B=bizS(); const n=+i;
   if(k==='close'){ bizClose(); return; }
