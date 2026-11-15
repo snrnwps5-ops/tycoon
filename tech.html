@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795430000';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='1795500000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -342,7 +342,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.56</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.57</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -3490,13 +3490,23 @@ function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(
     const nego=B.deals.filter(d=>d.st==='nego'); BIZ.stk.forEach((s,i)=>s.visible=i<B.deals.length);
     BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ const d=nego.find(x=>x.rep===R.i); R.d=d; const nm=R.i==='m'?'👔 '+B.mgr.name:(B.reps[R.i]||{}).name;
       R.el.textContent=nm+' · '+(d?(!d.asked&&d.p>=0.5?'❗ 협상 포인트':'📞 '+Math.floor(d.p*100)+'%'):'☕ 대기'); R.el.style.background=d&&!d.asked&&d.p>=0.5?'#ffe14d':R.i==='m'?'#e8ecff':'#fff'; }); }catch(e){ console.warn('bizSync',e); } }
-function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vh=Math.max(9.5,11.5/a); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
-    const tg=new THREE.Vector3(0.2,0,0), dir=new THREE.Vector3(6,11,10).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,-vh*0.16); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
-    BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ animChar(R.ch,0,dt||0.016,false); R.ch.g.position.y=R.d?Math.abs(Math.sin(performance.now()/220+(R.i==='m'?7:R.i)))*0.04:0;
+/* v2.57: 사무실 사원 모션 — 의자에 앉기(SitDown 마지막 자세 유지) + 협상 중엔 전화기를 귀에 대고 고개 끄덕, 대기 중엔 타이핑 */
+function bizBones(ch){ if(ch.bz) return ch.bz; const b={}; ch.m.traverse(x=>{ if(x.isBone) b[x.name]=x; }); ch.bz=b;
+  try{ const ph=new THREE.Mesh(gget('bzph',()=>new THREE.BoxGeometry(0.07,0.15,0.03)),mat(window.__BZPC||'#22262f')); ph.visible=false; (BIZ.scene||ch.g).add(ph); b.phone=ph; }catch(_){}
+  const a=ch.acts.SitDown; if(a){ Object.values(ch.acts).forEach(x=>x.stop()); a.setLoop(THREE.LoopOnce,1); a.clampWhenFinished=true; a.reset().play(); ch.cur=a; } return b; }
+function bizAnim(R,dt){ const ch=R.ch, b=bizBones(ch), t=performance.now()/1000+(R.i==='m'?3.1:R.i*1.7), ph=!!R.d;
+  ch.mixer.update(dt); if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4; ch.blinkK=1; } if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.1,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); ch.eyeL.forEach(e=>e.scale.y=k); } }
+  const BZ=window.__BZPOSE||{ua:[0.8,0,0.3],la:[0,0,-2.3],head:[0.1,-0.25,0]};
+  if(ph&&b.UpperArmR&&b.LowerArmR){ b.UpperArmR.rotation.set(BZ.ua[0],BZ.ua[1],BZ.ua[2]); b.LowerArmR.rotation.set(BZ.la[0],BZ.la[1],BZ.la[2]); if(b.Head) b.Head.rotation.set(BZ.head[0]+Math.sin(t*2.2)*0.08,BZ.head[1],BZ.head[2]); if(b.phone&&b.FistR){ ch.g.updateMatrixWorld(true); const p=b.FistR.getWorldPosition(new THREE.Vector3()), hd=b.Head?b.Head.getWorldPosition(new THREE.Vector3()):p.clone(); const dv=p.clone().sub(hd); dv.y=0; if(dv.lengthSq()<1e-4) dv.set(1,0,0); dv.normalize(); b.phone.position.copy(hd).addScaledVector(dv,0.36); b.phone.position.y=hd.y+0.08; b.phone.rotation.set(0,Math.atan2(dv.x,dv.z),0); b.phone.visible=true; }  /* 큰 머리(치비) 안으로 파묻히지 않게 머리 표면 바깥, 손 쪽에 둔다 */ }
+  else { if(b.phone) b.phone.visible=false; if(b.LowerArmL&&b.LowerArmR){ b.LowerArmL.rotation.x+=Math.sin(t*11)*0.12; b.LowerArmR.rotation.x+=Math.sin(t*11+1.6)*0.12; } if(b.Head) b.Head.rotation.x+=Math.sin(t*0.7)*0.05; }
+  ch.inner.position.y=0; }
+function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vh=window.__bizVH||Math.max(9.5,11.5/a); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
+    const tg=window.__bizTG?new THREE.Vector3(...window.__bizTG):new THREE.Vector3(0.2,0,0), dir=(window.__bizDir?new THREE.Vector3(...window.__bizDir):new THREE.Vector3(6,11,10)).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,-vh*0.16); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
+    BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ bizAnim(R,dt||0.016);
       const v=new THREE.Vector3(R.ch.g.position.x,2.15,R.ch.g.position.z).project(c); R.el.style.left=((v.x+1)/2*W)+'px'; R.el.style.top=((1-v.y)/2*H)+'px'; R.el.style.display=(v.y<-0.1||v.y>0.82)?'none':'block'; });
     renderer.render(BIZ.scene,c); BIZ.frames++; }catch(e){ renderer.render(scene,cam); } }
 /* ---- 화면(패널) ---- */
-function bizOpen(){ if(!bizOn()) return; bizBuild(); BIZ.open=true; document.body.classList.add('biz'); if(BIZ.labels) BIZ.labels.style.display='block'; try{ initAudio(); snd('ui',0.4); }catch(_){}
+function bizOpen(){ if(!bizOn()) return; bizBuild(); if(!BIZ.open){ BIZ.pp={x:player.pos.x,z:player.pos.z}; player.pos.x=0; player.pos.z=-60; try{ tapStop(); }catch(_){} if(quizOpen) try{ closeQuiz(); }catch(_){} } BIZ.open=true;  /* v2.57: 사무실에 있는 동안 사장은 매장에 없다 — 손님이 말을 걸지 않게 매장 밖으로 */ document.body.classList.add('biz'); if(BIZ.labels) BIZ.labels.style.display='block'; try{ initAudio(); snd('ui',0.4); }catch(_){}
   let u=$('bizUI'); if(!u){ u=document.createElement('div'); u.id='bizUI'; document.body.appendChild(u);
     const st=document.createElement('style'); st.textContent='#bizUI{position:fixed;left:0;right:0;bottom:0;top:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
       '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 70px) 10px 0;display:flex;align-items:center;gap:8px}#bizUI .bzh b{flex:1;font:900 18px var(--d);color:#fff;text-shadow:0 2px 0 #1b2a5a}'+
@@ -3507,11 +3517,11 @@ function bizOpen(){ if(!bizOn()) return; bizBuild(); BIZ.open=true; document.bod
       '#bizUI .bzc h4{margin:0 0 2px;font:900 14px var(--b);color:#1b2a5a}#bizUI .bzc .bzb{display:flex;gap:6px;margin-top:6px}#bizUI .bzc .bzb button{all:unset;box-sizing:border-box;text-align:center;line-height:36px;cursor:pointer;flex:1 1 0;min-width:0;white-space:nowrap;padding:0 6px;height:36px;border-radius:10px;font:900 13px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a}'+
       '#bizUI .bzc .bzb button.bzy{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00}#bizUI .bzc .bzb button.bzg{background:#c9c2b4;box-shadow:none;color:#3a2a1a}#bizUI .bzc .bzb button.bzr{background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}#bizUI .bzp{height:8px;border-radius:5px;background:#e8e2d6;overflow:hidden;margin-top:5px}#bizUI .bzp i{display:block;height:100%;background:linear-gradient(90deg,#5a6cff,#22c0ff)}'+
       '#bizUI .gr{display:inline-block;min-width:20px;text-align:center;border-radius:6px;padding:0 4px;color:#fff;font:900 12px/18px var(--b);margin-right:4px}'+
-      'body.biz #bbar,body.biz #shopBtn,body.biz #camctl,body.biz #intBtn,body.biz #boxChip,body.biz #labels,body.biz #joy,body.biz #dayBar,body.biz #hint,body.biz #ftHint,body.biz #ftArrow,body.biz #sub,body.biz #subR,body.biz #combo,body.biz #stockAl,body.biz #toast{visibility:hidden!important}body.biz #big{z-index:41}';
+      'body.biz #bbar,body.biz #shopBtn,body.biz #camctl,body.biz #intBtn,body.biz #boxChip,body.biz #labels,body.biz #joy,body.biz #dayBar,body.biz #hint,body.biz #ftHint,body.biz #ftArrow,body.biz #sub,body.biz #subR,body.biz #combo,body.biz #stockAl,body.biz #toast,body.biz #rushC,body.biz #inboxBtn{visibility:hidden!important}body.biz #big{z-index:41}';
     document.head.appendChild(st);
     u.addEventListener('click',e=>{ const t=e.target.closest('[data-b]'); if(!t) return; e.stopPropagation(); bizAct(t.dataset.b,t.dataset.i); }); }
   u.style.display='flex'; bizPaint(true); }
-function bizClose(){ BIZ.open=false; document.body.classList.remove('biz'); const u=$('bizUI'); if(u) u.style.display='none'; if(BIZ.labels) BIZ.labels.style.display='none'; bizBadge(); try{ snd('ui',0.35); }catch(_){} }
+function bizClose(){ if(BIZ.open&&BIZ.pp){ player.pos.x=BIZ.pp.x; player.pos.z=BIZ.pp.z; BIZ.pp=null; } BIZ.open=false; document.body.classList.remove('biz'); const u=$('bizUI'); if(u) u.style.display='none'; if(BIZ.labels) BIZ.labels.style.display='none'; bizBadge(); try{ snd('ui',0.35); }catch(_){} }
 function bizCost(k){ const B=bizS(), g=(()=>{ try{ return dayCfg(S.day).goal; }catch(e){ return 3000; } })();
   return Math.round((k==='rep'?g*0.9*Math.pow(1.7,B.reps.length-1):k==='desk'?g*0.7*Math.pow(1.6,B.desks-2):k==='mgr'?g*1.6:k==='mgrup'?g*1.4*Math.pow(1.8,(B.mgr?B.mgr.lv:1)-1):g*2*Math.pow(2,B.room))/50)*50; }
 function bizMin(ms){ const m=Math.max(0,Math.ceil(ms/60000)); return m>=60?Math.floor(m/60)+'시간 '+(m%60)+'분':m+'분'; }
@@ -3607,6 +3617,7 @@ function hrModal(){ const P=hrPool(); if(!HR.recs||HR.recs.length!==P.length) hr
 function bizHandoff(c){ const Q=c.cq||CORPQ[0], qi=Math.max(0,CORPQ.indexOf(Q)), co=(Q.q.match(/^\[([^\]]+)\]/)||[])[1]||'법인 고객';
   openModal('<h2>💼 법인 고객 · '+co+'</h2><p style="font-size:15px">"'+Q.q.replace(/^\[[^\]]+\]\s*/,'')+'"<br><small>큰 거래는 매장에서 바로 팔지 않고 <b>비즈니스 팀</b>이 계약을 진행해요</small></p><button id="bizGo" style="background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 4px 0 #1f2a8a">💼 비즈니스 팀에 연결</button>');
   $('bizGo').onclick=e=>{ e.stopPropagation(); closeQuiz(); const d=bizNewDeal(qi); S.stats.ok++; c.happy=1; custLeave(c,true,0); try{ floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'💼 비즈니스 팀 연결!','say'); toast('💼 '+d.co+' 거래가 사무실에 생겼어요 ($'+d.val+')',2.8); }catch(_){} try{ save(); }catch(_){} bizBadge(); }; }
+(function(){ const _r=showResult; showResult=function(){ if(BIZ.open) bizClose(); return _r.apply(this,arguments); }; })();  /* v2.57: 영업이 끝나면 사무실에서 매장으로 돌아와 결과를 본다 */
 setInterval(bizTick,1000); setTimeout(()=>{ BIZ.lastT=S.bizLastT||Date.now(); bizTick(); },600);
 setInterval(()=>{ S.bizLastT=Date.now(); },5000);
 

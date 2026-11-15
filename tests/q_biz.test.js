@@ -12,6 +12,7 @@ module.exports={name:'비즈니스 팀: 법인 손님 연결 · 배정 · 협상
     assert(await T.ev((m0,r0)=>window.__T.money===m0&&window.__T.rev===r0,m0,r0),'법인 손님이 매장에서 바로 돈을 냈어요'); }
   // 사무실: 배정 → 50%에서 멈춤 → 협상 포인트 → 성공
   await T.ev(()=>window.__T.bizOpen()); await L.W(1200);
+  assert(await T.ev(()=>window.__T.player.pos.z<-30),'사무실에 있는데 사장이 매장에 남아 있어요(손님이 말을 걸 수 있음)');
   if(mode==='3d') assert(await T.ev(()=>!!window.__T.BIZ.scene&&window.__T.BIZ.reps.length>=1),'사무실 3D가 지어지지 않아요');
   await T.ev(()=>window.__T.bizAct('assign',0)); await T.ev(()=>{ window.__T.bizS().deals[0].p=0.49; window.__T.bizS().deals[0].dur=60000; window.__T.BIZ.lastT=Date.now()-30000; window.__T.bizTick(); });
   assert(await T.ev(()=>{ const d=window.__T.bizS().deals[0]; return d.p===0.5&&!d.asked; }),'협상 포인트에서 멈추지 않아요');
@@ -25,5 +26,6 @@ module.exports={name:'비즈니스 팀: 법인 손님 연결 · 배정 · 협상
   await T.ev(()=>{ const T=window.__T; T.bizS().later[0].retry=Date.now()-1; T.bizAct('retry',0); });
   assert(await T.ev(()=>{ const B=window.__T.bizS(); return B.later.length===0&&B.deals.some(d=>d.tries===1&&d.st==='new'); }),'재영업이 안 돼요');
   await T.ev(()=>window.__T.bizClose()); await L.W(300);
+  assert(await T.ev(()=>window.__T.player.pos.z>-10),'매장으로 돌아왔는데 사장 위치가 복구되지 않았어요');
   assert(await T.ev(()=>!document.body.classList.contains('biz')),'매장으로 돌아오지 않아요');
   assert(!T.errs.length,'페이지 오류: '+T.errs.join(' | ')); await T.close(); }};
