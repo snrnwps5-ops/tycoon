@@ -117,6 +117,18 @@ function drawZoneText(){
   ctext('물류 지원',-5.2,-5.55,Math.max(8,s*0.18),'#0b6e5c',true);
   ctext('창고',6.15,-2.0,Math.max(8,s*0.18),'#0b6e5c',true);
 }
+/* v2.66: 자동 상담 키오스크 — 3D 오브젝트와 같은 자리(입구 오른쪽)에 세운다 */
+function drawKiosk2(){
+  try{
+    if(typeof kioskLv!=='function') return;
+    const lv=kioskLv(); if(!lv) return;
+    const s=SX(0,0).s, on=(typeof V266!=='undefined'&&V266.kiosk&&V266.kiosk.flash>0);
+    quad(5.3,4.4,0.78,0.5,'#2a3144','#1b1f27',0);
+    quad(5.3,4.33,0.5,0.16,on?'#ffffff':'#0f2a4a',on?'#ffd23f':'#5ad1ff',0);
+    ctext('셀프',5.3,4.62,Math.max(8,s*0.17),'#ffffff',true);
+    if(on) circ(5.3,4.4,0.44,'rgba(90,209,255,.16)','#5ad1ff');
+  }catch(e){}
+}
 function drawActors(){
   const s=SX(0,0).s;
   const EMO={fix:'🔧',sw:'💬',pick:'📦',buy:'🛍',tour:'✈️',corp:'💼',esc:'😡',ret:'♻️'};
@@ -190,6 +202,7 @@ function draw2D(){
   for(const p of PADS){ if(padVisible(p)) drawPad2(p); }
   for(const sp of SPOTS) drawSpot(sp);
   drawZoneText();
+  drawKiosk2();
   drawActors();
   drawTruck2();
   drawFx();

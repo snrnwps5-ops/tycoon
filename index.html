@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.65';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.66';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.65</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.66</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -460,7 +460,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.65</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.66</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -3698,7 +3698,7 @@ function expCard(){ if(S.day<2) return ''; if(expOwned()){ const c=expUpCost(), 
     return '<div id="expCard" style="margin:6px 0;padding:10px 12px;border-radius:14px;background:linear-gradient(#e8f4ff,#cfe6ff);border:2px solid #4a9cf0;text-align:left">'+
       '<div style="font:900 15px var(--b);color:#123a6a">🖥️ 체험존 Lv.'+lv+' <small style="font-weight:800">· 손님이 알아서 방문 · 방문당 $'+expPay()+'</small></div>'+
       '<div style="font:800 12px var(--b);color:#2a4a7a;margin:3px 0 6px">수익은 정산함($'+boxGet()+' / $'+boxCap()+')에 쌓여요 · 업그레이드하면 방문당 수익과 정산함 용량이 늘어요</div>'+(boxGet()>0?'<button id="boxGo2" style="width:100%;height:36px;border:0;border-radius:10px;margin-bottom:6px;font:900 14px var(--b);color:#3a2600;background:linear-gradient(#ffe68a,#ffc02e);box-shadow:0 3px 0 #b88a00">💰 정산함 $'+boxGet()+' 수금</button>':'')+
-      '<button id="expGo" style="width:100%;height:42px;border:0;border-radius:12px;font:900 15px var(--b);color:#fff;background:'+(ok&&!mx?'linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 3px 0 #1c3f9a':'#a9b4c4')+'">'+(mx?'최고 단계':ok?'$'+c+' · Lv.'+(lv+1)+'로 업그레이드':'$'+money+' / $'+c+' 모으는 중')+'</button></div>'; } const c=expCost(), p=Math.min(100,Math.round(money/c*100)), ok=money>=c;
+      '<button id="expGo" style="width:100%;height:42px;border:0;border-radius:12px;font:900 15px var(--b);color:#fff;background:'+(ok&&!mx?'linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 3px 0 #1c3f9a':'#a9b4c4')+'">'+(mx?'최고 단계':ok?'$'+c+' · Lv.'+(lv+1)+'로 업그레이드':'$'+money+' / $'+c+' 모으는 중')+'</button>'+v266ExpExtra()+'</div>'; } const c=expCost(), p=Math.min(100,Math.round(money/c*100)), ok=money>=c;
   return '<div id="expCard" style="margin:6px 0;padding:10px 12px;border-radius:14px;background:linear-gradient(#fff6d6,#ffe9a8);border:2px solid #f0b400;text-align:left">'+
     '<div style="font:900 15px var(--b);color:#5a3a00">🏗️ 매장 확장 공사 <small style="font-weight:800">· 체험존 · 손님 +20%</small></div>'+
     '<div style="height:10px;border-radius:6px;background:#fff;margin:6px 0;overflow:hidden"><i style="display:block;height:100%;width:'+p+'%;background:linear-gradient(90deg,#ffb020,#ff7a00)"></i></div>'+
@@ -3715,12 +3715,12 @@ var EXT=[[9.9,-6],[9.9,-2.2],[9.9,1.6]];
 function expVisitor(i){ try{ const ch=makeChar(BASE_MD[Math.floor(Math.random()*BASE_MD.length)],{tint:pick1(SHIRTS)}); const v={ch,i,pos:new THREE.Vector3(14,0,11.2),wp:[],st:'idle',t:1+i*2.5+Math.random()*2,face:0,speed:0}; ch.g.position.copy(v.pos); ch.g.visible=false; return v; }catch(e){ return null; } }
 function expRoute(a,b){ const p=pathFind(a.x,a.z,b.x,b.z,0.3); return (p&&p.length?p:[b]).map(q=>new THREE.Vector3(q.x,0,q.z)); }
 function expTick(dt){ try{ if(!EXP.on||typeof makeChar!=='function'||!STX||STX<8) return;
-    if(!EXV.list.length){ for(let i=0;i<EXT.length;i++){ const v=expVisitor(i); if(v) EXV.list.push(v); } }
+    if(!EXV.list.length){ const TB0=expTables(); for(let i=0;i<TB0.length;i++){ const v=expVisitor(i); if(v) EXV.list.push(v); } }
     const run=dayState==='run';
-    EXV.list.forEach(v=>{ const T=EXT[v.i], spot=new THREE.Vector3(T[0],0,T[1]+0.85);
-      if(v.st==='idle'){ v.ch.g.visible=false; if(!run) return; v.t-=dt; if(v.t>0) return; v.pos.set(Math.random()<0.5?3.5:-3.5,0,9.4); v.wp=[new THREE.Vector3(0,0,8),new THREE.Vector3(0,0,4.6)].concat(expRoute({x:0,z:4.6},spot)); v.st='in'; v.ch.g.visible=true; }
+    EXV.list.forEach(v=>{ const T=expTables()[v.i]||EXT[0], spot=new THREE.Vector3(T[0],0,T[1]+0.85);
+      if(v.st==='idle'){ v.ch.g.visible=false; if(!run) return; v.t-=dt; if(v.t>0) return; if(V266.ytNext){ V266.ytNext=0; v.yt=1; } else { v.yt=expYTChance()>0&&Math.random()<expYTChance(); } v.pos.set(Math.random()<0.5?3.5:-3.5,0,9.4); v.wp=[new THREE.Vector3(0,0,8),new THREE.Vector3(0,0,4.6)].concat(expRoute({x:0,z:4.6},spot)); v.st='in'; v.ch.g.visible=true; if(v.yt){ try{ floatText(new THREE.Vector3(v.pos.x,2.8,v.pos.z),'📹 촬영 중','say'); }catch(_){} } }
       else if(v.st==='in'){ if(walkTo(v,dt,3.3)){ v.st='use'; v.t=4+Math.random()*2; v.face=Math.PI; } }
-      else if(v.st==='use'){ v.speed=0; v.t-=dt; if(v.t<=0){ const pay=expPay(); boxAdd(pay,new THREE.Vector3(v.pos.x,2.4,v.pos.z)); v.st='out'; v.wp=expRoute(v.pos,{x:0,z:4.6}).concat([new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?3.5:-3.5,0,9.4)]); } }
+      else if(v.st==='use'){ v.speed=0; v.t-=dt; if(v.t<=0){ const pay=v.yt?Math.round(expPay()*3):expPay(); if(v.yt) v266Youtuber(v,pay); boxAdd(pay,new THREE.Vector3(v.pos.x,2.4,v.pos.z)); v.st='out'; v.wp=expRoute(v.pos,{x:0,z:4.6}).concat([new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?3.5:-3.5,0,9.4)]); } }
       else if(v.st==='out'){ if(walkTo(v,dt,3.3)){ v.st='idle'; v.t=1.5+Math.random()*3; } }
       v.ch.g.position.copy(v.pos); v.ch.g.rotation.y=angLerp(v.ch.g.rotation.y,v.face,Math.min(1,dt*10)); animChar(v.ch,v.st==='use'?0:(v.speed||2.6),dt,false); });
   }catch(e){ if(!EXV.err){ EXV.err=1; console.warn('expTick',e); } } }
@@ -5471,6 +5471,1158 @@ try{
   gfxApply=function(lv,why){ var r=_v265GfxApply.apply(this,arguments); try{ v265GfxLevel(lv); }catch(e){} return r; };
 }catch(e){}
 
+/* =========================================================================
+   v2.66 — 자동 상담 키오스크 · 체험존 2단계 · 프레스티지(매장 재창업) · 손맛
+   원칙: 기존 함수는 '감싸기(wrap)'와 '덧붙이기'만 한다. v2.64(진열·발주·수리·법인
+   ·RSU·방치)와 v2.65(그래픽·AI·안정성) 로직은 건드리지 않는다.
+   이 블록의 function 선언은 같은 스코프에 호이스팅되므로, 위쪽 세이브 로드
+   코드도 v266Perm() 같은 순수 함수를 부를 수 있다.
+   ========================================================================= */
+var V266={
+  ver:'v2.66',
+  kiosk:{n:0,day:-1,flash:0,g:null,scr:null,led:null,ring:null,built:0,err:0,served:0,ticks:0,elig:0,tot:0,t:'',err2:''},
+  juice:{pop:0,skip:0,gold:0,yt:0},
+  ytNext:0, presReady:0
+};
+var V266_KP={x:5.3,z:4.4};   /* 키오스크 위치 (입구 오른쪽, 계산대·손님 동선과 겹치지 않는 자리) */
+
+/* ---------------- 0) 손맛 공용: 숫자 팝 · 효과음 · 진동 ---------------- */
+try{ (function(){ var st=document.createElement('style');
+  st.textContent='.ft.gold{color:#ffe14d;-webkit-text-stroke-color:#7a5200;text-shadow:0 2px 0 #7a5200;font-size:26px}'
+   +'.ft.big{font-size:27px}'
+   +'.ft.kiosk{font-family:var(--b);font-size:14px;color:#0b1626;-webkit-text-stroke:0;text-shadow:none;background:linear-gradient(#9de8ff,#4ab6ee);padding:3px 9px;border-radius:11px;box-shadow:0 2px 0 #1c6a9a}'
+   +'.ft.pres{font-family:var(--b);font-size:17px;color:#3a1a00;-webkit-text-stroke:0;text-shadow:none;background:linear-gradient(#ffe68a,#ffb020);padding:4px 10px;border-radius:12px;box-shadow:0 2px 0 #9a5a00}';
+  document.head.appendChild(st); })(); }catch(e){}
+var V266_FTCAP=22, V266_PTCAP=150;
+function sfxKiosk(){ try{ if(!sfxOn()) return; tone(880,0.06,0.1,'square'); tone(1320,0.08,0.08,'sine',0.05); tone(1760,0.07,0.05,'sine',0.11); }catch(e){} }
+function sfxGold(){ try{ if(!sfxOn()) return; [784,988,1175,1568].forEach(function(f,i){ tone(f,0.18,0.1,'triangle',i*0.05); }); tone(2093,0.5,0.05,'sine',0.22); }catch(e){} }
+function sfxPres(){ try{ if(!sfxOn()) return; [523,659,784,1046,1318].forEach(function(f,i){ tone(f,0.32,0.09,'triangle',i*0.06); }); }catch(e){} }
+/* 진동 세기 다듬기 — 지원하지 않는 기기(iOS)에서는 haptic()이 현금 칩 반짝임으로 대신한다 */
+function v266Hap(kind){
+  try{
+    if(!optO().vib) return 'off';
+    var P={sale:12,kiosk:8,collect:[10,25,10],gold:[15,30,15],viral:[10,20,10],pres:[12,40,12],box:14};
+    var pat=(P[kind]==null?12:P[kind]);
+    return haptic(pat, kind==='kiosk'?'cashPill':(kind==='gold'||kind==='pres'?'cashPill':undefined));
+  }catch(e){ return 'none'; }
+}
+/* 숫자 팝 — DOM이 무한정 늘지 않게 상한(V266_FTCAP)을 두고, 넘치면 조용히 건너뛴다 */
+function v266Pop(txt,p,cls){
+  try{
+    if(!p||typeof floatText!=='function') return false;
+    if(fts.length>=V266_FTCAP){ V266.juice.skip++; return false; }
+    floatText(p,txt,cls||'say'); V266.juice.pop++; return true;
+  }catch(e){ return false; }
+}
+/* 파티클도 상한을 둔다 (프레임 드랍 방지) */
+function v266Spark(x,z,c,n){
+  try{ if(parts.length>V266_PTCAP) return false; sparkle(x,1.6,z,c||'#ffe14d'); return true; }catch(e){ return false; }
+}
+
+/* =========================================================================
+   1) 자동화 3번째 — 자동 상담 키오스크
+   쉬운 일반 상담(단순 구입 상담·예약 픽업)을 일정 주기로 알아서 처리한다.
+   법인·항의·외국인·VIP·황금·까다로운 손님, 데이터 이전·스펙 상담은 사람이 한다.
+   ========================================================================= */
+AUTO_DEF.push({k:'kiosk',ic:'🖥️',n:'자동 상담 키오스크',
+  d:'쉬운 구입 상담·픽업을 알아서 처리해요 (법인·항의·외국인·VIP 제외)',
+  base:5,iv:[6,5,4,3.2,2.6]});
+AUTOT.kiosk=0;
+function kioskLv(){ return (S.auto&&S.auto.kiosk)||0; }
+function kioskDef(){ return AUTO_DEF.filter(function(x){ return x.k==='kiosk'; })[0]; }
+function kioskIv(lv){
+  var d=kioskDef(); if(!d) return 0;
+  var i=Math.max(0,Math.min(d.iv.length-1,((lv||1)|0)-1));
+  return d.iv[i];
+}
+/* 키오스크가 맡아도 되는 손님인가 — 순수 판정(테스트 하네스가 그대로 부른다) */
+function kioskOK(c){
+  try{
+    if(!c||typeof c!=='object') return false;
+    if(c.claim||c.served||c.miss||c.walk||c.quiet) return false;
+    if(c.st!=='wait') return false;                       /* 상담 중·결제 대기(want)는 제외 */
+    if(c.vip||c.tough||c.corp||c.flight||c.gold||c.influ) return false;   /* VIP·까다로운·법인·외국인·황금·인플루언서 */
+    if(c.spType) return false;                            /* 급한·설명·에스컬레이션 특수 손님 */
+    if(c.walkin) return false;                            /* 예약 없는 수리 접수 */
+    if(c.type==='pick') return !!(c.want&&!c.xfer);        /* 예약 픽업(데이터 이전 제외) */
+    if(c.type==='buy') return (!c.want&&!!c.bq);          /* 구입 상담 — 키오스크가 제품 추천까지 처리(스펙 보너스는 사람 몫) */
+    return false;                                         /* 반품·SW·수리·법인·항의·외국인 */
+  }catch(e){ return false; }
+}
+function kioskPayBase(c,t){
+  var k=t||(c&&c.want)||(c&&c.bq&&c.bq.t)||'p';
+  return Math.round(k==='l'?60:k==='p'?45:30);
+}
+/* 창고·진열대에서 재고 1개를 뺀다 (없으면 false) */
+function kioskTake(t){
+  try{
+    if(!t) return false;
+    var s=(typeof srcOf==='function')?srcOf(t):null;
+    if(s&&s.on&&s.n>0){ s.n--; if(typeof useStock==='function') useStock(t,1); layoutSrc(s); return true; }
+    if((S.inv[t]||0)>0){ S.inv[t]=Math.max(0,(S.inv[t]||0)-1); if(typeof useStock==='function') useStock(t,1); return true; }
+  }catch(e){}
+  return false;
+}
+/* 손님 1명을 키오스크로 처리. 성공하면 true */
+function kioskServe(c){
+  try{
+    var lv=Math.max(1,kioskLv()), K=1+0.2*(lv-1);
+    var t=c.want||((c.type==='buy'&&c.bq&&c.bq.t)||null), consulted=0;
+    if(!t) return false;
+    if(c.type==='buy'&&!kioskTake(t)) return false;            /* 재고가 없으면 팔 수 없다 */
+    if(c.type==='pick') kioskTake(t);                         /* 예약분은 재고가 없어도 픽업 가능 */
+    if(c.type==='buy'&&!c.want){                              /* 키오스크가 단순 구입 상담까지 처리 */
+      c.want=t; c.happy=1; S.stats.ok=(S.stats.ok||0)+1; consulted=1;
+    }
+    var base=(c.type==='pick')?15:kioskPayBase(c,t);
+    var pay=Math.max(1,Math.round(base*K));
+    var c0=cashVal;
+    custLeave(c,true,pay);
+    var got=Math.max(0,Math.round(cashVal-c0));
+    if(got>0){ cashVal=Math.max(0,cashVal-got); money+=got; rebuildCash(); }   /* 키오스크는 카드 결제 → 카운터 현금을 거치지 않는다 */
+    V266.kiosk.n++; V266.kiosk.served++; V266.kiosk.flash=1;
+    S.stats.kiosk=(S.stats.kiosk||0)+1;
+    if(consulted){ try{ floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),'🖥️ 상담 완료','say'); }catch(_){} }
+    v266Pop('+$'+got, new THREE.Vector3(V266_KP.x-0.5,2.3,V266_KP.z+0.2), 'kiosk');
+    sfxKiosk(); v266Hap('kiosk'); v266Spark(V266_KP.x, V266_KP.z, '#5ad1ff');
+    try{ kioskVis(0.016); }catch(_){}
+    return true;
+  }catch(e){ if(!V266.kiosk.err){ V266.kiosk.err=1; try{ console.warn('kioskServe',e); }catch(_){} } return false; }
+}
+function kioskTick(dt){
+  try{
+    if(kioskLv()<=0) return;
+    if(typeof dayState==='undefined'||dayState!=='run') return;
+    if(V266.kiosk.day!==S.day){ V266.kiosk.day=S.day; V266.kiosk.n=0; AUTOT.kiosk=0.8; }
+    V266.kiosk.ticks=(V266.kiosk.ticks||0)+1;
+    AUTOT.kiosk=(AUTOT.kiosk==null?0.8:AUTOT.kiosk)-dt;
+    V266.kiosk.t=(AUTOT.kiosk||0).toFixed(2);
+    if(AUTOT.kiosk>0) return;
+    var list=(typeof custs!=='undefined'?custs:[]).filter(kioskOK);
+    V266.kiosk.elig=list.length; V266.kiosk.tot=(typeof custs!=='undefined'?custs.length:0);
+    if(!list.length){ AUTOT.kiosk=0.6; return; }              /* 손님이 없으면 짧게만 기다린다 */
+    list.sort(function(a,b){ return (a.pat/a.patMax)-(b.pat/b.patMax); });   /* 가장 급한 손님부터 */
+    if(kioskServe(list[0])) AUTOT.kiosk=kioskIv(kioskLv());
+    else AUTOT.kiosk=1.4;
+  }catch(e){ if(!V266.kiosk.err){ V266.kiosk.err=1; V266.kiosk.err2=String(e&&e.message||e); try{ console.warn('kioskTick',e); }catch(_){} } }
+}
+/* ---------------- 키오스크 3D 오브젝트 (구매 전엔 꺼진 화면) ---------------- */
+function kioskScreenTex(){
+  try{ return canvasTex(function(g,w,h){
+    g.fillStyle='#0b1626'; g.fillRect(0,0,w,h);
+    g.fillStyle='#2f6fd8'; g.fillRect(0,0,w,Math.round(h*0.17));
+    g.fillStyle='#ffffff'; g.font='900 '+Math.round(h*0.085)+'px sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+    g.fillText('SELF CHECK-IN',w/2,Math.round(h*0.085));
+    g.fillStyle='#5ad1ff'; g.font='900 '+Math.round(h*0.17)+'px sans-serif';
+    g.fillText('상담 · 픽업',w/2,Math.round(h*0.44));
+    g.fillStyle='#ffd23f'; g.font='900 '+Math.round(h*0.115)+'px sans-serif';
+    g.fillText('화면을 터치',w/2,Math.round(h*0.68));
+    g.fillStyle='#8fa6c4'; g.fillRect(Math.round(w*0.2),Math.round(h*0.82),Math.round(w*0.6),Math.round(h*0.05));
+  },256,192); }catch(e){ return null; }
+}
+function kioskSignTex(){
+  try{ return canvasTex(function(g,w,h){
+    g.clearRect(0,0,w,h);
+    g.fillStyle='#0f2a4a'; g.fillRect(0,0,w,h);
+    g.fillStyle='#5ad1ff'; g.font='900 '+Math.round(h*0.42)+'px sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+    g.fillText('SELF',w/2,Math.round(h*0.3));
+    g.fillStyle='#ffd23f'; g.font='900 '+Math.round(h*0.3)+'px sans-serif';
+    g.fillText('체크인',w/2,Math.round(h*0.72));
+  },192,72); }catch(e){ return null; }
+}
+function kioskBuild(){
+  try{
+    if(V266.kiosk.g||typeof scene==='undefined'||typeof box!=='function'||typeof rbox!=='function') return;
+    var G=new THREE.Group(); G.position.set(V266_KP.x,0,V266_KP.z); G.rotation.y=-1.9; scene.add(G);
+    rbox(0.74,1.02,0.44,'#e8edf4',0,0.52,0,G,0.05);            /* 본체(밝은 화이트) */
+    box(0.78,0.06,0.48,'#c7d2e0',0,1.05,0,G);                   /* 상판 */
+    box(0.66,0.1,0.42,'#1b1f27',0,0.06,0,G);                    /* 받침(다크) */
+    box(0.1,0.5,0.03,'#2f6fd8',0.28,0.62,0.23,G);               /* 포인트 스트라이프 */
+    var sc=box(0.64,0.46,0.05,'#0f1726',0,1.34,0,G); sc.rotation.x=-0.14;
+    var tex=kioskScreenTex();
+    if(tex){
+      V266.kiosk.scr=new THREE.Mesh(new THREE.PlaneGeometry(0.56,0.4),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
+      V266.kiosk.scr.position.set(0,1.34,0.032); V266.kiosk.scr.rotation.x=-0.14; G.add(V266.kiosk.scr);
+    }
+    V266.kiosk.led=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.05,0.04),new THREE.MeshBasicMaterial({color:'#5a6578'}));
+    V266.kiosk.led.position.set(0,1.6,0.02); G.add(V266.kiosk.led);
+    box(0.2,0.1,0.12,'#1b1f27',0.18,1.02,0.14,G);               /* 카드 리더기 */
+    try{ var sg=kioskSignTex();
+      if(sg){ var sign=new THREE.Mesh(new THREE.PlaneGeometry(0.78,0.34),new THREE.MeshBasicMaterial({map:sg,transparent:true,depthWrite:false}));
+        sign.position.set(0,1.92,0.01); G.add(sign); V266.kiosk.sign=sign; } }catch(_){}
+    V266.kiosk.ring=new THREE.Mesh(new THREE.RingGeometry(0.46,0.6,26),new THREE.MeshBasicMaterial({color:'#5ad1ff',transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+    V266.kiosk.ring.rotation.x=-Math.PI/2; V266.kiosk.ring.position.set(0,0.14,0.55); G.add(V266.kiosk.ring);
+    V266.kiosk.g=G; V266.kiosk.built=1;
+    try{ ob(V266_KP.x-0.44,V266_KP.x+0.44,V266_KP.z-0.34,V266_KP.z+0.34); }catch(_){}   /* 통행 충돌 */
+    kioskVis(0.016);
+  }catch(e){ V266.kiosk.built=-1; try{ console.warn('kioskBuild',e); }catch(_){} }
+}
+function kioskVis(dt){
+  var k=V266.kiosk; if(!k.g) return;
+  try{
+    var d=(dt==null?0.016:dt); if(k.flash>0) k.flash=Math.max(0,k.flash-d*1.7);
+    var on=kioskLv()>0, f=k.flash;
+    if(k.led&&k.led.material&&k.led.material.color) k.led.material.color.setHex(on?(f>0.1?0xffffff:0x46e05a):0x5a6578);
+    if(k.scr&&k.scr.material){ k.scr.material.opacity=on?(0.72+0.28*Math.min(1,f*2)):0.22; k.scr.scale.set(1+0.07*f,1+0.07*f,1); }
+    if(k.ring&&k.ring.material) k.ring.material.opacity=on?(0.14+0.5*Math.min(1,f)):0;
+  }catch(e){}
+}
+kioskBuild();
+try{ setTimeout(function(){ try{ kioskBuild(); kioskVis(0.016); }catch(_){} },1600); }catch(e){}
+/* 키오스크 처리·손맛을 매 프레임 반영 */
+(function(){
+  var _at=autoTick;
+  autoTick=function(dt){
+    var r=_at.apply(this,arguments);
+    try{ kioskTick(dt); kioskVis(dt); }catch(e){}
+    return r;
+  };
+  var _ab=autoBuy;
+  autoBuy=function(k){
+    var before=autoLv('kiosk'); var r=_ab.apply(this,arguments);
+    try{ if(k==='kiosk'&&autoLv('kiosk')>before){ V266.kiosk.flash=1.6; kioskVis(0.016);
+      v266Pop('🖥️ ONLINE', new THREE.Vector3(V266_KP.x,2.5,V266_KP.z), 'kiosk'); sfxKiosk(); v266Hap('kiosk'); v266Spark(V266_KP.x,V266_KP.z,'#5ad1ff'); } }catch(e){}
+    return r;
+  };
+  var _ac=autoCard;
+  autoCard=function(){
+    var h=_ac.apply(this,arguments);
+    try{ if(h&&kioskLv()>0){ h=String(h).replace(/<\/div>$/,'')+'<div style="font:800 11px var(--b);color:#155a24;margin-top:6px">🖥️ 키오스크 · 오늘 '+V266.kiosk.n+'건 자동 처리 · 누적 '+(S.stats.kiosk||0)+'건</div></div>'; } }catch(e){}
+    return h;
+  };
+})();
+
+/* =========================================================================
+   2) 체험존 2단계 — 테이블 +2석 · 유튜버 체험 손님 · 정산함 용량 업그레이드
+   ========================================================================= */
+var EXT2=[[9.9,4.0],[11.62,4.0]];
+function exp2Lv(){ return (S.exp2&&S.exp2[STG])||0; }
+function expTables(){ return exp2Lv()?EXT.concat(EXT2):EXT; }
+function exp2Cost(){ try{ return Math.max(800,Math.round(dayCfg(S.day).goal*2.6/50)*50); }catch(e){ return 2000; } }
+function expYTChance(){ return exp2Lv()?0.16:0; }
+function boxLv(){ return (S.boxLv&&S.boxLv[STG])||0; }
+function boxUpCost(){ try{ return Math.round(dayCfg(S.day).goal*0.7*Math.pow(1.9,boxLv())/50)*50; }catch(e){ return 1200; } }
+/* 정산함 용량 = 기존 용량 × (1 + 0.5 × 용량 Lv) */
+(function(){ var _bc=boxCap; boxCap=function(){ var b=_bc.apply(this,arguments); return Math.round(b*(1+0.5*boxLv())); }; })();
+var V266_EXT_TBL=0;
+function exp2Build(){
+  try{
+    if(!EXP.on||typeof box!=='function') return;
+    if(V266_EXT_TBL) return; V266_EXT_TBL=1;
+    var tbl=function(x,z){
+      box(1.7,0.78,0.95,'#f3e9d6',x,0.39,z); box(1.76,0.06,1.0,'#ffffff',x,0.8,z);
+      box(0.5,0.03,0.34,'#1b1f27',x-0.45,0.84,z); var sc=box(0.5,0.32,0.03,'#2a6df0',x-0.45,1.0,z-0.16); sc.rotation.x=-0.25;
+      box(0.16,0.02,0.32,'#20242c',x+0.2,0.84,z+0.05); box(0.16,0.02,0.32,'#d9dde5',x+0.5,0.84,z-0.05);
+      ob(x-0.9,x+0.9,z-0.52,z+0.52);
+      curveStool(x,z-1.05); curveStool(x,z+1.0);
+    };
+    EXT2.forEach(function(p){ tbl(p[0],p[1]); });
+    try{ var lp=lightPool(10.7,4.0,2.4,1.4,0.16); if(lp&&lp.material) lp.material.color=new THREE.Color('#ffdf9a'); }catch(_){}
+    try{ var stt=canvasTex(function(g,w,h){ g.clearRect(0,0,w,h); g.fillStyle='#7a4ad6'; g.font='900 58px sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('ZONE 2',w/2,h/2); },384,96);
+      var sg=new THREE.Mesh(new THREE.PlaneGeometry(2.4,0.6),new THREE.MeshBasicMaterial({map:stt,transparent:true})); sg.rotation.x=-Math.PI/2; sg.position.set(10.7,0.118,2.5); scene.add(sg); }catch(_){}
+  }catch(e){ try{ console.warn('exp2Build',e); }catch(_){} }
+}
+function curveStool(x,z){
+  try{ cyl(0.22,0.26,0.42,'#5a6578',x,0.21,z); cyl(0.24,0.24,0.06,'#c9ced8',x,0.45,z); }catch(e){}
+}
+function exp2Buy(){
+  try{
+    if(!expOwned()){ toast('먼저 매장 확장 공사를 마쳐 주세요',2.2); return; }
+    if(exp2Lv()){ toast('체험존 2단계는 이미 열려 있어요',1.8); return; }
+    var c=exp2Cost();
+    if(money<c){ toast('💰 $'+(c-money)+' 더 모으면 2단계로 늘릴 수 있어요',2.4); return; }
+    money-=c; S.exp2=S.exp2||{}; S.exp2[STG]=1;
+    try{ save(); }catch(_){}
+    exp2Build();
+    try{ var TB=expTables(); for(var i=EXV.list.length;i<TB.length;i++){ var v=expVisitor(i); if(v) EXV.list.push(v); } }catch(e){}
+    try{ bigBanner('🪑 체험존 2단계!','테이블 +2석 · 유튜버 체험 손님이 가끔 와요'); confetti(10.7,2,4.0); snd('level_up',0.6,1.12); haptic([10,25,10]); }catch(_){}
+    try{ v266Pop('2단계 OPEN', new THREE.Vector3(10.7,2.4,4.0), 'pres'); }catch(_){}
+    refreshExpCard();
+  }catch(e){ try{ console.warn('exp2Buy',e); }catch(_){} }
+}
+function boxUp(){
+  try{
+    var lv=boxLv(), c=boxUpCost();
+    if(lv>=3){ toast('정산함은 최고 단계예요',1.8); return; }
+    if(money<c){ toast('💰 $'+(c-money)+' 더 모으면 늘릴 수 있어요',2.4); return; }
+    money-=c; S.boxLv=S.boxLv||{}; S.boxLv[STG]=lv+1;
+    try{ save(); }catch(_){}
+    try{ boxPaint(); bigBanner('📦 정산함 Lv.'+(lv+1),'용량 +'+(50*(lv+1))+'% · 최대 $'+boxCap()+'까지 쌓여요'); snd('level_up',0.5,1.15); v266Hap('box'); }catch(_){}
+    refreshExpCard();
+  }catch(e){ try{ console.warn('boxUp',e); }catch(_){} }
+}
+function refreshExpCard(){ try{ var c=$('expCard'); if(c){ c.outerHTML=expCard(); expBind(); } }catch(e){} }
+/* 체험존 카드에 2단계·정산함 용량 버튼 (expCard 뒤에 붙는다) */
+function v266ExpExtra(){
+  try{
+    if(!expOwned()) return '';
+    var t2=exp2Lv(), c2=exp2Cost(), ok2=money>=c2;
+    var bl=boxLv(), cb=boxUpCost(), okb=money>=cb;
+    var h='<div style="display:flex;gap:6px;margin-top:6px">';
+    h+='<button id="exp2Go" style="flex:1 1 0;min-width:0;height:40px;border:0;border-radius:11px;font:900 12px var(--b);color:#fff;background:'
+      +(t2?'#a9b4c4':ok2?'linear-gradient(#b07aff,#7a4ad6);box-shadow:0 3px 0 #4a2a9a':'#b9b2a4')+'">'+(t2?'🪑 2단계 완료':'🪑 2단계 · $'+c2)+'</button>';
+    h+='<button id="boxUpGo" style="flex:1 1 0;min-width:0;height:40px;border:0;border-radius:11px;font:900 12px var(--b);color:#fff;background:'
+      +(bl>=3?'#a9b4c4':okb?'linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 3px 0 #1c3f9a':'#b9b2a4')+'">'+(bl>=3?'📦 용량 최고':'📦 용량 Lv.'+(bl+1)+' · $'+cb)+'</button>';
+    h+='</div>';
+    h+='<div style="font:800 11px var(--b);color:#2a4a7a;margin-top:4px">2단계 = 테이블 2석 + 📹 유튜버 체험 손님 · 용량 = 정산함 $'+boxCap()+'</div>';
+    return h;
+  }catch(e){ return ''; }
+}
+(function(){
+  var _eb=expBind;
+  expBind=function(){
+    var r=_eb.apply(this,arguments);
+    try{
+      var a=$('exp2Go'); if(a) a.onclick=function(e){ e.stopPropagation(); exp2Buy(); };
+      var b=$('boxUpGo'); if(b) b.onclick=function(e){ e.stopPropagation(); boxUp(); };
+    }catch(e){}
+    return r;
+  };
+})();
+/* 유튜버 체험 손님 — 큰 팁 + 짧은 바이럴(평점·NPS) 보너스 */
+function v266Youtuber(v,pay){
+  try{
+    V266.juice.yt++; S.stats.yt=(S.stats.yt||0)+1;
+    try{ S.reviews.push(5); if(S.reviews.length>14) S.reviews=S.reviews.slice(-14); }catch(_){}
+    try{ if(dayState==='run'){ dayNps.push(10); dayRevs.push(5); } }catch(_){}
+    try{ bigBanner('📹 유튜버 체험 영상!','팁 3배 +$'+pay+' · 평점·평판 UP'); }catch(_){}
+    try{ v266Pop('📹 +$'+pay, new THREE.Vector3(v.pos.x,3.0,v.pos.z), 'gold'); }catch(_){}
+    sfxGold(); v266Hap('viral');
+    try{ confetti(v.pos.x,1.6,v.pos.z); }catch(_){}
+    try{ v266Spark(v.pos.x,v.pos.z,'#ff7ab8'); }catch(_){}
+  }catch(e){}
+}
+/* 세이브 편의: 체험존 2단계·정산함 Lv가 이미 있으면 건물을 다시 세운다 */
+try{ setTimeout(function(){ try{ if(exp2Lv()) exp2Build(); }catch(_){} },2200); }catch(e){}
+
+/* =========================================================================
+   3) 프레스티지 — 매장 재창업 (평판 포인트 PP · 영구 보너스)
+   순수 함수(v266Perm·v266PpGain·v266PresReady·v266ResetInfo)는 하네스가 그대로 부른다.
+   ========================================================================= */
+var V266_PRES_DAY=8, V266_PRES_STARS=12;
+function v266PP(){
+  var v=S.pp; v=(typeof v==='number'&&isFinite(v))?Math.floor(v):0;
+  return Math.max(0,Math.min(1e7,v));
+}
+/* PP → 영구 보너스 (PP가 쌓이면 자동으로 오른다) */
+function v266Perm(pp){
+  var p=(pp==null)?v266PP():Math.max(0,Math.min(1e7,(typeof pp==='number'&&isFinite(pp))?pp:0));
+  return {pp:Math.round(p), rev:Math.min(0.6,0.0025*p), start:Math.min(2000,20*p), off:Math.min(0.6,0.002*p)};
+}
+function v266PpGain(){
+  try{
+    var st=0, ds=(S.dayStars||[]);
+    for(var i=0;i<ds.length;i++){ var v=ds[i]; if(typeof v==='number'&&isFinite(v)) st+=Math.max(0,Math.min(3,v)); }
+    var base=Math.max(0,(S.day|0))*2+st;
+    var mul=1+0.2*Math.max(0,(S.pres|0));
+    return Math.max(5,Math.round(base*mul));
+  }catch(e){ return 5; }
+}
+function v266Stars(){ try{ return Math.max(0,Math.min(9999,lvTotalStars()|0)); }catch(e){ return 0; } }
+function v266PresReady(){
+  try{
+    if(typeof dayState!=='undefined'&&dayState==='run') return false;
+    if(!((S.day|0)>=V266_PRES_DAY)) return false;
+    return v266Stars()>=V266_PRES_STARS;
+  }catch(e){ return false; }
+}
+function v266PresProg(){
+  return {day:Math.min(V266_PRES_DAY,Math.max(0,(S.day|0))),dayNeed:V266_PRES_DAY,
+          stars:Math.min(V266_PRES_STARS,v266Stars()),starNeed:V266_PRES_STARS};
+}
+/* 초기화/유지 범위 — 모달·테스트가 같은 목록을 쓴다 */
+var V266_RESET_KEYS=['day','dayStars','bp','curStage','branchSnap','crew','inv','unl','up','mast','decor',
+  'exp','expLv','exp2','box','boxLv','auto','autoOrd','hub','orders','rma','stock','shelf','reviews',
+  'fails','failStreak','mercyD','boostD','vipD','lastProfit','promo','party','biz','mkt','v262','v264',
+  'ev','daily','dstreak','wk','womD','womK','starterT','tut','xp','lvl','cash','mid','ftue'];
+var V266_KEEP_KEYS=['pp','pres','best','r1','stats','opt','dex','know','ach','lp','att','seen','ftueGo','wkBuy',
+  'sysSeen','hrSeen','vipPass','noAds','paidPack','autoBox','autoPack','slotPaid','paid','bakAt',
+  'starter','myRank','myScore','myWarn','mySpd','myCap','offer','lastSaveTime','boxUpSeen'];
+function v266Fresh(){
+  var now=Date.now();
+  return {day:0,dayStars:[],bp:[],best:[],r1:[],stats:{srv:0,fix:0,ok:0,earn:0},ms:null,money:30,cash:0,
+    last:now,lastSaveTime:now,offAt:now,lastProfit:0,lvl:1,xp:0,tut:0,reviews:[5,5,4],
+    up:{spd:0,cap:0,chk:0,price:0},unl:[],inv:{p:10,l:6,w:8,b:6,s:6,c:6},ach:{},orders:[],rma:[],shelf:{},
+    mast:{b:0,s:0,c:0},hub:{ccDay:-1,boxes:0,perfect:0,scan:0,miss:0,credit:0,auto:0,seen:0},
+    stock:{p:100,hist:[100],chg:0},curStage:0,branchSnap:{},exp:{},expLv:{},exp2:{},box:{},boxLv:{},boxAt:now,
+    auto:{},decor:{},ev:{},seen:1,vipD:-1,boostD:-1,mercyD:-1,fails:0,failStreak:0,womD:0,womK:1,
+    pp:0,pres:0,starterT:0,starter:1,daily:null,dstreak:0,wk:null,lp:null,know:{},dex:{}};
+}
+function v266ResetInfo(){
+  var pg=v266PpGain(), pp=v266PP(), a=v266Perm(pp), b=v266Perm(pp+pg);
+  return {gain:pg,ppBefore:pp,ppAfter:pp+pg,permBefore:a,permAfter:b,startBefore:Math.round(30+a.start),
+    startAfter:Math.round(30+b.start),reset:V266_RESET_KEYS.slice(),keep:V266_KEEP_KEYS.slice(),
+    ready:v266PresReady(),prog:v266PresProg()};
+}
+function v266PrestigeCardHTML(){
+  try{
+    if(!S||(S.day|0)<3) return '';
+    var perm=v266Perm(), pp=v266PP(), pres=Math.max(0,S.pres|0), pg=v266PpGain(), ready=v266PresReady(), pr=v266PresProg();
+    var h='<div style="margin:6px 0;padding:9px 12px 10px;border-radius:14px;background:linear-gradient(#fff3d0,#ffe08a);border:2px solid #e0a800;text-align:left">';
+    h+='<div style="font:900 15px var(--b);color:#5a3a00">🏆 매장 재창업 <small style="font-weight:800">· 프레스티지 '+(pres?pres+'회':'첫 도전')+'</small></div>';
+    h+='<div style="font:800 12px var(--b);color:#6a4a10;margin-top:2px">평판 포인트 <b>'+pp+' PP</b> · 재창업하면 <b>+'+pg+' PP</b></div>';
+    h+='<div style="font:800 11px var(--b);color:#6a4a10;margin-top:2px">영구 보너스 · 매출 +'+Math.round(perm.rev*100)+'% · 시작 자금 $'+Math.round(30+perm.start)+' · 방치 +'+Math.round(perm.off*100)+'%</div>';
+    if(ready){ h+='<button id="v266Pres" style="width:100%;height:40px;margin-top:6px;border:0;border-radius:11px;font:900 14px var(--b);color:#3a1a00;background:linear-gradient(#ffe68a,#ffb020);box-shadow:0 3px 0 #9a5a00">매장 재창업하기 →</button>'; }
+    else { h+='<div style="font:800 11px var(--b);color:#8a6a30;margin-top:4px">조건 · DAY '+pr.day+'/'+pr.dayNeed+' · 누적 ★'+pr.stars+'/'+pr.starNeed+'</div>'
+      +'<i style="display:block;height:6px;border-radius:4px;background:#fff;margin-top:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(Math.min(1,(pr.day/pr.dayNeed*0.5+pr.stars/pr.starNeed*0.5))*100)+'%;background:linear-gradient(90deg,#ffb020,#ff7a00)"></i></i>'; }
+    h+='</div>';
+    return h;
+  }catch(e){ return ''; }
+}
+function v266PresModal(){
+  try{
+    if(typeof dayState!=='undefined'&&dayState==='run'){ toast('영업 중에는 재창업할 수 없어요. 오늘 영업을 마친 뒤 눌러 주세요',3); return; }
+    if(!v266PresReady()){ var pr=v266PresProg(); toast('🔒 재창업 조건 · DAY '+pr.day+'/'+pr.dayNeed+' · 누적 ★'+pr.stars+'/'+pr.starNeed,3); return; }
+    var I=v266ResetInfo();
+    var h='<h2>🏆 매장 재창업</h2><p style="margin-top:-4px;font-size:13px">지금 매장을 정리하고 <b>평판 포인트(PP)</b>로 새 시즌을 시작해요.<br><small>진행은 처음부터지만 영구 보너스가 남아 다음 시즌이 더 빨라져요.</small></p>'
+     +'<div class="dstat"><span>받는 평판 포인트</span><b>+'+I.gain+' PP</b></div>'
+     +'<div class="dstat"><span>보유 평판 포인트</span><b>'+I.ppBefore+' → '+I.ppAfter+' PP</b></div>'
+     +'<div class="dstat"><span>영구 매출 배율</span><b>+'+Math.round(I.permBefore.rev*100)+'% → +'+Math.round(I.permAfter.rev*100)+'%</b></div>'
+     +'<div class="dstat"><span>시작 자금</span><b>$'+I.startBefore+' → $'+I.startAfter+'</b></div>'
+     +'<div class="dstat"><span>방치 수익 보너스</span><b>+'+Math.round(I.permBefore.off*100)+'% → +'+Math.round(I.permAfter.off*100)+'%</b></div>'
+     +'<div style="margin:7px 0 0;padding:8px 10px;border-radius:11px;background:#fff0f0;border:1px solid #f0b4b4;font:800 11px var(--b);color:#8a2a2a;text-align:left">↺ 초기화 · 지점·일차(DAY 1부터) · 현금 · 직원 · 재고·진열 · 업그레이드 · 자동화 · 체험존 · RSU·방치 투자 · 법인 계약</div>'
+     +'<div style="margin:6px 0 0;padding:8px 10px;border-radius:11px;background:#eefaf0;border:1px solid #a8dfb4;font:800 11px var(--b);color:#1d5a2a;text-align:left">✔ 유지 · 평판 포인트·영구 보너스 · 도감·업적 · 최고 기록 · 누적 통계 · 설정 · 구매한 상품(VIP 패스·자동 수금 등)</div>'
+     +'<button id="v266PresYes" style="margin-top:8px;background:linear-gradient(#ff8a6a,#e8342a);box-shadow:0 4px 0 #8a0f1f">재창업 확정</button>'
+     +'<button class="gray" id="v266PresNo" style="background:linear-gradient(#d8dde6,#aab4c4);box-shadow:0 4px 0 #7a8494;font-size:14px">취소</button>'
+     +'<div style="font:800 11px var(--b);color:#7a6a4a;margin-top:6px">되돌릴 수 없어요. 저장 코드를 백업해 두면 안전해요.</div>';
+    openModal(h);
+    var y=$('v266PresYes'); if(y) y.onclick=function(e){ e.stopPropagation(); y.disabled=true; y.textContent='재창업 중…'; setTimeout(function(){ try{ v266DoPrestige(); }catch(_){ } },260); };
+    var n=$('v266PresNo'); if(n) n.onclick=function(e){ e.stopPropagation(); try{ v262HubOpen(); }catch(_){} };
+  }catch(e){ try{ console.warn('v266PresModal',e); }catch(_){} }
+}
+function v266DoPrestige(){
+  try{
+    if(!v266PresReady()) return false;
+    var pg=v266PpGain(), pp=v266PP();
+    var keep={};
+    for(var i=0;i<V266_KEEP_KEYS.length;i++){ var k=V266_KEEP_KEYS[i]; if(S&&S[k]!==undefined) keep[k]=S[k]; }
+    var perm=v266Perm(pp+pg);
+    var fresh=v266Fresh();
+    for(var k2 in keep){ fresh[k2]=keep[k2]; }
+    fresh.pp=pp+pg; fresh.pres=Math.max(0,Math.floor(S.pres||0))+1;
+    fresh.day=0; fresh.curStage=0; fresh.dayStars=[]; fresh.bp=[];
+    S=fresh;
+    money=Math.round(30+perm.start);
+    S.money=money; S.cash=0;
+    try{ save(); }catch(e){}
+    /* save()는 지금 매장의 진열 상태를 되쓴다 — 새 시즌 값으로 한 번 더 정리 */
+    try{
+      var raw=JSON.parse(localStorage.getItem(SAVE));
+      if(raw&&typeof raw==='object'){
+        raw.day=0; raw.curStage=0; raw.dayStars=[]; raw.bp=[]; raw.shelf={};
+        raw.inv={p:10,l:6,w:8,b:6,s:6,c:6}; raw.box={}; raw.boxLv={}; raw.boxAt=Date.now();
+        raw.exp={}; raw.expLv={}; raw.exp2={}; raw.auto={}; raw.v264=null; raw.v262=null;
+        raw.money=Math.round(30+perm.start); raw.cash=0; raw.lvl=1; raw.xp=0; raw.crew=[];
+        raw.unl=[]; raw.up={spd:0,cap:0,chk:0,price:0}; raw.mast={b:0,s:0,c:0}; raw.decor={};
+        raw.orders=[]; raw.rma=[]; raw.hub={ccDay:-1,boxes:0,perfect:0,scan:0,miss:0,credit:0,auto:0,seen:0};
+        raw.stock={p:100,hist:[100],chg:0}; raw.lastProfit=0; raw.boostD=-1; raw.mercyD=-1;
+        raw.fails=0; raw.failStreak=0; raw.mid=0;
+        localStorage.setItem(SAVE,JSON.stringify(raw));
+      }
+    }catch(e){}
+    try{ bigBanner('🏆 매장 재창업!','평판 +'+pg+' PP · 영구 매출 +'+Math.round(perm.rev*100)+'%'); sfxPres(); haptic([12,40,12]); confetti(player.pos.x,2.2,player.pos.z); }catch(e){}
+    try{ window.__v266Prestiged={gain:pg,pp:pp+pg,pres:fresh.pres,perm:perm}; }catch(e){}
+    setTimeout(function(){ try{ location.reload(); }catch(e){ try{ location.href=location.pathname; }catch(_){} } },1700);
+    return true;
+  }catch(e){ try{ console.warn('v266DoPrestige',e); }catch(_){} return false; }
+}
+/* 허브에 재창업 카드 */
+(function(){
+  var _h=v262HubHTML;
+  v262HubHTML=function(){
+    var s=_h.apply(this,arguments);
+    try{ if(typeof s==='string'&&s.indexOf('class="hubFoot"')>=0){ var card=v266PrestigeCardHTML(); if(card) s=s.replace('<div class="hubFoot">',card+'<div class="hubFoot">'); } }catch(e){}
+    return s;
+  };
+  var _o=v262HubOpen;
+  v262HubOpen=function(){
+    var r=_o.apply(this,arguments);
+    try{ var b=$('v266Pres'); if(b&&!b._w){ b._w=1; b.onclick=function(e){ e.stopPropagation(); v266PresModal(); }; } }catch(e){}
+    return r;
+  };
+})();
+
+/* =========================================================================
+   4) 영구 보너스를 실제 수치에 연결
+   ========================================================================= */
+(function(){
+  var _pm=priceMul;
+  priceMul=function(){ var v=_pm.apply(this,arguments); try{ return v*(1+v266Perm().rev); }catch(e){ return v; } };
+  var _oc=offCalc;
+  offCalc=function(now){
+    var r=_oc.apply(this,arguments);
+    try{ if(r&&typeof r.gain==='number') r.gain=Math.max(0,Math.round(r.gain*(1+v266Perm().off))); }catch(e){}
+    return r;
+  };
+  var _vr = (typeof v264Rate==='function')?v264Rate:null;
+  if(_vr){ v264Rate=function(){ var v=_vr.apply(this,arguments); try{ return v*(1+v266Perm().off); }catch(e){ return v; } }; }
+})();
+
+/* =========================================================================
+   5) 손맛 — 판매·수금·황금 손님·키오스크 처리 연출 강화
+   ========================================================================= */
+(function(){
+  var _cl=custLeave;
+  custLeave=function(c,ok,pay){
+    var c0=cashVal; var r=_cl.apply(this,arguments);
+    try{
+      if(ok&&c){
+        var got=Math.max(0,Math.round(cashVal-c0));
+        if(c.gold&&got>0){
+          V266.juice.gold++;
+          v266Pop('💎 +$'+got, new THREE.Vector3(c.pos.x,3.4,c.pos.z), 'gold');
+          sfxGold(); v266Hap('gold'); v266Spark(c.pos.x,c.pos.z,'#ffd23f');
+        } else if(got>=400){
+          v266Pop('+$'+got, new THREE.Vector3(c.pos.x,3.2,c.pos.z), 'big');
+        }
+      }
+    }catch(e){}
+    return r;
+  };
+  var _bx=boxCollect;
+  boxCollect=function(){
+    var before=boxGet(); var r=_bx.apply(this,arguments);
+    try{ if(before>0){ v266Pop('💰 +$'+before, new THREE.Vector3(player.pos.x,3.2,player.pos.z), 'big'); v266Hap('collect'); } }catch(e){}
+    return r;
+  };
+})();
+
+/* =========================================================================
+   6) 세이브 호환 — v2.65 이전 세이브에는 없는 값(pp·pres·exp2·boxLv)을 채운다
+   ========================================================================= */
+function v266ClampSave(){
+  var n=0;
+  try{
+    if(!S||typeof S!=='object'||Array.isArray(S)) return 0;
+    var pv=S.pp;
+    var pp=(typeof pv==='number')?pv:(typeof pv==='string'&&pv!==''&&isFinite(Number(pv))?Number(pv):NaN);
+    if(!isFinite(pp)) pp=0;
+    pp=Math.max(0,Math.min(1e7,Math.floor(pp)));
+    if(S.pp!==pp){ S.pp=pp; n++; }
+    var sv=S.pres;
+    var pres=(typeof sv==='number')?sv:(typeof sv==='string'&&sv!==''&&isFinite(Number(sv))?Number(sv):NaN);
+    if(!isFinite(pres)) pres=0;
+    pres=Math.max(0,Math.min(999,Math.floor(pres)));
+    if(S.pres!==pres){ S.pres=pres; n++; }
+    if(S.exp2!=null&&(typeof S.exp2!=='object'||Array.isArray(S.exp2))){ S.exp2=null; n++; }
+    if(S.boxLv!=null&&(typeof S.boxLv!=='object'||Array.isArray(S.boxLv))){ S.boxLv=null; n++; }
+    if(S.exp2&&typeof S.exp2==='object'){ for(var k in S.exp2){ var v=S.exp2[k]; S.exp2[k]=(v===1)?1:0; } }
+    if(S.boxLv&&typeof S.boxLv==='object'){ for(var k2 in S.boxLv){ var v2=S.boxLv[k2]; var w=(typeof v2==='number'&&isFinite(v2))?v2:0; S.boxLv[k2]=Math.max(0,Math.min(3,Math.floor(w))); } }
+    if(S.auto&&typeof S.auto==='object'){ var ak=S.auto.kiosk; if(ak!=null){ var ak2=(typeof ak==='number'&&isFinite(ak))?ak:0; S.auto.kiosk=Math.max(0,Math.min(5,Math.floor(ak2))); } }
+    if(S.stats&&typeof S.stats==='object'){ var sk=S.stats.kiosk; if(sk!=null){ var sk2=(typeof sk==='number'&&isFinite(sk))?sk:0; S.stats.kiosk=Math.max(0,Math.min(1e9,Math.floor(sk2))); } }
+  }catch(e){}
+  return n;
+}
+try{ v266ClampSave(); }catch(e){}
+(function(){
+  var _c=v265ClampSave;
+  v265ClampSave=function(){ var r=_c.apply(this,arguments); try{ r=(r||0)+v266ClampSave(); }catch(e){} return r; };
+})();
+
+/* =========================================================================
+   7) 테스트·QA 훅
+   ========================================================================= */
+try{
+  setTimeout(function(){
+  window.__H=window.__H||{};
+  window.__H.v266={
+    ver:'v2.66',
+    state:function(){
+      var perm=v266Perm();
+      return {pp:v266PP(),pres:Math.max(0,S.pres|0),perm:perm,ready:v266PresReady(),prog:v266PresProg(),
+        gain:v266PpGain(),kiosk:{lv:kioskLv(),iv:kioskIv(kioskLv()||1),today:V266.kiosk.n,total:(S.stats.kiosk||0),built:V266.kiosk.built,ticks:V266.kiosk.ticks,elig:V266.kiosk.elig,tot:V266.kiosk.tot,t:V266.kiosk.t,err:V266.kiosk.err2},
+        exp2:exp2Lv(),boxLv:boxLv(),boxCap:boxCap(),tables:expTables().length,yt:V266.juice.yt,
+        juice:{pop:V266.juice.pop,skip:V266.juice.skip,gold:V266.juice.gold}};
+    },
+    kioskOK:kioskOK, kioskLv:kioskLv, kioskIv:kioskIv, kioskBuy:function(){ autoBuy('kiosk'); },
+    kioskServe:function(i){ try{ var c=custs[i!=null?i:custs.findIndex(kioskOK)]; if(!c) return 'none'; return kioskServe(c); }catch(e){ return 'err:'+e.message; } },
+    kioskFind:function(){ try{ return custs.filter(kioskOK).map(function(c){ return {type:c.type,want:c.want,pat:Math.round(c.pat)}; }); }catch(e){ return []; } },
+    kioskInject:function(){ try{ spawnCust(); var c=custs[custs.length-1]; if(!c) return 'nospawn';
+      c.st='wait'; c.claim=null; c.type='buy'; c.want=null; c.bq={q:'QA',t:'p',why:'QA'}; c.spType=null; c.pat=c.patMax;
+      var money0=money; var r=kioskServe(c); return {ok:!!r,pay:Math.round(money-money0),today:V266.kiosk.n}; }catch(e){ return 'err:'+e.message; } },
+    exp2Buy:exp2Buy, boxUp:boxUp, boxUpCost:boxUpCost, exp2Cost:exp2Cost, expTables:function(){ return expTables().map(function(p){ return p.slice(); }); },
+    ytNext:function(){ V266.ytNext=1; },
+    presOpen:v266PresModal, prestigedo:v266DoPrestige, resetInfo:v266ResetInfo,
+    pop:function(t,c){ v266Pop(t,new THREE.Vector3(player.pos.x,2.6,player.pos.z),c||'say'); },
+    setMoney:function(v){ money=Math.round(v); }
+  };
+  },0);
+}catch(e){}
+/* =========================================================================
+   v2.66 UI — 상용 모바일 게임 톤 (프리미엄 리테일/호스피탈리티)
+   · 특정 매장(전자상가)에 종속되지 않는 중립 UI 토큰: 이후 호텔 테마
+     (체크인/객실/컨시어지/하우스키핑)로 그대로 옮겨도 어색하지 않게 만든다.
+   · 구조·id·data-*는 기존 로직이 그대로 찾는 값만 유지하고, 겉모습만 새로 그린다.
+   ========================================================================= */
+(function(){
+var st=document.createElement('style');
+st.id='v266ui';
+st.textContent=[
+/* ---- 토큰 ---- */
+':root{',
+'--vInk:#151b28;--vInk2:#243049;--vPaper:#fffdf8;--vPaper2:#f8f2e6;',
+'--vGold:#c9a24a;--vGold2:#e9cf8f;--vTeal:#1e6f6a;--vTeal2:#37a99b;',
+'--vLine:rgba(21,27,40,.10);--vLine2:rgba(21,27,40,.06);',
+'--vSub:#6f6656;--vSub2:#9c9283;--vR:16px;--vR2:12px;--vR3:10px;',
+'--vSh:0 8px 22px rgba(21,27,40,.09),0 1px 0 rgba(255,255,255,.85) inset;',
+'--vShS:0 2px 6px rgba(21,27,40,.07)}',
+
+/* ---- 모달 기본 톤 ---- */
+'#modal .box{width:min(368px,calc(100vw - 16px));padding:16px 14px 14px;border-radius:24px;',
+'background:linear-gradient(180deg,#fffdf8 0%,#fbf5e8 100%);border:1px solid rgba(201,162,74,.22);',
+'box-shadow:0 24px 48px rgba(12,18,30,.34),0 1px 0 rgba(255,255,255,.9) inset}',
+'#modal h2{font-size:20px;letter-spacing:-.5px;color:var(--vInk);margin:0 0 6px}',
+'#modal p{color:#4e4738;font-size:13px}',
+'#modal small{color:var(--vSub)}',
+'#modal button{font-family:var(--b);font-weight:900;font-size:15px;letter-spacing:-.3px;border-radius:13px;',
+'box-shadow:0 3px 0 rgba(15,22,34,.22);min-height:46px;padding:0 14px}',
+'#modal button:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(15,22,34,.22)}',
+'#mbox{text-align:left}',
+'#mbox h2{text-align:left}',
+/* ---- 공용 카드/행 ---- */
+'.vCard{margin:9px 0;padding:11px 12px 12px;border-radius:var(--vR);background:var(--vPaper);border:1px solid var(--vLine);box-shadow:var(--vSh);text-align:left}',
+'.vCard.flat{box-shadow:var(--vShS)}',
+'.vCard.gold{background:linear-gradient(165deg,#fffaef,#f8e9c8);border-color:rgba(201,162,74,.45)}',
+'.vHead{display:flex;align-items:center;gap:9px;margin:0 0 9px}',
+'.vIco{flex:none;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;',
+'background:linear-gradient(150deg,#f1f5fb,#dde6f2);color:var(--vInk);box-shadow:0 1px 0 rgba(255,255,255,.9) inset}',
+'.vIco.g{background:linear-gradient(150deg,#f7e3b0,#e2c078)}',
+'.vIco.t{background:linear-gradient(150deg,#bfe9e2,#7fd0c4)}',
+'.vHtx{flex:1;min-width:0}',
+'.vHtx>b{display:block;font:900 14.5px var(--b);color:var(--vInk);letter-spacing:-.3px}',
+'.vHtx small{display:block;margin-top:1px;font:700 11px/1.35 var(--b);color:var(--vSub)}',
+'.vHtx small b{display:inline;font:900 11px var(--b);color:#6a4a10}',
+'.vBadge{flex:none;font:900 9.5px var(--b);letter-spacing:.2px;color:#fff;background:linear-gradient(#5c6a86,#39445c);border-radius:7px;padding:3px 7px}',
+'.vBadge.gold{color:#4a3608;background:linear-gradient(#f2d99f,#ddb45f)}',
+'.vBadge.teal{background:linear-gradient(#37a99b,#1e6f6a)}',
+'.vRow{display:grid;grid-template-columns:32px 1fr auto;gap:9px;align-items:center;padding:9px 0;border-top:1px solid var(--vLine2)}',
+'.vRow:first-of-type{border-top:0}',
+'.vRow .vIco{width:32px;height:32px;font-size:15px;border-radius:10px}',
+'.vTx{min-width:0}',
+'.vTx b{display:flex;align-items:center;gap:5px;font:900 13px var(--b);color:var(--vInk);letter-spacing:-.2px}',
+'.vTx b em{font-style:normal;font:900 9.5px var(--b);color:#5d5647;background:#efe9db;border-radius:6px;padding:1px 5px}',
+'.vTx small{display:block;margin-top:2px;font:700 10.5px/1.4 var(--b);color:var(--vSub);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}',
+'.vBar{height:5px;border-radius:3px;background:#ece6d8;margin-top:6px;overflow:hidden}',
+'.vBar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--vGold2),var(--vGold))}',
+'.vBar.t i{background:linear-gradient(90deg,#7fd0c4,var(--vTeal))}',
+'#modal .vBuy{width:auto;min-width:78px;margin:0;padding:0 11px;min-height:42px;font:900 12.5px var(--b);',
+'color:#2b2109;background:linear-gradient(#f0d79a,#d8b465);box-shadow:0 3px 0 #a2802f;border-radius:12px;white-space:nowrap}',
+'#modal .vBuy.on{color:#fff;background:linear-gradient(#37a99b,#1e6f6a);box-shadow:0 3px 0 #124a46}',
+'#modal .vBuy.off{color:#8b8474;background:#ece6d8;box-shadow:0 3px 0 #d5cdba}',
+'#modal .vBuy.max{color:#8b8474;background:#efece3;box-shadow:none;min-width:64px}',
+'.vChipRow{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}',
+'.vChip{font:800 10px var(--b);color:#4f4838;background:#f2ecdd;border-radius:7px;padding:3px 7px}',
+'.vChip.g{color:#4a3608;background:#f7e6bb}',
+'.vChip.t{color:#0f4a45;background:#d7f0eb}',
+
+/* ---- 상점 ---- */
+'#modal .shl{display:flex;flex-direction:column;gap:8px;max-height:none;padding:2px 0 8px;overflow:visible}',
+'#modal .shi{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;margin:0;padding:10px 11px;',
+'background:var(--vPaper);border:1px solid var(--vLine);border-radius:var(--vR);box-shadow:var(--vShS);position:relative;text-align:left}',
+'#modal .shi.hot{background:linear-gradient(160deg,#fffaf0,#f8eccf);border-color:rgba(201,162,74,.45)}',
+'#modal .shi em{position:absolute;top:-8px;left:12px;font-style:normal;font:900 9.5px var(--b);letter-spacing:.3px;color:#fff;',
+'background:linear-gradient(#5c6a86,#39445c);padding:2px 8px;border-radius:8px;box-shadow:0 2px 5px rgba(21,27,40,.2)}',
+'#modal .shi.hot em{color:#402e06;background:linear-gradient(#f4dda6,#ddb45f)}',
+'#modal .shi i.sp{flex:none;border-radius:12px;background-color:#f3eee2}',
+'#modal .shi b{display:block;font:900 13.5px var(--b);color:var(--vInk);letter-spacing:-.2px;line-height:1.25}',
+'#modal .shi small{display:block;margin-top:2px;font:700 10.5px/1.4 var(--b);color:var(--vSub)}',
+'#modal .shi s{font:700 10px var(--b);color:var(--vSub2);margin-right:4px}',
+'#modal .shi button{width:auto;min-width:86px;margin:0;padding:0 11px;min-height:44px;font:900 13px var(--b);color:#2b2109;',
+'background:linear-gradient(#f0d79a,#d8b465);box-shadow:0 3px 0 #a2802f;border-radius:12px;white-space:nowrap}',
+'#modal .shi.ad{background:linear-gradient(160deg,#f3f7ff,#e6eefb);border-color:rgba(60,110,200,.25)}',
+'#modal .shi.ad button{color:#fff;background:linear-gradient(#5c86d8,#3357a8);box-shadow:0 3px 0 #20386e}',
+'#modal .shi button:disabled{color:#8b8474;background:#ece6d8;box-shadow:none}',
+'#modal .shi .vOff{display:inline-block;font:900 9.5px var(--b);color:#fff;background:linear-gradient(#e5736a,#c23b2e);border-radius:6px;padding:1px 5px;vertical-align:1px}',
+'.vOwned{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:6px 0 2px;font:800 10px var(--b);color:var(--vSub2)}',
+'.vOwned span{font:900 10px var(--b);color:#1d5a2a;background:#e8f6ea;border:1px solid #b9e0c2;border-radius:7px;padding:2px 6px}',
+'.vHero{margin:2px 0 4px;padding:16px 14px 14px;border-radius:20px;background:linear-gradient(150deg,#233049,#131a28 62%,#1d2436);',
+'color:#fff;box-shadow:0 14px 30px rgba(15,22,34,.3);position:relative;overflow:hidden;text-align:left}',
+'.vHero:after{content:"";position:absolute;right:-40px;top:-50px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(233,207,143,.4),rgba(233,207,143,0) 70%)}',
+'.vHero .vKick{font:900 9.5px var(--b);letter-spacing:1.4px;color:#e9cf8f}',
+'.vHero h3{margin:5px 0 2px;font:900 19px var(--b);letter-spacing:-.4px;color:#fff}',
+'#modal .vHero p{margin:0 0 9px;font:700 11.5px/1.45 var(--b);color:#c9d2e4}',
+'.vHero .vPerks{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px}',
+'.vHero .vPerks span{font:800 10px var(--b);color:#f6e7c2;background:rgba(255,255,255,.12);border:1px solid rgba(233,207,143,.35);border-radius:8px;padding:3px 7px}',
+'#modal .vHero button{width:100%;margin:0;min-height:48px;font:900 15px var(--b);color:#2b2109;',
+'background:linear-gradient(#f4dda6,#ddb45f);box-shadow:0 4px 0 #a2802f;border-radius:14px}',
+'.vHero .vHeroRow{display:flex;align-items:baseline;gap:8px}',
+'.vHero .vHeroRow s{font:700 11px var(--b);color:#93a0b8}',
+'.vHero .vHeroRow b{font:900 17px var(--b);color:#fff}',
+'.vShopSec{display:flex;align-items:baseline;gap:7px;margin:12px 1px 2px}',
+'.vShopSec b{font:900 12px var(--b);color:#6a5f4c;letter-spacing:-.1px}',
+'.vShopSec small{font:700 10.5px var(--b);color:var(--vSub2)}',
+'.vFootNote{margin:8px 0 0;font:700 10px/1.4 var(--b);color:var(--vSub2);text-align:left}',
+
+/* ---- 출근 허브 ---- */
+'#modal .hubH{display:none}',
+'.vHubTop{display:flex;align-items:flex-start;gap:10px;margin:0 0 10px;text-align:left}',
+'.vHubTop .vKick{display:block;font:900 9.5px var(--b);letter-spacing:1.5px;color:#a08a5c}',
+'.vHubTop h2{margin:3px 0 2px!important;font-size:21px!important}',
+'.vLoc{font:800 11px var(--b);color:var(--vSub);letter-spacing:-.1px}',
+'.vDay{flex:none;width:52px;padding:6px 0 7px;border-radius:14px;text-align:center;',
+'background:linear-gradient(160deg,#233049,#131a28);box-shadow:0 4px 12px rgba(15,22,34,.25)}',
+'.vDay b{display:block;font:900 19px/1 var(--b);color:#f2ddb0}',
+'.vDay small{display:block;margin-top:2px;font:900 8.5px var(--b);letter-spacing:1.2px;color:#8c9ab4}',
+'.vStats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:0 0 10px}',
+'.vStat{background:var(--vPaper);border:1px solid var(--vLine);border-radius:var(--vR2);padding:7px 6px 8px;text-align:center;box-shadow:var(--vShS)}',
+'.vStat small{display:block;font:800 9.5px var(--b);color:var(--vSub2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+'.vStat b{display:block;margin-top:2px;font:900 15px var(--b);color:var(--vInk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}',
+'.vStat b i{font-style:normal;font-size:10px;color:var(--vSub);margin-left:1px}',
+'.vNote{margin:0 0 10px;padding:8px 10px;border-radius:var(--vR2);background:#f7f1e2;border:1px solid var(--vLine);',
+'font:800 10.5px/1.45 var(--b);color:#6a5a34;text-align:left}',
+'.vSec{display:flex;align-items:baseline;gap:7px;margin:12px 1px 6px;text-align:left}',
+'.vSec b{flex:none;font:900 12px var(--b);color:#6a5f4c;letter-spacing:.1px}',
+'.vSec small{min-width:0;font:700 10.5px var(--b);color:var(--vSub2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+'.vSec em{flex:none;margin-left:auto;font-style:normal;font:900 10px var(--b);color:#8a7a54}',
+'.vGrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}',
+'#modal .vGrid3 .hubPrep{flex-direction:column;gap:5px;padding:9px 4px 8px;min-height:70px;justify-content:center;text-align:center;border-radius:var(--vR2)}',
+'#modal .vGrid3 .hubPrep .ic{width:28px;height:28px;border-radius:9px;font-size:15px}',
+'#modal .vGrid3 .hubPrep b{flex:none;width:100%;text-align:center;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+'#modal .vGrid3 .hubPrep em{display:none}',
+'#modal .hubBr{min-height:48px;padding:6px 9px;border-radius:var(--vR2);box-shadow:var(--vShS);border:1px solid var(--vLine)}',
+'#modal .hubBr.cur{background:linear-gradient(160deg,#2f9e8f,#17564f);color:#fff;box-shadow:0 3px 0 #103c37;border-color:transparent}',
+'#modal .hubBr.go{background:linear-gradient(160deg,#3b4a68,#232d42);color:#fff;box-shadow:0 3px 0 #161d2c;border-color:transparent}',
+'#modal .hubBr.lock{background:#f4efe4;border-color:rgba(21,27,40,.06)}',
+'#modal details.rcp{background:var(--vPaper);border:1px solid var(--vLine);border-radius:var(--vR2);padding:8px 11px;margin:8px 0 0;box-shadow:var(--vShS);text-align:left}',
+'#modal details.rcp>summary{font:900 12px var(--b);color:#5a6a86;cursor:pointer;min-height:28px;display:flex;align-items:center;list-style:none}',
+'#modal details.rcp>summary::-webkit-details-marker{display:none}',
+'#modal details.rcp>div{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(21,27,40,.08);font:800 11px/1.35 var(--b);color:#5c5344}',
+'#modal details.rcp>div:last-child{border-bottom:0}',
+'#modal details.rcp>div span{flex:none;color:#a08a5c}',
+'#modal details.rcp>div b{font:900 11px var(--b);color:var(--vInk);text-align:right}',
+'#modal .rescta button{background:linear-gradient(#2f9e8f,#1a5f5a)!important;box-shadow:0 4px 0 #12433f!important;color:#fff}',
+'#modal .rescta button.gray{background:linear-gradient(#cfd6e2,#a8b2c4)!important;box-shadow:0 4px 0 #7a8494!important;color:#2a3244}',
+'#modal .hubBr .tx b{font-size:12.5px}',
+'#modal .hubBr .tx small{font-size:10px}',
+'#modal .hubMg{min-height:56px;padding:8px 10px;border-radius:var(--vR2);box-shadow:var(--vShS)}',
+'#modal .hubYest{margin-top:10px;background:#f6f1e4;border:1px solid var(--vLine2);font-size:10.5px}',
+'#modal .hubFoot{margin:12px -2px -2px;padding:8px 2px 0;background:linear-gradient(180deg,rgba(251,245,232,0),#fbf5e8 38%)}',
+'#modal .hubCta{min-height:56px!important;font:900 18px var(--b)!important;letter-spacing:-.3px;border-radius:16px!important;',
+'background:linear-gradient(#2f9e8f,#1a5f5a)!important;box-shadow:0 5px 0 #12433f!important}',
+
+/* ---- HUD ---- */
+'#hud .pill{height:40px;border-radius:20px;background:linear-gradient(180deg,rgba(31,41,62,.94),rgba(15,21,34,.94));',
+'box-shadow:0 3px 10px rgba(10,16,28,.35),0 1px 0 rgba(255,255,255,.14) inset;border:1px solid rgba(255,255,255,.10)}',
+'#hud .star{filter:drop-shadow(0 3px 6px rgba(10,16,28,.3))}',
+'#dayBar{background:rgba(17,24,38,.82);border:1px solid rgba(255,255,255,.10);border-radius:16px;',
+'-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 6px 16px rgba(10,16,28,.28)}',
+'#dayBar i{background:linear-gradient(90deg,#e9cf8f,#37a99b)!important}',
+'#boxChip{border:1px solid rgba(201,162,74,.5)!important;border-radius:14px!important;box-shadow:0 3px 10px rgba(15,22,34,.22)!important;',
+'background:linear-gradient(#fffaf0,#f5e6c2)!important;color:#4a3a12!important}',
+'#shopBtn{background:linear-gradient(160deg,#2f9e8f,#1a5f5a)!important;box-shadow:0 4px 0 #12433f,0 8px 18px rgba(15,22,34,.25)!important}',
+'#upBtn{background:linear-gradient(160deg,#4a5a7c,#28324a)!important;box-shadow:0 4px 0 #161d2c,0 8px 18px rgba(15,22,34,.22)!important}',
+
+/* ---- 결과창 · 영수증 ---- */
+'#modal .dstat{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 2px;margin:0;',
+'border-bottom:1px dashed rgba(21,27,40,.12);font-size:12.5px}',
+'#modal .dstat:last-of-type{border-bottom:0}',
+'#modal .dstat span{font:800 11.5px var(--b);color:var(--vSub)}',
+'#modal .dstat b{font:900 14px var(--b);color:var(--vInk);font-variant-numeric:tabular-nums}',
+'#modal .evc{border-radius:var(--vR2);border:1px solid var(--vLine);background:#f8f2e4;text-align:left;padding:9px 11px}',
+'#modal .evc b{font:900 12px var(--b);color:#5d4a1c}',
+'#modal .evc small{display:block;margin-top:2px;font:700 10.5px/1.4 var(--b);color:var(--vSub)}',
+'.rescta{background:linear-gradient(180deg,rgba(251,245,232,0),#fbf5e8 30%)}',
+/* ---- 영업 준비 화면 ---- */
+'.vBtnRow3{display:grid;grid-template-columns:1fr 1fr 58px;gap:6px;margin:10px 0 6px}',
+'#modal .vBtnRow3 button{margin:0;min-height:48px;font:900 13px var(--b);border-radius:13px;color:#fff;background:linear-gradient(160deg,#4a5a7c,#28324a);box-shadow:0 3px 0 #161d2c}',
+'#modal .vBtnRow3 button#dMap{background:linear-gradient(160deg,#37a99b,#1e6f6a);box-shadow:0 3px 0 #124a46;font-size:16px}',
+'#modal #dayGo{margin:0!important;min-height:56px!important;width:100%;font:900 18px var(--b)!important;border-radius:16px!important;background:linear-gradient(#2f9e8f,#1a5f5a)!important;box-shadow:0 5px 0 #12433f!important;color:#fff}',
+'#modal #dDaily{margin:0!important;min-height:46px;font:900 13px var(--b);color:#3a2a06;background:linear-gradient(#f4dda6,#ddb45f)!important;box-shadow:0 3px 0 #a2802f!important;border-radius:13px}',
+'#modal details.lpdet{background:var(--vPaper);border:1px solid var(--vLine);border-radius:var(--vR2);padding:8px 11px;margin:8px 0 0;text-align:left}',
+'#modal details.lpdet>summary{font:900 12px var(--b);color:#5a6a86;cursor:pointer;min-height:30px;display:flex;align-items:center}',
+'#modal details.lpdet .dstat{border-bottom:1px dashed rgba(21,27,40,.10)}',
+'#invHint{background:#fffdf8!important;border:1px dashed rgba(201,162,74,.55)!important;color:#6a5a34!important;box-shadow:none!important;border-radius:12px!important;font-weight:900!important}',
+'#bakRow{background:#f3efe4!important;color:#6a6152!important;border-radius:12px!important;font-weight:800!important}',
+'#modal>#mX{background:rgba(21,27,40,.08)!important;color:#4a4436!important;box-shadow:none!important;border:1px solid rgba(21,27,40,.08)!important;font-size:19px!important}',
+/* ---- 작은 화면 ---- */
+'@media (max-width:359px){#modal .box{width:calc(100vw - 10px);padding:14px 11px 12px}.vStats{grid-template-columns:1fr 1fr}.vStat:nth-child(3){display:none}}'
+].join('');
+
+try{ document.head.appendChild(st); }catch(e){}
+})();
+/* =========================================================================
+   v2.66 UI (JS) — 상점 · 출근 허브 · 투자 카드 · 프레스티지 카드 재구성
+   기존 로직이 찾는 id/data-*는 그대로 두고 겉모습만 새로 그린다.
+   ========================================================================= */
+function v266Usd(n){ n=Math.round(n||0); return '$'+n.toLocaleString('en-US'); }
+
+/* ---------------- 1) 상점: 대표 상품 + 카테고리 행 ---------------- */
+function v266ShopTag(x){
+  if(x.tag) return x.tag;
+  return '';
+}
+function v266ShopPaint(){
+  try{
+    var mb=$('mbox'); if(!mb) return;
+    var list=mb.querySelector('.shl'); if(!list) return;
+    var ad=list.querySelector('.shi.ad');
+    var items=SHOP.filter(function(x){ try{ return !!x.show(); }catch(e){ return false; } });
+    if(!items.length) return;
+    var hero=items.filter(function(x){ return x.id==='vip'; })[0]||items.filter(function(x){ return x.old; })[0]||items.filter(function(x){ return x.hot; })[0]||null;
+    var rest=items.filter(function(x){ return x!==hero; });
+    function row(x){
+      var btn='<button data-buy="'+x.id+'">'+(x.old?'<s>'+x.old+'</s>':'')+x.p+'</button>';
+      return '<div class="shi'+(x.hot?' hot':'')+'">'+(x.tag?'<em>'+hesc(x.tag)+'</em>':'')+spI(x.sp,42)+
+        '<div><b>'+hesc(x.n)+'</b><small>'+hesc(x.d)+'</small></div>'+btn+'</div>';
+    }
+    function sec(title,sub){ return '<div class="vShopSec"><b>'+title+'</b><small>'+sub+'</small></div>'; }
+    var h='';
+    if(hero){
+      var perks=String(hero.d||'').split('·').map(function(s){ return s.trim(); }).filter(Boolean).slice(0,4);
+      h+='<div class="vHero"><div class="vKick">'+(hero.id==='vip'?'BEST VALUE':'LIMITED OFFER')+'</div>'+
+        '<h3>'+hesc(hero.n)+'</h3><p>'+hesc(perks.join('  ·  '))+'</p>'+
+        '<div class="vPerks">'+perks.map(function(p){ return '<span>'+hesc(p)+'</span>'; }).join('')+'</div>'+
+        '<div class="vHeroRow">'+(hero.old?'<s>'+hero.old+'</s>':'')+'<b>'+hero.p+'</b><small style="margin-left:auto;color:#93a0b8;font:700 10px var(--b)">테스트 결제</small></div>'+
+        '<button data-buy="'+hero.id+'" style="margin-top:11px">'+(hero.id==='vip'?'VIP 패스 구매하기':'구매하기')+'</button></div>';
+    }
+    var boost=rest.filter(function(x){ return x.id==='boost'; });
+    var cash=rest.filter(function(x){ return /^cash/.test(x.id); });
+    var perm=rest.filter(function(x){ return x.id!=='boost'&&!/^cash/.test(x.id); });
+    if(boost.length) h+=sec('이번 영업','바로 적용되는 부스터')+boost.map(row).join('');
+    if(cash.length) h+=sec('자금 충전','즉시 지급')+cash.map(row).join('');
+    if(perm.length) h+=sec('패스 · 영구 혜택','한 번 사면 계속')+perm.map(row).join('');
+    if(ad){ ad.querySelector('button'); h+='<div class="vShopSec"><b>무료</b><small>하루 3번까지</small></div>'; }
+    list.innerHTML=h;
+    if(ad){ try{ ad.className='shi ad'; list.appendChild(ad); }catch(e){} }
+    var note=mb.querySelector('.vFootNote');
+    if(!note){ var n=document.createElement('div'); n.className='vFootNote'; n.textContent='테스트 결제입니다 · 실제 돈이 나가지 않아요'; if(ad&&ad.parentNode) ad.parentNode.appendChild(n); }
+  }catch(e){ try{ console.warn('v266ShopPaint',e); }catch(_){} }
+}
+(function(){ var _o=openShop; openShop=function(){ var r=_o.apply(this,arguments); try{ v266ShopPaint(); }catch(e){} return r; }; })();
+
+/* ---------------- 2) 투자 카드: 자동화 / 체험존 ---------------- */
+function v266AutoCard(){
+  try{
+    if(S.day<1) return '';
+    var owned=AUTO_DEF.filter(function(d){ return autoLv(d.k)>=5; }).length;
+    var rows=AUTO_DEF.map(function(d){
+      var lv=autoLv(d.k), mx=lv>=5, c=autoCost(d), ok=money>=c;
+      var p=Math.max(0,Math.min(100,Math.round(money/Math.max(1,c)*100)));
+      var sub=d.d+(lv?' · '+d.iv[Math.max(0,Math.min(d.iv.length-1,lv-1))]+'초마다':'');
+      var btn=mx?'<button class="vBuy max" disabled>MAX</button>'
+        :'<button class="vBuy'+(ok?' on':' off')+'" data-auto="'+d.k+'">'+v266Usd(c)+'</button>';
+      return '<div class="vRow"><span class="vIco">'+d.ic+'</span><div class="vTx"><b>'+hesc(d.n)+' <em>Lv.'+lv+'</em></b><small>'+hesc(sub)+'</small>'
+        +(mx?'':'<div class="vBar"><i style="width:'+p+'%"></i></div>')+'</div>'+btn+'</div>';
+    }).join('');
+    var note=kioskLv()>0?'<div class="vFootNote">키오스크 · 오늘 '+V266.kiosk.n+'건 자동 처리 · 누적 '+((S.stats.kiosk||0))+'건</div>':'';
+    return '<div class="vCard" id="autoCard"><div class="vHead"><span class="vIco">⚙️</span><div class="vHtx"><b>자동화</b><small>손으로 하던 일을 하나씩 맡겨요</small></div><span class="vBadge">'+owned+'/'+AUTO_DEF.length+'</span></div>'+rows+note+'</div>';
+  }catch(e){ return ''; }
+}
+function v266ExpCard(){
+  try{
+    if(S.day<2) return '';
+    var head=function(lv,extra){
+      return '<div class="vHead"><span class="vIco t">▦</span><div class="vHtx"><b>체험존'+(lv?' Lv.'+lv:'')+'</b><small>방문당 '+v266Usd(expPay())+' · 정산함 '+v266Usd(boxGet())+' / '+v266Usd(boxCap())+'</small></div><span class="vBadge teal">'+extra+'</span></div>';
+    };
+    if(!expOwned()){
+      var c0=expCost(), ok0=money>=c0;
+      return '<div class="vCard" id="expCard">'+head('','미확장')+
+        '<div class="vTx" style="margin:2px 0 9px"><b>매장 확장 공사</b><small>오른쪽 벽을 터서 체험존을 만듭니다 · 손님 +20%</small></div>'+
+        '<button id="expGo" class="vBuy '+(ok0?'on':'off')+'" style="width:100%;min-height:46px">'+(ok0?v266Usd(c0)+'로 확장하기':v266Usd(c0)+' · '+v266Usd(Math.max(0,c0-money))+' 모자라요')+'</button></div>';
+    }
+    var lv=expLv(), c=expUpCost(), mx=lv>=10, ok=money>=c;
+    var t2=exp2Lv(), c2=exp2Cost(), ok2=money>=c2;
+    var bl=boxLv(), cb=boxUpCost(), okb=money>=cb;
+    var grow=Math.max(0,Math.min(100,Math.round(money/Math.max(1,c)*100)));
+    var h='<div class="vCard" id="expCard">'+head(lv,t2?'2단계 ★':'1단계');
+    h+='<div class="vChipRow"><span class="vChip t">테이블 '+expTables().length+'석</span>'
+      +'<span class="vChip t">유튜버 '+Math.round(expYTChance()*100)+'%</span>'
+      +'<span class="vChip t">정산함 ×'+(1+0.5*bl).toFixed(1)+'</span></div>';
+    if(boxGet()>0) h+='<button id="boxGo2" class="vBuy on" style="width:100%;margin:9px 0 0;min-height:44px">정산함 '+v266Usd(boxGet())+' 수금</button>';
+    h+='<div class="vRow" style="margin-top:7px"><span class="vIco t">↑</span><div class="vTx"><b>레벨 업 <em>'+lv+'/10</em></b><small>방문당 수익과 부재중 수익이 늘어요</small>'
+      +(mx?'':'<div class="vBar t"><i style="width:'+grow+'%"></i></div>')+'</div>'
+      +(mx?'<button id="expGo" class="vBuy max" disabled>MAX</button>':'<button id="expGo" class="vBuy'+(ok?' on':' off')+'">'+v266Usd(c)+'</button>')+'</div>';
+    h+='<div class="vRow"><span class="vIco t">▤</span><div class="vTx"><b>2단계 확장 <em>'+(t2?'완료':'0/1')+'</em></b><small>테이블 +2석 · 유튜버 체험 손님이 가끔 와요</small></div>'
+      +(t2?'<button id="exp2Go" class="vBuy max" disabled>완료</button>':'<button id="exp2Go" class="vBuy'+(ok2?' on':' off')+'">'+v266Usd(c2)+'</button>')+'</div>';
+    h+='<div class="vRow"><span class="vIco t">▣</span><div class="vTx"><b>정산함 용량 <em>Lv.'+bl+'/3</em></b><small>가득 차서 버리는 돈을 줄여요</small></div>'
+      +(bl>=3?'<button id="boxUpGo" class="vBuy max" disabled>MAX</button>':'<button id="boxUpGo" class="vBuy'+(okb?' on':' off')+'">'+v266Usd(cb)+'</button>')+'</div>';
+    h+='</div>';
+    return h;
+  }catch(e){ return ''; }
+}
+autoCard=v266AutoCard; expCard=v266ExpCard;
+
+/* ---------------- 3) 프레스티지 카드 ---------------- */
+function v266PrestigeCard2(){
+  try{
+    if(!S||(S.day|0)<3) return '';
+    var perm=v266Perm(), pp=v266PP(), pres=Math.max(0,S.pres|0), pg=v266PpGain(), ready=v266PresReady(), pr=v266PresProg();
+    var h='<div class="vCard gold">';
+    h+='<div class="vHead"><span class="vIco g">✦</span><div class="vHtx"><b>매장 재창업</b><small>평판 포인트 <b style="color:#7a5a10">'+pp+' PP</b> · 재창업하면 +'+pg+' PP</small></div><span class="vBadge gold">'+(pres?'PRESTIGE '+pres:'PRESTIGE')+'</span></div>';
+    h+='<div class="vChipRow"><span class="vChip g">매출 +'+Math.round(perm.rev*100)+'%</span><span class="vChip g">시작 자금 '+v266Usd(30+perm.start)+'</span><span class="vChip g">방치 +'+Math.round(perm.off*100)+'%</span></div>';
+    if(ready){
+      h+='<button id="v266Pres" class="vBuy on" style="width:100%;margin-top:9px;min-height:44px">매장 재창업하기</button>';
+    } else {
+      h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;font:800 10.5px var(--b);color:#8a7440">'
+        +'<span>DAY '+pr.day+' / '+pr.dayNeed+'</span><span>누적 ★ '+pr.stars+' / '+pr.starNeed+'</span></div>'
+        +'<div class="vBar"><i style="width:'+Math.round(Math.min(1,(pr.day/pr.dayNeed*0.5+pr.stars/pr.starNeed*0.5))*100)+'%"></i></div>';
+    }
+    h+='</div>';
+    return h;
+  }catch(e){ return ''; }
+}
+v266PrestigeCardHTML=v266PrestigeCard2;
+
+/* ---------------- 4) 출근 허브 ---------------- */
+function v266HubHTML(){
+  var cfg=(function(){ try{ return dayCfg(S.day); }catch(e){ return {goal:0,min:4,dur:120}; } })();
+  var M=v262Slots(), day=(S.day|0)+1;
+  var goal=v262Num(cfg.goal,0), min=v262Num(cfg.min,4), dur=v262Num(cfg.dur,120);
+  var repUnl=S.unl.includes('repair');
+  var h='<div class="vHubTop"><div style="flex:1;min-width:0">'
+    +'<span class="vKick">TODAY\'S OPERATION</span>'
+    +'<h2>출근 허브</h2>'
+    +'<div class="vLoc">'+hesc(STN[STG])+' · '+hesc(STK[STG]||'')+'</div></div>'
+    +'<div class="vDay"><b>'+day+'</b><small>DAY</small></div></div>';
+  h+='<div class="vStats">'
+    +'<div class="vStat"><small>목표 매출</small><b>'+v266Usd(goal)+'</b></div>'
+    +'<div class="vStat"><small>최소 평점</small><b>'+min.toFixed(1)+'</b></div>'
+    +'<div class="vStat"><small>영업 시간</small><b>'+Math.floor(dur/60)+'<i>분</i>'+(Math.round(dur)%60?(' '+Math.round(dur)%60+'<i>초</i>'):'')+'</b></div>'
+    +'</div>';
+  if(typeof dayEv!=='undefined'&&dayEv&&EVT[dayEv]) h+='<div class="vNote">'+hesc(EVT[dayEv][0])+'<br>'+hesc(EVT[dayEv][1])+'</div>';
+  h+=v266PrestigeCardHTML();
+  h+='<div class="vSec"><b>지점</b><small>다른 지점에서 시작할 수 있어요</small><em>'+v262BranchOrder().filter(function(i){ return v262OpenStage(i); }).length+' / '+STN.length+'</em></div>';
+  h+='<div class="hubGrid">'+v262BranchOrder().map(v262BranchHTML).join('')+'</div>';
+  h+='<div class="vSec"><b>매니저</b><small>어제 평가 · 오늘 실적</small></div>';
+  h+=v262SlotHTML('shop','🏬',M.shop?M.shop.name:'매니저 미배치',
+    M.shop?('만족 '+Math.round(v262Num(M.shop.sat,70))+' · 리더십 '+Math.round(v262Num(M.shop.mscore,50))+'점'):'직원 관리에서 매니저를 채용하세요','관리','crew',!!M.shop);
+  h+=v262SlotHTML('rep','🔧',M.tech?M.tech.name:'수리 기사 미배치',
+    M.tech?('Lv.'+(M.tech.lv||1)+' · 수리 '+v262Num(dfix&&dfix.n,0)+'건 · 접수 '+RQ.filter(function(j){ return j.st==='wait'; }).length+'건')
+      :(repUnl?'수리실에서 수리 기사를 채용하세요':'수리 센터가 열리면 채용할 수 있어요'),
+    repUnl?'점검':'',repUnl?'rep':'',!!M.tech,repUnl);
+  h+=v262SlotHTML('biz','💼',M.biz?(M.biz.name+' 팀장'):'팀장 미배치',
+    M.biz?('Lv.'+(M.biz.lv||1)+' · 계약 '+v262Num(M.B&&M.B.won,0)+' · 결렬 '+v262Num(M.B&&M.B.lost,0))
+      :(M.B?'비즈니스 → 팀에서 팀장을 채용하세요':'비즈니스 팀은 서울 지점부터 열려요'),
+    M.B?'열기':'',M.B?'biz':'',!!M.biz,!!M.B);
+  h+='<div class="vSec"><b>영업 준비</b><small>시작 전에 점검</small></div>';
+  h+='<div class="vGrid3">'
+    +v262PrepHTML('up','⚙️','매장 세팅','linear-gradient(#f4dda6,#ddb45f)')
+    +v262PrepHTML('rep','🔧','수리실','linear-gradient(#7fd0c4,#1e6f6a)')
+    +v262PrepHTML('biz','💼','비즈니스','linear-gradient(#7c8db5,#39445c)')
+    +v262PrepHTML('crew','👥','매니저 배치','linear-gradient(#a9b6d8,#4a5a86)')
+    +v262PrepHTML('shop','🛍️','상점','linear-gradient(#4a5a7c,#233049)')
+    +v262PrepHTML('info','📋','오늘 정보','linear-gradient(#cfc4a8,#8a7a54)')
+    +'</div>';
+  if(V262.last&&V262.last.day===S.day-1){
+    var L=V262.last;
+    h+='<div class="hubYest">어제 평가 · 쇼핑 '+(L.shop?L.shop.g:'-')+' · 수리실 '+(L.rep?L.rep.g:'-')+' · 비즈니스 '+(L.biz?L.biz.g:'-')+'</div>';
+  }
+  h+='<div class="hubFoot"><button class="hubCta" id="v262Go">영업 시작</button></div>';
+  return h;
+}
+v262HubHTML=v266HubHTML;
+
+/* ---------------- 5) 영업 준비(오늘의 브리프) 화면 ---------------- */
+function v266BindPrep(){
+  try{ autoBind(); }catch(e){}
+  try{ expBind(); }catch(e){}
+  try{ v266TidyPrep(); setTimeout(v266TidyPrep,120); setTimeout(v266TidyPrep,420); }catch(e){}
+}
+/* 주간 목표·백업·투자 힌트는 h2 바로 뒤에 끼어들어 온다 — 머리글 안으로 들어가
+   레이아웃이 깨지므로, 지표 칩 아래 한 줄 구역으로 모아 준다. */
+function v266TidyPrep(){
+  try{
+    var mb=$('mbox'); if(!mb) return;
+    var stats=mb.querySelector('.vStats'); if(!stats) return;
+    var top=document.getElementById('v266Top');
+    if(!top){ top=document.createElement('div'); top.id='v266Top'; top.style.margin='0 0 8px'; stats.insertAdjacentElement('afterend', top); }
+    ['wgRow','bakRow','invHint'].forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      if(el.parentNode===top) return;
+      top.appendChild(el);
+    });
+  }catch(e){}
+}
+function v266PrepHTML(){
+  var cfg=(function(){ try{ return dayCfg(S.day); }catch(e){ return {goal:0,min:4,dur:120,title:'',tip:''}; } })();
+  var day=(S.day|0)+1, min=v262Num(cfg.min,4)+(dayEv==='review'?0.2:0), dur=v262Num(cfg.dur,120);
+  var h='<div class="vHubTop"><div style="flex:1;min-width:0">'
+    +'<span class="vKick">TODAY\'S BRIEF</span>'
+    +'<h2>'+hesc(TS.name)+'</h2>'
+    +'<div class="vLoc">'+hesc(STK[STG]||'')+' · STAGE '+(STG+1)+'</div></div>'
+    +'<div class="vDay"><b>'+day+'</b><small>DAY</small></div></div>';
+  h+='<div class="vStats">'
+    +'<div class="vStat"><small>목표 매출</small><b>'+v266Usd(cfg.goal)+'</b></div>'
+    +'<div class="vStat"><small>최소 평점</small><b>'+min.toFixed(1)+'</b></div>'
+    +'<div class="vStat"><small>영업 시간</small><b>'+Math.floor(dur/60)+'<i>분</i>'+(Math.round(dur)%60?(' '+Math.round(dur)%60+'<i>초</i>'):'')+'</b></div>'
+    +'</div>';
+  if(SEASON) h+='<div class="vNote">'+(SEASON==='bf'?'블랙프라이데이 주간 · 손님이 10% 더 와요':'크리스마스 시즌 · 매장에 눈이 내려요')+'</div>';
+  if(dayEv&&EVT[dayEv]) h+='<div class="vNote">'+hesc(EVT[dayEv][0])+'<br>'+hesc(EVT[dayEv][1])+'</div>';
+  try{ h+=lvPreHTML(); }catch(e){}
+  try{ h+=mktStratHTML(); }catch(e){}
+  h+='<div class="vSec"><b>투자</b><small>자동화 · 체험존</small></div>';
+  try{ h+=v266AutoCard(); }catch(e){}
+  try{ h+=v266ExpCard(); }catch(e){}
+  h+='<div class="vBtnRow3"><button id="dCrew">직원 관리</button><button id="dUpg">매장 업그레이드</button><button id="dMap">🗺</button></div>';
+  try{ h+=lvPreBtn(); }catch(e){}
+  h+='<details class="lpdet"><summary>영업 정보 · 임대료·직급·민원 규칙</summary>'
+    +'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'
+    +'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'
+    +(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-'+v266Usd(RENT[STG])+'</b></div>':'')
+    +'<div class="dstat"><span>민원 3건이면</span><b>영업 정지</b></div></details>';
+  h+='<div class="hubFoot"><button id="dayGo">영업 시작</button></div>';
+  return h;
+}
+(function(){
+  var _om=openModal;
+  openModal=function(h,opt){
+    try{
+      if(typeof h==='string'&&h.indexOf('id="dayGo"')>=0&&h.indexOf('TODAY'+String.fromCharCode(39)+'S BRIEF')<0) h=v266PrepHTML();
+    }catch(e){}
+    var r=_om.call(this,h,opt);
+    try{ if(typeof h==='string'&&h.indexOf('id="dayGo"')>=0) v266BindPrep(); }catch(e){}
+    return r;
+  };
+})();
+
+/* =========================================================================
+   v2.66 UI 확장 — 상점 유료 라인업 · 오늘의 미션 · 호텔 대비 라벨
+   ========================================================================= */
+/* 테마 라벨: 매장 → 호텔처럼 배경이 바뀌어도 같은 구조를 쓰도록 한 곳에 모아 둔다 */
+var V266L={shop:'상점',opening:'이번 영업',funds:'자금 충전',passes:'프리미엄 패스',owned:'보유 중',
+  missions:'오늘의 미션',chest:'오늘의 상자',branch:'지점',manager:'매니저',invest:'투자',prep:'영업 준비'};
+
+function v266WeekKey(){ try{ var d=new Date(), k=(d.getDay()+6)%7; var mon=new Date(d.getFullYear(),d.getMonth(),d.getDate()-k);
+  return mon.getFullYear()+'-'+(mon.getMonth()+1)+'-'+mon.getDate(); }catch(e){ return 'x'; } }
+function v266WeekLeft(){ try{ var now=new Date(), k=(now.getDay()+6)%7; var nx=new Date(now.getFullYear(),now.getMonth(),now.getDate()-k+7);
+  var ms=Math.max(0,nx-now), dd=Math.floor(ms/864e5), hh=Math.floor((ms%864e5)/36e5);
+  return (dd>0?dd+'일 ':'')+hh+'시간 남음'; }catch(e){ return ''; } }
+
+/* 주간 특가 번들 — 매주 월요일에 다시 살 수 있다 */
+try{
+  if(!SHOP.some(function(x){ return x.id==='weekbundle'; })){
+    SHOP.push({id:'weekbundle',sp:3,ic:'🎁',n:'주간 특가 번들',
+      d:'$3,000 + 매출 2배 부스터 + 전 품목 재고 +10',p:'₩4,900',old:'₩9,800',tag:'이번 주 한정',hot:1,
+      show:function(){ return S.wkBuy!==v266WeekKey(); },
+      buy:function(){ S.wkBuy=v266WeekKey(); money+=3000; S.boostD=S.day;
+        Object.keys(S.inv||{}).forEach(function(t){ S.inv[t]=(S.inv[t]||0)+10; });
+        return '$3,000 + 매출 2배 + 재고 +10'; }});
+  }
+}catch(e){}
+
+/* ---------------- 상점: 대표 상품 + 카테고리 + 할인율 + 보유 상태 ---------------- */
+function v266ShopPaint(){
+  try{
+    var mb=$('mbox'); if(!mb) return;
+    var list=mb.querySelector('.shl'); if(!list) return;
+    var ad=list.querySelector('.shi.ad');
+    var items=SHOP.filter(function(x){ try{ return !!x.show(); }catch(e){ return false; } });
+    if(!items.length) return;
+    var hero=items.filter(function(x){ return x.id==='weekbundle'; })[0]
+          || items.filter(function(x){ return x.id==='vip'; })[0]
+          || items.filter(function(x){ return x.old; })[0]
+          || items.filter(function(x){ return x.hot; })[0] || null;
+    var rest=items.filter(function(x){ return x!==hero; });
+    function disc(x){ try{ if(!x.old) return 0; var a=+(String(x.old).replace(/[^0-9]/g,'')), b=+(String(x.p).replace(/[^0-9]/g,'')); if(!a||!b||b>=a) return 0; return Math.round((1-b/a)*100); }catch(e){ return 0; } }
+    function row(x){
+      var d=disc(x);
+      var btn='<button data-buy="'+x.id+'">'+(x.old?'<s>'+x.old+'</s>':'')+x.p+'</button>';
+      return '<div class="shi'+(x.hot?' hot':'')+'">'+(x.tag?'<em>'+hesc(x.tag)+'</em>':'')+spI(x.sp,42)+
+        '<div><b>'+hesc(x.n)+(d?' <span class="vOff">-'+d+'%</span>':'')+'</b><small>'+hesc(x.d)+'</small></div>'+btn+'</div>';
+    }
+    function sec(t,s){ return '<div class="vShopSec"><b>'+t+'</b><small>'+s+'</small></div>'; }
+    var owned=[];
+    try{ if(S.vipPass) owned.push('VIP 패스'); if(S.noAds) owned.push('광고 제거'); if(S.autoBox) owned.push('자동 수금'); if(S.slotPaid) owned.push('직원 자리 +1'); if(S.autoPack) owned.push('자동화 패키지'); }catch(e){}
+    var h='';
+    if(owned.length) h+='<div class="vOwned">'+V266L.owned+' · '+owned.map(function(v){ return '<span>'+hesc(v)+'</span>'; }).join('')+'</div>';
+    if(hero){
+      var perks=String(hero.d||'').split(/[·+]/).map(function(s){ return s.trim(); }).filter(Boolean).slice(0,4);
+      var hd=disc(hero), isWeek=hero.id==='weekbundle';
+      h+='<div class="vHero"><div class="vKick">'+(isWeek?'WEEKLY DEAL · 이번 주 한정':'BEST VALUE')+(hd?' · '+hd+'% OFF':'')+'</div>'+
+        '<h3>'+hesc(hero.n)+'</h3>'+
+        (perks.length>1?'<div class="vPerks">'+perks.map(function(p){ return '<span>'+hesc(p)+'</span>'; }).join('')+'</div>'
+                       :'<p>'+hesc(hero.d||'')+'</p>')+
+        '<div class="vHeroRow">'+(hero.old?'<s>'+hero.old+'</s>':'')+'<b>'+hero.p+'</b>'+
+        '<small style="margin-left:auto;color:#93a0b8;font:700 10px var(--b)">'+(isWeek?v266WeekLeft():'테스트 결제')+'</small></div>'+
+        '<button data-buy="'+hero.id+'" style="margin-top:11px">'+(isWeek?'번들 받기':'구매하기')+'</button></div>';
+    }
+    var week=rest.filter(function(x){ return x.id==='weekbundle'; });
+    var boost=rest.filter(function(x){ return x.id==='boost'; });
+    var cash=rest.filter(function(x){ return /^cash/.test(x.id); });
+    var perm=rest.filter(function(x){ return x.id!=='boost'&&x.id!=='weekbundle'&&!/^cash/.test(x.id); });
+    if(week.length) h+=sec('이번 주 한정',v266WeekLeft())+week.map(row).join('');
+    if(boost.length) h+=sec(V266L.opening,'바로 적용되는 부스터')+boost.map(row).join('');
+    if(cash.length) h+=sec(V266L.funds,'즉시 지급')+cash.map(row).join('');
+    if(perm.length) h+=sec(V266L.passes,'한 번 사면 계속')+perm.map(row).join('');
+    if(ad) h+='<div class="vShopSec"><b>무료</b><small>하루 3번까지</small></div>';
+    list.innerHTML=h;
+    if(ad){ try{ ad.className='shi ad'; list.appendChild(ad); }catch(e){} }
+    var note=mb.querySelector('.vFootNote');
+    if(!note){ var n=document.createElement('div'); n.className='vFootNote'; n.textContent='테스트 결제입니다 · 실제 돈이 나가지 않아요'; if(ad&&ad.parentNode) ad.parentNode.appendChild(n); }
+  }catch(e){ try{ console.warn('v266ShopPaint',e); }catch(_){} }
+}
+
+/* ---------------- 오늘의 미션 카드 (허브) ---------------- */
+function v266DailyCard(){
+  try{
+    var D=lvDaily(), done=lvDailyDone();
+    var h='<div class="vCard" id="v266Daily"><div class="vHead"><span class="vIco">◎</span><div class="vHtx"><b>'+V266L.missions+'</b><small>날짜가 바뀌면 새 목표 3개 · 연속 '+(S.dstreak||0)+'일</small></div><span class="vBadge teal">'+done+' / 3</span></div>';
+    D.ms.forEach(function(m,i){
+      var p=lvDProg(m), full=p>=m.goal, got=!!m.got, pct=Math.round(Math.min(1,p/m.goal)*100);
+      var right=got?'<span class="vChip t">받음 ✓</span>':(full?'<button class="vBuy on" id="v266M'+i+'" style="min-width:70px">받기</button>':'<span class="vChip">'+v266Usd(m.reward)+'</span>');
+      h+='<div class="vRow"><span class="vIco">'+(got?'✓':(i+1))+'</span><div class="vTx"><b>'+hesc(LVDN[m.k].replace('{n}',m.goal))+'</b>'+
+        '<small>'+p+' / '+m.goal+' · 보상 '+v266Usd(m.reward)+'</small><div class="vBar t"><i style="width:'+pct+'%"></i></div></div>'+right+'</div>';
+    });
+    var canChest=done>=3&&!D.chest;
+    h+='<button id="v266Chest" class="vBuy'+(canChest?' on':' off')+'" '+(canChest?'':'disabled')+' style="width:100%;margin-top:9px;min-height:44px">'
+      +(D.chest?'오늘의 상자 받음 ✓':V266L.chest+' · '+v266Usd(lvChestPay())+(canChest?'  받기':'  ('+done+'/3)'))+'</button>';
+    h+='</div>';
+    return h;
+  }catch(e){ return ''; }
+}
+function v266ClaimMission(i){
+  try{
+    var D=lvDaily(), m=D.ms[i];
+    if(!m||m.got||lvDProg(m)<m.goal) return false;
+    m.got=1; money+=m.reward;
+    try{ save(); snd('coin',0.5,1.2); v266Hap('collect'); v266Pop('+'+v266Usd(m.reward),new THREE.Vector3(player.pos.x,2.6,player.pos.z),'pres'); }catch(e){}
+    return true;
+  }catch(e){ return false; }
+}
+function v266ClaimChest(){
+  try{
+    var D=lvDaily(); if(D.chest||lvDailyDone()<3) return false;
+    var pay=lvChestPay(); D.chest=1; money+=pay; S.dstreak=(S.dstreak||0)+1;
+    var extra='';
+    if(S.dstreak%7===0){ S.boostD=S.day; extra=' · 다음 영업 매출 2배'; }
+    else if(S.dstreak%7===3){ Object.keys(S.inv||{}).forEach(function(t){ S.inv[t]=(S.inv[t]||0)+5; }); extra=' · 재고 +5'; }
+    try{ save(); snd('level_up',0.55,1.2); confetti(player.pos.x,2.4,player.pos.z); bigBanner('오늘의 상자 +'+v266Usd(pay), '연속 '+(S.dstreak||0)+'일'+extra); }catch(e){}
+    return true;
+  }catch(e){ return false; }
+}
+function v266BindHub(){
+  try{
+    var b=$('v266Pres'); if(b) b.onclick=function(e){ e.stopPropagation(); v266PresModal(); };
+  }catch(e){}
+  try{
+    for(var i=0;i<3;i++){ (function(k){
+      var el=$('v266M'+k); if(el) el.onclick=function(e){ e.stopPropagation(); if(v266ClaimMission(k)){ try{ v262HubOpen(); }catch(_){} } };
+    })(i); }
+    var c=$('v266Chest'); if(c) c.onclick=function(e){ e.stopPropagation(); if(v266ClaimChest()){ try{ v262HubOpen(); }catch(_){} } };
+  }catch(e){}
+}
+(function(){ var _o=v262HubOpen; v262HubOpen=function(){ var r=_o.apply(this,arguments); try{ v266BindHub(); }catch(e){} return r; }; })();
+
+/* 허브 카드 순서: 지표 → 프레스티지 → 오늘의 미션 → 지점 … */
+(function(){
+  var _h=v262HubHTML;
+  v262HubHTML=function(){
+    var s=_h.apply(this,arguments);
+    try{
+      if(typeof s==='string'&&s.indexOf('id="v266Daily"')<0){
+        var card=v266DailyCard();
+        if(card){ var anchor=s.indexOf('<div class="vSec"><b>지점'); if(anchor>=0) s=s.slice(0,anchor)+card+s.slice(anchor); }
+      }
+    }catch(e){}
+    return s;
+  };
+})();
+
+/* ---------------- 세이브: 주간 번들 구매 주차 ---------------- */
+function v266ClampCommerce(){
+  try{ if(S.wkBuy!=null&&typeof S.wkBuy!=='string') S.wkBuy=String(S.wkBuy).slice(0,20); }catch(e){}
+}
+try{ v266ClampCommerce(); }catch(e){}
 function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!FTSKIP&&!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(S.mercyD===S.day) setTimeout(()=>toast('🩹 재기 지원: 오늘 매출 +12% · 손님 인내심 +15%',3.6),600); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
