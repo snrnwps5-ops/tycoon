@@ -4166,6 +4166,9 @@ function v262RepExtra(){
       mk(0.44,0.06,0.34,'#4a5666',q[0],1.06,-2.3);
       for(let i=0;i<5;i++) mk(0.035,0.035,0.035,q[1],q[0]-0.14+i*0.065,1.1,-2.3+((i%2)?0.06:-0.06));
     });
+    /* 진단 모니터 발광(화면 위 맥동막) */
+    const diagM=new THREE.MeshBasicMaterial({color:'#7bea62',transparent:true,opacity:0.1,depthWrite:false});
+    try{ const dg=new THREE.Mesh(new THREE.PlaneGeometry(0.76,0.46),diagM); dg.position.set(-2.5,1.505,-2.966); dg.rotation.x=-0.12; sc.add(dg); }catch(e){}
     /* 작업대에 놓인 수리 중 기기 (발광 화면) */
     mk(0.4,0.05,0.66,'#2a3144',1.15,1.045,-2.45);
     const devM=v262B('#3aa8ff',0.9);
@@ -4187,7 +4190,7 @@ function v262RepExtra(){
       m.visible=false; sg.add(m); list.push({m:m,life:0,vx:0,vy:0,vz:0});
     }
     R.sparks={g:sg,list:list,t:0};
-    R.lampM=lampM; R.devM=devM;
+    R.lampM=lampM; R.devM=devM; R.diagM=diagM;
     V262.r3=R;
     try{ if(REP.eng&&REP.eng.ch){ REP.eng.ch.g.position.set(1.5,0,-1.72); REP.eng.ch.g.rotation.y=2.35; v262Rig(REP.eng.ch); } }catch(e){}
   }catch(e){ console.warn('v262 rep extra',e); }
@@ -4203,6 +4206,7 @@ function v262Rig(ch){
 function v262RepAnim(dt){
   try{
     const R=V262.r3; if(!R) return;
+    const busyT=function(){ return RQ.some(function(j){ return j.st==='wait'; }); };
     const t=performance.now()/1000;
     const E=REP.eng;
     if(E&&E.ch){
@@ -4237,6 +4241,7 @@ function v262RepAnim(dt){
     }
     if(R.lampM) R.lampM.color.setHex(Math.sin(t*1.7)>0.9?0xfff2b0:0xfffbe0);
     if(R.devM) R.devM.opacity=0.55+0.35*Math.abs(Math.sin(t*1.3));
+    if(R.diagM) R.diagM.opacity=(busyT()?0.14:0.06)+0.1*Math.abs(Math.sin(t*2.3));
   }catch(e){}
 }
 /* ---------------- 비즈니스 사무실 3D — 의자·책상 디테일·오피스 모션 ---------------- */
