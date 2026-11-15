@@ -430,7 +430,6 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 #repUI .rpgd button.rpo.low s{color:#fff}
 #repUI .rpgd button.rpo:active{transform:translateY(2px);box-shadow:0 1px 0 #b85a00}
 /* ---- 비즈니스 시트: 내용만큼만 높이를 쓰고 최대 62% ---- */
-#bizUI .bzh button{height:44px;line-height:44px}
 #bizUI .bzt button{height:48px;font:900 11.5px/1.15 var(--b)}
 #bizUI .bze{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:18px 12px;margin:6px 0;background:#fff;border-radius:14px;box-shadow:var(--uSh);text-align:center;font:800 12px/1.5 var(--b);color:#6a5a4a}
 #bizUI .bze em{font-style:normal;font-size:26px}
@@ -3775,7 +3774,7 @@ function bizTick(){ try{ const now=Date.now(), dt=BIZ.lastT?Math.min(now-BIZ.las
         if(d.st==='new'&&now>d.dl){ bizLater(B,d,'마감 지남'); B.log.unshift('⌛ '+d.co+' 마감 지남 → 재영업 리스트'); }
         else if(d.st==='nego'){ if(!d.asked&&d.p>=0.5){ d.wait=(d.wait||0)+dt; if(B.mgr&&d.wait>=5*60000) bizMgrAnswer(B,d); else return; }
           d.p=Math.min(d.asked?1:0.5,d.p+dt/(d.dur*bizDurK(B,d))); if(d.p>=1) bizFinish(B,d,here); } }); });
-    bizBadge(); if(BIZ.open) bizPaint(false); }catch(e){ if(!BIZ.err){ BIZ.err=1; console.warn('bizTick',e); } } }
+    bizBadge(); if(BIZ.open && bizSig()!==BIZ.sig) bizPaint(false); }catch(e){ if(!BIZ.err){ BIZ.err=1; console.warn('bizTick',e); } } }
 function bizNeed(){ const B=bizS(), fr=bizFreeRep(B)!==-1; return B.deals.filter(d=>d.st==='new'&&fr).length+B.deals.filter(d=>d.st==='nego'&&!d.asked&&d.p>=0.5).length+B.later.filter(l=>Date.now()>=l.retry).length+(hrPool().length&&!S.hrSeen?1:0); }
 function bizBadge(){ try{ let b=$('bizBtn'); const show=bizOn()&&!document.body.classList.contains('title')&&!document.body.classList.contains('ftue');
     if(!show){ if(b) b.style.display='none'; return; }
@@ -3891,7 +3890,7 @@ function bizOpen(){ if(!bizOn()) return; bizBuild(); if(!BIZ.open){ BIZ.pp={x:pl
   let u=$('bizUI'); if(!u){ u=document.createElement('div'); u.id='bizUI'; document.body.appendChild(u);
     const st=document.createElement('style'); st.textContent='#bizUI{position:fixed;left:0;right:0;bottom:0;top:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
       '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 60px) 8px 0;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:16px;background:rgba(16,22,40,.82);box-shadow:0 3px 10px rgba(0,0,0,.25)}#bizUI .bzh b{flex:1;min-width:0;font:900 16px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bizUI .bzh b small{display:block;font:800 11px var(--b);color:#aab6e8}'+
-      '#bizUI .bzh button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:36px;line-height:36px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
+      '#bizUI .bzh button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:44px;line-height:44px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
       '#bizUI .bzs{pointer-events:auto;margin-top:auto;height:auto;max-height:62%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
       '#bizUI .bzt{display:flex;gap:4px;padding:8px 8px 4px;flex:none}#bizUI .bzt button{all:unset;position:relative;cursor:pointer;flex:1;min-width:0;text-align:center;height:44px;border-radius:12px;font:900 11px/1.15 var(--b);background:#ece6da;color:#5a4a3a;display:flex;flex-direction:column;align-items:center;justify-content:center}#bizUI .bzt button i{font-style:normal;font-size:17px}#bizUI .bzt button.on{background:#3443c8;color:#fff}#bizUI .bzt button em{position:absolute;top:2px;right:4px;min-width:16px;height:16px;border-radius:8px;background:#e8342a;color:#fff;font:900 10px/16px var(--b);font-style:normal}'+
       '#bizUI .bzl{flex:1;min-height:0;overflow:auto;padding:2px 10px 12px;-webkit-overflow-scrolling:touch}#bizUI .bzc{background:#fff;border-radius:14px;padding:9px 11px;margin:6px 0;box-shadow:0 2px 0 rgba(0,0,0,.08);font:800 12px var(--b);color:#4a3a2a}'+
@@ -3930,11 +3929,17 @@ function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizS
   const nl=B.later.filter(l=>now>=l.retry).length, hp=hrPool().length;
   const need=B.deals.filter(d=>(d.st==='new'&&fr!==-1)||(d.st==='nego'&&!d.asked&&d.p>=0.5)).length;
   const tabs=[['deal','📋','거래',need],['later','📇','재영업',nl],['team','👥','팀',B.mgr?0:'!'],['office','🏢','사무실',0],['hr','🔁','인사',hp]];
-  const head='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀<small>계약 '+B.won+' · 결렬 '+B.lost+' · 사원 '+B.reps.length+'/'+B.desks+(B.mgr?' · 팀장 '+B.mgr.name:'')+'</small>'+'<small id="bizHud" style="color:#ffd98a;font-weight:900">⏱ 영업 중</small></b><button data-b="close">🏬 매장으로</button></div>';
+  const head='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀<small>계약 '+B.won+' · 결렬 '+B.lost+' · 사원 '+B.reps.length+'/'+B.desks+(B.mgr?' · 팀장 '+B.mgr.name:'')+'</small>'+'<small id="bizHud" style="color:#ffd98a;font-weight:900">'+((typeof dayState!=='undefined'&&dayState==='run')?'⏱ 영업 중':'영업 중이 아니에요 · 매장은 쉬고 있어요')+'</small></b><button data-b="close">🏬 매장으로</button></div>';
   const tabH='<div class="bzt">'+tabs.map(([k,ic,n,c])=>'<button data-b="tab" data-i="'+k+'" class="'+(BIZ.tab===k?'on':'')+'"><i>'+ic+'</i>'+n+(c?'<em>'+c+'</em>':'')+'</button>').join('')+'</div>';
   const sc=(u.querySelector('.bzl')||{}).scrollTop||0; u.innerHTML=head+'<div class="bzs">'+tabH+'<div class="bzl">'+list+'</div></div>'; if(!full){ const l=u.querySelector('.bzl'); if(l) l.scrollTop=sc; }
   try{ const hb=u.querySelector('.bzh').getBoundingClientRect(), sb=u.querySelector('.bzs').getBoundingClientRect(); BIZ.vp={top:hb.bottom,bot:sb.top}; }catch(_){}
-  if(BIZ.tab==='hr') S.hrSeen=1; }
+  if(BIZ.tab==='hr') S.hrSeen=1; BIZ.sig=bizSig(); }
+/* v2.63: 화면을 바꿀 만한 값이 바뀔 때만 다시 그린다 — 1초마다 DOM을 통째로 갈아끼우면 아이폰에서 발열·스크롤 튐이 생긴다 */
+function bizSig(){ try{ const B=bizS(), now=Date.now();
+  let s=BIZ.tab+','+B.won+','+B.lost+','+B.reps.length+'/'+B.desks+','+(B.mgr?('M'+B.mgr.lv):'-')+','+B.later.length+','+hrPool().length+','+(B.evalTxt?B.evalTxt.length:0)+','+(typeof dayState!=='undefined'?dayState:'-');
+  B.deals.forEach(function(d){ s+='|'+d.co+d.st+d.rep+Math.round((d.p||0)*50)+(d.asked?1:0)+Math.round(((d.dl||0)-now)/7000); });
+  B.reps.forEach(function(r){ s+='|'+r.name+r.grade+r.won+r.lost+(r.note?r.note.length:0); });
+  return s; }catch(e){ return ''; } }
 function bizAct(k,i){ const B=bizS(); const n=+i;
   if(k==='close'){ bizClose(); return; }
   if(k==='tab'){ BIZ.tab=i||'deal'; if(i==='hr') hrRun(); bizPaint(true); return; }
