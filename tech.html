@@ -4347,7 +4347,7 @@ function v262AskAI(which,force){
     msgs='접수 대기 '+wait.length+'건'+(wait.length?(' ('+wait.slice(0,3).map(function(j){ return rDev(j)+': '+j.diag.q; }).join(' / ')+')'):'')+
       '\n오늘 수리 '+((dfix&&dfix.n)||0)+'건 · 매출 $'+((dfix&&dfix.rev)||0)+' · 오진 '+(V262.repMiss||0)+'건'+
       '\n부품: 액정 '+partAvail('s')+' · 배터리 '+partAvail('b')+' · 카메라 '+partAvail('c')+
-      '\n남은 영업 '+Math.max(0,Math.floor(dayT||0))+'초 · 민원 '+dayComp+'/3';
+      '\n'+((typeof dayState!=='undefined'&&dayState==='run')?('남은 영업 '+Math.max(0,Math.floor(dayT||0))+'초'):'영업 시작 전 점검')+' · 민원 '+dayComp+'/3';
   } else {
     const B=(function(){ try{ return (typeof bizOn==='function'&&bizOn())?bizS():null; }catch(e){ return null; } })();
     msgs=B? ('거래 '+B.deals.map(function(d){ return d.co+' '+BIZ_SZ[d.sz].n+' $'+d.val+' '+(d.st==='nego'?('협상 '+Math.round(d.p*100)+'%'):'배정대기'); }).join(' / ')+
