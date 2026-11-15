@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1795360000';
+<script>try{(function(){var V='1795430000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -373,7 +373,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.55</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.56</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -3325,126 +3325,240 @@ function wgCheck(){ try{ const w=wgWeek(); S.wkGoal=S.wkGoal||{}; if(S.wkGoal[w]
 (function(){ const _s=startDayModal; startDayModal=function(){ const r=_s.apply(this,arguments);
   try{ if(S.day>=1&&!$('wgRow')){ const go=$('dayGo'), h2=$('mbox').querySelector('h2'); if(h2) h2.insertAdjacentHTML('afterend',wgRow()); else if(go) go.insertAdjacentHTML('beforebegin',wgRow()); } }catch(e){} return r; }; })();
 (function(){ const _r=showResult; showResult=function(){ const r=_r.apply(this,arguments); setTimeout(wgCheck,400); return r; }; })();
-/* ===== v2.55: 💼 비즈니스 팀 사무실 — 법인(B2B) 손님은 매장에서 바로 돈이 되지 않고 사무실로 넘겨 '거래'가 된다.
-   사원을 배정하면 실제 시간으로 협상이 진행되고(중간에 협상 포인트 퀴즈), 성공하면 큰 계약금, 실패하면 '재영업 리스트'로 가서 나중에 다시 영업.
-   3D 사무실은 처음 열 때 한 번만 짓고, 열려 있는 동안에는 매장 대신 사무실만 그린다(매장 계산은 계속). ===== */
-var BIZ={open:false,built:false,scene:null,cam:null,reps:[],deskG:[],room:null,frames:0,tab:'deal',lastT:0};
-var BIZ_REPN=['민준','서연','지호','하은','도윤','수아'];
+/* ===== v2.56: 💼 비즈니스 팀 사무실 (v2.55 → 개편)
+   - 지점마다 따로 운영(S.bizBy[지점]) — 새 지점에 가면 사원·팀장·책상을 새로 채용해야 한다(이전 지점 팀은 그대로 남아 일한다).
+   - 사원은 개인(이름·실력·성적). 팀장(매니저)을 두면 ① 새 거래 자동 배정 ② 직접 협상(실력 보너스) ③ 협상 포인트 5분 방치 시 대신 대응 ④ 팀 평가(AI)
+   - 실패·마감 거래는 재영업 리스트로. 사무실은 진짜 사무실처럼(카펫·파티션·회의실·라운지·조명). ===== */
+var BIZ={open:false,built:false,scene:null,cam:null,reps:[],deskG:[],room:null,frames:0,tab:'deal',lastT:0,mgrCh:null};
+var BIZ_REPN=['민준','서연','지호','하은','도윤','수아','시우','지안','유준','채원','건우','다은'];
+var BIZ_MGRN=['강태오','윤서진','한지민','오세훈','백도윤','장하늘'];
 var BIZ_SZ={S:{n:'소형',k:2,min:5,dl:60},M:{n:'중형',k:3.5,min:15,dl:120},L:{n:'대형',k:6,min:40,dl:240}};
 function bizOn(){ try{ return lvSys(2); }catch(e){ return false; } }
-function bizS(){ const B=S.biz=S.biz||{}; B.deals=B.deals||[]; B.later=B.later||[]; if(B.reps==null) B.reps=1; if(B.desks==null) B.desks=2; if(B.room==null) B.room=0; B.won=B.won||0; B.lost=B.lost||0; B.nid=B.nid||1; B.log=B.log||[]; return B; }
+function bizFix(B){ B.deals=B.deals||[]; B.later=B.later||[]; if(B.desks==null) B.desks=2; if(B.room==null) B.room=0; B.won=B.won||0; B.lost=B.lost||0; B.nid=B.nid||1; B.log=B.log||[];
+  if(!Array.isArray(B.reps)){ const n=B.reps==null?1:B.reps; B.reps=[]; for(let i=0;i<n;i++) B.reps.push(bizNewRep(i)); }
+  B.deals.forEach(d=>{ if(d.rep==null) d.rep=-1; }); return B; }
+function bizNewRep(i,from){ const used=(S.bizBy?Object.values(S.bizBy):[]).reduce((a,B)=>a.concat(Array.isArray(B.reps)?B.reps.map(r=>r.name):[]),[]);
+  const nm=from&&from.name||BIZ_REPN.find(n=>!used.includes(n))||('사원'+(i+1)); return {name:nm,sk:from&&from.sk||+(0.88+Math.random()*0.24).toFixed(2),won:0,lost:0,grade:'',note:'',face:from&&from.face!=null?from.face:(i*3)%9}; }
+function bizS(k){ k=k==null?STG:k; S.bizBy=S.bizBy||{}; if(S.biz&&!S.bizBy[STG]){ S.bizBy[STG]=S.biz; } if(S.biz) delete S.biz; S.bizBy[k]=bizFix(S.bizBy[k]||{reps:1}); return S.bizBy[k]; }
 function bizBase(){ try{ return Math.max(80,baseGoal(S.day)*0.06); }catch(e){ return 200; } }
 function bizNewDeal(qi,size,from){ const B=bizS(), Q=CORPQ[qi]||CORPQ[0], sz=size||(Math.random()<0.2?'L':Math.random()<0.55?'M':'S'), Z=BIZ_SZ[sz];
   const co=(Q.q.match(/^\[([^\]]+)\]/)||[])[1]||'법인 고객', base=Math.min(Q.pay||680,bizBase());
-  const d={id:B.nid++,qi:qi,co:co,title:Q.q.replace(/^\[[^\]]+\]\s*/,'').replace(/\s*\(\$[\d,]+\)\s*$/,''),sz:sz,val:Math.round(base*Z.k/10)*10,dur:Z.min*60000,made:Date.now(),dl:Date.now()+Z.dl*60000,st:'new',rep:-1,p:0,ch:0.55,asked:0,tries:0};
+  const d={id:B.nid++,qi:qi,co:co,title:Q.q.replace(/^\[[^\]]+\]\s*/,'').replace(/\s*\(\$[\d,]+\)\s*$/,''),sz:sz,val:Math.round(base*Z.k/10)*10,dur:Z.min*60000,made:Date.now(),dl:Date.now()+Z.dl*60000,st:'new',rep:-1,p:0,ch:0.55,asked:0,tries:0,wait:0};
   if(from){ d.val=Math.round(from.val*0.9/10)*10; d.ch=Math.min(0.85,from.ch0+0.1); d.tries=from.tries+1; d.co=from.co; d.title=from.title; d.sz=from.sz; d.dur=from.dur; }
   d.ch0=d.ch; B.deals.push(d); return d; }
-function bizFreeRep(){ const B=bizS(); for(let i=0;i<Math.min(B.reps,B.desks);i++) if(!B.deals.some(d=>d.st==='nego'&&d.rep===i)) return i; return -1; }
-function bizChance(d){ const B=bizS(); return Math.max(0.05,Math.min(0.95,d.ch+0.05*B.room)); }
-function bizDurK(){ return 1-0.15*bizS().room; }
-function bizLater(d,why){ const B=bizS(); B.deals=B.deals.filter(x=>x!==d); B.lost++; B.later.push({co:d.co,title:d.title,qi:d.qi,sz:d.sz,val:d.val,dur:d.dur,ch0:d.ch0,tries:d.tries,why:why,at:Date.now(),retry:Date.now()+20*60000}); while(B.later.length>12) B.later.shift(); }
-function bizFinish(d){ const B=bizS(), ok=Math.random()<bizChance(d);
-  if(ok){ B.deals=B.deals.filter(x=>x!==d); B.won++; money+=d.val; S.stats.earn=(S.stats.earn||0)+d.val; B.log.unshift('✅ '+d.co+' 계약 +$'+d.val); try{ bigBanner('💼 계약 성사!',d.co+' · +$'+d.val); snd('level_up',0.6,1.05); haptic(30); }catch(_){} }
-  else { bizLater(d,'협상 결렬'); B.log.unshift('❌ '+d.co+' 결렬 → 재영업 리스트'); try{ toast('💼 '+d.co+' 협상 결렬… 재영업 리스트에 올렸어요',3); }catch(_){} }
-  B.log.length=Math.min(B.log.length,6); try{ save(); }catch(_){} }
-function bizTick(){ try{ if(!S.biz){ bizBadge(); return; } const B=bizS(), now=Date.now(), dt=BIZ.lastT?Math.min(now-BIZ.lastT,48*3600e3):0; BIZ.lastT=now;
-    B.deals.slice().forEach(d=>{
-      if(d.st==='new'&&now>d.dl){ bizLater(d,'마감 지남'); B.log.unshift('⌛ '+d.co+' 마감 지남 → 재영업 리스트'); }
-      else if(d.st==='nego'){ if(!d.asked&&d.p>=0.5) return; d.p=Math.min(d.asked?1:0.5,d.p+dt/(d.dur*bizDurK())); if(d.p>=1) bizFinish(d); } });
+/* 협상 담당: 사원 0..n-1, 팀장 = 'm' */
+function bizSlots(B){ B=B||bizS(); const n=Math.min(B.reps.length,B.desks); const a=[]; for(let i=0;i<n;i++) a.push(i); if(B.mgr) a.push('m'); return a; }
+function bizFreeRep(B){ B=B||bizS(); return bizSlots(B).find(r=>!B.deals.some(d=>d.st==='nego'&&d.rep===r))??-1; }
+function bizWho(B,r){ return r==='m'?(B.mgr?'👔 '+B.mgr.name+' 팀장':'팀장'):((B.reps[r]||{}).name||'사원'); }
+function bizSk(B,r){ return r==='m'?(B.mgr?1.1+0.05*B.mgr.lv:1):((B.reps[r]||{}).sk||1); }
+function bizChance(d,B){ B=B||bizS(); return Math.max(0.05,Math.min(0.95,d.ch+0.05*B.room+(d.rep!==-1?(bizSk(B,d.rep)-1)*0.6:0))); }
+function bizDurK(B,d){ B=B||bizS(); return (1-0.15*B.room)/(d&&d.rep!==-1?bizSk(B,d.rep):1); }
+function bizLater(B,d,why){ B.deals=B.deals.filter(x=>x!==d); B.lost++; if(d.rep!==-1&&d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].lost++; B.later.push({co:d.co,title:d.title,qi:d.qi,sz:d.sz,val:d.val,dur:d.dur,ch0:d.ch0,tries:d.tries,why:why,at:Date.now(),retry:Date.now()+20*60000}); while(B.later.length>12) B.later.shift(); }
+function bizFinish(B,d,here){ const ok=Math.random()<bizChance(d,B);
+  if(ok){ B.deals=B.deals.filter(x=>x!==d); B.won++; if(d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].won++; money+=d.val; S.stats.earn=(S.stats.earn||0)+d.val; B.log.unshift('✅ '+d.co+' 계약 +$'+d.val+' ('+bizWho(B,d.rep)+')'); if(here) try{ bigBanner('💼 계약 성사!',d.co+' · +$'+d.val); snd('level_up',0.6,1.05); haptic(30); }catch(_){} }
+  else { bizLater(B,d,'협상 결렬'); B.log.unshift('❌ '+d.co+' 결렬 → 재영업 리스트'); if(here) try{ toast('💼 '+d.co+' 협상 결렬… 재영업 리스트에 올렸어요',3); }catch(_){} }
+  B.log.length=Math.min(B.log.length,8); try{ save(); }catch(_){} }
+function bizMgrAnswer(B,d){ const acc=Math.min(0.92,0.62+0.08*B.mgr.lv), ok=Math.random()<acc; d.asked=1; d.ch=Math.max(0.05,Math.min(0.95,d.ch+(ok?0.25:-0.2))); B.log.unshift((ok?'👔 ':'👔❗ ')+B.mgr.name+' 팀장이 '+d.co+' 협상 포인트 '+(ok?'잘 대응':'대응 실패')); B.log.length=Math.min(B.log.length,8); }
+function bizTick(){ try{ const now=Date.now(), dt=BIZ.lastT?Math.min(now-BIZ.lastT,48*3600e3):0; BIZ.lastT=now; if(!S.bizBy&&!S.biz){ bizBadge(); return; } bizS();
+    Object.keys(S.bizBy).forEach(k=>{ const B=bizFix(S.bizBy[k]), here=+k===STG;
+      if(B.mgr){ B.deals.filter(d=>d.st==='new').forEach(d=>{ const r=bizFreeRep(B); if(r!==-1){ d.st='nego'; d.rep=r; d.p=0; } }); }
+      B.deals.slice().forEach(d=>{
+        if(d.st==='new'&&now>d.dl){ bizLater(B,d,'마감 지남'); B.log.unshift('⌛ '+d.co+' 마감 지남 → 재영업 리스트'); }
+        else if(d.st==='nego'){ if(!d.asked&&d.p>=0.5){ d.wait=(d.wait||0)+dt; if(B.mgr&&d.wait>=5*60000) bizMgrAnswer(B,d); else return; }
+          d.p=Math.min(d.asked?1:0.5,d.p+dt/(d.dur*bizDurK(B,d))); if(d.p>=1) bizFinish(B,d,here); } }); });
     bizBadge(); if(BIZ.open) bizPaint(false); }catch(e){ if(!BIZ.err){ BIZ.err=1; console.warn('bizTick',e); } } }
-function bizNeed(){ const B=bizS(); return B.deals.filter(d=>d.st==='new'&&bizFreeRep()>=0).length+B.deals.filter(d=>d.st==='nego'&&!d.asked&&d.p>=0.5).length+B.later.filter(l=>Date.now()>=l.retry).length; }
+function bizNeed(){ const B=bizS(), fr=bizFreeRep(B)!==-1; return B.deals.filter(d=>d.st==='new'&&fr).length+B.deals.filter(d=>d.st==='nego'&&!d.asked&&d.p>=0.5).length+B.later.filter(l=>Date.now()>=l.retry).length+(hrPool().length&&!S.hrSeen?1:0); }
 function bizBadge(){ try{ let b=$('bizBtn'); const show=bizOn()&&!document.body.classList.contains('title')&&!document.body.classList.contains('ftue');
     if(!show){ if(b) b.style.display='none'; return; }
     if(!b){ b=document.createElement('button'); b.id='bizBtn'; b.style.cssText='position:fixed;left:10px;top:calc(env(safe-area-inset-top) + 214px);z-index:6;border:0;border-radius:16px;width:62px;height:58px;font:900 11px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a;line-height:1.15';
       b.onclick=e=>{ e.stopPropagation(); bizOpen(); }; document.body.appendChild(b); }
     const n=bizNeed(); b.style.display=BIZ.open?'none':'block'; b.innerHTML='<span style="font-size:22px">💼</span><br>비즈니스'+(n?'<em style="position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:#e8342a;color:#fff;font:900 12px/20px var(--b);font-style:normal">'+n+'</em>':''); }catch(e){} }
-/* ---- 3D 사무실 ---- */
+/* ---- 3D 사무실: 카펫·파티션 책상·팀장실·유리 회의실·라운지·탕비실·조명 ---- */
 function bizBuild(){ if(BIZ.built) return; BIZ.built=true; try{ if(typeof floorPlane!=='function') return;
-    const sc=new THREE.Scene(); sc.background=new THREE.Color('#cfd8e6'); BIZ.scene=sc;
-    sc.add(new THREE.HemisphereLight(0xffffff,0x8a90a0,0.95)); const dl=new THREE.DirectionalLight(0xffffff,0.5); dl.position.set(6,12,8); sc.add(dl);
-    const M=c=>mat(c), bx=(w,h,d,c,x,y,z)=>{ const m=new THREE.Mesh(gget('b'+w+'_'+h+'_'+d,()=>new THREE.BoxGeometry(w,h,d)),M(c)); m.position.set(x,y,z); sc.add(m); return m; };
-    bx(9,0.1,7.5,'#e9e4da',0,-0.05,0); bx(9,2.6,0.2,'#f4f6fa',0,1.3,-3.75); bx(0.2,2.6,7.5,'#eef1f6',-4.5,1.3,0);
-    bx(2.6,1.2,0.05,'#ffffff',-1.2,1.55,-3.63); bx(2.7,1.3,0.03,'#5a6578',-1.2,1.55,-3.66);   // 화이트보드
-    BIZ.stk=[]; for(let i=0;i<6;i++){ const s=bx(0.34,0.26,0.02,['#ffd23f','#7ad1ff','#ff9ab8'][i%3],-2.2+(i%3)*0.9,1.75-Math.floor(i/3)*0.5,-3.6); s.visible=false; BIZ.stk.push(s); }
-    bx(1.6,0.9,0.05,'#9fd0ff',2.4,1.6,-3.63); bx(0.05,0.9,0.05,'#ffffff',2.4,1.6,-3.6);   // 창문
-    const pl=(x,z)=>{ bx(0.45,0.4,0.45,'#c8743c',x,0.2,z); const l=new THREE.Mesh(new THREE.SphereGeometry(0.42,10,8),M('#4fb06a')); l.position.set(x,0.75,z); sc.add(l); }; pl(-4,-3.2); pl(4,-3.2);
-    const DP=[[-2.6,-1.4],[0,-1.4],[2.6,-1.4],[-2.6,1.2],[0,1.2],[2.6,1.2]]; BIZ.DP=DP;
-    DP.forEach(([x,z],i)=>{ const g=new THREE.Group(); g.position.set(x,0,z); sc.add(g); const a=(w,h,d,c,px,py,pz)=>{ const m=new THREE.Mesh(gget('b'+w+'_'+h+'_'+d,()=>new THREE.BoxGeometry(w,h,d)),M(c)); m.position.set(px,py,pz); g.add(m); return m; };
-      a(1.5,0.06,0.75,'#ffffff',0,0.74,0); a(0.06,0.72,0.7,'#b8c0cc',-0.7,0.36,0); a(0.06,0.72,0.7,'#b8c0cc',0.7,0.36,0); a(0.6,0.36,0.04,'#1b1f27',0,1.0,-0.25); a(0.54,0.3,0.02,'#3a7bff',0,1.0,-0.23); a(0.5,0.45,0.5,'#3a4258',0,0.23,0.6);
+    const sc=new THREE.Scene(); sc.background=new THREE.Color('#2a3348'); BIZ.scene=sc;
+    sc.add(new THREE.HemisphereLight(0xfff6e8,0x6a7088,0.9)); const dl=new THREE.DirectionalLight(0xfff2dc,0.55); dl.position.set(5,12,7); sc.add(dl);
+    const ML={}; const M=(c,o)=>{ const k=c+(o?'o':''); return ML[k]||(ML[k]=o?new THREE.MeshLambertMaterial({color:c,transparent:true,opacity:o}):new THREE.MeshLambertMaterial({color:c})); };
+    const bx=(w,h,d,c,x,y,z,p,o)=>{ const m=new THREE.Mesh(gget('b'+w+'_'+h+'_'+d,()=>new THREE.BoxGeometry(w,h,d)),M(c,o)); m.position.set(x,y,z); (p||sc).add(m); return m; };
+    const cyl=(r,h,c,x,y,z,p)=>{ const m=new THREE.Mesh(gget('cy'+r+'_'+h,()=>new THREE.CylinderGeometry(r,r,h,12)),M(c)); m.position.set(x,y,z); (p||sc).add(m); return m; };
+    const tx=(txt,w,h,bg,fg,font)=>{ const t=canvasTex((g,W,H)=>{ g.fillStyle=bg; g.fillRect(0,0,W,H); g.fillStyle=fg; g.font=font||'900 64px sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText(txt,W/2,H/2); },w,h); return new THREE.MeshBasicMaterial({map:t}); };
+    /* 바닥: 카펫 타일(진회색/남색) + 라운지 원목 + 벽 */
+    const cpt=canvasTex((g,W,H)=>{ for(let i=0;i<4;i++) for(let j=0;j<4;j++){ g.fillStyle=(i+j)%2?'#46506a':'#3d465e'; g.fillRect(i*32,j*32,32,32); } g.strokeStyle='rgba(255,255,255,.06)'; for(let k=0;k<=4;k++){ g.beginPath(); g.moveTo(k*32,0); g.lineTo(k*32,128); g.stroke(); g.beginPath(); g.moveTo(0,k*32); g.lineTo(128,k*32); g.stroke(); } },128,128); cpt.wrapS=cpt.wrapT=THREE.RepeatWrapping; cpt.repeat.set(5,4);
+    const fl=new THREE.Mesh(new THREE.BoxGeometry(11,0.1,8.6),new THREE.MeshLambertMaterial({map:cpt})); fl.position.set(0,-0.05,0); sc.add(fl);
+    bx(3.2,0.02,3.2,'#c9a77a',3.85,0.01,2.6);   // 라운지 원목
+    bx(11,3,0.2,'#e9edf3',0,1.5,-4.3); bx(0.2,3,8.6,'#e3e8ef',-5.5,1.5,0); bx(11,0.12,0.24,'#3443c8',0,0.06,-4.18); bx(0.24,0.12,8.6,'#3443c8',-5.38,0.06,0);
+    /* 로고 벽 + 창문 + 시계 + 그림 */
+    const lg=new THREE.Mesh(new THREE.PlaneGeometry(3.2,0.8),tx('MEGA TECH  B2B',512,128,'#1b2a5a','#ffd23f','900 60px sans-serif')); lg.position.set(-0.6,2.35,-4.19); sc.add(lg);
+    [1.9,3.3,4.7].forEach(x=>{ bx(1.2,1.5,0.04,'#9fd0ff',x,1.65,-4.19); bx(1.26,0.06,0.08,'#ffffff',x,0.9,-4.17); bx(1.26,0.06,0.08,'#ffffff',x,2.41,-4.17); });
+    cyl(0.28,0.05,'#ffffff',-5.39,2.3,-1.2).rotation.z=Math.PI/2; bx(0.02,0.18,0.03,'#222',-5.36,2.34,-1.2);
+    bx(0.04,1.0,1.5,'#2f6fd8',-5.39,1.7,1.4); bx(0.03,0.86,1.36,'#ffd23f',-5.37,1.7,1.4);
+    /* 실적 보드(거래 스티커) */
+    bx(0.05,1.2,2.4,'#ffffff',-5.37,1.55,-2.9); BIZ.stk=[]; for(let i=0;i<8;i++){ const s=bx(0.02,0.26,0.36,['#ffd23f','#7ad1ff','#ff9ab8','#9be37a'][i%4],-5.34,1.95-Math.floor(i/4)*0.45,-3.8+(i%4)*0.6); s.visible=false; BIZ.stk.push(s); }
+    /* 천장 조명(빛나는 패널) */
+    for(let i=0;i<3;i++) for(let j=0;j<2;j++){ const m=new THREE.Mesh(gget('lp',()=>new THREE.BoxGeometry(1.4,0.04,0.5)),new THREE.MeshBasicMaterial({color:'#fffbe8'})); m.position.set(-3.4+i*2.4,2.95,-2.6+j*2.4); sc.add(m); }
+    /* 직원 책상 6개: 파티션 칸막이 + 모니터 2대 + 의자 + 소품 */
+    const DP=[[-3.9,-2.7],[-2.0,-2.7],[-0.1,-2.7],[-3.9,-0.4],[-2.0,-0.4],[-0.1,-0.4]]; BIZ.DP=DP;
+    DP.forEach(([x,z],i)=>{ const g=new THREE.Group(); g.position.set(x,0,z); sc.add(g);
+      bx(1.5,0.06,0.8,'#f4efe6',0,0.74,0,g); bx(1.5,0.7,0.06,'#c8d0dc',0,0.37,-0.37,g);
+      bx(1.56,1.15,0.06,'#7f8ba3',0,0.58,-0.44,g); bx(0.06,1.15,0.86,'#8a96ad',-0.78,0.58,0,g);   // 칸막이
+      bx(0.5,0.3,0.03,'#1b1f27',-0.28,1.03,-0.25,g).rotation.y=0.15; bx(0.46,0.26,0.02,['#3a7bff','#22c08a','#ff9a1a'][i%3],-0.28,1.03,-0.235,g).rotation.y=0.15;
+      bx(0.5,0.3,0.03,'#1b1f27',0.3,1.03,-0.25,g).rotation.y=-0.15; bx(0.46,0.26,0.02,'#e8ecf4',0.3,1.03,-0.235,g).rotation.y=-0.15;
+      bx(0.36,0.02,0.14,'#2a2d38',0,0.78,0.08,g); cyl(0.05,0.1,['#ff5a6a','#ffffff','#ffd23f'][i%3],0.55,0.82,0.15,g);
+      bx(0.5,0.08,0.5,'#2a3142',0,0.46,0.62,g); bx(0.5,0.55,0.08,'#2a3142',0,0.76,0.86,g); cyl(0.04,0.42,'#9aa2b2',0,0.21,0.62,g);
       g.visible=false; BIZ.deskG.push(g); });
-    const rm=new THREE.Group(); rm.position.set(0,0,3.2); sc.add(rm); BIZ.room=rm; const ra=(w,h,d,c,px,py,pz)=>{ const m=new THREE.Mesh(gget('b'+w+'_'+h+'_'+d,()=>new THREE.BoxGeometry(w,h,d)),M(c)); m.position.set(px,py,pz); rm.add(m); return m; };
-    ra(3.2,0.06,1.2,'#8a5a3a',0,0.74,0); ra(0.1,0.72,0.9,'#5a3a2a',0,0.36,0); for(let k=0;k<4;k++) ra(0.42,0.42,0.42,'#2f6fd8',-1.2+k*0.8,0.21,0.95); ra(4.4,1.4,0.04,'#bfe4ff',0,0.7,-0.9).material=new THREE.MeshLambertMaterial({color:'#bfe4ff',transparent:true,opacity:0.45});
+    /* 팀장실: 큰 책상 + 명패 + 책장 (오른쪽 뒤, 유리벽) */
+    const mg=new THREE.Group(); mg.position.set(3.4,0,-2.6); sc.add(mg); BIZ.mgrG=mg;
+    bx(2.0,0.08,0.9,'#6a4a32',0,0.76,0,mg); bx(0.08,0.72,0.8,'#5a3a26',-0.9,0.36,0,mg); bx(0.08,0.72,0.8,'#5a3a26',0.9,0.36,0,mg);
+    bx(0.62,0.36,0.03,'#1b1f27',0,1.06,-0.25,mg); bx(0.58,0.32,0.02,'#3a7bff',0,1.06,-0.235,mg); bx(0.4,0.1,0.1,'#ffd23f',0.6,0.85,0.3,mg);
+    bx(0.6,0.1,0.6,'#1b1f27',0,0.5,0.75,mg); bx(0.6,0.7,0.1,'#1b1f27',0,0.86,1.02,mg);
+    bx(1.6,1.9,0.4,'#7a5a3a',0,0.95,-1.25,mg); for(let k=0;k<3;k++) for(let q=0;q<5;q++) bx(0.12,0.4,0.28,['#e8342a','#2f6fd8','#ffd23f','#2faa45','#ffffff'][(k+q)%5],-0.55+q*0.27,0.45+k*0.6,-1.15,mg);
+    bx(0.05,2.2,2.6,'#bfe4ff',-1.25,1.1,0.1,mg,0.35); bx(2.5,2.2,0.05,'#bfe4ff',0,1.1,1.4,mg,0.35); bx(2.5,0.08,0.06,'#c8d0dc',0,2.2,1.4,mg);
+    mg.visible=false;
+    /* 유리 회의실(앞쪽 왼편) */
+    const rm=new THREE.Group(); rm.position.set(-2.4,0,2.6); sc.add(rm); BIZ.room=rm;
+    bx(3.0,0.07,1.2,'#5a3a2a',0,0.74,0,rm); cyl(0.12,0.72,'#3a2a20',0,0.36,0,rm); for(let k=0;k<3;k++){ bx(0.42,0.42,0.42,'#2f6fd8',-0.9+k*0.9,0.21,0.95,rm); bx(0.42,0.42,0.42,'#2f6fd8',-0.9+k*0.9,0.21,-0.95,rm); }
+    bx(1.4,0.8,0.04,'#ffffff',0,1.5,-1.55,rm); bx(4.2,2.2,0.05,'#bfe4ff',0,1.1,1.55,rm,0.3); bx(0.05,2.2,3.1,'#bfe4ff',2.1,1.1,0,rm,0.3);
+    const rs=new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.35),tx('MEETING',256,64,'#3443c8','#ffffff','900 38px sans-serif')); rs.position.set(0,2.05,1.58); rm.add(rs);
     rm.visible=false;
-    const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100); cam.position.set(7,11,10); cam.lookAt(0,0,0.4); BIZ.cam=cam;
+    /* 라운지: 소파 + 커피 테이블 + 정수기 + 커피머신 + 프린터 + 화분 */
+    bx(1.8,0.42,0.7,'#e8342a',3.85,0.21,3.7); bx(1.8,0.5,0.18,'#c0281f',3.85,0.55,4.0); bx(0.8,0.36,0.5,'#f4efe6',3.85,0.18,2.7);
+    bx(0.34,1.0,0.34,'#e9edf3',5.0,0.5,1.4); cyl(0.13,0.36,'#7ad1ff',5.0,1.18,1.4);   // 정수기
+    bx(1.0,0.9,0.5,'#c9a77a',4.6,0.45,0.3); bx(0.32,0.38,0.3,'#1b1f27',4.45,1.09,0.3); bx(0.3,0.2,0.3,'#ffffff',4.85,1.0,0.3);   // 탕비 카운터·커피머신
+    bx(0.6,0.5,0.5,'#e3e8ef',1.4,0.25,-3.8); bx(0.5,0.12,0.4,'#2a2d38',1.4,0.56,-3.8);   // 프린터
+    const pl=(x,z,s)=>{ s=s||1; cyl(0.24*s,0.42*s,'#c8743c',x,0.21*s,z); const l=new THREE.Mesh(gget('pls',()=>new THREE.SphereGeometry(0.42,10,8)),M('#4fb06a')); l.scale.setScalar(s); l.position.set(x,0.78*s,z); sc.add(l); };
+    pl(-5.0,-3.8,1.1); pl(5.0,-3.8,1.1); pl(2.6,3.9); pl(5.0,3.9,0.8); pl(-5.0,3.8);
+    const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100); BIZ.cam=cam;
     const lb=document.createElement('div'); lb.id='bizLabels'; lb.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:31;display:none'; document.body.appendChild(lb); BIZ.labels=lb;
   }catch(e){ console.warn('bizBuild',e); BIZ.scene=null; } }
-function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(6,B.desks), r=Math.min(n,B.reps);
-    BIZ.deskG.forEach((g,i)=>g.visible=i<n); BIZ.room.visible=B.room>0;
-    while(BIZ.reps.length<r){ const i=BIZ.reps.length; const ch=makeChar(BASE_MD[i%BASE_MD.length],{tint:['#2f3a5a','#3a2a4a','#1f4a3a','#4a3a2a','#2a2a2a','#5a2a2a'][i]}); BIZ.scene.add(ch.g); const [x,z]=BIZ.DP[i]; ch.g.position.set(x,0,z+0.62); ch.g.rotation.y=Math.PI;
-      const el=document.createElement('div'); el.className='ft say'; el.style.cssText+=';position:absolute;transform:translate(-50%,-100%);font-size:12px'; BIZ.labels.appendChild(el); BIZ.reps.push({ch,el,i}); }
+function bizLabel(){ const el=document.createElement('div'); el.className='ft say'; el.style.cssText+=';position:absolute;transform:translate(-50%,-100%);font-size:11px;white-space:nowrap'; BIZ.labels.appendChild(el); return el; }
+function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(6,B.desks), r=Math.min(n,B.reps.length);
+    BIZ.deskG.forEach((g,i)=>g.visible=i<n); BIZ.room.visible=B.room>0; BIZ.mgrG.visible=!!B.mgr;
+    while(BIZ.reps.length>r){ const R=BIZ.reps.pop(); BIZ.scene.remove(R.ch.g); R.el.remove(); }
+    while(BIZ.reps.length<r){ const i=BIZ.reps.length; const ch=makeChar(BASE_MD[(i+1)%BASE_MD.length],{tint:['#2f3a5a','#3a2a4a','#1f4a3a','#4a3a2a','#2a2a2a','#5a2a2a'][i]}); BIZ.scene.add(ch.g); const [x,z]=BIZ.DP[i]; ch.g.position.set(x,0,z+0.62); ch.g.rotation.y=Math.PI; BIZ.reps.push({ch,el:bizLabel(),i}); }
+    if(B.mgr&&!BIZ.mgrCh){ const ch=makeChar(BASE_MD[0],{tint:'#1b1f27'}); BIZ.scene.add(ch.g); ch.g.position.set(3.4,0,-1.85); ch.g.rotation.y=Math.PI; BIZ.mgrCh={ch,el:bizLabel(),i:'m'}; }
+    if(!B.mgr&&BIZ.mgrCh){ BIZ.scene.remove(BIZ.mgrCh.ch.g); BIZ.mgrCh.el.remove(); BIZ.mgrCh=null; }
     const nego=B.deals.filter(d=>d.st==='nego'); BIZ.stk.forEach((s,i)=>s.visible=i<B.deals.length);
-    BIZ.reps.forEach(R=>{ const d=nego.find(x=>x.rep===R.i); R.d=d; R.el.textContent=d?(!d.asked&&d.p>=0.5?'❗ 협상 포인트':'📞 '+Math.floor(d.p*100)+'%'):'☕ 대기'; R.el.style.background=d&&!d.asked&&d.p>=0.5?'#ffe14d':'#fff'; }); }catch(e){} }
-function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vh=Math.max(9,10/a); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
-    const tg=new THREE.Vector3(0,0,0.6), dir=new THREE.Vector3(7,11,10).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,-vh*0.13); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
-    BIZ.reps.forEach(R=>{ animChar(R.ch,0,dt||0.016,false); if(R.d){ R.ch.g.position.y=Math.abs(Math.sin(performance.now()/220+R.i))*0.04; }
-      const v=new THREE.Vector3(R.ch.g.position.x,2.2,R.ch.g.position.z).project(c); R.el.style.left=((v.x+1)/2*W)+'px'; R.el.style.top=((1-v.y)/2*H)+'px'; R.el.style.display=v.y<-0.15?'none':'block'; });
+    BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ const d=nego.find(x=>x.rep===R.i); R.d=d; const nm=R.i==='m'?'👔 '+B.mgr.name:(B.reps[R.i]||{}).name;
+      R.el.textContent=nm+' · '+(d?(!d.asked&&d.p>=0.5?'❗ 협상 포인트':'📞 '+Math.floor(d.p*100)+'%'):'☕ 대기'); R.el.style.background=d&&!d.asked&&d.p>=0.5?'#ffe14d':R.i==='m'?'#e8ecff':'#fff'; }); }catch(e){ console.warn('bizSync',e); } }
+function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vh=Math.max(9.5,11.5/a); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
+    const tg=new THREE.Vector3(0.2,0,0), dir=new THREE.Vector3(6,11,10).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,-vh*0.16); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
+    BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ animChar(R.ch,0,dt||0.016,false); R.ch.g.position.y=R.d?Math.abs(Math.sin(performance.now()/220+(R.i==='m'?7:R.i)))*0.04:0;
+      const v=new THREE.Vector3(R.ch.g.position.x,2.15,R.ch.g.position.z).project(c); R.el.style.left=((v.x+1)/2*W)+'px'; R.el.style.top=((1-v.y)/2*H)+'px'; R.el.style.display=(v.y<-0.1||v.y>0.82)?'none':'block'; });
     renderer.render(BIZ.scene,c); BIZ.frames++; }catch(e){ renderer.render(scene,cam); } }
 /* ---- 화면(패널) ---- */
 function bizOpen(){ if(!bizOn()) return; bizBuild(); BIZ.open=true; document.body.classList.add('biz'); if(BIZ.labels) BIZ.labels.style.display='block'; try{ initAudio(); snd('ui',0.4); }catch(_){}
   let u=$('bizUI'); if(!u){ u=document.createElement('div'); u.id='bizUI'; document.body.appendChild(u);
     const st=document.createElement('style'); st.textContent='#bizUI{position:fixed;left:0;right:0;bottom:0;top:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
-      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 70px) 10px 0;display:flex;align-items:center;gap:8px}#bizUI .bzh b{flex:1;font:900 18px var(--d);color:#1b2a5a;text-shadow:0 2px 0 #fff}'+
-      '#bizUI .bzh button{border:0;border-radius:14px;height:40px;padding:0 14px;font:900 14px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
+      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 70px) 10px 0;display:flex;align-items:center;gap:8px}#bizUI .bzh b{flex:1;font:900 18px var(--d);color:#fff;text-shadow:0 2px 0 #1b2a5a}'+
+      '#bizUI .bzh button{all:unset;cursor:pointer;border-radius:14px;height:40px;line-height:40px;padding:0 14px;font:900 14px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
       '#bizUI .bzs{pointer-events:auto;margin-top:auto;max-height:54%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
-      '#bizUI .bzt{display:flex;gap:6px;padding:10px 10px 6px}#bizUI .bzt button{flex:1;height:36px;border:0;border-radius:12px;font:900 13px var(--b);background:#e8e2d6;color:#5a4a3a}#bizUI .bzt button.on{background:#3443c8;color:#fff}'+
+      '#bizUI .bzt{display:flex;gap:5px;padding:10px 10px 6px}#bizUI .bzt button{all:unset;cursor:pointer;flex:1;text-align:center;height:36px;line-height:36px;border-radius:12px;font:900 12px var(--b);background:#e8e2d6;color:#5a4a3a}#bizUI .bzt button.on{background:#3443c8;color:#fff}'+
       '#bizUI .bzl{overflow:auto;padding:4px 10px 12px;-webkit-overflow-scrolling:touch}#bizUI .bzc{background:#fff;border-radius:14px;padding:9px 11px;margin:6px 0;box-shadow:0 2px 0 rgba(0,0,0,.08);font:800 12px var(--b);color:#4a3a2a}'+
-      '#bizUI .bzc h4{margin:0 0 2px;font:900 14px var(--b);color:#1b2a5a}#bizUI .bzc .bzb{display:flex;gap:6px;margin-top:6px}#bizUI .bzc .bzb button{all:unset;box-sizing:border-box;text-align:center;line-height:36px;cursor:pointer;flex:1 1 0;min-width:0;white-space:nowrap;padding:0 6px;height:36px;border:0;border-radius:10px;font:900 13px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a}'+
-      '#bizUI .bzc .bzb button.bzy{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00}#bizUI .bzc .bzb button.bzg{background:#c9c2b4;box-shadow:none}#bizUI .bzp{height:8px;border-radius:5px;background:#e8e2d6;overflow:hidden;margin-top:5px}#bizUI .bzp i{display:block;height:100%;background:linear-gradient(90deg,#5a6cff,#22c0ff)}'+
+      '#bizUI .bzc h4{margin:0 0 2px;font:900 14px var(--b);color:#1b2a5a}#bizUI .bzc .bzb{display:flex;gap:6px;margin-top:6px}#bizUI .bzc .bzb button{all:unset;box-sizing:border-box;text-align:center;line-height:36px;cursor:pointer;flex:1 1 0;min-width:0;white-space:nowrap;padding:0 6px;height:36px;border-radius:10px;font:900 13px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a}'+
+      '#bizUI .bzc .bzb button.bzy{background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00}#bizUI .bzc .bzb button.bzg{background:#c9c2b4;box-shadow:none;color:#3a2a1a}#bizUI .bzc .bzb button.bzr{background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}#bizUI .bzp{height:8px;border-radius:5px;background:#e8e2d6;overflow:hidden;margin-top:5px}#bizUI .bzp i{display:block;height:100%;background:linear-gradient(90deg,#5a6cff,#22c0ff)}'+
+      '#bizUI .gr{display:inline-block;min-width:20px;text-align:center;border-radius:6px;padding:0 4px;color:#fff;font:900 12px/18px var(--b);margin-right:4px}'+
       'body.biz #bbar,body.biz #shopBtn,body.biz #camctl,body.biz #intBtn,body.biz #boxChip,body.biz #labels,body.biz #joy,body.biz #dayBar,body.biz #hint,body.biz #ftHint,body.biz #ftArrow,body.biz #sub,body.biz #subR,body.biz #combo,body.biz #stockAl,body.biz #toast{visibility:hidden!important}body.biz #big{z-index:41}';
     document.head.appendChild(st);
-    u.addEventListener('click',e=>{ const t=e.target.closest('[data-b]'); if(!t) return; e.stopPropagation(); bizAct(t.dataset.b,+t.dataset.i); }); }
+    u.addEventListener('click',e=>{ const t=e.target.closest('[data-b]'); if(!t) return; e.stopPropagation(); bizAct(t.dataset.b,t.dataset.i); }); }
   u.style.display='flex'; bizPaint(true); }
 function bizClose(){ BIZ.open=false; document.body.classList.remove('biz'); const u=$('bizUI'); if(u) u.style.display='none'; if(BIZ.labels) BIZ.labels.style.display='none'; bizBadge(); try{ snd('ui',0.35); }catch(_){} }
 function bizCost(k){ const B=bizS(), g=(()=>{ try{ return dayCfg(S.day).goal; }catch(e){ return 3000; } })();
-  return Math.round((k==='rep'?g*0.9*Math.pow(1.7,B.reps-1):k==='desk'?g*0.7*Math.pow(1.6,B.desks-2):g*2*Math.pow(2,B.room))/50)*50; }
+  return Math.round((k==='rep'?g*0.9*Math.pow(1.7,B.reps.length-1):k==='desk'?g*0.7*Math.pow(1.6,B.desks-2):k==='mgr'?g*1.6:k==='mgrup'?g*1.4*Math.pow(1.8,(B.mgr?B.mgr.lv:1)-1):g*2*Math.pow(2,B.room))/50)*50; }
 function bizMin(ms){ const m=Math.max(0,Math.ceil(ms/60000)); return m>=60?Math.floor(m/60)+'시간 '+(m%60)+'분':m+'분'; }
-function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizSyncScene(); const now=Date.now(), fr=bizFreeRep();
+var GRC={A:'#2faa45',B:'#2f6fd8',C:'#ffb020',D:'#e8342a'};
+function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizSyncScene(); const now=Date.now(), fr=bizFreeRep(B);
   let list='';
-  if(BIZ.tab==='deal'){ if(!B.deals.length) list='<div class="bzc">아직 거래가 없어요. 매장에 <b>법인 손님</b>이 오면 [비즈니스 팀에 연결]로 넘겨 주세요.</div>';
+  if(BIZ.tab==='deal'){ if(!B.deals.length) list='<div class="bzc">아직 거래가 없어요. 매장에 <b>법인 손님</b>이 오면 [비즈니스 팀에 연결]로 넘겨 주세요.'+(B.mgr?'':' <br>💡 팀장을 두면 거래 배정과 협상 포인트를 대신 처리해요.')+'</div>';
     B.deals.forEach((d,i)=>{ const Z=BIZ_SZ[d.sz], need=d.st==='nego'&&!d.asked&&d.p>=0.5;
       list+='<div class="bzc"><h4>'+(d.tries?'📇 ':'')+d.co+' <small>· '+Z.n+' · $'+d.val+'</small></h4>'+d.title+
-        (d.st==='new'?'<div>⏳ 배정 마감까지 '+bizMin(d.dl-now)+' · 협상 '+bizMin(d.dur*bizDurK())+' · 성공 '+Math.round(bizChance(d)*100)+'%</div><div class="bzb">'+(fr>=0?'<button data-b="assign" data-i="'+i+'">👔 '+BIZ_REPN[fr]+' 배정</button>':'<button class="bzg">빈 사원이 없어요</button>')+'</div>'
-         :'<div>📞 '+BIZ_REPN[d.rep]+' 협상 중 · 성공 확률 '+Math.round(bizChance(d)*100)+'%'+(need?' · <b style="color:#c0392b">협상 포인트 대응 필요!</b>':' · 남은 '+bizMin((d.asked?1-d.p:0.5-d.p)*d.dur*bizDurK()))+'</div><div class="bzp"><i style="width:'+Math.round(d.p*100)+'%"></i></div>'+
-          '<div class="bzb">'+(need?'<button class="bzy" data-b="quiz" data-i="'+i+'">❗ 협상 포인트 대응</button>':'')+'<button class="bzg" data-b="rush" data-i="'+i+'" style="color:#3a2a1a">⚡ 즉시 완료 ₩1,200</button></div>')+'</div>'; }); }
+        (d.st==='new'?'<div>⏳ 배정 마감까지 '+bizMin(d.dl-now)+' · 협상 약 '+bizMin(d.dur*bizDurK(B))+' · 성공 '+Math.round(bizChance(d,B)*100)+'%</div><div class="bzb">'+(fr!==-1?'<button data-b="assign" data-i="'+i+'">👔 '+bizWho(B,fr)+' 배정</button>':'<button class="bzg">빈 담당자가 없어요</button>')+'</div>'
+         :'<div>📞 '+bizWho(B,d.rep)+' 협상 중 · 성공 확률 '+Math.round(bizChance(d,B)*100)+'%'+(need?' · <b style="color:#c0392b">협상 포인트 대응 필요!</b>'+(B.mgr?' <small>(5분 지나면 팀장이 대신)</small>':''):' · 남은 '+bizMin((d.asked?1-d.p:0.5-d.p)*d.dur*bizDurK(B,d)))+'</div><div class="bzp"><i style="width:'+Math.round(d.p*100)+'%"></i></div>'+
+          '<div class="bzb">'+(need?'<button class="bzy" data-b="quiz" data-i="'+i+'">❗ 협상 포인트 대응</button>':'')+'<button class="bzg" data-b="rush" data-i="'+i+'">⚡ 즉시 완료 ₩1,200</button></div>')+'</div>'; }); }
   else if(BIZ.tab==='later'){ if(!B.later.length) list='<div class="bzc">재영업할 고객이 없어요. 결렬되거나 마감이 지난 거래가 여기로 와요.</div>';
     B.later.forEach((l,i)=>{ const ok=now>=l.retry; list+='<div class="bzc"><h4>📇 '+l.co+' <small>· '+l.why+'</small></h4>'+l.title+'<div>다시 영업하면 $'+Math.round(l.val*0.9/10)*10+' · 성공 '+Math.round(Math.min(0.85,l.ch0+0.1)*100)+'% (관계가 생겨 조금 쉬워요)</div><div class="bzb">'+(ok?'<button data-b="retry" data-i="'+i+'">📞 다시 영업</button>':'<button class="bzg">'+bizMin(l.retry-now)+' 뒤에 연락 가능</button>')+'</div></div>'; }); }
-  else { const r=bizCost('rep'), dk=bizCost('desk'), rc=bizCost('room');
-    list='<div class="bzc"><h4>👔 영업 사원 '+B.reps+'명 <small>· 책상 '+B.desks+'개</small></h4>사원 한 명이 거래 하나를 협상해요. 책상 수만큼 채용할 수 있어요.<div class="bzb">'+(B.reps<B.desks?'<button data-b="rep">채용 $'+r+'</button>':'<button class="bzg">책상이 먼저 필요해요</button>')+'</div></div>'+
-      '<div class="bzc"><h4>🪑 책상 추가 <small>· '+B.desks+'/6</small></h4><div class="bzb">'+(B.desks<6?'<button data-b="desk">책상 $'+dk+'</button>':'<button class="bzg">최대</button>')+'</div></div>'+
+  else if(BIZ.tab==='team'){ const mc=bizCost('mgr'), mu=bizCost('mgrup');
+    list='<div class="bzc"><h4>👔 팀장 '+(B.mgr?B.mgr.name+' <small>Lv.'+B.mgr.lv+'</small>':'<small>없음</small>')+'</h4>'+(B.mgr?'새 거래 자동 배정 · 직접 협상(실력 '+bizSk(B,'m').toFixed(2)+') · 협상 포인트 5분 방치 시 대신 대응(정확 '+Math.round(Math.min(0.92,0.62+0.08*B.mgr.lv)*100)+'%) · 팀 평가':'팀장을 두면 거래 배정·협상 포인트를 대신 처리하고, 직접 협상도 하고, 사원을 평가해요.')+
+      '<div class="bzb">'+(B.mgr?(B.mgr.lv<5?'<button data-b="mgrup">팀장 승급 $'+mu+'</button>':'<button class="bzg">최고 직급</button>')+'<button class="bzr" data-b="eval">📋 팀 평가 (AI)</button>':'<button data-b="mgr">팀장 채용 $'+mc+'</button>')+'</div>'+(B.evalTxt?'<div style="margin-top:6px;padding:7px 9px;border-radius:10px;background:#eef1ff;color:#1b2a5a;white-space:pre-line">'+hesc(B.evalTxt)+'</div>':'')+'</div>';
+    B.reps.forEach((r,i)=>{ const on=i<B.desks; list+='<div class="bzc"><h4>'+(r.grade?'<span class="gr" style="background:'+GRC[r.grade]+'">'+r.grade+'</span>':'')+r.name+' <small>· 실력 '+r.sk.toFixed(2)+' · 계약 '+r.won+' · 결렬 '+r.lost+(on?'':' · 책상 없음')+'</small></h4>'+(r.note?'<div>'+hesc(r.note)+'</div>':'')+'</div>'; });
+    list+='<div class="bzc"><div class="bzb">'+(B.reps.length<B.desks?'<button data-b="rep">👔 사원 채용 $'+bizCost('rep')+'</button>':'<button class="bzg">책상이 먼저 필요해요</button>')+'</div></div>'; }
+  else if(BIZ.tab==='hr'){ list=hrHTML(); }
+  else { const dk=bizCost('desk'), rc=bizCost('room');
+    list='<div class="bzc"><h4>🪑 책상 추가 <small>· '+B.desks+'/6</small></h4>책상 수만큼 사원을 둘 수 있어요<div class="bzb">'+(B.desks<6?'<button data-b="desk">책상 $'+dk+'</button>':'<button class="bzg">최대</button>')+'</div></div>'+
       '<div class="bzc"><h4>🧑‍💼 회의실 Lv.'+B.room+'/3</h4>협상 시간 -15% · 성공 확률 +5% (단계마다)<div class="bzb">'+(B.room<3?'<button data-b="room">업그레이드 $'+rc+'</button>':'<button class="bzg">최대</button>')+'</div></div>'+
       (B.log.length?'<div class="bzc"><h4>최근 결과</h4>'+B.log.join('<br>')+'</div>':''); }
-  const nl=B.later.filter(l=>now>=l.retry).length;
-  u.innerHTML='<div class="bzh"><b>💼 비즈니스 팀 <small style="font:800 12px var(--b);color:#4a5a8a">계약 '+B.won+' · 결렬 '+B.lost+'</small></b><button data-b="close">🏬 매장으로</button></div>'+
-    '<div class="bzs"><div class="bzt"><button data-b="tab" data-i="0" class="'+(BIZ.tab==='deal'?'on':'')+'">거래 '+B.deals.length+'</button><button data-b="tab" data-i="1" class="'+(BIZ.tab==='later'?'on':'')+'">재영업 '+B.later.length+(nl?' 🔔':'')+'</button><button data-b="tab" data-i="2" class="'+(BIZ.tab==='office'?'on':'')+'">사무실</button></div><div class="bzl">'+list+'</div></div>'; }
-function bizAct(k,i){ const B=bizS();
+  const nl=B.later.filter(l=>now>=l.retry).length, hp=hrPool().length;
+  u.innerHTML='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀 <small style="font:800 12px var(--b);color:#cfd8ff">계약 '+B.won+' · 결렬 '+B.lost+'</small></b><button data-b="close">🏬 매장으로</button></div>'+
+    '<div class="bzs"><div class="bzt">'+[['deal','거래 '+B.deals.length],['later','재영업 '+B.later.length+(nl?'🔔':'')],['team','팀'+(B.mgr?'':' ⚠')],['office','사무실'],['hr','인사'+(hp?' '+hp:'')]].map(([k,n])=>'<button data-b="tab" data-i="'+k+'" class="'+(BIZ.tab===k?'on':'')+'">'+n+'</button>').join('')+'</div><div class="bzl">'+list+'</div></div>';
+  if(BIZ.tab==='hr') S.hrSeen=1; }
+function bizAct(k,i){ const B=bizS(); const n=+i;
   if(k==='close'){ bizClose(); return; }
-  if(k==='tab'){ BIZ.tab=['deal','later','office'][i]||'deal'; bizPaint(true); return; }
-  if(k==='assign'){ const d=B.deals[i], r=bizFreeRep(); if(!d||r<0) return; d.st='nego'; d.rep=r; d.p=0; try{ snd('confirm',0.4); }catch(_){} }
-  else if(k==='quiz'){ const d=B.deals[i]; if(d) bizQuiz(d); return; }
-  else if(k==='rush'){ const d=B.deals[i]; if(!d) return; if(!d.asked) d.asked=1; d.p=1; bizFinish(d); }
-  else if(k==='retry'){ const l=B.later[i]; if(!l||Date.now()<l.retry) return; B.later.splice(i,1); const d=bizNewDeal(l.qi,l.sz,l); BIZ.tab='deal'; try{ toast('📞 '+d.co+'에 다시 연락했어요',2); }catch(_){} }
-  else if(k==='rep'||k==='desk'||k==='room'){ const c=bizCost(k); if(k==='rep'&&B.reps>=B.desks) return; if(money<c){ toast('💰 $'+(c-money)+' 더 필요해요',2); return; } money-=c; if(k==='rep') B.reps++; else if(k==='desk') B.desks=Math.min(6,B.desks+1); else B.room=Math.min(3,B.room+1); try{ snd('level_up',0.5,1.2); }catch(_){} }
+  if(k==='tab'){ BIZ.tab=i||'deal'; if(i==='hr') hrRun(); bizPaint(true); return; }
+  if(k==='assign'){ const d=B.deals[n], r=bizFreeRep(B); if(!d||r===-1) return; d.st='nego'; d.rep=r; d.p=0; try{ snd('confirm',0.4); }catch(_){} }
+  else if(k==='quiz'){ const d=B.deals[n]; if(d) bizQuiz(d); return; }
+  else if(k==='rush'){ const d=B.deals[n]; if(!d) return; if(!d.asked) d.asked=1; d.p=1; bizFinish(B,d,true); }
+  else if(k==='retry'){ const l=B.later[n]; if(!l||Date.now()<l.retry) return; B.later.splice(n,1); const d=bizNewDeal(l.qi,l.sz,l); BIZ.tab='deal'; try{ toast('📞 '+d.co+'에 다시 연락했어요',2); }catch(_){} }
+  else if(k==='eval'){ bizEval(); return; }
+  else if(k==='hrgo'){ hrApply(i); return; }
+  else if(['rep','desk','room','mgr','mgrup'].includes(k)){ const c=bizCost(k); if(k==='rep'&&B.reps.length>=B.desks) return; if(k==='mgr'&&B.mgr) return; if(money<c){ toast('💰 $'+(c-money)+' 더 필요해요',2); return; } money-=c;
+    if(k==='rep') B.reps.push(bizNewRep(B.reps.length)); else if(k==='desk') B.desks=Math.min(6,B.desks+1); else if(k==='room') B.room=Math.min(3,B.room+1);
+    else if(k==='mgr'){ const used=Object.values(S.bizBy).map(x=>x.mgr&&x.mgr.name); B.mgr={name:BIZ_MGRN.find(x=>!used.includes(x))||'팀장',lv:1}; try{ bigBanner('👔 '+B.mgr.name+' 팀장 합류!','거래 배정·협상·팀 평가를 맡아요'); }catch(_){} }
+    else if(k==='mgrup'&&B.mgr&&B.mgr.lv<5){ B.mgr.lv++; try{ bigBanner('👔 '+B.mgr.name+' 팀장 승급!','Lv.'+B.mgr.lv+' · 협상 실력과 정확도가 올라요'); }catch(_){} }
+    try{ snd('level_up',0.5,1.2); }catch(_){} }
   try{ save(); }catch(_){} bizPaint(true); bizBadge(); }
 function bizQuiz(d){ const Q=CORPQ[d.qi]||CORPQ[0]; const opts=shuffle(Q.a.map((t,i)=>({t,ok:i===0})));
   openModal('<h2>💼 법인 협상 포인트</h2><p style="font-size:15px"><b>"'+Q.q+'"</b><br><small>맞히면 성공 확률 +25%, 틀리면 -20%</small></p>'+quizBtns(opts,['#7a8cff','#3443c8','#1f2a8a']));
   $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; const ok=opts[+b.dataset.qa].ok; $('modal').classList.remove('on'); $('mbox').onclick=null;
     d.asked=1; d.ch=Math.max(0.05,Math.min(0.95,d.ch+(ok?0.25:-0.2))); try{ if(ok){ snd('confirm',0.5); toast('✔ '+(Q.why||'좋은 제안이에요'),3); } else { sfxWarn(); toast('✖ 고객이 망설여요… 성공 확률이 내려갔어요',3); } }catch(_){} try{ save(); }catch(_){} bizPaint(true); }; }
+/* 팀장 평가: 성적으로 등급을 매기고(A~D), AI가 한 줄 평을 쓴다. A는 실력 +0.04, D는 -0.02 */
+function bizGrade(r){ const n=r.won+r.lost, wr=n?r.won/n:0.5, sc=wr*60+(r.sk-0.85)*120+Math.min(n,10)*2; return sc>=70?'A':sc>=52?'B':sc>=36?'C':'D'; }
+function bizEval(){ const B=bizS(); if(!B.mgr||!B.reps.length) return; B.reps.forEach(r=>{ r.grade=bizGrade(r); r.sk=+Math.max(0.8,Math.min(1.35,r.sk+(r.grade==='A'?0.04:r.grade==='D'?-0.02:0))).toFixed(2); });
+  const fall=()=>{ const T={A:'계약 성사율이 높아요. 큰 거래를 먼저 맡겨요.',B:'안정적이에요. 협상 포인트 대응만 다듬으면 A예요.',C:'결렬이 잦아요. 소형 거래로 경험을 쌓게 해요.',D:'코칭이 필요해요. 당분간 팀장과 함께 협상해요.'}; B.reps.forEach(r=>r.note=T[r.grade]); B.evalTxt='👔 '+B.mgr.name+' 팀장 평가 (시뮬레이터)\n계약 '+B.won+'건 · 결렬 '+B.lost+'건 · 회의실 Lv.'+B.room; };
+  fall(); B.evalAt=Date.now(); try{ save(); }catch(_){} bizPaint(true);
+  try{ if(!(window.TycoonAI&&TycoonAI.callAI)) return; const lines=B.reps.map(r=>r.name+' — 등급 '+r.grade+', 실력 '+r.sk+', 계약 '+r.won+', 결렬 '+r.lost).join('\n');
+    TycoonAI.callAI({kind:'bizeval',max_tokens:240,temperature:0.6,messages:[{role:'system',content:'너는 가상의 전자제품 회사 B2B 영업팀 팀장이다. 사원마다 한 줄 평을 쓴다. 형식은 반드시 한 줄에 "이름: 평가" 하나씩, 평가는 한국어 존댓말 한 문장(40자 이내)이다. 주어진 등급·숫자만 근거로 쓰고 다른 말은 하지 않는다.'},{role:'user',content:'팀장 '+B.mgr.name+'(Lv.'+B.mgr.lv+')\n'+lines}]})
+      .then(r=>{ if(!r||!r.ok||!r.text) return; let n=0; r.text.split('\n').forEach(l=>{ const m=l.match(/^\s*([^:：]+)[:：]\s*(.+)$/); if(!m) return; const rp=B.reps.find(x=>x.name===m[1].trim()); if(rp){ rp.note=m[2].trim().slice(0,60); n++; } });
+        if(n){ B.evalTxt='👔 '+B.mgr.name+' 팀장 평가 (AI · '+(r.ms||'-')+'ms)\n계약 '+B.won+'건 · 결렬 '+B.lost+'건'; try{ save(); }catch(_){} if(BIZ.open&&BIZ.tab==='team') bizPaint(true); } }).catch(()=>{}); }catch(e){} }
+/* ---- 인사 이동: 다른 지점에 남은 직원·사원을 AI가 평가해 현재 매장 / 비즈니스 팀 / 본사 / 잔류로 추천 ---- */
+var HR={recs:null,src:''};
+function hrPool(){ const out=[]; try{ const snap=S.branchSnap||{}; Object.keys(snap).forEach(k=>{ if(+k===STG) return; (snap[k].crew||[]).forEach((c,j)=>{ if(c&&!c.hrOut) out.push({kind:'crew',stg:+k,j,c}); }); });
+    if(S.bizBy) Object.keys(S.bizBy).forEach(k=>{ if(+k===STG) return; (S.bizBy[k].reps||[]).forEach((r,j)=>out.push({kind:'rep',stg:+k,j,c:r})); }); }catch(e){} return out; }
+function hrRule(p){ const c=p.c; if(p.kind==='rep'){ const B=bizS(); return B.reps.length<B.desks?{to:'biz',why:'지금 매장 비즈니스 팀에 빈 책상이 있어요'}:{to:'stay',why:'이 매장 팀에 책상이 생기면 데려와요'}; }
+  const vac=!S.crew.some(x=>x.role===c.role&&!x.extra)&&S.day>=(ROLE_UNLOCK[c.role]||0), sc=(c.lv||1)*10+(c.acc||0.85)*40+(c.spd||1)*20+(c.sat==null?70:c.sat)/5;
+  if(vac) return {to:'here',why:'지금 매장에 '+((ROLES[c.role]||{}).n||c.role)+' 자리가 비어 있어요'};
+  if((c.lv||1)>=3||sc>=95) return {to:'hq',why:'실력이 좋아 본사에서 더 크게 쓸 수 있어요'};
+  if(bizOn()){ const B=bizS(); if(B.reps.length<B.desks&&(c.acc||0)>=0.88) return {to:'biz',why:'정확하고 말을 잘해 영업에 어울려요'}; }
+  return {to:'stay',why:'원래 매장에서 계속 일하는 게 좋아요'}; }
+function hrRun(){ const P=hrPool(); HR.recs=P.map(p=>Object.assign({},hrRule(p))); HR.src='시뮬레이터';
+  try{ if(!P.length||!(window.TycoonAI&&TycoonAI.callAI)) return; const lines=P.map((p,i)=>(i+1)+'. '+p.c.name+' — '+STS[p.stg]+' '+(p.kind==='rep'?'비즈니스 사원(실력 '+p.c.sk+', 계약 '+p.c.won+')':((ROLES[p.c.role]||{}).n||p.c.role)+' Lv.'+(p.c.lv||1)+' 정확 '+Math.round((p.c.acc||0.85)*100)+'% 만족 '+(p.c.sat==null?70:p.c.sat))+' · 기본 추천: '+HR.recs[i].to).join('\n');
+    const B=bizS(), vac=Object.keys(ROLES).filter(r=>!S.crew.some(x=>x.role===r&&!x.extra)&&S.day>=(ROLE_UNLOCK[r]||0)).map(r=>ROLES[r].n).join(', ')||'없음';
+    TycoonAI.callAI({kind:'hrmove',max_tokens:320,temperature:0.4,messages:[{role:'system',content:'너는 가상의 전자제품 회사 AI 인사팀이다. 다른 지점에 남은 직원마다 갈 곳을 하나 고른다: here(지금 매장), biz(지금 매장 비즈니스 팀), hq(본사), stay(잔류). 형식은 반드시 한 줄에 "번호|갈곳|이유" 하나씩, 이유는 한국어 존댓말 25자 이내. 기본 추천을 존중하되 더 나은 근거가 있을 때만 바꾼다. 다른 말은 하지 않는다.'},{role:'user',content:'지금 매장: '+STS[STG]+' · 빈 자리: '+vac+' · 비즈니스 팀 빈 책상: '+Math.max(0,B.desks-B.reps.length)+'\n'+lines}]})
+      .then(r=>{ if(!r||!r.ok||!r.text) return; let n=0; r.text.split('\n').forEach(l=>{ const m=l.match(/^\s*(\d+)\s*\|\s*(here|biz|hq|stay)\s*\|\s*(.+)$/i); if(!m) return; const k=+m[1]-1; if(HR.recs[k]){ HR.recs[k]={to:m[2].toLowerCase(),why:m[3].trim().slice(0,40)}; n++; } });
+        if(n){ HR.src='AI · '+(r.ms||'-')+'ms'; if(BIZ.open&&BIZ.tab==='hr') bizPaint(true); } }).catch(()=>{}); }catch(e){} }
+var HRN={here:'🏬 지금 매장',biz:'💼 비즈니스 팀',hq:'🏢 본사 추천',stay:'📍 잔류'};
+function hrHTML(){ const P=hrPool(); if(!P.length) return '<div class="bzc">다른 지점에 남은 직원이 없어요. 새 지점으로 옮기면 이전 지점 직원·사원은 그 지점에 남아 일하고, 여기서 AI 추천으로 데려올 수 있어요.</div>';
+  if(!HR.recs||HR.recs.length!==P.length) hrRun();
+  return '<div class="bzc" style="background:#eef1ff">🤖 AI 인사팀 추천 <small>('+HR.src+')</small><br>이동하면 이동비(급여 3일치)가 들어요. 본사로 보내면 추천 보너스를 받아요.</div>'+P.map((p,i)=>{ const R=HR.recs[i]||{to:'stay',why:''}, c=p.c;
+    return '<div class="bzc"><h4>'+c.name+' <small>· '+STS[p.stg]+' '+(p.kind==='rep'?'비즈니스 사원 · 실력 '+c.sk:((ROLES[c.role]||{}).n||c.role)+' Lv.'+(c.lv||1))+'</small></h4>추천: <b>'+HRN[R.to]+'</b> — '+hesc(R.why)+
+      '<div class="bzb">'+(R.to!=='stay'?'<button class="bzr" data-b="hrgo" data-i="'+i+':'+R.to+'">추천대로 이동</button>':'')+['here','biz','hq'].filter(t=>t!==R.to).map(t=>'<button class="bzg" data-b="hrgo" data-i="'+i+':'+t+'">'+{here:'🏬 매장',biz:'💼 비즈니스',hq:'🏢 본사'}[t]+'</button>').join('')+'</div></div>'; }).join(''); }
+function hrApply(arg){ const [si,to]=String(arg).split(':'), P=hrPool(), p=P[+si]; if(!p) return; const c=p.c, B=bizS(), wage=c.wage||30, fee=Math.round(wage*3);
+  if(to==='here'){ if(p.kind!=='crew'){ toast('비즈니스 사원은 매장 직원으로 못 가요',2); return; } if(S.crew.some(x=>x.role===c.role&&!x.extra)){ toast('지금 매장에 같은 자리가 이미 차 있어요',2.2); return; } if(money<fee){ toast('💰 이동비 $'+fee+'가 필요해요',2); return; }
+    money-=fee; S.branchSnap[p.stg].crew.splice(p.j,1); const nc=Object.assign({},c,{hiredDay:S.day,sat:Math.min(100,(c.sat==null?70:c.sat)+5)}); S.crew.push(nc); try{ addStaff(nc.role,nc); }catch(_){} try{ bigBanner('🔁 '+nc.name+' 전환 배치!',STS[p.stg]+' → '+STS[STG]); }catch(_){} }
+  else if(to==='biz'){ if(!bizOn()){ toast('비즈니스 팀은 서울부터 열려요',2); return; } if(B.reps.length>=B.desks){ toast('비즈니스 팀에 빈 책상이 없어요',2); return; } if(money<fee){ toast('💰 이동비 $'+fee+'가 필요해요',2); return; } money-=fee;
+    let rp; if(p.kind==='rep'){ S.bizBy[p.stg].reps.splice(p.j,1); rp=Object.assign({},c); } else { S.branchSnap[p.stg].crew.splice(p.j,1); rp=bizNewRep(B.reps.length,{name:c.name,sk:+(0.8+(c.acc||0.85)*0.3+0.03*(c.lv||1)).toFixed(2),face:c.face}); }
+    B.reps.push(rp); try{ bigBanner('💼 '+rp.name+' 비즈니스 팀 합류!','실력 '+rp.sk); }catch(_){} }
+  else if(to==='hq'){ let bonus=200; try{ bonus=Math.round(baseGoal(S.day)*0.3*((c.lv||1)+(p.kind==='rep'?Math.max(0,(c.sk-1)*10):0))/10)*10; }catch(_){} if(p.kind==='rep') S.bizBy[p.stg].reps.splice(p.j,1); else S.branchSnap[p.stg].crew.splice(p.j,1);
+    money+=bonus; S.hqSent=(S.hqSent||0)+1; try{ bigBanner('🏢 '+c.name+' 본사 발령!','추천 보너스 +$'+bonus); confetti(player.pos.x,2.5,player.pos.z); }catch(_){} }
+  HR.recs=null; try{ save(); snd('level_up',0.5,1.1); }catch(_){} if($('bizUI')&&BIZ.open) bizPaint(true); else if($('hrList')) hrModal(); bizBadge(); }
+/* 직원 관리 화면에서도 인사 이동 (서울 전에는 모달로) */
+function hrModal(){ const P=hrPool(); if(!HR.recs||HR.recs.length!==P.length) hrRun(); openModal('<h2>🔁 인사 이동</h2><p style="font-size:12px;margin:-4px 0 6px">다른 지점에 남은 직원을 AI 인사팀이 추천해요 ('+HR.src+') · 이동비 급여 3일치</p><div id="hrList">'+(P.length?P.map((p,i)=>{ const R=HR.recs[i]||{to:'stay',why:''}, c=p.c; return '<div class="dstat" style="display:block;text-align:left"><b>'+c.name+'</b> <small>'+STS[p.stg]+' · '+(p.kind==='rep'?'비즈니스 사원':((ROLES[c.role]||{}).n||c.role)+' Lv.'+(c.lv||1))+'</small><br><small>추천: <b>'+HRN[R.to]+'</b> — '+hesc(R.why)+'</small><div style="display:flex;gap:6px;margin-top:4px">'+['here','biz','hq'].map(t=>'<button data-hr="'+i+':'+t+'" style="flex:1;margin:0;height:34px;font-size:12px;'+(t===R.to?'':'background:#c9c2b4;box-shadow:none')+'">'+{here:'🏬 매장',biz:'💼 비즈니스',hq:'🏢 본사'}[t]+'</button>').join('')+'</div></div>'; }).join(''):'<p>다른 지점에 남은 직원이 없어요</p>')+'</div><button class="gray" id="mOk">닫기</button>');
+  $('mbox').onclick=e=>{ const b=e.target.closest('[data-hr]'); if(b){ e.stopPropagation(); hrApply(b.dataset.hr); return; } if(e.target.id==='mOk') closeModalUI(); }; }
+(function(){ const _o=openCrew; openCrew=function(){ const r=_o.apply(this,arguments); try{ const n=hrPool().length; if(n&&!$('hrBtn')){ const h=$('mbox').querySelector('h2'); const b=document.createElement('button'); b.id='hrBtn'; b.style.cssText='background:linear-gradient(#9b7bff,#6a46e8);box-shadow:0 4px 0 #3a1fa0;height:40px;font-size:14px;margin:4px 0'; b.textContent='🔁 다른 지점 직원 '+n+'명 · AI 인사 이동'; b.onclick=e=>{ e.stopPropagation(); if(bizOn()){ closeModalUI(); BIZ.tab='hr'; bizOpen(); } else hrModal(); }; if(h) h.after(b); } }catch(e){} return r; }; })();
 /* 매장의 법인 손님 → 비즈니스 팀으로 넘기기 */
 function bizHandoff(c){ const Q=c.cq||CORPQ[0], qi=Math.max(0,CORPQ.indexOf(Q)), co=(Q.q.match(/^\[([^\]]+)\]/)||[])[1]||'법인 고객';
   openModal('<h2>💼 법인 고객 · '+co+'</h2><p style="font-size:15px">"'+Q.q.replace(/^\[[^\]]+\]\s*/,'')+'"<br><small>큰 거래는 매장에서 바로 팔지 않고 <b>비즈니스 팀</b>이 계약을 진행해요</small></p><button id="bizGo" style="background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 4px 0 #1f2a8a">💼 비즈니스 팀에 연결</button>');
   $('bizGo').onclick=e=>{ e.stopPropagation(); closeQuiz(); const d=bizNewDeal(qi); S.stats.ok++; c.happy=1; custLeave(c,true,0); try{ floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'💼 비즈니스 팀 연결!','say'); toast('💼 '+d.co+' 거래가 사무실에 생겼어요 ($'+d.val+')',2.8); }catch(_){} try{ save(); }catch(_){} bizBadge(); }; }
-setInterval(bizTick,1000); setTimeout(()=>{ BIZ.lastT=S.biz&&S.biz.lastT?S.biz.lastT:Date.now(); bizTick(); },600);
-setInterval(()=>{ if(S.biz) S.biz.lastT=Date.now(); },5000);
+setInterval(bizTick,1000); setTimeout(()=>{ BIZ.lastT=S.bizLastT||Date.now(); bizTick(); },600);
+setInterval(()=>{ S.bizLastT=Date.now(); },5000);
+
 function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!FTSKIP&&!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
@@ -3691,7 +3805,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
 { titleOn=false; titleK=0; document.body.classList.remove('title');
   const _tt=$('title'); if(_tt) _tt.style.display='none'; beginPlay(); }
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else offResume(); });
-try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
+try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
 window.__H={camdbg:()=>{ try{ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)), vh=camVH(), sp=camSpan(vh,a,cam.zoom); return {vh:+vh.toFixed(3),mar:CAMUI.marPx,a:+a.toFixed(4),zoom:+cam.zoom.toFixed(3),tz:+camT.z.toFixed(3),tx:+camT.x.toFixed(3),dzMax:+sp.dzMax.toFixed(3),dzMin:+sp.dzMin.toFixed(3),dxMax:+sp.dxMax.toFixed(3),dxMin:+sp.dxMin.toFixed(3),W:innerWidth,H:innerHeight}; }catch(e){ return 'err '+e; } },tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
 probe:(wx,wz,secs)=>{ const dt=1/60, n=Math.max(1,Math.round((secs||1)*60)), sp=5.6*(1+0.1*S.up.spd);
   const l=Math.hypot(wx,wz)||1, k=sp*dt/l; const tr=[]; let stall=0, jump=0, prev=[player.pos.x,player.pos.z];

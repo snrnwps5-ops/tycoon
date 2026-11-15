@@ -1,9 +1,9 @@
 module.exports={name:'비즈니스 팀: 법인 손님 연결 · 배정 · 협상 포인트 · 성공/결렬 · 재영업', async run({browser,mode,assert}){ const L=require('./lib');
-  const T=await L.open(browser,mode,{state:{day:9,curStage:2,money:50000,dayStars:Array(9).fill(3),sysSeen:{1:1,2:1},biz:null}}); await T.startDay(); await L.W(1500);
+  const T=await L.open(browser,mode,{state:{day:9,curStage:2,money:50000,dayStars:Array(9).fill(3),sysSeen:{1:1,2:1},bizBy:{},branchSnap:{}}}); await T.startDay(); await L.W(1500);
   assert(await T.ev(()=>{ const b=document.getElementById('bizBtn'); return !!b&&getComputedStyle(b).display!=='none'; }),'서울인데 비즈니스 버튼이 없어요');
   // 매장 법인 손님 → 연결
   await T.ev(()=>{ const P=window.__T.player.pos; P.x=-6; P.z=-7; });
-  let c=null; for(let i=0;i<60&&!c;i++){ c=await T.ev(()=>{ window.__T.spawn(); const c=window.__T.custs.find(x=>x.type==='corp'); if(!c) return null; window.__cc=c; return 1; }); if(!c) await L.W(100); }
+  let c=null; for(let i=0;i<60&&!c;i++){ c=await T.ev(()=>{ window.__T.spawn(); const c=window.__T.custs.find(x=>x.type==='corp')||window.__T.custs.find(x=>x.st!=='leave'); if(!c) return null; c.type='corp'; window.__cc=c; return 1; }); if(!c) await L.W(100); }
   assert(c,'법인 손님을 만들지 못했어요');
   if(c){ const m0=await T.ev(()=>window.__T.money), r0=await T.ev(()=>window.__T.rev); await T.ev(()=>window.__T.openQuiz(window.__cc)); await L.W(400);
     assert(/비즈니스 팀에 연결/.test(await T.modalText()),'법인 손님에게 연결 버튼이 안 나와요');
