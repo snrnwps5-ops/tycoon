@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='1795640000';
+<script>try{(function(){var V='1795710000';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
 <meta name="robots" content="noindex">
-<title>메가 테크 슈퍼스토어 타이쿤 v2.31 · 2D 테스트 모드 (AI QA)</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.60 · 2D 테스트 모드 (AI QA)</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -51,7 +51,7 @@ canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;heigh
 #subR{position:fixed;right:10px;top:calc(62px + env(safe-area-inset-top));z-index:6;display:flex;gap:5px}#subR .chip2{position:relative;min-width:34px;height:30px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 8px;font-size:13px;cursor:pointer;pointer-events:auto;background:rgba(20,30,60,.72)}#subR .chip2::after{content:"";position:absolute;left:-2px;right:-2px;top:-7px;bottom:-7px}#subR .chip2:active{transform:scale(.94)}#loadChip{background:rgba(47,111,216,.88)!important}#stn{max-width:calc(100% - 86px)!important}#dayBar{top:calc(72px + var(--subH,58px) + env(safe-area-inset-top))!important}#combo{top:calc(env(safe-area-inset-top,0px) + 124px + var(--subH,58px))!important}#toast{top:calc(104px + var(--subH,58px) + env(safe-area-inset-top))!important}@media (max-width:374px){#loadChip span{display:none}#sub{max-width:calc(100% - 146px)}}body.title #modal{z-index:45}#tLoad{margin-top:12px;border:1px solid rgba(255,255,255,.5);background:rgba(6,12,40,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font:800 14px var(--b);border-radius:14px;padding:10px 20px;animation:tup .7s .6s backwards}
 .chip2{padding:4px 9px 5px;border-radius:11px;background:rgba(20,30,60,.55);color:#fff;font:900 12px var(--b);white-space:nowrap}
 #labels{position:fixed;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.lb{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font:900 13px var(--b);color:#2a2a3a;background:#fff;border-radius:12px;padding:4px 9px 5px;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.lb{position:absolute;transform:translate(-50%,-100%);white-space:normal;word-break:keep-all;overflow-wrap:anywhere;max-width:min(84vw,300px);text-align:left;line-height:1.25;font:900 13px var(--b);color:#2a2a3a;background:#fff;border-radius:12px;padding:4px 9px 5px;box-shadow:0 3px 0 rgba(0,0,0,.18)}
 .lb:after{content:'';position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:#fff}
 .lb.need{background:#ff5a4a;color:#fff}.lb.need:after{border-top-color:#ff5a4a}
 .lb.tier0{background:#8a7a6a;color:#fff}.lb.tier0:after{border-top-color:#8a7a6a}
@@ -96,9 +96,11 @@ canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;heigh
 #help.on{opacity:1;pointer-events:auto;transform:translateX(-50%) scale(1);animation:hp 1s ease-in-out infinite}@keyframes hp{50%{transform:translateX(-50%) scale(1.06)}}
 #help b{display:block;font-family:var(--d);font-size:17px;color:#fff;text-shadow:0 2px 0 #b85a00;white-space:nowrap}#help span{font:900 11px var(--b);color:#7a3a00}
 #dayBar{position:fixed;left:50%;top:calc(98px + env(safe-area-inset-top));transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:8px;padding:6px 12px 10px;border-radius:14px;background:rgba(20,30,60,.72);color:#fff;font:900 13px var(--b);white-space:nowrap;pointer-events:none}
+/* v2.60: 유틸리티 창이 떠 있는 동안 영업이 멈춘 것을 상단 띠로 알린다 */
+#dayBar.pz{background:rgba(84,94,146,.94);box-shadow:0 0 0 2px rgba(255,217,138,.55)}#dbPause{color:#ffd98a;font:900 12px var(--b)}
 #dayBar b{font-family:var(--d);font-size:15px;color:#ffd23f}#dayBar #dbComp.bad{color:#ff6a6a}#dayBar #dbT.low{color:#ff6a6a}
 #dayBar i{position:absolute;left:10px;right:10px;bottom:4px;height:4px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}#dayBar i s{display:block;height:100%;background:#7bea62;width:0}
-.dres{display:flex;justify-content:center;gap:6px;margin:4px 0 10px}.dres i{font-style:normal;font-size:38px;color:#d8cdb8;text-shadow:0 3px 0 rgba(0,0,0,.15)}.dres i.on{color:#ffcf3a}
+.dres{display:flex;justify-content:center;gap:6px;margin:2px 0 6px}.dres i{font-style:normal;font-size:32px;color:#d8cdb8;text-shadow:0 3px 0 rgba(0,0,0,.15)}.dres i.on{color:#ffcf3a}
 .dstat{background:#fff;border-radius:12px;padding:8px 10px;margin:6px 0;text-align:left;font:800 13px var(--b);color:#5a3a20;display:flex;justify-content:space-between}.dstat.ok b{color:#2faa45}.dstat.no b{color:#e8342a}
 .dlist{max-height:52vh;overflow:auto;text-align:left}.dli{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:8px 10px;margin:6px 0}.dli b{font-family:var(--d);font-size:16px;color:#4a2a10;flex:1}.dli small{font:700 11px var(--b);color:#8a6a4a;display:block}.dli em{font-style:normal;color:#ffcf3a;font-size:16px}.dli.lock{opacity:.5}
 #hint{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom));transform:translateX(-50%);padding:8px 16px;border-radius:18px;background:rgba(20,30,60,.6);color:#fff;font:900 14px var(--b);white-space:nowrap;z-index:5;pointer-events:none;transition:opacity .3s}
@@ -308,7 +310,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 .dirAI{margin:10px 0 2px;border:2px solid #27386b;border-radius:14px;background:linear-gradient(#233a6b,#16233f);color:#fff;padding:10px 12px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
 .dirAI .daih{display:flex;align-items:center;gap:6px;font:900 13px var(--b);color:#ffd98a;margin-bottom:5px;line-height:1.3}
 .dirAI .daih small{margin-left:auto;flex:none;font:800 10px var(--b);color:#c9d6ff;background:rgba(255,255,255,.14);border-radius:8px;padding:2px 6px}
-.dirAI .daib{font:700 13px/1.65 var(--b);color:#eef3ff;word-break:keep-all;overflow-wrap:anywhere}
+.dirAI .daib{font:700 12.5px/1.5 var(--b);color:#eef3ff;word-break:keep-all;overflow-wrap:anywhere}
 .dirAI.busy .daib{color:#c9d6ff}
 .dirAI.fb{border-color:#8a6a10;background:linear-gradient(#4a3a10,#2a2108)}
 .dadots{display:inline-flex;gap:4px;margin-right:6px;vertical-align:middle}
@@ -363,7 +365,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 </div>
 <div id="sub"><div class="chip2" id="stn" style="background:rgba(255,210,63,.9);color:#5a2a00"></div><div class="chip2" id="rate">★ 4.0</div><div class="chip2" id="rooms">NPS —</div><div class="chip2" id="carry"></div></div><div id="subR"><div class="chip2" id="loadChip" role="button" aria-label="저장 코드 불러오기">📂<span>&nbsp;불러오기</span></div><div class="chip2" id="saveChip" role="button" aria-label="저장">💾</div><div class="chip2" id="optChip" role="button" aria-label="설정">⚙️</div></div>
 <div id="bbar"><button id="upBtn" class="bb g"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 3l7 8h-4v9H9v-9H5z" fill="#fff"/></svg><span>업그레이드</span><i id="upDot"></i></button><button id="crewBtn" class="bb p"><svg viewBox="0 0 24 24" width="26" height="26"><circle cx="9" cy="8" r="3.5" fill="#fff"/><circle cx="16.5" cy="9" r="2.8" fill="#fff" opacity=".8"/><path d="M2.5 20c0-4 3-6.5 6.5-6.5s6.5 2.5 6.5 6.5z" fill="#fff"/><path d="M14 20c.3-2.8 1.6-5 4-5s3.6 2 3.8 5z" fill="#fff" opacity=".8"/></svg><span>직원</span><i id="crewDot"></i></button><button id="msBtn" class="bb o"><svg viewBox="0 0 24 24" width="26" height="26"><rect x="5" y="3" width="14" height="18" rx="2" fill="#fff"/><path d="M8 9h8M8 13h8M8 17h5" stroke="#ff8a1a" stroke-width="2"/></svg><span>미션</span><i id="msDot"></i></button><button id="invBtn" class="bb t"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M3 8l9-4 9 4v10l-9 4-9-4z" fill="#fff"/><path d="M3 8l9 4 9-4M12 12v10" stroke="#16a58c" stroke-width="1.6" fill="none"/></svg><span>재고</span><i id="invDot"></i></button><button id="mapBtn" class="bb b"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M7 3h10v4a5 5 0 0 1-10 0z" fill="#fff"/><path d="M7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4" stroke="#fff" stroke-width="1.6" fill="none"/><rect x="10.5" y="11" width="3" height="5" fill="#fff"/><rect x="7" y="16" width="10" height="4" rx="1" fill="#fff"/></svg><span>랭킹</span></button></div>
-<div id="stockAl" style="display:none"></div><div id="combo" style="display:none"><b></b><small></small><i><s></s></i></div><div id="dayBar"><b id="dbDay">DAY 1</b><span id="dbT">2:00</span><span id="dbRev">$0/$120</span><span id="dbComp">민원 0/3</span><i><s id="dbFill"></s></i></div>
+<div id="stockAl" style="display:none"></div><div id="combo" style="display:none"><b></b><small></small><i><s></s></i></div><div id="dayBar"><b id="dbDay">DAY 1</b><span id="dbT">2:00</span><span id="dbPause" style="display:none">⏸ 일시정지</span><span id="dbRev">$0/$120</span><span id="dbComp">민원 0/3</span><i><s id="dbFill"></s></i></div>
 <div id="hint"></div>
 <div id="toast"></div>
 <div id="big"><b id="bigT"></b><span id="bigS"></span></div>
@@ -373,7 +375,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.59</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.60</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -1394,7 +1396,7 @@ function spawnCust(){ if(dayState!=='run') return; const cfg=dayCfg(S.day); cons
   }
   c.el.className='lb'; $('labels').appendChild(c.el); ch.g.position.copy(c.pos); custs.push(c); addAura(c); }
 const faceI=(k,s,cl)=>'<u class="'+cl+'" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></u>'; let curFace=null;
-function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.gold?'💎 ':'')+(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); const sp=(c.spType&&!c.spDone)?SPCM(c):''; const full=sp?'<span class="spl">'+sp+'</span><span class="spq">'+txt+'</span>':txt; if(c._lt!==full){ c._lt=full; c.el.innerHTML=faceI(c.face,26,'fc')+full+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':'')+(sp?' sp-'+c.spType:''); c.el._w=c.el.offsetWidth||120; } }
+function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.gold?'💎 ':'')+(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); const sp=(c.spType&&!c.spDone)?SPCM(c):''; const full=sp?'<span class="spl">'+sp+'</span><span class="spq">'+txt+'</span>':txt; if(c._lt!==full){ c._lt=full; c.el.innerHTML=faceI(c.face,26,'fc')+full+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':'')+(sp?' sp-'+c.spType:''); c.el._w=c.el.offsetWidth||120; c.el._h=c.el.offsetHeight||42; } }
 function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.softLeave||c.escFail) c.quiet=1; if(c.spot){ c.spot.occ=null; c.spot=null; }
   c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?-14:14,0,11.2)];
   let stars=c.softLeave?3:(ok?4+(c.happy?1:0)-(c.waited>25?1:0):(c.miss?2:(c.walk?2:1))); if(c.detailOK) stars=5; stars=Math.max(1,Math.min(5,stars)); if(!c.quiet||ok) floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),['😡','😠','😐','🙂','😍'][stars-1],'emo'); if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; }
@@ -1421,7 +1423,7 @@ function pickBuyQ(){ const combo=S.day>=7&&Math.random()<0.7; return {q:pickQ(co
 /* v2.3: 특수 손님 응대 성공 처리 */
 function spServed(c){ if(!c||!c.spType||c.spDone) return false; c.spDone=1; c._lt=null;
   if(c.spType==='rush'){ c.rushOk=1; floatText(new THREE.Vector3(c.pos.x,2.5,c.pos.z),'⏰ 제때 응대! 매출 1.5배','say'); snd('coin',0.45,1.35); toast('⏰ 급한 손님 응대 성공 — 결제 금액 1.5배!',2.6); return true; }
-  if(c.spType==='esc'){ const b=dayComp; dayComp=Math.max(0,dayComp-0.5); floatText(new THREE.Vector3(c.pos.x,2.6,c.pos.z),'민원 -0.5','say'); qToast('✔ 책임자 응대 성공 — 민원 0.5건 만회 ('+b+' → '+dayComp+')',3); snd('level_up',0.4,1.2); haptic(15); return true; }
+  if(c.spType==='esc'){ const b=dayComp; dayComp=Math.max(0,dayComp-0.5); const _df=Math.round((b-dayComp)*10)/10; floatText(new THREE.Vector3(c.pos.x,2.6,c.pos.z),_df>0?'민원 -'+_df:'민원 0','say'); qToast(_df>0?'✔ 책임자 응대 성공 — 민원 '+_df+'건 만회 ('+b+' → '+dayComp+')':'✔ 책임자 응대 성공 — 지금은 만회할 민원이 없어요 (민원 0건)',3); snd('level_up',0.4,1.2); haptic(15); return true; }
   return false; }
 function openDetailQ(c,n){ quizOpen=true; c.st='consult'; curFace=c.face; const q=(n===1?c.dq:c.dq2)||DETQ[0]; const opts=shuffle(q.a.map((t,i)=>({t,ok:i===0})));
   openModal('<h2>📖 꼼꼼한 설명 요청</h2><p style="font-size:12px;margin:0 0 4px">연속 2문항 중 '+n+'번째 · 둘 다 맞히면 ★5 확정 + NPS +10</p><p style="font-size:16px"><b>"'+q.q+'"</b></p>'+quizBtns(opts,['#5aa8ff','#2f6fd8','#1c3f9a']));
@@ -2013,12 +2015,14 @@ const v3=new THREE.Vector3(); const fts=[];
 function place(el,p,y){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el.style.left=((v3.x+1)/2*W)+'px'; el.style.top=((1-v3.y)/2*H)+'px'; }
 /* ---- v2.1: 손님 말풍선 겹침 완화 (화면 60px 이내 → 위로 밀기) + 플레이어와 가까운 손님을 맨 위로 ---- */
 const LBV=[];
-function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el._sx=(v3.x+1)/2*W; el._sy=(1-v3.y)/2*H; el._oy=0; el._d=d||0; LBV.push(el); }
+function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el._sx=(v3.x+1)/2*W; el._sy=(1-v3.y)/2*H; el._oy=0; el._d=d||0;
+  /* v2.60: 말풍선이 화면 좌우 밖으로 나가지 않게 안쪽으로 붙인다(폭은 CSS max-width가 먼저 줄인다) */
+  const _hw=Math.min((el._w||120)/2+4,W/2); el._sx=Math.max(_hw,Math.min(W-_hw,el._sx)); LBV.push(el); }
 function lbFlush(){ if(!LBV.length) return; const L=LBV.slice().sort((a,b)=>a._sy-b._sy); const NH=42, NW=64;
   for(let i=0;i<L.length;i++){ const a=L[i];
-    for(let pass=0;pass<5;pass++){ let hit=null;
-      for(let j=0;j<i;j++){ const b=L[j]; const WX=Math.max(NW,((a._w||120)+(b._w||120))/2-8); if(Math.abs(a._sx-b._sx)<WX&&Math.abs((a._sy-a._oy)-(b._sy-b._oy))<NH){ hit=b; break; } }
-      if(!hit) break; a._oy=(hit._sy-hit._oy)+NH-a._sy; }
+    for(let pass=0;pass<5;pass++){ let hit=null, need=NH;
+      for(let j=0;j<i;j++){ const b=L[j]; const WX=Math.max(NW,((a._w||120)+(b._w||120))/2-8); need=Math.max(24,((a._h||NH)+(b._h||NH))/2-2); if(Math.abs(a._sx-b._sx)<WX&&Math.abs((a._sy-a._oy)-(b._sy-b._oy))<need){ hit=b; break; } }
+      if(!hit) break; a._oy=(hit._sy-hit._oy)+need-a._sy; }
   }
   const D=L.slice().sort((a,b)=>b._d-a._d); for(let i=0;i<D.length;i++) D[i].style.zIndex=String(i+1);
   for(let i=0;i<L.length;i++){ const el=L[i]; el.style.left=el._sx.toFixed(1)+'px'; el.style.top=(el._sy-el._oy).toFixed(1)+'px'; if(el._oy>0) el.classList.add('lift'); else el.classList.remove('lift'); }
@@ -2126,7 +2130,7 @@ function openOpt(){
     +'<div style="height:8px"></div>'
     +'<div class="srow"><div class="snm">🤖 실시간 AI: 고성능 LPU 엔진 가동 중 🟢 <span id="aiStat">(LIVE)</span><small id="aiSub">AI 면접실·본사 성적표에 실시간으로 답해요</small></div><b class="aibadge" id="aiBadge">LIVE</b></div>'
     +'<details class="aiadv"><summary>고급 · 내 API 키 등록</summary><div class="aikey"><input type="password" id="aiKey" placeholder="Groq API 키 (gsk_…)" autocomplete="off" spellcheck="false"><button type="button" id="aiKeySave">키 저장</button></div>'
-    +'<p class="shint" id="aiKeyMsg">기본 키가 내장되어 있어 보통은 건드릴 필요 없어요 · 발급: console.groq.com/keys</p></details>'
+    +'<p class="shint" id="aiKeyMsg">실시간 AI는 서버(Netlify) 프록시를 거쳐 동작해요 — 앱 안에는 키가 들어 있지 않아요. 내 Groq 키를 쓰려면 위에 입력하세요 · 발급: console.groq.com/keys</p></details>'
     +'<p class="shint">설정은 저장 코드·세이브 링크에도 함께 담겨요.</p>'
     +'<button class="gray" id="mOk">닫기</button>');
   const paint=(k,on)=>{ const b=document.querySelector('#mbox [data-opt="'+k+'"]'); if(!b) return; b.classList.toggle('on',!!on); const t=b.querySelector('b'); if(t) t.textContent=on?'ON':'OFF'; };
@@ -2429,7 +2433,10 @@ function occTick(){ if(!OCC.ok) return; try{
     if(!inn&&Math.abs(st.m.opacity-st.base)<0.03){ if(o.material===st.m) o.material=st.om; try{ st.m.dispose(); }catch(e){} OCC.on.delete(o); } });
  }catch(e){ OCC.ok=false; try{ OCC.on.forEach((st,o)=>{ if(o.material===st.m) o.material=st.om; }); OCC.on.clear(); }catch(_){} } }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
-function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now; time+=dt;
+function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now;
+  /* v2.60: 설정·상점·재고·저장 같은 유틸리티 창이 떠 있는 동안에는 영업 시계·손님 스폰·인내심·민원이 흐르지 않는다.
+     상담 퀴즈(quizOpen)는 의도된 긴장이라 제외한다. */
+  const paused=mgmtOpen(); if(paused) dt=0; time+=dt;
   // player (2D: 화면 방향 = 월드 방향, A* 자동 이동 경로 지원)
   let ix=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0), iz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0); if(joy.on&&Math.hypot(joy.dx,joy.dy)>0.15){ ix=joy.dx; iz=joy.dy; tapStop(); } else if(!ix&&!iz){ const ti=tapInput(dt); if(ti){ ix=ti[0]; iz=ti[1]; } }
   const nvv=navStep(dt); if(nvv){ ix=nvv.ix; iz=nvv.iz; }
@@ -2450,7 +2457,10 @@ function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*
   // customers
   if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); spawnT-=dt*loadK()*(cfg.spawn||1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1)*mktSpawnMul(); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=(S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5; spawnCust(); } }
   else if(dayState==='end'){ dayEndT-=dt; if(dayEndT<=0&&!quizOpen){ dayState='result'; showResult(); } }
-  { const cfg=dayCfg(S.day); $('dbDay').textContent=(STG+1)+'-'+(S.day-[0,4,8,11,15,19][STG]+1); const tt=Math.max(0,Math.ceil(dayState==='run'?dayT:cfg.dur)); $('dbT').textContent=Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0'); $('dbT').classList.toggle('low',dayState==='run'&&dayT<20); $('dbRev').textContent='$'+dayRev+'/$'+cfg.goal; $('dbComp').textContent='민원 '+dayComp+'/3'; $('dbComp').classList.toggle('bad',dayComp>=2); $('dbFill').style.width=Math.min(100,dayRev/cfg.goal*100)+'%'; }
+  { const cfg=dayCfg(S.day); $('dbDay').textContent=(STG+1)+'-'+(S.day-[0,4,8,11,15,19][STG]+1); const tt=Math.max(0,Math.ceil(dayState==='run'?dayT:cfg.dur)); $('dbT').textContent=Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0'); $('dbT').classList.toggle('low',dayState==='run'&&dayT<20); $('dbRev').textContent='$'+dayRev+'/$'+cfg.goal; $('dbComp').textContent='민원 '+dayComp+'/3'; $('dbComp').classList.toggle('bad',dayComp>=2); $('dbFill').style.width=Math.min(100,dayRev/cfg.goal*100)+'%';
+    { const _pz=$('dbPause'); if(_pz) _pz.style.display=paused?'':'none'; const _db=$('dayBar'); if(_db) _db.classList.toggle('pz',paused); }
+    /* v2.60: 사무실에 있어도 남은 영업 시간·민원을 계속 보여 준다(매장이 방치돼 영업정지되는 걸 바로 알 수 있게) */
+    const _bh=$('bizHud'); if(_bh){ if(dayState==='run'){ _bh.textContent='⏱ '+Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0')+' 남음 · 민원 '+dayComp+'/3 · 매출 $'+dayRev+'/$'+cfg.goal; _bh.style.color=dayComp>=2?'#ff9a9a':'#ffd98a'; } else { _bh.textContent='영업 중이 아니에요 · 매장은 쉬고 있어요'; _bh.style.color='#aab6e8'; } } }
   /* v2.10: 손으로 수리하는 동안에는 대기 손님 인내심이 모달 감속(0.3)의 35%로 더 천천히 줄고, 수리 중인 손님은 인내심이 줄지 않는다 */
   const repBusy=!!(quizOpen&&custs.some(x=>x.type==='fix'&&x.st==='consult'));
   for(let k=custs.length-1;k>=0;k--){ const c=custs[k]; c.speed=0;
@@ -2720,8 +2730,12 @@ function lvPreBtn(){ try{ return '<button id="dDaily" style="background:linear-g
 function lvCompactPre(){ try{ const mb=$('mbox'), go=$('dayGo'); if(!mb||!go||mb.querySelector('.lpdet')) return;
     if(!document.getElementById('lpdet-css')){ const st=document.createElement('style'); st.id='lpdet-css'; st.textContent='details.lpdet{background:#fff;border-radius:12px;padding:6px 10px;margin:6px 0;text-align:left}details.lpdet>summary{font:900 13px var(--b);color:#2f6fd8;cursor:pointer;padding:4px 0}details.lpdet .lpng{padding:0;background:none}'; document.head.appendChild(st); }
     const rows=[...mb.children].filter(el=>el.classList&&el.classList.contains('dstat')&&/영업 시간|내 직급|마지막 저장|임대료|민원 3건|주요 경쟁사/.test(el.textContent)); if(!rows.length) return;
-    const d=document.createElement('details'); d.className='lpdet'; const sm=document.createElement('summary'); sm.textContent='📋 영업 정보 · 시간 '+(((rows.find(r=>/영업 시간/.test(r.textContent))||{}).textContent||'').replace(/.*영업 시간/,'').trim()||'-'); d.appendChild(sm); rows.forEach(r=>d.appendChild(r));
-    const star=[...mb.children].find(el=>el.tagName==='DETAILS'&&el!==d); mb.insertBefore(d,star||go); }catch(e){ console.warn('compactPre',e); } }
+    const d=document.createElement('details'); d.className='lpdet'; const sm=document.createElement('summary'); sm.textContent='📋 영업 정보 · '+(rows.some(r=>/민원 3건/.test(r.textContent))?'민원 3건이면 영업 정지 · ':'')+'시간 '+(((rows.find(r=>/영업 시간/.test(r.textContent))||{}).textContent||'').replace(/.*영업 시간/,'').trim()||'-'); d.appendChild(sm); rows.forEach(r=>d.appendChild(r));
+    /* v2.60: [영업 시작!]을 핵심 조건(목표·최소 평점) 바로 아래로 올린다 — 시장 카드·전략·별 조건은 버튼 아래로 내려 첫 화면을 짧게 */
+    const core=[...mb.children].filter(el=>el.classList&&el.classList.contains('dstat')&&/목표 매출|최소 평점/.test(el.textContent));
+    const anchor=core.length?core[core.length-1]:null;
+    if(anchor&&go){ anchor.after(d); d.after(go); }
+    else { const star=[...mb.children].find(el=>el.tagName==='DETAILS'&&el!==d); mb.insertBefore(d,star||go); } }catch(e){ console.warn('compactPre',e); } }
 function lvPreBind(){ try{ lvCompactPre(); mktBind(); const b=$('dDaily'); if(b) b.onclick=()=>{ window.__rts=1; snd('ui',0.4); openDaily(); };
     const q=$('rpQuit'); if(q) q.onclick=e=>{ e.stopPropagation(); if(S.rpBack!=null){ S.day=S.rpBack; delete S.rpBack; save(); } $('modal').classList.remove('on'); setTimeout(lvGateOrStart,200); }; }catch(e){} }
 /* ---- ③ 주간 시즌: 마지막 스테이지를 다 깬 뒤(DAY 24~)는 7일 단위 시즌. 주마다 목표 +22%, 주간 테마 1개, 일요일에 별 합계로 메달 정산 ---- */
@@ -2798,7 +2812,7 @@ function lpRushPick(){ const cfg=dayCfg(S.day), T=cfg.types||[], lv=S.lvl||1, L=
   if((S.unl||[]).includes('repair')&&T.includes('fix')) L.push({k:'fix',n:'수리 {g}건 완료',g:1,t:38});
   return L[Math.floor(Math.random()*L.length)]; }
 function lpRushVal(k){ return k==='combo'?combo:(S.stats[k]||0); }
-function lpTick(dt){ try{ if(!LPC.el) return; const el=LPC.el;
+function lpTick(dt){ try{ if(!LPC.el) return; const el=LPC.el; el.style.visibility=($('modal').classList.contains('on')?'hidden':'');
     if(dayState!=='run'){ if(LPC.on&&!LPC.on.done){ LPC.on=null; el.className=''; } return; }
     const key=S.day+':'+dayCash0; if(LPC.key!==key){ LPC.key=key; LPC.on=null; LPC.next=18; el.className=''; }
     const cfg=dayCfg(S.day), el2=cfg.dur-dayT; const R=LPC.on;
@@ -2940,7 +2954,8 @@ function lvCompactResult(){ try{ const mb=$('mbox'); if(!mb||mb.querySelector('.
   const lp=mb.querySelector('.lpbox'), st=lp&&lp.querySelector('.lpst'), ch=lp&&lp.querySelector('.lpch'), ng=lp&&lp.querySelector('.lpng');
   const mg=document.getElementById('mgrEvalBox'), dir=document.getElementById('dirAI'), rcp=mb.querySelector(':scope > .rcp'), ps=kids.filter(el=>el.tagName==='P'), btns=kids.filter(el=>el.tagName==='BUTTON');
   let at=mb.querySelector('.dres'); if(!at) return; const put=el=>{ if(!el) return; at.after(el); at=el; };
-  keyRows.forEach(put); if(st) put(st); if(ch) put(ch); ps.forEach(put); btns.forEach(put); if(dir) put(dir);
+  /* v2.60: 첫 화면에 핵심 수치 → AI 총평 → [다시 도전/업그레이드] 버튼이 오도록 순서를 바꾼다 */
+  keyRows.forEach(put); if(dir) put(dir); ps.forEach(put); btns.forEach(put); if(st) put(st); if(ch) put(ch);
   const det=(title,els)=>{ els=els.filter(Boolean); if(!els.length) return null; const d=document.createElement('details'); d.className='lpdet'; const s=document.createElement('summary'); s.textContent=title; d.appendChild(s); els.forEach(e=>d.appendChild(e)); return d; };
   put(det('📋 오늘 상세 결과 · 다음 목표',otherRows.concat(ng?[ng]:[])));
   if(mg) put(mg.classList.contains('lpst')?mg:det('🏢👔 본사·매니저 평가',[mg]));
@@ -3300,8 +3315,9 @@ SHOP.splice(3,0,{id:'autopack',sp:4,ic:'🤖',n:'자동화 패키지',d:'자동 
         '<div style="font:800 12px var(--b);color:#7a2a4a;margin:3px 0 6px">매출 2배면 이번 날은 '+(rv*2>=g?'<b>바로 클리어</b>예요':'훨씬 가까워져요')+'</div>'+
         (S.boostD!==S.day?'<button id="poBoost" style="width:100%;height:44px;border:0;border-radius:12px;font:900 15px var(--b);color:#fff;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00">📈 매출 2배로 바로 재도전 · ₩2,500</button>':'<div style="font:800 12px var(--b)">📈 부스터 적용 중이에요</div>')+
         (!S.vipPass?'<button id="poVip" style="width:100%;height:38px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#9b7bff,#6a46e8);box-shadow:0 3px 0 #3a1fa0">⭐ VIP 패스 ₩9,900 · 매출 +25% 영구</button>':'')+
-        '<button id="poShop" style="width:100%;height:34px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#7a0a3a;background:#fff">🛒 상점 보기</button></div>';
-      rt.insertAdjacentHTML('beforebegin',h);
+        '<button id="poShop" style="width:100%;height:34px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#7a0a3a;background:#fff">🛒 상점 보기</button>'+
+        '<div style="font:700 11px var(--b);color:#9a5a7a;margin-top:5px">테스트 결제예요 · 실제 돈이 나가지 않아요</div></div>';
+      const _an=$('dUp')||rt; _an.insertAdjacentHTML('afterend',h);
       const pb=$('poBoost'); if(pb) pb.onclick=e=>{ e.stopPropagation(); pb.disabled=true; pb.textContent='결제 중…'; setTimeout(()=>{ S.boostD=S.day; try{ save(); snd('level_up',0.5); bigBanner('📈 매출 2배!','이번 재도전에 적용돼요'); }catch(_){} const r2=$('dRetry'); if(r2) r2.click(); },900); };
       const pv=$('poVip'); if(pv) pv.onclick=e=>{ e.stopPropagation(); pv.disabled=true; pv.textContent='결제 중…'; setTimeout(()=>{ S.vipPass=1; S.noAds=1; money+=200; try{ save(); updShopBtn(); bigBanner('⭐ VIP 패스!','매출 +25% 영구 적용'); }catch(_){} pv.remove(); },900); };
       const ps=$('poShop'); if(ps) ps.onclick=e=>{ e.stopPropagation(); openShop(); }; }catch(e){} },120); } }catch(e){} return r; }; })();
@@ -3430,7 +3446,7 @@ function bizBuild(){ if(BIZ.built) return; BIZ.built=true; try{ if(typeof floorP
     const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100); BIZ.cam=cam;
     const lb=document.createElement('div'); lb.id='bizLabels'; lb.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:31;display:none'; document.body.appendChild(lb); BIZ.labels=lb;
   }catch(e){ console.warn('bizBuild',e); BIZ.scene=null; } }
-function bizLabel(){ const el=document.createElement('div'); el.className='ft say'; el.style.cssText+=';position:absolute;transform:translate(-50%,-100%);font-size:11px;padding:2px 7px;white-space:nowrap'; BIZ.labels.appendChild(el); return el; }
+function bizLabel(){ const el=document.createElement('div'); el.className='ft say'; el.style.cssText+=';position:absolute;transform:translate(-50%,-100%);font-size:10px;line-height:1.15;padding:1px 5px;max-width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'; BIZ.labels.appendChild(el); return el; }
 function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(6,B.desks), r=Math.min(n,B.reps.length);
     BIZ.deskG.forEach((g,i)=>g.visible=i<n); BIZ.room.visible=B.room>0; BIZ.mgrG.visible=!!B.mgr;
     while(BIZ.reps.length>r){ const R=BIZ.reps.pop(); BIZ.scene.remove(R.ch.g); R.el.remove(); }
@@ -3505,7 +3521,7 @@ function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizS
       list+='<div class="bzc"><h4>'+(d.tries?'📇 ':'')+d.co+' <small>· '+Z.n+' · $'+d.val+'</small></h4>'+d.title+
         (d.st==='new'?'<div>⏳ 배정 마감까지 '+bizMin(d.dl-now)+' · 협상 약 '+bizMin(d.dur*bizDurK(B))+' · 성공 '+Math.round(bizChance(d,B)*100)+'%</div><div class="bzb">'+(fr!==-1?'<button data-b="assign" data-i="'+i+'">👔 '+bizWho(B,fr)+' 배정</button>':'<button class="bzg">빈 담당자가 없어요</button>')+'</div>'
          :'<div>📞 '+bizWho(B,d.rep)+' 협상 중 · 성공 확률 '+Math.round(bizChance(d,B)*100)+'%'+(need?' · <b style="color:#c0392b">협상 포인트 대응 필요!</b>'+(B.mgr?' <small>(5분 지나면 팀장이 대신)</small>':''):' · 남은 '+bizMin((d.asked?1-d.p:0.5-d.p)*d.dur*bizDurK(B,d)))+'</div><div class="bzp"><i style="width:'+Math.round(d.p*100)+'%"></i></div>'+
-          '<div class="bzb">'+(need?'<button class="bzy" data-b="quiz" data-i="'+i+'">❗ 협상 포인트 대응</button>':'')+'<button class="bzg" data-b="rush" data-i="'+i+'">⚡ 즉시 완료 ₩1,200</button></div>')+'</div>'; }); }
+          '<div class="bzb">'+(need?'<button class="bzy" data-b="quiz" data-i="'+i+'">❗ 협상 포인트 대응</button>':'')+'<button class="bzg" data-b="rush" data-i="'+i+'">⚡ 즉시 완료 ₩1,200</button></div><div style="font:700 10px var(--b);color:#8a7a6a;margin-top:4px">테스트 결제 · 실제 돈이 나가지 않아요</div>')+'</div>'; }); }
   else if(BIZ.tab==='later'){ if(!B.later.length) list='<div class="bzc">재영업할 고객이 없어요. 결렬되거나 마감이 지난 거래가 여기로 와요.</div>';
     B.later.forEach((l,i)=>{ const ok=now>=l.retry; list+='<div class="bzc"><h4>📇 '+l.co+' <small>· '+l.why+'</small></h4>'+l.title+'<div>다시 영업하면 $'+Math.round(l.val*0.9/10)*10+' · 성공 '+Math.round(Math.min(0.85,l.ch0+0.1)*100)+'% (관계가 생겨 조금 쉬워요)</div><div class="bzb">'+(ok?'<button data-b="retry" data-i="'+i+'">📞 다시 영업</button>':'<button class="bzg">'+bizMin(l.retry-now)+' 뒤에 연락 가능</button>')+'</div></div>'; }); }
   else if(BIZ.tab==='team'){ const mc=bizCost('mgr'), mu=bizCost('mgrup');
@@ -3521,7 +3537,7 @@ function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizS
   const nl=B.later.filter(l=>now>=l.retry).length, hp=hrPool().length;
   const need=B.deals.filter(d=>(d.st==='new'&&fr!==-1)||(d.st==='nego'&&!d.asked&&d.p>=0.5)).length;
   const tabs=[['deal','📋','거래',need],['later','📇','재영업',nl],['team','👥','팀',B.mgr?0:'!'],['office','🏢','사무실',0],['hr','🔁','인사',hp]];
-  const head='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀<small>계약 '+B.won+' · 결렬 '+B.lost+' · 사원 '+B.reps.length+'/'+B.desks+(B.mgr?' · 팀장 '+B.mgr.name:'')+'</small></b><button data-b="close">🏬 매장으로</button></div>';
+  const head='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀<small>계약 '+B.won+' · 결렬 '+B.lost+' · 사원 '+B.reps.length+'/'+B.desks+(B.mgr?' · 팀장 '+B.mgr.name:'')+'</small>'+'<small id="bizHud" style="color:#ffd98a;font-weight:900">⏱ 영업 중</small></b><button data-b="close">🏬 매장으로</button></div>';
   const tabH='<div class="bzt">'+tabs.map(([k,ic,n,c])=>'<button data-b="tab" data-i="'+k+'" class="'+(BIZ.tab===k?'on':'')+'"><i>'+ic+'</i>'+n+(c?'<em>'+c+'</em>':'')+'</button>').join('')+'</div>';
   const sc=(u.querySelector('.bzl')||{}).scrollTop||0; u.innerHTML=head+'<div class="bzs">'+tabH+'<div class="bzl">'+list+'</div></div>'; if(!full){ const l=u.querySelector('.bzl'); if(l) l.scrollTop=sc; }
   try{ const hb=u.querySelector('.bzh').getBoundingClientRect(), sb=u.querySelector('.bzs').getBoundingClientRect(); BIZ.vp={top:hb.bottom,bot:sb.top}; }catch(_){}
@@ -3619,6 +3635,8 @@ function dirData(clear){
   try{ rating=+(dayRating()||0).toFixed(1); }catch(e){}
   return { branch:(STN[STG]||'대구 동성로점'), rank:myRankName(), name:'전영훈',
     goal:goal, rev:Math.round(dayRev||0), comp:Math.round((dayComp||0)*10)/10, compTypes:types,
+    served:(function(){ try{ return (dayRevs||[]).length; }catch(e){ return null; } })(),
+    walk:(function(){ try{ return (dayCompTypes&&dayCompTypes['기다리다 이탈'])||0; }catch(e){ return null; } })(),
     crew:crew, crewN:crewN, stockout:stockout, rating:rating, clear:!!clear };
 }
 function dirAIShell(){
