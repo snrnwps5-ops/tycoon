@@ -1521,6 +1521,7 @@ const REPTQ=[
   {q:'충전은 되는데 배터리가 1%에서 멈춰요',fix:'b',why:'충전 회로가 아니라 배터리 셀 노화로 남은 용량이 잡히지 않는 상태라 배터리 교체가 맞아요'},
   {q:'액정에 물방울 무늬가 남아 있어요',fix:'water',why:'물이 스며든 흔적은 세척·건조로 내부 부식을 먼저 막아야 하고, 그대로 두면 번짐이 커져요'}
 ];
+const FIXQ=REPTQ;   /* v2.61: 고장 진단 문제는 REPTQ로 옮겼다 — 기존 QA 도구 호환용 별칭 */
 var dfix={rev:0,n:0};          /* 오늘 수리 실적 (HUD·수리실 머리글) */
 var RQ=[]; RQ.nid=0;           /* 수리 접수 대기열 */
 var REP={open:false,built:false,scene:null,cam:null,eng:null,sel:null,vp:null,err:0,autoT:0,paintT:0};
@@ -4209,6 +4210,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
       sheet('<h3>🔗 친구에게 공유</h3><div>아래 주소를 보내면 바로 플레이할 수 있어요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>'); $('tsC').onclick=copy; }; } }
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else offResume(); });
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
+try{
 window.__H={camdbg:()=>{ try{ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)), vh=camVH(), sp=camSpan(vh,a,cam.zoom); return {vh:+vh.toFixed(3),mar:CAMUI.marPx,a:+a.toFixed(4),zoom:+cam.zoom.toFixed(3),tz:+camT.z.toFixed(3),tx:+camT.x.toFixed(3),dzMax:+sp.dzMax.toFixed(3),dzMin:+sp.dzMin.toFixed(3),dxMax:+sp.dxMax.toFixed(3),dxMin:+sp.dxMin.toFixed(3),W:innerWidth,H:innerHeight}; }catch(e){ return 'err '+e; } },tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
 probe:(wx,wz,secs)=>{ const dt=1/60, n=Math.max(1,Math.round((secs||1)*60)), sp=5.6*(1+0.1*S.up.spd);
   const l=Math.hypot(wx,wz)||1, k=sp*dt/l; const tr=[]; let stall=0, jump=0, prev=[player.pos.x,player.pos.z];
@@ -4243,6 +4245,7 @@ window.__H.scoutPick=()=>{ const c=scoutEligible(); return c?{name:c.name,lv:c.l
 window.__H.honor=()=>hqHallList();
 window.__H.obList=()=>OB.map(b=>({x1:b.x1,x2:b.x2,z1:b.z1,z2:b.z2,off:!!b.off}));
 window.__H.pathTo=(x,z)=>pathFind(player.pos.x,player.pos.z,x,z); window.__H.switchBranch=switchBranch;
+}catch(e){ console.warn("__H",e); }
 requestAnimationFrame(step);
 })();
 </script>
