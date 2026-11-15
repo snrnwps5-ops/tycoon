@@ -4395,7 +4395,7 @@ function v262SectDetail(E){
   if(E.mgr.length){
     h+=E.mgr.map(function(m){
       return '<div style="display:flex;gap:7px;align-items:flex-start;padding:5px 0;border-top:1px dashed #ece4d4">'+v262Badge(m.g,24)+
-        '<div style="flex:1;font:700 12px/1.45 var(--b);color:#4a3a2a"><b>'+hesc(m.who)+'</b> · '+({shop:'쇼핑',rep:'수리실',biz:'비즈니스'})[m.kind]+' 매니저 · <b style="color:'+((m.st==='우수')?'#2faa45':m.st==='보통'?'#2f6fd8':'#e8342a')+'">'+m.st+'</b>'+
+        '<div style="flex:1;font:700 12px/1.45 var(--b);color:#4a3a2a"><b>'+hesc(m.who)+'</b> · '+({shop:'쇼핑 매니저',rep:'수리실 담당',biz:'비즈니스 매니저'})[m.kind]+' · <b style="color:'+((m.st==='우수')?'#2faa45':m.st==='보통'?'#2f6fd8':'#e8342a')+'">'+m.st+'</b>'+
         '<div style="color:#8a7a6a">경험치 +'+m.exp+' · 평판 '+(m.rp>=0?'+':'')+m.rp+' ('+m.rep+')'+(m.b?' · 보너스 +$'+m.b:'')+(m.up?(' · 🎉 Lv.'+m.up+' 승급'):'')+'</div>'+
         '<div id="v262m'+m.kind+'" style="color:#3a2a1a"></div></div></div>';
     }).join('');
@@ -4411,7 +4411,7 @@ function v262EvalAsk(E){
     const rows=E.rows.map(function(r){ return r.n+' — 등급 '+r.g+' · '+(r.sc==null?'미해금':(Math.round(r.sc)+'점 · '+r.sub)); }).join('\n');
     const mg=E.mgr.map(function(m){ return m.who+' ('+({shop:'쇼핑',rep:'수리실',biz:'비즈니스'})[m.kind]+' 매니저) — '+m.st; }).join(' / ')||'없음';
     TycoonAI.callAI({kind:'v262sect',max_tokens:220,temperature:0.6,
-      messages:[{role:'system',content:'너는 가상 전자제품 매장 본사의 평가 담당이다. 오늘 세 부문 성과를 부문마다 한 줄씩 쓴다. 형식은 반드시 한 줄에 "부문: 평가" 이고 부문은 쇼핑/수리실/비즈니스 중 하나, 평가는 한국어 존댓말 한 문장(45자 이내)이다. 매니저가 있으면 매니저 이름으로도 한 줄 쓴다. 주어진 수치와 등급만 근거로 하고 다른 말은 쓰지 않는다.'},
+      messages:[{role:'system',content:'너는 가상 전자제품 매장 본사의 평가 담당이다. 오늘 세 부문(쇼핑/수리실/비즈니스) 성과를 부문마다 한 줄씩 쓴다. 형식은 반드시 한 줄에 "쇼핑: 평가", "수리실: 평가", "비즈니스: 평가" 이고, 평가는 한국어 존댓말 한 문장(45자 이내)이다. 부문 평가에는 매니저 이름을 넣지 말고 매출·건수·평점·민원 같은 수치만 근거로 쓴다. 매니저 평가는 따로 "매니저 이름: 평가" 형식으로 한 줄씩 쓴다. 다른 말은 쓰지 않는다.'},
         {role:'user',content:'오늘 매출 $'+E.rev+' / 목표 $'+E.goal+'\n'+rows+'\n매니저: '+mg}],
       fallback:function(){ return ''; }})
       .then(function(r){ if(!r||!r.ok||!r.text) return;
