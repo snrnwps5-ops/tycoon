@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='v2.66';
+<script>try{(function(){var V='v2.67';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
 <meta name="robots" content="noindex">
-<title>메가 테크 슈퍼스토어 타이쿤 v2.66 · 2D 테스트 모드 (AI QA)</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.67 · 2D 테스트 모드 (AI QA)</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -491,7 +491,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.66</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.67</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -3114,6 +3114,10 @@ function lvDayGap(ds){ try{ const p=String(ds).split('-').map(Number), a=new Dat
 function lvDaily(){ const t=today();
   if(!S.daily||S.daily.d!==t||!Array.isArray(S.daily.ms)){ const prev=S.daily; if(!(prev&&prev.chest&&lvDayGap(prev.d)===1)) S.dstreak=0;
     const g=dayCfg(S.day).goal, lv=S.lvl||1, pool=[['srv',6+lv*2],['ok',3+lv],['earn',Math.max(50,Math.round(g*1.5/10)*10)]]; if((S.unl||[]).includes('repair')) pool.push(['fix',2+Math.ceil(lv/2)]); pool.push(['rush',2]);
+    /* v2.67: 매일 다른 조합 — 보유한 시설에 맞춰 후보를 늘린다(못 깨는 목표는 넣지 않는다) */
+    if(v267KioskAny()) pool.push(['kio',3+Math.ceil(lv/2)]);
+    if(typeof exp2Lv==='function'&&exp2Lv()) pool.push(['yt',1]);
+    if(typeof expOwned==='function'&&expOwned()&&!S.autoBox) pool.push(['box',1+Math.ceil(lv/2)]);
     for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)), x=pool[i]; pool[i]=pool[j]; pool[j]=x; }
     const rw=Math.max(40,Math.round(g*0.25/10)*10), list=[['clr',2]].concat(pool.slice(0,2));
     S.daily={d:t,chest:0,ms:list.map(a=>({k:a[0],goal:a[1],base:S.stats[a[0]]||0,reward:rw,got:0}))}; save(); }
@@ -6390,7 +6394,7 @@ function v266PrepHTML(){
   var day=(S.day|0)+1, min=v262Num(cfg.min,4)+(dayEv==='review'?0.2:0), dur=v262Num(cfg.dur,120);
   var h='<div class="vHubTop"><div style="flex:1;min-width:0">'
     +'<span class="vKick">TODAY\'S BRIEF</span>'
-    +'<h2>'+hesc(TS.name)+'</h2>'
+    +'<h2>'+hesc(THN(STG))+'</h2>'
     +'<div class="vLoc">'+hesc(STK[STG]||'')+' · STAGE '+(STG+1)+'</div></div>'
     +'<div class="vDay"><b>'+day+'</b><small>DAY</small></div></div>';
   h+='<div class="vStats">'
@@ -6803,7 +6807,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.66';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.67';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -6835,6 +6839,687 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else offResume(); });
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
 try{
+/* =========================================================================
+   v2.67 — ① 호텔 테마 전환 어댑터  ② 키오스크 2종 확장
+            ③ 오늘의 미션 다양화      ④ 주간 랭킹(Netlify Blobs + TOP 50)
+   · 원칙: 기존 세이브·로직은 손대지 않고, '이름을 읽는 곳'이 테마를 따라가게 한다.
+     STN·STS·STK·STI(지점)와 ROLES(직무), LVDN(미션)의 표시 문자열만 getter로 감싼다.
+   · 숫자·진행·보상은 그대로라서 테마를 바꿔도 세이브가 깨지지 않는다.
+   ========================================================================= */
+var V267_TH={
+  store:{
+    id:'store', ic:'🏬', nm:'테크 스토어',
+    stn:['대구 동성로점','부산 센텀점','서울 강남 본점','인천공항 메가스토어','뉴욕 메가 아울렛','메가 테크 글로벌 본사'],
+    sts:['대구','부산','서울','인천','뉴욕','본사'],
+    stk:['동네 슈퍼스토어','몰 메가플라자','초대형 플래그십','공항 면세스토어','글로벌 메가아울렛','글로벌 본사 물류센터'],
+    sti:['🏙️','🌊','🏬','✈️','🛒','🌐'],
+    role:{
+      greet:['입구 안내','예약 없는 손님을 상황에 맞게 안내해요'],
+      runner:['재고 담당','픽업 주문 제품을 찾아 전달해요'],
+      tech:['수리 기사','부품을 가져와 백업 확인 후 수리해요'],
+      spec:['상담 전문가','소프트웨어·구입 상담을 대신해요'],
+      mgr:['매니저','항의 손님을 맡아 에스컬레이션을 처리해요']
+    },
+    spot:{greet:'입구 안내',pick:'픽업',buy:'판매',fix:'수리실',sw:'상담 데스크'},
+    kio:{
+      kiosk:['자동 상담 키오스크','쉬운 구입 상담·픽업을 알아서 처리해요 (법인·항의·외국인·VIP 제외)'],
+      kcheckin:['예약 체크인 키오스크','VIP·사전예약 손님을 사람보다 먼저 접수해요'],
+      kreturn:['셀프 반품·컴플레인 접수','반품 접수와 컴플레인 창구를 대신해요']
+    },
+    kio2:{kcheckin:'예약',kreturn:'반품'},
+    scr:{kiosk:['SELF DESK','상담 · 픽업'],kcheckin:['RESERVED','예약 체크인'],kreturn:['SELF RETURN','반품 · 항의 접수']},
+    sgn:{kiosk:['SELF','상담'],kcheckin:['VIP','예약'],kreturn:['반품','접수']},
+    mis:{rush:'러시 챌린지 {n}번 성공',srv:'고객 {n}명 응대',ok:'상담 정답 {n}번',earn:'매출 ${n} 올리기',
+         fix:'수리 {n}건 완료',clr:'영업 {n}일 클리어',
+         kio:'키오스크 {n}건 처리',yt:'인플루언서 손님 {n}명 응대',box:'정산함 수금 {n}회'}
+  },
+  hotel:{
+    id:'hotel', ic:'🏨', nm:'그랜드 호텔',
+    stn:['명동 그랜드','해운대 리조트','서울 그랜드 본관','인천 에어포트 호텔','뉴욕 그랜드 마리나','그랜드 호텔 본사'],
+    sts:['명동','해운대','서울','인천','뉴욕','본사'],
+    stk:['부티크 호텔','오션 리조트','그랜드 플래그십','에어포트 호텔','마리나 호텔','글로벌 본사'],
+    sti:['🏨','🌅','🏛️','✈️','🛳️','🏙️'],
+    role:{
+      greet:['컨시어지','도착한 투숙객을 가장 먼저 맞이해 안내해요'],
+      runner:['객실 정비','객실로 짐과 물품을 옮겨 드려요'],
+      tech:['하우스키핑','객실 시설을 점검하고 고쳐요'],
+      spec:['프런트 데스크','체크인·요금·투숙 상담을 맡아요'],
+      mgr:['법인 세일즈','클레임과 단체 예약을 맡아 처리해요']
+    },
+    spot:{greet:'도어맨',pick:'짐 보관',buy:'프런트 판매',fix:'시설 정비실',sw:'프런트 데스크'},
+    kio:{
+      kiosk:['프런트 셀프 데스크','간단한 체크인·짐 보관을 알아서 처리해요 (VIP·클레임 제외)'],
+      kcheckin:['셀프 체크인','VIP·사전예약 투숙객을 사람보다 먼저 체크인해요'],
+      kreturn:['컨시어지 익스프레스','반품 접수와 클레임 창구를 대신해요']
+    },
+    kio2:{kcheckin:'체크인',kreturn:'클레임'},
+    scr:{kiosk:['SELF CHECK-IN','체크인 · 짐 보관'],kcheckin:['VIP ARRIVAL','사전예약 체크인'],kreturn:['CONCIERGE','반품 · 클레임']},
+    sgn:{kiosk:['SELF','체크인'],kcheckin:['VIP','도착'],kreturn:['클레임','접수']},
+    mis:{rush:'피크타임 대응 {n}번 성공',srv:'투숙객 {n}명 응대',ok:'응대 정답 {n}번',earn:'매출 ${n} 올리기',
+         fix:'객실 정비 {n}건 완료',clr:'운영 {n}일 클리어',
+         kio:'셀프 체크인 {n}건 처리',yt:'SNS 크리에이터 {n}명 응대',box:'프런트 금고 수금 {n}회'}
+  }
+};
+/* 호텔 테마에서 화면 글자를 바꾸는 사전 — {원래 말: 호텔 말} (값은 짧게, 문장은 건드리지 않는다) */
+var V267_DICT=[
+  ['매장','호텔'],['영업','운영'],['수리실','객실 정비실'],['픽업','짐 보관'],
+  ['상담 데스크','프런트 데스크'],['입구 안내','도어맨'],['계산대','프런트 카운터'],
+  ['체험존','라운지'],['정산함','프런트 금고'],['유튜버','크리에이터']
+];
+function v267Theme(){
+  try{
+    var t=S&&S.thm;
+    if(t==='hotel'||t==='store') return t;
+    var l=localStorage.getItem('tech-theme');
+    return l==='hotel'?'hotel':'store';
+  }catch(e){ return 'store'; }
+}
+function v267T(){ return V267_TH[v267Theme()]||V267_TH.store; }
+function THN(i){ var a=v267T().stn; return (a&&a[i]!=null)?a[i]:STN[i]; }
+function THS(i){ var a=v267T().sts; return (a&&a[i]!=null)?a[i]:STS[i]; }
+function THK(i){ var a=v267T().stk; return (a&&a[i]!=null)?a[i]:STK[i]; }
+function THI(i){ var a=v267T().sti; return (a&&a[i]!=null)?a[i]:(STI[i]||'🏬'); }
+function THR(k){ var a=v267T().role[k]; return (a&&a[0])||((ROLES[k]||{}).n)||k; }
+function THD(k){ var a=v267T().role[k]; return (a&&a[1])||((ROLES[k]||{}).d)||''; }
+function THP(k){ var a=v267T().spot; return (a&&a[k])||k; }
+function THX(k){ var a=v267T().kio[k]; return (a&&a[0])||k; }
+function v267KioskLabel(k){ return THX(k); }
+
+/* 지점·직무·미션 이름을 getter로 감싼다 — 화면에서 이름을 읽는 곳은 자동으로 테마를 따라간다.
+   (숫자·상태·보상은 그대로라서 세이브·로직에는 영향이 없다) */
+(function(){
+  function bind(arr, key){
+    try{
+      if(!arr) return;
+      for(var i=0;i<arr.length;i++){
+        (function(a,idx,k){
+          var base=a[idx];
+          Object.defineProperty(a,idx,{ configurable:true, enumerable:true,
+            get:function(){ var t=v267T()[k]; return (t&&t[idx]!=null)?t[idx]:base; } });
+        })(arr,i,key);
+      }
+    }catch(e){}
+  }
+  bind(STN,'stn'); bind(STS,'sts'); bind(STK,'stk'); bind(STI,'sti');
+  try{
+    Object.keys(ROLES).forEach(function(k){
+      var R=ROLES[k]; if(!R) return;
+      var n0=R.n, d0=R.d;
+      Object.defineProperty(R,'n',{ configurable:true, enumerable:true, get:function(){ var a=v267T().role[k]; return (a&&a[0])||n0; } });
+      Object.defineProperty(R,'d',{ configurable:true, enumerable:true, get:function(){ var a=v267T().role[k]; return (a&&a[1])||d0; } });
+    });
+  }catch(e){}
+})();
+
+/* ---------------- 테마 전환 ---------------- */
+var V267_TN=[];   /* 화면 글자를 바꾼 텍스트 노드와 원문(되돌리기용) */
+function v267Localize(root){
+  try{
+    if(v267Theme()!=='hotel') return 0;
+    var hit=0;
+    if(V267_TN.length>4000) V267_TN=[];
+    var tw=document.createTreeWalker(root||document.body,4,null,false), n, all=[];
+    while((n=tw.nextNode())) all.push(n);
+    for(var i=0;i<all.length;i++){
+      var node=all[i], p=node.parentNode; if(!p) continue;
+      var tag=(p.nodeName||'').toLowerCase();
+      if(tag==='script'||tag==='style'||tag==='noscript'||tag==='textarea') continue;
+      try{ if(p.closest&&p.closest('#labels,#v267Theme,#v267List')) continue; }catch(e){}
+      var t=node.nodeValue||''; if(!t||t.length>360) continue;
+      var was=t;
+      for(var d=0;d<V267_DICT.length;d++){ if(t.indexOf(V267_DICT[d][0])>=0) t=t.split(V267_DICT[d][0]).join(V267_DICT[d][1]); }
+      if(t!==was){ V267_TN.push({node:node,orig:was}); node.nodeValue=t; hit++; }
+    }
+    return hit;
+  }catch(e){ return 0; }
+}
+function v267RestoreText(){
+  try{ for(var i=0;i<V267_TN.length;i++){ var r=V267_TN[i]; if(r.node&&r.node.nodeValue!==r.orig) r.node.nodeValue=r.orig; } }catch(e){}
+  V267_TN=[];
+}
+function v267Relabel(){ v267RestoreText(); v267Localize(); try{ var sn=$('stn'); if(sn) sn.textContent=THI(STG)+' '+THN(STG); }catch(e){} }
+function v267SetTheme(t){
+  try{
+    if(t!=='hotel') t='store';
+    var cur=v267Theme();
+    if(cur===t) return false;
+    S.thm=t;
+    try{ localStorage.setItem('tech-theme',t); }catch(e){}
+    try{ save(); }catch(e){}
+    v267RestoreText();                                   /* 이전 테마 글자를 원문으로 되돌린다 */
+    try{ v267KioskPaint(); }catch(e){}
+    try{
+      if($('modal').classList.contains('on')){
+        if($('v262Go')){ openModal(v262HubHTML()); v266BindHub(); }
+        else if($('dayGo')){ openModal(v266PrepHTML()); v266BindPrep(); }
+      }
+    }catch(e){}
+    v267Relabel();                                       /* 새로 그린 화면에 호텔 사전 적용 */
+    try{
+      var hotel=t==='hotel';
+      bigBanner(hotel?'🏨 그랜드 호텔 테마':'🏬 테크 스토어 테마', hotel?'지점·직무·미션·거래처 이름이 호텔 문맥으로 바뀌었어요':'매장 문맥으로 돌아왔어요');
+      snd('level_up',0.45,1.1); haptic(12);
+    }catch(e){}
+    return true;
+  }catch(e){ return false; }
+}
+/* 허브 카드 — 테마 세그먼트 토글 */
+function v267ThemeCard(){
+  try{
+    var t=v267Theme();
+    function b(id,ic,nm,on){ return '<button data-thm="'+id+'" aria-pressed="'+(on?'true':'false')+'" style="flex:1 1 0;min-width:0;height:42px;border:0;border-radius:12px;font:900 12.5px var(--b);'
+      +(on?'color:#fff;background:linear-gradient(#2f9c95,#1e6f6a);box-shadow:0 3px 0 #144f4b':'color:#5a6472;background:#efeade;')+'">'+ic+' '+nm+'</button>'; }
+    return '<div class="vCard" id="v267Theme"><div class="vHead"><span class="vIco">🎭</span><div class="vHtx"><b>테마</b><small>한 번 누르면 화면·지점명·직무·미션이 바로 바뀌어요</small></div><span class="vBadge teal">'+hesc(v267T().nm)+'</span></div>'
+      +'<div style="display:flex;gap:6px;margin-top:8px">'+b('store','🏬','테크 스토어',t==='store')+b('hotel','🏨','그랜드 호텔',t==='hotel')+'</div></div>';
+  }catch(e){ return ''; }
+}
+function v267BindTheme(){
+  try{
+    var c=$('v267Theme'); if(!c) return;
+    var bs=c.querySelectorAll('[data-thm]');
+    for(var i=0;i<bs.length;i++){ (function(el){ el.onclick=function(e){ e.stopPropagation(); v267SetTheme(el.getAttribute('data-thm')); }; })(bs[i]); }
+  }catch(e){}
+}
+
+/* =========================================================================
+   ② 키오스크 2종 확장 — 예약 체크인(VIP/사전예약) · 셀프 반품/컴플레인 접수
+   · 기존 자동화(autoTick·AUTO_DEF·투자 카드 3상태 CTA)에 그대로 얹는다.
+   ========================================================================= */
+var V267_KDEF={
+  kcheckin:{key:'kcheckin',x:6.05,z:1.55,rot:-Math.PI/2,base:3.4,iv:[7,6,5,4.2,3.4],accent:'#ffd23f',pay:46},
+  kreturn:{key:'kreturn',x:-5.5,z:3.15,rot:Math.PI/2,base:4.2,iv:[8,6.6,5.6,4.8,4],accent:'#7bea62',pay:18}
+};
+var V267={ kcheckin:{n:0,day:-1,t:0.7,flash:0,built:0,g:null,elig:0,tot:0,err:null}, kreturn:{n:0,day:-1,t:0.7,flash:0,built:0,g:null,elig:0,tot:0,err:null}, rto:0, rankbusy:0 };
+(function(){
+  ['kcheckin','kreturn'].forEach(function(k){
+    var d=V267_KDEF[k]; if(!d) return;
+    if(AUTO_DEF.some(function(x){ return x.k===k; })) return;
+    AUTO_DEF.push({k:k, ic:(k==='kcheckin'?'🛂':'♻️'), n:'', d:'', base:d.base, iv:d.iv.slice()});
+    var e=AUTO_DEF[AUTO_DEF.length-1];
+    try{
+      Object.defineProperty(e,'n',{configurable:true,enumerable:true,get:function(){ var a=v267T().kio[k]; return (a&&a[0])||k; }});
+      Object.defineProperty(e,'d',{configurable:true,enumerable:true,get:function(){ var a=v267T().kio[k]; return (a&&a[1])||''; }});
+    }catch(err){}
+  });
+  /* 기존 '자동 상담 키오스크'도 테마 이름을 쓰도록 getter로 교체 */
+  try{
+    var old=AUTO_DEF.filter(function(x){ return x.k==='kiosk'; })[0];
+    if(old){
+      Object.defineProperty(old,'n',{configurable:true,enumerable:true,get:function(){ var a=v267T().kio.kiosk; return (a&&a[0])||'자동 상담 키오스크'; }});
+      Object.defineProperty(old,'d',{configurable:true,enumerable:true,get:function(){ var a=v267T().kio.kiosk; return (a&&a[1])||''; }});
+    }
+  }catch(e){}
+})();
+function kkLv(k){ return (S.auto&&S.auto[k])||0; }
+function kkDef(k){ return V267_KDEF[k]||null; }
+function kkIv(k,lv){ var d=kkDef(k); if(!d) return 0; var i=Math.max(0,Math.min(d.iv.length-1,((lv||1)|0)-1)); return d.iv[i]; }
+function v267KioskAny(){ try{ return (kioskLv()>0)||kkLv('kcheckin')>0||kkLv('kreturn')>0; }catch(e){ return false; } }
+
+/* 판정 — 순수 함수(하네스가 그대로 부른다) */
+function kkOK(k,c){
+  try{
+    if(!c||typeof c!=='object') return false;
+    if(c.claim||c.served||c.miss||c.walk||c.quiet) return false;
+    if(c.st!=='wait') return false;
+    if(c.spType||c.gold||c.influ||c.tough||c.flight||c.major) return false;   /* 특수·프리미엄 손님은 사람 몫 */
+    if(k==='kcheckin'){
+      if(c.vip) return (c.type==='pick'||c.type==='buy')&&!!(c.want||c.bq);
+      return c.type==='pick'&&!!c.want&&!c.xfer;
+    }
+    if(k==='kreturn'){
+      if(c.type==='ret') return (!c.sub||c.sub==='trade');   /* 복잡한 반품(lost·gift)은 사람이 본다 */
+      if(c.type==='esc') return !c.vip;
+      return false;
+    }
+    return false;
+  }catch(e){ return false; }
+}
+function kkServe(k,c){
+  try{
+    var lv=kkLv(k); if(lv<=0||!c) return false;
+    var K=1+0.2*(lv-1), got=0, c0=cashVal, st=V267[k]||(V267[k]={});
+    if(k==='kcheckin'){
+      var t=c.want||((c.bq&&c.bq.t)||null);
+      if(!t) return false;
+      if(c.type==='buy'){ if(!kioskTake(t)) return false; if(!c.want){ c.want=t; c.happy=1; S.stats.ok=(S.stats.ok||0)+1; } }
+      else { kioskTake(t); }                                  /* 사전예약은 재고가 없어도 체크인 가능 */
+      custLeave(c,true,Math.max(1,Math.round((c.vip?V267_KDEF.kcheckin.pay:22)*K)));
+    } else if(k==='kreturn'){
+      if(c.type==='ret'){ custLeave(c,true,Math.max(1,Math.round(V267_KDEF.kreturn.pay*K))); }
+      else { c.quiet=1; custLeave(c,true,0); }                /* 컴플레인은 '접수'만 — 민원으로 키우지 않는다 */
+    } else return false;
+    got=Math.max(0,Math.round(cashVal-c0));
+    if(got>0){ cashVal=Math.max(0,cashVal-got); money+=got; rebuildCash(); }  /* 키오스크는 카드 결제 → 바로 지갑 */
+    st.n=(st.n||0)+1; st.flash=1;
+    S.stats[k]=(S.stats[k]||0)+1; S.stats.kio=(S.stats.kio||0)+1;   /* 미션용 합산 */
+    try{ v266Pop('+$'+got,new THREE.Vector3(V267_KDEF[k].x,2.4,V267_KDEF[k].z),'kiosk'); }catch(_){}
+    try{ sfxKiosk(); v266Hap('kiosk'); v266Spark(V267_KDEF[k].x,V267_KDEF[k].z,k==='kcheckin'?'#ffd23f':'#7bea62'); }catch(_){}
+    return true;
+  }catch(e){ if(!V267[k].err) V267[k].err=String(e&&e.message||e); return false; }
+}
+function v267Tick(dt){
+  try{
+    if(typeof dayState==='undefined'||dayState!=='run') return;
+    var ks=['kcheckin','kreturn'];
+    for(var i=0;i<ks.length;i++){
+      var k=ks[i], st=V267[k], lv=kkLv(k);
+      if(lv<=0){ continue; }
+      if(st.day!==S.day){ st.day=S.day; st.n=0; st.t=0.7; }
+      st.t=(st.t||0)-dt;
+      if(st.t>0) continue;
+      var list=(typeof custs!=='undefined'?custs:[]).filter(function(c){ return kkOK(k,c); });
+      st.elig=list.length; st.tot=(typeof custs!=='undefined'?custs.length:0);
+      if(!list.length){ st.t=0.6; continue; }
+      list.sort(function(a,b){ return (a.pat/a.patMax)-(b.pat/b.patMax); });
+      if(kkServe(k,list[0])) st.t=kkIv(k,lv); else st.t=1.5;
+    }
+  }catch(e){ try{ console.warn('v267Tick',e); }catch(_){} }
+}
+
+/* ---------------- 키오스크 2종 3D ---------------- */
+function v267TexScreen(k){
+  try{
+    var s=v267T().scr[k]||['SELF',''], ac=k==='kcheckin'?'#ffd23f':k==='kreturn'?'#7bea62':'#5ad1ff';
+    return canvasTex(function(g,w,h){
+      g.fillStyle='#0b1626'; g.fillRect(0,0,w,h);
+      g.fillStyle=ac; g.fillRect(0,0,w,Math.round(h*0.17));
+      g.fillStyle='#0b1626'; g.font='900 '+Math.round(h*0.085)+'px sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+      g.fillText(s[0],w/2,Math.round(h*0.088));
+      g.fillStyle=ac; g.font='900 '+Math.round(h*0.15)+'px sans-serif';
+      g.fillText(s[1],w/2,Math.round(h*0.44));
+      g.fillStyle='#ffd23f'; g.font='900 '+Math.round(h*0.105)+'px sans-serif';
+      g.fillText('화면을 터치',w/2,Math.round(h*0.68));
+      g.fillStyle='#8fa6c4'; g.fillRect(Math.round(w*0.2),Math.round(h*0.82),Math.round(w*0.6),Math.round(h*0.05));
+    },256,192);
+  }catch(e){ return null; }
+}
+function v267TexSign(k){
+  try{
+    var s=v267T().sgn[k]||['SELF',''], ac=k==='kcheckin'?'#ffd23f':k==='kreturn'?'#7bea62':'#5ad1ff';
+    return canvasTex(function(g,w,h){
+      g.clearRect(0,0,w,h);
+      g.fillStyle='#0f2a4a'; g.fillRect(0,0,w,h);
+      g.fillStyle=ac; g.font='900 '+Math.round(h*0.36)+'px sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+      g.fillText(s[0],w/2,Math.round(h*0.3));
+      g.fillStyle='#ffffff'; g.font='900 '+Math.round(h*0.28)+'px sans-serif';
+      g.fillText(s[1],w/2,Math.round(h*0.72));
+    },192,72);
+  }catch(e){ return null; }
+}
+function v267KioskBuild(k){
+  try{
+    var d=V267_KDEF[k], st=V267[k]; if(!d||!st||st.g) return;
+    if(typeof scene==='undefined'||typeof box!=='function'||typeof rbox!=='function'||typeof THREE==='undefined') return;
+    var G=new THREE.Group(); G.position.set(d.x,0,d.z); G.rotation.y=d.rot; scene.add(G);
+    rbox(0.74,1.02,0.44,'#eef1f7',0,0.52,0,G,0.05);
+    box(0.78,0.06,0.48,'#c7d2e0',0,1.05,0,G);
+    box(0.66,0.1,0.42,'#1b1f27',0,0.06,0,G);
+    box(0.1,0.5,0.03,d.accent,0.28,0.62,0.23,G);
+    var sc=box(0.64,0.46,0.05,'#0f1726',0,1.34,0,G); sc.rotation.x=-0.14;
+    var tex=v267TexScreen(k);
+    if(tex){
+      st.scr=new THREE.Mesh(new THREE.PlaneGeometry(0.56,0.4),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
+      st.scr.position.set(0,1.34,0.032); st.scr.rotation.x=-0.14; G.add(st.scr);
+    }
+    st.led=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.05,0.04),new THREE.MeshBasicMaterial({color:'#5a6578'}));
+    st.led.position.set(0,1.6,0.02); G.add(st.led);
+    box(0.2,0.1,0.12,'#1b1f27',0.18,1.02,0.14,G);
+    try{
+      var sg=v267TexSign(k);
+      if(sg){ st.sign=new THREE.Mesh(new THREE.PlaneGeometry(0.78,0.34),new THREE.MeshBasicMaterial({map:sg,transparent:true,depthWrite:false})); st.sign.position.set(0,1.92,0.01); G.add(st.sign); }
+    }catch(_){}
+    st.ring=new THREE.Mesh(new THREE.RingGeometry(0.46,0.6,26),new THREE.MeshBasicMaterial({color:d.accent,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+    st.ring.rotation.x=-Math.PI/2; st.ring.position.set(0,0.14,0.55); G.add(st.ring);
+    st.g=G; st.built=1;
+    try{ ob(d.x-0.44,d.x+0.44,d.z-0.34,d.z+0.34); }catch(_){}
+    v267KioskVis(0.016);
+  }catch(e){ try{ V267[k].built=-1; console.warn('v267KioskBuild',e); }catch(_){} }
+}
+function v267KioskVis(dt){
+  try{
+    var d0=(dt==null?0.016:dt);
+    ['kcheckin','kreturn'].forEach(function(k){
+      var st=V267[k]; if(!st||!st.g) return;
+      if(st.flash>0) st.flash=Math.max(0,st.flash-d0*1.7);
+      var on=kkLv(k)>0, f=st.flash;
+      if(st.led&&st.led.material&&st.led.material.color) st.led.material.color.setHex(on?(f>0.1?0xffffff:0x46e05a):0x5a6578);
+      if(st.scr&&st.scr.material){ st.scr.material.opacity=on?(0.72+0.28*Math.min(1,f*2)):0.22; st.scr.scale.set(1+0.07*f,1+0.07*f,1); }
+      if(st.ring&&st.ring.material) st.ring.material.opacity=on?(0.13+0.5*Math.min(1,f)):0;
+    });
+  }catch(e){}
+}
+/* 테마가 바뀌면 화면·간판 텍스처를 다시 그린다(세 대 모두) */
+function v267KioskPaint(){
+  try{
+    ['kcheckin','kreturn'].forEach(function(k){
+      var st=V267[k]; if(!st) return;
+      try{ var t1=v267TexScreen(k); if(t1&&st.scr&&st.scr.material){ st.scr.material.map=t1; st.scr.material.needsUpdate=true; } }catch(_){}
+      try{ var t2=v267TexSign(k); if(t2&&st.sign&&st.sign.material){ st.sign.material.map=t2; st.sign.material.needsUpdate=true; } }catch(_){}
+    });
+    try{
+      if(V266.kiosk.scr&&V266.kiosk.scr.material){ var s1=v267TexScreen('kiosk'); if(s1){ V266.kiosk.scr.material.map=s1; V266.kiosk.scr.material.needsUpdate=true; } }
+      if(V266.kiosk.sign&&V266.kiosk.sign.material){ var s2=v267TexSign('kiosk'); if(s2){ V266.kiosk.sign.material.map=s2; V266.kiosk.sign.material.needsUpdate=true; } }
+    }catch(_){}
+  }catch(e){}
+}
+v267KioskBuild('kcheckin'); v267KioskBuild('kreturn');
+try{ setTimeout(function(){ try{ v267KioskBuild('kcheckin'); v267KioskBuild('kreturn'); v267KioskVis(0.016); }catch(_){} },1600); }catch(e){}
+/* 자동화 틱에 두 키오스크를 얹는다 */
+(function(){
+  try{
+    var _at=autoTick;
+    autoTick=function(dt){ var r=_at.apply(this,arguments); try{ v267Tick(dt); v267KioskVis(dt); }catch(e){} return r; };
+  }catch(e){}
+  try{
+    var _ab=autoBuy;
+    autoBuy=function(k){
+      var before=k?(kkLv(k)):0, r=_ab.apply(this,arguments);
+      try{ if(k&&V267_KDEF[k]&&kkLv(k)>before){ var st=V267[k]; st.flash=1.6; v267KioskVis(0.016);
+        v266Pop('🖥️ ONLINE',new THREE.Vector3(V267_KDEF[k].x,2.5,V267_KDEF[k].z),'kiosk'); sfxKiosk(); v266Hap('kiosk'); v266Spark(V267_KDEF[k].x,V267_KDEF[k].z,V267_KDEF[k].accent); } }catch(_){}
+      return r;
+    };
+  }catch(e){}
+  try{
+    var _ac=autoCard;
+    autoCard=function(){
+      var h=_ac.apply(this,arguments);
+      try{
+        if(h){
+          var ks=['kcheckin','kreturn'].filter(function(k){ return kkLv(k)>0; });
+          if(ks.length){
+            var line=ks.map(function(k){ var st=V267[k]; return '<span>'+hesc(v267T().kio2[k]||k)+' 오늘 '+(st.n||0)+'건 · 누적 '+((S.stats[k]||0))+'건</span>'; }).join('<br>');
+            h=String(h).replace(/<\/div>$/,'')+'<div style="font:800 11px var(--b);color:#155a24;margin-top:6px;line-height:1.45">'+line+'</div></div>';
+          }
+        }
+      }catch(e){}
+      return h;
+    };
+  }catch(e){}
+})();
+
+/* ---------------- 키오스크 2종 2D (tech-test.html) ---------------- */
+function v267Kiosk2D(){
+  try{
+    if(typeof quad!=='function'||typeof ctext!=='function'||typeof SX!=='function') return;
+    window.__V267K2D=((window.__V267K2D||0)+1);
+    var s=SX(0,0).s;
+    ['kcheckin','kreturn'].forEach(function(k){
+      var d=V267_KDEF[k], st=V267[k]; if(!d||!st) return;
+      if(kkLv(k)<=0) return;
+      var on=st.flash>0;
+      quad(d.x,d.z,0.78,0.5,'#2a3144','#1b1f27',0);
+      quad(d.x,d.z-0.07,0.5,0.16,on?'#ffffff':'#0f2a4a',on?'#ffd23f':d.accent,0);
+      ctext(v267T().kio2[k]||'',d.x,d.z+0.42,Math.max(8,s*0.17),'#ffffff',true);
+      if(on) circ(d.x,d.z,0.44,'rgba(255,255,255,.16)',d.accent);
+    });
+  }catch(e){}
+}
+try{ if(typeof drawKiosk2==='function'){ var _dk2=drawKiosk2; drawKiosk2=function(){ _dk2.apply(this,arguments); try{ v267Kiosk2D(); }catch(e){} }; } }catch(e){}
+
+/* =========================================================================
+   ③ 오늘의 미션 다양화 — 키오스크 처리 · 크리에이터 응대 · 금고 수금
+   ========================================================================= */
+try{ if(typeof LVDN==='object'&&LVDN){ LVDN.kio='키오스크 {n}건 처리'; LVDN.yt='인플루언서 손님 {n}명 응대'; LVDN.box='정산함 수금 {n}회';
+  Object.keys(LVDN).forEach(function(k){ var base=LVDN[k];
+    try{ Object.defineProperty(LVDN,k,{configurable:true,enumerable:true,get:function(){ var a=v267T().mis; return (a&&a[k])||base; }}); }catch(e){}
+  });
+} }catch(e){}
+/* 기존 '자동 상담 키오스크' 처리도 합산 미션 카운터에 넣는다 */
+(function(){ try{ var _ks=kioskServe; kioskServe=function(){ var r=_ks.apply(this,arguments); try{ if(r) S.stats.kio=(S.stats.kio||0)+1; }catch(e){} return r; }; }catch(e){} })();
+/* 정산함 수금 횟수 — 미션 진행도(S.stats.box)로 쓴다 */
+(function(){
+  try{
+    var _bc=boxCollect;
+    boxCollect=function(){ var before=boxGet(); var r=_bc.apply(this,arguments); try{ if(before>0&&boxGet()===0) S.stats.box=(S.stats.box||0)+1; }catch(e){} return r; };
+  }catch(e){}
+})();
+
+/* =========================================================================
+   ④ 주간 랭킹 — Netlify Blobs(rank.js) + TOP 50 모달
+   · 보내는 것: 닉네임(≤12자)·주간 매출·지점 index·테마. 개인정보는 보내지 않는다.
+   ========================================================================= */
+var V267_RANK_URL='https://mega-tech-tycoon.netlify.app/.netlify/functions/rank';
+function v267RankURL(){ try{ return window.__RANK_URL||V267_RANK_URL; }catch(e){ return V267_RANK_URL; } }
+/* ISO 주차(월요일 시작) — 서버 rank.js와 같은 식 (KST 기준) */
+function v267WeekCode(){
+  try{
+    var kst=new Date(Date.now()+9*3600e3);
+    var t=new Date(Date.UTC(kst.getUTCFullYear(),kst.getUTCMonth(),kst.getUTCDate()));
+    var dow=(t.getUTCDay()+6)%7; t.setUTCDate(t.getUTCDate()-dow+3);
+    var w1=new Date(Date.UTC(t.getUTCFullYear(),0,4));
+    var d1=(w1.getUTCDay()+6)%7; w1.setUTCDate(w1.getUTCDate()-d1+3);
+    var wk=1+Math.round((t-w1)/(7*864e5));
+    return t.getUTCFullYear()+'-W'+(wk<10?'0':'')+wk;
+  }catch(e){ return 'x'; }
+}
+function v267WeekRev(){
+  try{ var k=v267WeekCode(), w=S.wrev; if(!w||w.w!==k) return 0; var n=+w.n; if(!isFinite(n)||n<0) return 0; return Math.min(5e7,Math.round(n)); }catch(e){ return 0; }
+}
+function v267WeekAdd(v){
+  try{
+    var k=v267WeekCode(), add=Math.max(0,Math.round(v||0)); if(!add) return;
+    if(!S.wrev||typeof S.wrev!=='object'||S.wrev.w!==k) S.wrev={w:k,n:0};
+    S.wrev.n=Math.min(5e7,(S.wrev.n||0)+add);
+  }catch(e){}
+}
+(function(){ /* 하루가 끝나면 이번 주 매출에 더한다(다시 도전 포함 — 실제로 번 돈) */
+  try{
+    var _e=endDay;
+    endDay=function(){
+      var was=(typeof dayState!=='undefined'&&dayState==='run');
+      var r=_e.apply(this,arguments);
+      try{ if(was&&dayState==='end') v267WeekAdd(dayRev); }catch(e){}
+      return r;
+    };
+  }catch(e){}
+})();
+function v267Nick(){ try{ var n=(S&&S.nick)||localStorage.getItem('tech-nick')||''; return String(n).slice(0,12); }catch(e){ return ''; } }
+function v267SetNick(n){ try{ S.nick=String(n||'').slice(0,12); }catch(e){} try{ localStorage.setItem('tech-nick',String(n||'').slice(0,12)); }catch(e){} try{ save(); }catch(e){} }
+function v267NickBad(n){
+  if(!n) return '닉네임을 먼저 입력해 주세요';
+  if(String(n).length>12) return '닉네임은 12자까지예요';
+  if(/[@/\\]|https?:|\.(com|net|kr|co\.kr)|[0-9]{7,}/i.test(n)) return '실명·연락처·이메일은 넣을 수 없어요';
+  return '';
+}
+function v267RankMe(){ try{ var j=JSON.parse(localStorage.getItem('tech-rank-me')||'null'); return (j&&j.w===v267WeekCode())?j:null; }catch(e){ return null; } }
+function v267RankCache(){ try{ var j=JSON.parse(localStorage.getItem('tech-rank-cache')||'null'); return (j&&j.w===v267WeekCode())?j:null; }catch(e){ return null; } }
+function v267BrName(stg,theme){ try{ var t=V267_TH[theme]||V267_TH.store; return (t.sts[stg]||'')+' · '+(t.stk[stg]||''); }catch(e){ return ''; } }
+function v267RankRows(top,myNick){
+  try{
+    if(!top||!top.length) return '<div class="vFootNote">이번 주 첫 기록을 남겨 보세요</div>';
+    return top.map(function(r,i){
+      var me=(myNick&&r.nick===myNick)?' style="background:#fff7e0"':'';
+      var medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(''+(i+1));
+      return '<div class="vRow"'+me+'><span class="vIco" style="width:28px;background:none">'+medal+'</span>'
+        +'<div class="vTx"><b>'+hesc(r.nick)+'</b><small>'+hesc(v267BrName(r.stg,r.theme))+' · '+hesc((V267_TH[r.theme]||V267_TH.store).nm)+'</small></div>'
+        +'<b style="flex:none;font:900 12.5px var(--b);color:#1e6f6a">'+v266Usd(r.rev)+'</b></div>';
+    }).join('');
+  }catch(e){ return ''; }
+}
+function v267RankPaint(j){
+  try{
+    var el=$('v267List'); if(!el) return;
+    var me=j&&j.me;
+    el.innerHTML='<div style="font:900 11px var(--b);color:#7a6a54;margin:10px 0 4px">TOP 50 · 참가 '+(j&&j.count||0)+'명'
+      +(me?(' · 내 순위 <b style="color:#1e6f6a">'+me.rank+'위</b>'):'')+'</div>'
+      +'<div class="vCard">'+v267RankRows((j&&j.top)||[],v267Nick())+'</div>';
+    try{ localStorage.setItem('tech-rank-cache',JSON.stringify({w:v267WeekCode(),at:Date.now(),top:(j&&j.top)||[],count:j&&j.count||0})); }catch(e){}
+  }catch(e){}
+}
+function v267RankFail(msg){
+  try{
+    var el=$('v267List'); if(!el) return;
+    var ca=v267RankCache(), me=v267RankMe();
+    var note='<div class="vFootNote">지금은 순위를 불러올 수 없어요'+(msg?' ('+hesc(String(msg).slice(0,40))+')':'')+'<br>'
+      +(ca?'마지막으로 받은 순위를 보여 드려요 · ':'')+'내 기록은 이 기기에 남아 있어요.</div>';
+    var mine=me?'<div class="vCard"><div class="vHead"><span class="vIco">🙋</span><div class="vHtx"><b>'+hesc(me.nick)+'</b><small>이번 주 등록한 내 기록</small></div><span class="vBadge teal">'+v266Usd(me.rev)+'</span></div></div>':'';
+    el.innerHTML=note+mine+(ca?'<div class="vCard">'+v267RankRows(ca.top,v267Nick())+'</div>':'');
+  }catch(e){}
+}
+function v267RankLoad(){
+  try{
+    var el=$('v267List'); if(el) el.innerHTML='<div class="vFootNote">순위를 불러오는 중…</div>';
+    var url=v267RankURL()+'?week='+encodeURIComponent(v267WeekCode())+'&nick='+encodeURIComponent(v267Nick());
+    var done=false;
+    var to=setTimeout(function(){ if(done) return; done=true; v267RankFail('응답 없음'); },8000);
+    fetch(url,{cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(function(j){ if(done) return; done=true; clearTimeout(to); v267RankPaint(j); })
+      .catch(function(e){ if(done) return; done=true; clearTimeout(to); v267RankFail(e&&e.message||e); });
+  }catch(e){ v267RankFail(e&&e.message||e); }
+}
+function v267RankSend(){
+  try{
+    var inp=$('v267Nick'), nick=String((inp&&inp.value)||'').trim().replace(/\s+/g,' ').slice(0,12);
+    var bad=v267NickBad(nick); if(bad){ toast(bad,2.6); return; }
+    var rev=v267WeekRev();
+    if(rev<=0){ toast('이번 주 매출이 아직 없어요 — 영업을 마치면 쌓여요',2.8); return; }
+    v267SetNick(nick);
+    var btn=$('v267Send'); if(btn){ btn.disabled=true; btn.textContent='등록 중…'; }
+    var body=JSON.stringify({nick:nick,rev:rev,stg:(typeof STG==='number'?STG:0),theme:v267Theme()});
+    var done=false, to=setTimeout(function(){ if(done) return; done=true; if(btn){ btn.disabled=false; btn.textContent='내 기록 등록'; } toast('응답이 없어요 · 잠시 뒤 다시 시도해 주세요',3); },8000);
+    fetch(v267RankURL(),{method:'POST',headers:{'Content-Type':'application/json'},body:body}).then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
+      .then(function(o){
+        if(done) return; done=true; clearTimeout(to);
+        if(btn){ btn.disabled=false; btn.textContent='내 기록 등록'; }
+        if(!o.ok||!o.j||o.j.error){ toast('등록하지 못했어요'+((o.j&&o.j.error)?' ('+o.j.error+')':''),3); return; }
+        try{ localStorage.setItem('tech-rank-me',JSON.stringify({w:v267WeekCode(),nick:nick,rev:rev,at:Date.now()})); }catch(e){}
+        toast('🏆 '+nick+' · '+v266Usd(rev)+' 등록!'+(o.j.rank?(' '+o.j.rank+'위'):''),3);
+        try{ snd('level_up',0.5,1.15); v266Hap('collect'); }catch(e){}
+        v267RankLoad();
+      })
+      .catch(function(e){ if(done) return; done=true; clearTimeout(to); if(btn){ btn.disabled=false; btn.textContent='내 기록 등록'; } toast('등록하지 못했어요 · 오프라인인가요?',3); });
+  }catch(e){ try{ toast('등록하지 못했어요',2.4); }catch(_){} }
+}
+function v267RankClose(){
+  try{ closeModalUI(); }catch(e){}
+  try{ setTimeout(function(){ v262HubOpen(); },130); }catch(e){}
+}
+function v267RankModal(){
+  try{
+    var wk=v267WeekCode(), rev=v267WeekRev(), nick=v267Nick(), t=v267T(), br=THK(STG);
+    var h='<h2>🏆 주간 랭킹</h2>'
+      +'<p style="margin-top:-4px">'+wk+' · 이번 주 매출 <b>'+v266Usd(rev)+'</b><br>'
+      +'<small>'+hesc(THN(STG))+'에서 연 매출이 그대로 순위가 돼요 · 매주 월요일 초기화</small></p>'
+      +'<div class="vCard" id="v267Me"><div class="vHead"><span class="vIco">🙋</span><div class="vHtx"><b>내 기록</b><small>닉네임은 순위표에 그대로 보여요</small></div><span class="vBadge teal">'+v266Usd(rev)+'</span></div>'
+      +'<div style="font:800 11px var(--b);color:#7a6a54;margin:8px 0 4px">닉네임 (최대 12자 · 실명·연락처 금지)</div>'
+      +'<input id="v267Nick" maxlength="12" value="'+hesc(nick)+'" placeholder="예: 명동사장" style="width:100%;height:44px;border-radius:12px;border:1.5px solid #e2dbcb;padding:0 12px;font:900 15px var(--b);background:#fff;color:#151b28">'
+      +'<div class="vChipRow" style="margin-top:8px"><span class="vChip t">'+hesc(THS(STG))+'</span><span class="vChip t">'+hesc(t.nm)+'</span></div>'
+      +'<button id="v267Send" class="vBuy on" style="width:100%;margin-top:9px;min-height:46px">내 기록 등록</button></div>'
+      +'<div id="v267List"><div class="vFootNote">순위를 불러오는 중…</div></div>'
+      +'<button class="gray" id="v267Close" style="margin-top:10px">닫기</button>';
+    openModal(h,{onClose:v267RankClose});
+    var b=$('v267Send'); if(b) b.onclick=function(e){ e.stopPropagation(); v267RankSend(); };
+    var c=$('v267Close'); if(c) c.onclick=function(e){ e.stopPropagation(); v267RankClose(); };
+    v267RankLoad();
+  }catch(e){ try{ console.warn('v267RankModal',e); }catch(_){} }
+}
+function v267RankCard(){
+  try{
+    var rev=v267WeekRev();
+    return '<div class="vCard" id="v267RankCard"><div class="vHead"><span class="vIco">🏆</span><div class="vHtx"><b>주간 랭킹</b><small>이번 주 매출 '+v266Usd(rev)+' · TOP 50</small></div><span class="vBadge gold">'+v267WeekCode()+'</span></div>'
+      +'<button id="v267Rank" class="vBuy on" style="width:100%;margin-top:8px;min-height:44px">🏆 내 기록 등록 · 순위 보기</button></div>';
+  }catch(e){ return ''; }
+}
+function v267BindRank(){ try{ var b=$('v267Rank'); if(b) b.onclick=function(e){ e.stopPropagation(); v267RankModal(); }; }catch(e){} }
+
+/* 허브에 테마·랭킹 카드를 끼운다 (오늘의 미션 카드 바로 위) */
+(function(){
+  try{
+    var _h=v262HubHTML;
+    v262HubHTML=function(){
+      var s=_h.apply(this,arguments);
+      try{
+        if(typeof s==='string'&&s.indexOf('id="v267Theme"')<0){
+          var add=v267ThemeCard()+v267RankCard();
+          var at=s.indexOf('<div class="vCard" id="v266Daily"');
+          if(at<0) at=s.indexOf('<div class="vSec"><b>지점');
+          if(at>=0) s=s.slice(0,at)+add+s.slice(at);
+          else { var g=s.indexOf('<div class="hubGrid">'); if(g>=0) s=s.slice(0,g)+add+s.slice(g); }
+        }
+      }catch(e){}
+      return s;
+    };
+  }catch(e){}
+  try{
+    var _b=v266BindHub;
+    v266BindHub=function(){ var r=_b.apply(this,arguments); try{ v267BindTheme(); v267BindRank(); }catch(e){} return r; };
+  }catch(e){}
+})();
+
+/* 모달이 새로 그려지면 그 안의 글자만 호텔 사전을 적용한다(통째로 걷지 않아 빠르다) */
+(function(){
+  try{
+    var _om=openModal;
+    openModal=function(){ var r=_om.apply(this,arguments); try{ if(v267Theme()==='hotel') v267Localize($('mbox')); }catch(e){} return r; };
+  }catch(e){}
+})();
+
+/* ---------------- 세이브 보정 ---------------- */
+function v267ClampSave(){
+  var n=0;
+  try{
+    if(!S||typeof S!=='object'||Array.isArray(S)) return 0;
+    if(S.thm!=null&&S.thm!=='store'&&S.thm!=='hotel'){ S.thm=null; n++; }
+    if(S.nick!=null){ var nk=String(S.nick).replace(/[\u0000-\u001f<>]/g,'').slice(0,12); if(nk!==S.nick){ S.nick=nk; n++; } }
+    if(S.auto&&typeof S.auto==='object'){
+      ['kcheckin','kreturn'].forEach(function(k){
+        var v=S.auto[k]; if(v==null) return;
+        var vv=(typeof v==='number'&&isFinite(v))?v:0; var w=Math.max(0,Math.min(5,Math.floor(vv)));
+        if(S.auto[k]!==w){ S.auto[k]=w; n++; }
+      });
+    }
+    if(S.stats&&typeof S.stats==='object'){
+      ['kcheckin','kreturn','box','yt','kio'].forEach(function(k){
+        var v=S.stats[k]; if(v==null) return;
+        var vv=(typeof v==='number'&&isFinite(v))?v:0; var w=Math.max(0,Math.min(1e9,Math.floor(vv)));
+        if(S.stats[k]!==w){ S.stats[k]=w; n++; }
+      });
+    }
+    if(S.wrev!=null){
+      if(typeof S.wrev!=='object'||Array.isArray(S.wrev)||typeof S.wrev.w!=='string'){ S.wrev=null; n++; }
+      else { var rv=+S.wrev.n; var rw=isFinite(rv)?Math.max(0,Math.min(5e7,Math.round(rv))):0; if(S.wrev.n!==rw){ S.wrev.n=rw; n++; } S.wrev.w=String(S.wrev.w).slice(0,10); }
+    }
+  }catch(e){}
+  return n;
+}
+try{ v267ClampSave(); }catch(e){}
+(function(){ try{ var _c=v265ClampSave; v265ClampSave=function(){ var r=_c.apply(this,arguments); try{ r=(r||0)+v267ClampSave(); }catch(e){} return r; }; }catch(e){} })();
+
+/* 부팅 때 저장된 테마를 화면에 반영 (저장값이 없으면 아무 것도 하지 않는다) */
+try{ setTimeout(function(){ try{ if(v267Theme()==='hotel'){ v267Relabel(); v267KioskPaint(); } }catch(_){} },600); }catch(e){}
+
+/* ---------------- 테스트·QA 훅 ---------------- */
+try{
+  setTimeout(function(){
+    window.__H=window.__H||{};
+    window.__H.v267={
+      ver:'v2.67',
+      theme:v267Theme, setTheme:v267SetTheme, names:function(){ return {stn:THN(STG),sts:THS(STG),stk:THK(STG),roles:{greet:THR('greet'),runner:THR('runner'),tech:THR('tech'),spec:THR('spec'),mgr:THR('mgr')},kiosk:THX('kiosk'),kcheckin:THX('kcheckin'),kreturn:THX('kreturn'),mis:function(){ var m=v267T().mis; return {kio:m.kio,yt:m.yt,box:m.box,fix:m.fix}; }()}; },
+      kiosk:function(){ return {kcheckin:{lv:kkLv('kcheckin'),iv:kkIv('kcheckin',kkLv('kcheckin')||1),today:V267.kcheckin.n,total:(S.stats.kcheckin||0),built:V267.kcheckin.built,elig:V267.kcheckin.elig,err:V267.kcheckin.err},
+                              kreturn:{lv:kkLv('kreturn'),iv:kkIv('kreturn',kkLv('kreturn')||1),today:V267.kreturn.n,total:(S.stats.kreturn||0),built:V267.kreturn.built,elig:V267.kreturn.elig,err:V267.kreturn.err}}; },
+      ok:kkOK, serve:kkServe, buy:function(k){ autoBuy(k); },
+      tickNow:function(k){ try{ if(!V267[k]) return false; V267[k].t=0; return true; }catch(e){ return false; } },
+      find:function(){ try{ return custs.filter(function(c){ return kkOK('kcheckin',c)||kkOK('kreturn',c)||kioskOK(c); }).map(function(c){ return {type:c.type,vip:!!c.vip,sub:c.sub||'',want:c.want,pat:Math.round(c.pat)}; }); }catch(e){ return []; } },
+      inject:function(k,type,extra){
+        try{
+          spawnCust(); var c=custs[custs.length-1]; if(!c) return 'nospawn';
+          c.st='wait'; c.claim=null; c.spType=null; c.gold=0; c.influ=0; c.tough=0; c.flight=0; c.pat=c.patMax;
+          c.type=type||'buy';
+          if(k==='kcheckin'){ if(type==='pick'){ c.want=c.want||'p'; } else { c.want=null; c.bq={q:'QA',t:'p',why:'QA'}; } if(extra&&extra.vip) c.vip=1; }
+          if(k==='kreturn'){ if(type==='ret'){ c.want='p'; c.rq={q:'QA',a:['a','b'],why:'QA'}; c.sub='trade'; } }
+          var m0=money, ok=kkServe(k,c);
+          return {ok:!!ok, pay:Math.round(money-m0), today:V267[k]?V267[k].n:0, total:(S.stats[k]||0)};
+        }catch(e){ return 'err:'+e.message; }
+      },
+      missions:function(){ try{ var D=lvDaily(); return D.ms.map(function(m){ return {k:m.k,goal:m.goal,reward:m.reward,got:!!m.got,prog:lvDProg(m),label:(LVDN[m.k]||'').replace('{n}',m.goal)}; }); }catch(e){ return []; } },
+      missionRoll:function(){ try{ S.daily=null; return lvDaily().ms.map(function(m){ return m.k; }); }catch(e){ return []; } },
+      week:v267WeekCode, weekRev:v267WeekRev, weekAdd:v267WeekAdd,
+      nick:v267Nick, setNick:v267SetNick, rankModal:v267RankModal, rankLoad:v267RankLoad, rankSend:v267RankSend,
+      rankState:function(){ try{ return {url:v267RankURL(),week:v267WeekCode(),rev:v267WeekRev(),me:v267RankMe(),cache:!!v267RankCache(),list:($('v267List')||{}).innerHTML?String($('v267List').innerHTML).length:0}; }catch(e){ return {}; } },
+      localized:function(){ return V267_TN.length; }, restore:v267RestoreText
+    };
+  },0);
+}catch(e){}
 window.__H={camdbg:()=>{ try{ const a=(VW||innerWidth)/Math.max(1,(VH||innerHeight)), vh=camVH(), sp=camSpan(vh,a,cam.zoom); return {vh:+vh.toFixed(3),mar:CAMUI.marPx,a:+a.toFixed(4),zoom:+cam.zoom.toFixed(3),tz:+camT.z.toFixed(3),tx:+camT.x.toFixed(3),dzMax:+sp.dzMax.toFixed(3),dzMin:+sp.dzMin.toFixed(3),dxMax:+sp.dxMax.toFixed(3),dxMin:+sp.dxMin.toFixed(3),W:innerWidth,H:innerHeight}; }catch(e){ return 'err '+e; } },tp:(x,z)=>{ player.pos.x=x; player.pos.z=z; camT.set(x,0,z-1.8); return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; },
 probe:(wx,wz,secs)=>{ const dt=1/60, n=Math.max(1,Math.round((secs||1)*60)), sp=5.6*(1+0.1*S.up.spd);
   const l=Math.hypot(wx,wz)||1, k=sp*dt/l; const tr=[]; let stall=0, jump=0, prev=[player.pos.x,player.pos.z];
