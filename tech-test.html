@@ -1679,7 +1679,7 @@ function repAct(k,i,el){
     repDiag(j,pk,false); REP.sel=null; repPaint(true); return; }
 }
 function repBadge(){ try{ const el=$('labChip'); if(!el) return;
-  const on=S.unl.includes('repair'); el.style.display=on?'':'none'; if(!on) return;
+  const on=S.unl.includes('repair'); el.style.display=on?'block':'none'; if(!on) return;
   const n=RQ.filter(j=>j.st==='wait').length;
   const txt='🔧 수리실'+(n?' '+n:'');
   if(el._t!==txt){ el._t=txt; el.textContent=txt; }
