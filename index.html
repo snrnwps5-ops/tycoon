@@ -370,7 +370,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 #modal .hubLoc{font:800 11.5px/1.4 var(--b);color:#8a5a20;text-align:left;margin:0 0 8px}
 #modal .hubChips{display:flex;gap:5px;margin:0 0 3px}
 #modal .hubChip{flex:1 1 0;min-width:0;background:#fff;border-radius:var(--uR);padding:6px 4px 7px;text-align:center;box-shadow:var(--uSh)}
-#modal .hubChip small{display:block;font:700 10px var(--b);color:#9a7a50;white-space:nowrap;overflow:hidden}
+#modal .hubChip small{display:block;font:700 10.5px var(--b);color:#9a7a50;white-space:nowrap;overflow:hidden}
 #modal .hubChip b{display:block;margin-top:1px;font:900 15px var(--b);color:#3a2a10;white-space:nowrap;overflow:hidden}
 #modal .hubSec{display:flex;align-items:baseline;gap:6px;margin:11px 1px 5px;text-align:left}
 #modal .hubSec b{flex:none;font:900 12.5px var(--b);color:#7a5a30}
@@ -380,7 +380,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 #modal .hubBr .ic{flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;background:#eef3fb}
 #modal .hubBr .tx{flex:1;min-width:0;text-align:left}
 #modal .hubBr .tx b{display:block;font:900 13px var(--b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#modal .hubBr .tx small{display:block;margin-top:1px;font:800 9.5px var(--b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubBr .tx small{display:block;margin-top:1px;font:800 10.5px var(--b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #modal .hubBr.cur{background:linear-gradient(#7bea62,#2faa45);color:#fff;box-shadow:0 3px 0 #1d7a2a}
 #modal .hubBr.cur .ic{background:rgba(255,255,255,.22)}
 #modal .hubBr.cur small{color:#eafff0}
@@ -395,7 +395,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 #modal .hubMg .ic{flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;background:#eef3fb}
 #modal .hubMg .tx{flex:1;min-width:0;text-align:left}
 #modal .hubMg .tx b{display:block;font:900 13px var(--b);color:var(--uInk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#modal .hubMg .tx small{display:block;margin-top:1px;font:700 10.5px var(--b);color:var(--uSub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubMg .tx small{display:block;margin-top:1px;font:700 11px var(--b);color:var(--uSub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #modal .hubMg .go{flex:none;width:auto!important;min-width:54px;height:44px;min-height:44px;margin:0!important;padding:0 10px!important;border-radius:10px;font:900 12px var(--b);color:#fff;background:linear-gradient(#b8c2d0,#8a96a8);box-shadow:0 2px 0 #5a6578}
 #modal .hubMg .go.act{background:linear-gradient(#7bea62,#2faa45);box-shadow:0 2px 0 #1d7a2a}
 #modal .hubPrep{display:flex;align-items:center;gap:8px;width:100%;margin:0;padding:8px 9px;min-height:52px;border-radius:var(--uR);background:#fff;box-shadow:var(--uSh);text-align:left}
@@ -4137,16 +4137,16 @@ function v262HubHTML(){
   const M=v262Slots(), day=(S.day|0)+1, goal=v262Num(cfg.goal,0), min=v262Num(cfg.min,4), dur=v262Num(cfg.dur,120);
   let h='<div class="hubH"><h2>🏪 출근 허브</h2><em>DAY '+day+'</em></div>';
   h+='<div class="hubLoc">'+STI[STG]+' '+hesc(STN[STG])+' · '+hesc(STK[STG]||'')+'</div>';
-  h+='<div class="hubChips">'+v262ChipHTML('목표 매출','$'+goal)+v262ChipHTML('최소 평점','★'+min.toFixed(1))+v262ChipHTML('영업 시간',Math.floor(dur/60)+'분')+'</div>';
+  h+='<div class="hubChips">'+v262ChipHTML('목표 매출','$'+goal)+v262ChipHTML('최소 평점','★'+min.toFixed(1))+v262ChipHTML('영업 시간',Math.floor(dur/60)+'분'+(Math.round(dur)%60?(' '+Math.round(dur)%60+'초'):''))+'</div>';
   if(typeof dayEv!=='undefined'&&dayEv&&EVT[dayEv]) h+='<div class="evc" style="margin:6px 0 0"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>';
   h+='<div class="hubSec"><b>📍 운영할 지점</b><small>다른 지점을 고르면 그 매장에서 시작해요</small></div>';
   h+='<div class="hubGrid">'+v262BranchOrder().map(v262BranchHTML).join('')+'</div>';
   h+='<div class="hubSec"><b>👔 3대 매니저</b><small>어제 평가 · 오늘 실적</small></div>';
   h+=v262SlotHTML('shop','🏬',M.shop?M.shop.name:'매니저 미배치',
-    M.shop?('매니저 · '+Math.round(v262Num(M.shop.mscore,50))+'점 · 만족도 '+Math.round(v262Num(M.shop.sat,70))):'직원 관리에서 매니저를 채용하세요','관리','crew',!!M.shop);
+    M.shop?('매니저 · '+Math.round(v262Num(M.shop.mscore,50))+'점 · 만족 '+Math.round(v262Num(M.shop.sat,70))):'직원 관리에서 매니저를 채용하세요','관리','crew',!!M.shop);
   const repUnl=S.unl.includes('repair');
   h+=v262SlotHTML('rep','🔧',M.tech?M.tech.name:'수리 기사 미배치',
-    M.tech?('Lv.'+(M.tech.lv||1)+' · 오늘 수리 '+v262Num(dfix&&dfix.n,0)+'건 · 접수 '+RQ.filter(function(j){ return j.st==='wait'; }).length+'건')
+    M.tech?('Lv.'+(M.tech.lv||1)+' · 수리 '+v262Num(dfix&&dfix.n,0)+'건 · 접수 '+RQ.filter(function(j){ return j.st==='wait'; }).length+'건')
       :(repUnl?'수리실에서 수리 기사를 채용하세요':'수리 센터가 열리면 채용할 수 있어요'),
     repUnl?'점검':'',repUnl?'rep':'',!!M.tech,repUnl);
   h+=v262SlotHTML('biz','💼',M.biz?(M.biz.name+' 팀장'):'팀장 미배치',
