@@ -3961,8 +3961,8 @@ function v262BranchHTML(i){
   if(ok) return '<button data-v2="branch" data-i="'+i+'" style="'+base+'color:#fff;background:linear-gradient(#7aa8ff,#3a6fd8);box-shadow:0 3px 0 #1f3f9a"><span>'+STI[i]+' '+STS[i]+'</span><small style="font:800 9.5px var(--b);opacity:.95">이동 가능 · 눌러서 출근</small></button>';
   return '<button data-v2="noop" disabled style="'+base+'color:#7a6a5a;background:#e7e0d3;box-shadow:none"><span>🔒 '+STS[i]+'</span><small style="font:800 9.5px var(--b)">DAY '+stgDay+' 개점</small></button>';
 }
-function v262SlotHTML(kind,ic,who,sub,btn,btnKey,sat){
-  const m=v262SlotMeta(kind), g=m?m.g:null;
+function v262SlotHTML(kind,ic,who,sub,btn,btnKey,has){
+  const m=v262SlotMeta(kind), g=(has&&m)?m.g:null;
   return '<div style="display:flex;align-items:center;gap:6px;background:#fff;border-radius:12px;padding:6px 8px;margin:4px 0;box-shadow:0 2px 0 rgba(0,0,0,.07);text-align:left">'+
     '<span style="font-size:17px">'+ic+'</span>'+
     '<div style="flex:1;min-width:0"><b style="display:block;font:900 12px var(--b);color:#3a2a10;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+hesc(who)+'</b>'+
@@ -3984,15 +3984,15 @@ function v262HubHTML(){
   h+='</div>';
   h+='<div style="text-align:left;font:900 12px var(--b);color:#7a5a30;margin:9px 0 2px">👔 3대 매니저</div>';
   h+=v262SlotHTML('shop','🏬',M.shop?M.shop.name:'매니저 미배치',
-    M.shop?('👔 '+MGRK[mgrRank(M.shop)]+' · '+Math.round(M.shop.mscore==null?50:M.shop.mscore)+'점 · 만족도 '+(M.shop.sat==null?70:M.shop.sat)):'직원 관리에서 매니저를 채용하세요','관리','crew');
+    M.shop?('👔 '+MGRK[mgrRank(M.shop)]+' · '+Math.round(M.shop.mscore==null?50:M.shop.mscore)+'점 · 만족도 '+(M.shop.sat==null?70:M.shop.sat)):'직원 관리에서 매니저를 채용하세요','관리','crew',!!M.shop);
   const repUnl=S.unl.includes('repair');
   h+=v262SlotHTML('rep','🔧',M.tech?M.tech.name:'수리 기사 미배치',
     M.tech?('Lv.'+(M.tech.lv||1)+' · 오늘 수리 '+((dfix&&dfix.n)||0)+'건 · 접수 '+RQ.filter(function(j){ return j.st==='wait'; }).length+'건')
       :(repUnl?'수리실에서 수리 기사를 채용·배치하세요':'수리 센터가 열리면 수리 기사를 채용하세요'),
-    repUnl?'점검':'',repUnl?'rep':'');
+    repUnl?'점검':'',repUnl?'rep':'',!!M.tech);
   h+=v262SlotHTML('biz','💼',M.biz?(M.biz.name+' 팀장'):'팀장 미배치',
     M.biz?('Lv.'+(M.biz.lv||1)+' · 계약 '+((M.B&&M.B.won)||0)+' · 결렬 '+((M.B&&M.B.lost)||0)):(M.B?'비즈니스 → 팀에서 팀장을 채용하세요':'비즈니스 팀은 서울 지점부터 열려요'),
-    M.B?'열기':'',M.B?'biz':'');
+    M.B?'열기':'',M.B?'biz':'',!!M.biz);
   h+='<div style="text-align:left;font:900 12px var(--b);color:#7a5a30;margin:9px 0 3px">🧰 부문별 준비</div>';
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">'+
      '<button data-v2="go" data-k="up" style="margin:0;min-height:46px;border-radius:12px;font:900 13px var(--b);background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00">🛠️ 매장 세팅</button>'+
@@ -4023,7 +4023,7 @@ function v262HubOpen(){
   };
 }
 function v262BranchAsk(i){
-  openModal('<h2>📍 '+STN[i]+'</h2><p style="font-size:13px">'+STI[i]+' '+STK[i]+'<br><small>지금 매장 상태(직원·재고·진열)는 저장되고, '+STS[i]+'(으)로 이동하면 화면이 다시 열려요.<br>그 지점에서 오늘 영업을 시작합니다.</small></p><button id="v262BGo">이 지점으로 출근</button><button class="gray" id="v262BCancel" style="font-size:14px">취소</button>');
+  openModal('<h2>📍 '+STN[i]+'</h2><p style="font-size:13px">'+STI[i]+' '+STK[i]+'<br><small>지금 매장 상태(직원·재고·진열)는 저장되고, '+josaRo(STS[i])+' 이동하면 화면이 다시 열려요.<br>그 지점에서 오늘 영업을 시작합니다.</small></p><button id="v262BGo">이 지점으로 출근</button><button class="gray" id="v262BCancel" style="font-size:14px">취소</button>');
   const a=$('v262BGo'), b=$('v262BCancel');
   if(a) a.onclick=function(e){ e.stopPropagation(); try{ save(); }catch(_){} V262.hub=0; try{ switchBranch(i); }catch(_){} };
   if(b) b.onclick=function(e){ e.stopPropagation(); v262HubOpen(); };
