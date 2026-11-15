@@ -98,6 +98,11 @@ canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;heigh
 #dayBar{position:fixed;left:50%;top:calc(98px + env(safe-area-inset-top));transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:8px;padding:6px 12px 10px;border-radius:14px;background:rgba(20,30,60,.72);color:#fff;font:900 13px var(--b);white-space:nowrap;pointer-events:none}
 /* v2.60: 유틸리티 창이 떠 있는 동안 영업이 멈춘 것을 상단 띠로 알린다 */
 #dayBar.pz{background:rgba(84,94,146,.94);box-shadow:0 0 0 2px rgba(255,217,138,.55)}#dbPause{color:#ffd98a;font:900 12px var(--b)}
+/* v2.60: 결과·시작 창의 핵심 버튼은 창 아래에 붙여 첫 화면에서 항상 보이게 */
+.rescta{position:sticky;bottom:-6px;z-index:6;display:flex;flex-direction:column;gap:8px;background:#fff8ea;padding:6px 0 2px;margin-top:4px}
+.rescta button{margin:0!important}
+#dayGo{position:sticky;bottom:-6px;z-index:6}
+.dirAI .daib{max-height:132px;overflow-y:auto;overscroll-behavior:contain}
 #dayBar b{font-family:var(--d);font-size:15px;color:#ffd23f}#dayBar #dbComp.bad{color:#ff6a6a}#dayBar #dbT.low{color:#ff6a6a}
 #dayBar i{position:absolute;left:10px;right:10px;bottom:4px;height:4px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}#dayBar i s{display:block;height:100%;background:#7bea62;width:0}
 .dres{display:flex;justify-content:center;gap:6px;margin:2px 0 6px}.dres i{font-style:normal;font-size:32px;color:#d8cdb8;text-shadow:0 3px 0 rgba(0,0,0,.15)}.dres i.on{color:#ffcf3a}
@@ -2433,7 +2438,7 @@ function occTick(){ if(!OCC.ok) return; try{
     if(!inn&&Math.abs(st.m.opacity-st.base)<0.03){ if(o.material===st.m) o.material=st.om; try{ st.m.dispose(); }catch(e){} OCC.on.delete(o); } });
  }catch(e){ OCC.ok=false; try{ OCC.on.forEach((st,o)=>{ if(o.material===st.m) o.material=st.om; }); OCC.on.clear(); }catch(_){} } }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
-function step(){ const now=performance.now(), dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now;
+function step(){ const now=performance.now(); let dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now;
   /* v2.60: 설정·상점·재고·저장 같은 유틸리티 창이 떠 있는 동안에는 영업 시계·손님 스폰·인내심·민원이 흐르지 않는다.
      상담 퀴즈(quizOpen)는 의도된 긴장이라 제외한다. */
   const paused=mgmtOpen(); if(paused) dt=0; time+=dt;
@@ -2734,7 +2739,7 @@ function lvCompactPre(){ try{ const mb=$('mbox'), go=$('dayGo'); if(!mb||!go||mb
     /* v2.60: [영업 시작!]을 핵심 조건(목표·최소 평점) 바로 아래로 올린다 — 시장 카드·전략·별 조건은 버튼 아래로 내려 첫 화면을 짧게 */
     const core=[...mb.children].filter(el=>el.classList&&el.classList.contains('dstat')&&/목표 매출|최소 평점/.test(el.textContent));
     const anchor=core.length?core[core.length-1]:null;
-    if(anchor&&go){ anchor.after(d); d.after(go); }
+    if(anchor&&go){ anchor.after(go); go.after(d); }
     else { const star=[...mb.children].find(el=>el.tagName==='DETAILS'&&el!==d); mb.insertBefore(d,star||go); } }catch(e){ console.warn('compactPre',e); } }
 function lvPreBind(){ try{ lvCompactPre(); mktBind(); const b=$('dDaily'); if(b) b.onclick=()=>{ window.__rts=1; snd('ui',0.4); openDaily(); };
     const q=$('rpQuit'); if(q) q.onclick=e=>{ e.stopPropagation(); if(S.rpBack!=null){ S.day=S.rpBack; delete S.rpBack; save(); } $('modal').classList.remove('on'); setTimeout(lvGateOrStart,200); }; }catch(e){} }
@@ -2952,10 +2957,10 @@ function lvCompactResult(){ try{ const mb=$('mbox'); if(!mb||mb.querySelector('.
   const isKey=el=>el.classList&&el.classList.contains('dstat')&&/^매출 \$|서비스 평점|^민원 |퇴사|RSU 지급|^⚔️ vs/.test(txt(el));
   const keyRows=kids.filter(isKey), otherRows=kids.filter(el=>el.classList&&el.classList.contains('dstat')&&!isKey(el));
   const lp=mb.querySelector('.lpbox'), st=lp&&lp.querySelector('.lpst'), ch=lp&&lp.querySelector('.lpch'), ng=lp&&lp.querySelector('.lpng');
-  const mg=document.getElementById('mgrEvalBox'), dir=document.getElementById('dirAI'), rcp=mb.querySelector(':scope > .rcp'), ps=kids.filter(el=>el.tagName==='P'), btns=kids.filter(el=>el.tagName==='BUTTON');
+  const mg=document.getElementById('mgrEvalBox'), dir=document.getElementById('dirAI'), rcp=mb.querySelector(':scope > .rcp'), ps=kids.filter(el=>el.tagName==='P'), btns=kids.filter(el=>el.tagName==='BUTTON'), cta=mb.querySelector('#resCta');
   let at=mb.querySelector('.dres'); if(!at) return; const put=el=>{ if(!el) return; at.after(el); at=el; };
   /* v2.60: 첫 화면에 핵심 수치 → AI 총평 → [다시 도전/업그레이드] 버튼이 오도록 순서를 바꾼다 */
-  keyRows.forEach(put); if(dir) put(dir); ps.forEach(put); btns.forEach(put); if(st) put(st); if(ch) put(ch);
+  keyRows.forEach(put); if(dir) put(dir); ps.forEach(put); if(cta) put(cta); else btns.forEach(put); if(st) put(st); if(ch) put(ch);
   const det=(title,els)=>{ els=els.filter(Boolean); if(!els.length) return null; const d=document.createElement('details'); d.className='lpdet'; const s=document.createElement('summary'); s.textContent=title; d.appendChild(s); els.forEach(e=>d.appendChild(e)); return d; };
   put(det('📋 오늘 상세 결과 · 다음 목표',otherRows.concat(ng?[ng]:[])));
   if(mg) put(mg.classList.contains('lpst')?mg:det('🏢👔 본사·매니저 평가',[mg]));
@@ -3145,7 +3150,7 @@ var INBOX=[];
 function inboxAdd(it){ INBOX.push(it); inboxPaint(); }
 function inboxPaint(){ try{ const mb=$('mbox'); if(!mb||!$('modal').classList.contains('on')) return; const first=$('dNext')||$('dRetry'); let b=$('inboxBtn');
     if(!INBOX.length){ if(b) b.remove(); return; } if(!first) return;
-    if(!b){ b=document.createElement('button'); b.id='inboxBtn'; b.style.cssText='background:linear-gradient(#ff7ab8,#e8348a);box-shadow:0 4px 0 #9a1a5a'; b.onclick=e=>{ e.stopPropagation(); const it=INBOX.shift(); inboxPaint(); if(it) try{ it.open(); }catch(er){ console.warn('inbox',er); } }; first.before(b); }
+    if(!b){ b=document.createElement('button'); b.id='inboxBtn'; b.style.cssText='background:linear-gradient(#ff7ab8,#e8348a);box-shadow:0 4px 0 #9a1a5a'; b.onclick=e=>{ e.stopPropagation(); const it=INBOX.shift(); inboxPaint(); if(it) try{ it.open(); }catch(er){ console.warn('inbox',er); } }; (document.getElementById('resCta')||first).before(b); }
     b.innerHTML='📥 결정할 일 '+INBOX.length+'건<small style="display:block;font:800 11px var(--b);opacity:.92">'+INBOX[0].label+(INBOX.length>1?' 외 '+(INBOX.length-1)+'건':'')+'</small>'; }catch(e){} }
 function inboxFlush(){ const L=INBOX.splice(0); L.forEach(it=>{ try{ if(it.expire) it.expire(); }catch(e){} }); }
 /* ===== v2.43: 첫 3분 — 첫 실행은 로드맵·출석·영업 준비창 없이 바로 영업, 손님 위 화살표, 첫 판매 축하, 첫날은 메뉴 숨김 ===== */
@@ -3317,7 +3322,7 @@ SHOP.splice(3,0,{id:'autopack',sp:4,ic:'🤖',n:'자동화 패키지',d:'자동 
         (!S.vipPass?'<button id="poVip" style="width:100%;height:38px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#9b7bff,#6a46e8);box-shadow:0 3px 0 #3a1fa0">⭐ VIP 패스 ₩9,900 · 매출 +25% 영구</button>':'')+
         '<button id="poShop" style="width:100%;height:34px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#7a0a3a;background:#fff">🛒 상점 보기</button>'+
         '<div style="font:700 11px var(--b);color:#9a5a7a;margin-top:5px">테스트 결제예요 · 실제 돈이 나가지 않아요</div></div>';
-      const _an=$('dUp')||rt; _an.insertAdjacentHTML('afterend',h);
+      const _an=document.getElementById('resCta')||$('dUp')||rt; _an.insertAdjacentHTML('afterend',h);
       const pb=$('poBoost'); if(pb) pb.onclick=e=>{ e.stopPropagation(); pb.disabled=true; pb.textContent='결제 중…'; setTimeout(()=>{ S.boostD=S.day; try{ save(); snd('level_up',0.5); bigBanner('📈 매출 2배!','이번 재도전에 적용돼요'); }catch(_){} const r2=$('dRetry'); if(r2) r2.click(); },900); };
       const pv=$('poVip'); if(pv) pv.onclick=e=>{ e.stopPropagation(); pv.disabled=true; pv.textContent='결제 중…'; setTimeout(()=>{ S.vipPass=1; S.noAds=1; money+=200; try{ save(); updShopBtn(); bigBanner('⭐ VIP 패스!','매출 +25% 영구 적용'); }catch(_){} pv.remove(); },900); };
       const ps=$('poShop'); if(ps) ps.onclick=e=>{ e.stopPropagation(); openShop(); }; }catch(e){} },120); } }catch(e){} return r; }; })();
@@ -3688,7 +3693,7 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
     '<div class="dstat '+(okRev?'ok':'no')+'"><span>매출 $'+dayRev+' / 목표 $'+cfg.goal+'</span><b>'+(okRev?'달성':'부족')+'</b></div>'+
     '<div class="dstat '+(okRate?'ok':'no')+'"><span>오늘 서비스 평점 ★'+r.toFixed(1)+' / 최소 ★'+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</span><b>'+(okRate?'통과':'미달')+'</b></div>'+
     (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(dLead>0?'ok':dLead<0?'no':'')+'"><span>'+leadLine+'</span><b>'+(promotion?'승진 🎉':penalty?'경고 ⚠️':dLead>0?'▲ '+dLead:dLead<0?'▼ '+dLead:'유지')+'</b></div>'+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+S.crew.length+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+(brInc?'<div class="dstat ok"><span>지점 자동 매출 합계</span><b>+$'+brInc+'</b></div>':'')+
-    mktResultHTML(mkR)+rsuResultHTML(rsuR)+lpResultHTML(lpRes)+mgrEvalHTML(mgEv)+'<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+lvStarHint(cfg)+'</p>':'</p>')+'<button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button>'));
+    mktResultHTML(mkR)+rsuResultHTML(rsuR)+lpResultHTML(lpRes)+mgrEvalHTML(mgEv)+'<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+lvStarHint(cfg)+'</p>':'</p>')+'<div class="rescta" id="resCta"><button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button></div>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><div class="rescta" id="resCta"><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button></div>'));
   lvCompactResult(); inboxPaint(); $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
   try{ dirAIAsk(dirData(clear)); }catch(e){ console.warn('dirAI',e); } try{ mgrEvalAsk(mgEv); }catch(e){} try{ poachSchedule(rsuR); }catch(e){} try{ mktScoutSchedule(mkR); }catch(e){}
   const go=next=>{ $('modal').classList.remove('on'); if(lvGo(next)) return; if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; } setTimeout(startDayModal,300); };
@@ -3831,7 +3836,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.31';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.60';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
