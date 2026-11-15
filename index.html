@@ -6526,7 +6526,7 @@ function v266ShopPaint(){
     var h='';
     if(owned.length) h+='<div class="vOwned">'+V266L.owned+' · '+owned.map(function(v){ return '<span>'+hesc(v)+'</span>'; }).join('')+'</div>';
     if(hero){
-      var perks=String(hero.d||'').split(/[·+]/).map(function(s){ return s.trim(); }).filter(Boolean).slice(0,4);
+      var perks=String(hero.d||'').split(/[·]|\s\+\s/).map(function(s){ return s.trim(); }).filter(Boolean).slice(0,4);
       var hd=disc(hero), isWeek=hero.id==='weekbundle';
       h+='<div class="vHero"><div class="vKick">'+(isWeek?'WEEKLY DEAL · 이번 주 한정':'BEST VALUE')+(hd?' · '+hd+'% OFF':'')+'</div>'+
         '<h3>'+hesc(hero.n)+'</h3>'+
