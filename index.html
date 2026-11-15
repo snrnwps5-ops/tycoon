@@ -4246,6 +4246,9 @@ function v262BizExtra(){
     const B={desk:[],mgr:null,screens:[]};
     /* 사원 의자: 좌판·등받이·머리받침·팔걸이·5발 바퀴. 몸 뒤에 가리지 않도록 살짝 옆으로 빼고 돌려 둔다 */
     const chair=function(g){
+      /* v2.61까지의 단순 의자 3조각은 새 의자와 겹치므로 숨긴다 */
+      g.children.slice().forEach(function(m){ const p=m&&m.position; if(!p) return;
+        if(Math.abs(p.x)<0.02&&p.z>0.55&&p.y<1.0&&m.geometry&&/Box|Cylinder/.test(m.geometry.type)) m.visible=false; });
       const cg=new THREE.Group(); cg.position.set(0.2,0,0.6); cg.rotation.y=0.32; g.add(cg);
       const add=function(w,h,d,c,x,y,z,rx){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),v262M(c)); m.position.set(x,y,z); if(rx) m.rotation.x=rx; cg.add(m); return m; };
       add(0.72,0.11,0.6,'#dfe6ef',0,0.46,0);
