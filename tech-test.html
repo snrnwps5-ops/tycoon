@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='v2.62';
+<script>try{(function(){var V='v2.63';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
 <meta name="robots" content="noindex">
-<title>메가 테크 슈퍼스토어 타이쿤 v2.62 · 2D 테스트 모드 (AI QA)</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.63 · 2D 테스트 모드 (AI QA)</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -357,6 +357,85 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 #labChip{display:none;background:linear-gradient(#7bea62,#2faa45);color:#fff;cursor:pointer;pointer-events:auto;position:relative}
 #labChip::after{content:"";position:absolute;left:-2px;right:-2px;top:-7px;bottom:-7px}
 #labChip:active{transform:scale(.94)}
+/* ===== v2.63: UI 토큰 · 정보 위계 · 375px 대응 ===== */
+:root{--uR:12px;--uR2:10px;--uSh:0 2px 0 rgba(0,0,0,.07);--uInk:#2a1a0a;--uSub:#8a7a5a}
+/* 모달: 폰에서 폭을 더 쓰고, 안전 영역 안에서만 스크롤한다 */
+#modal{padding:calc(env(safe-area-inset-top,0px) + 8px) 0 calc(env(safe-area-inset-bottom,0px) + 8px)}
+#modal .box{width:min(364px,calc(100vw - 18px));max-height:100%;padding:15px 14px 13px;border-radius:20px}
+#mbox h2{font-size:21.5px;line-height:1.24;margin:0 0 6px}
+#mbox p{font-size:13.5px;line-height:1.55}
+#modal button{min-height:46px}
+/* ---- 출근 허브 ---- */
+#modal .hubH{display:flex;align-items:center;gap:8px;text-align:left;margin:0 0 3px}
+#modal .hubH h2{margin:0;flex:1;min-width:0}
+#modal .hubH em{flex:none;font-style:normal;font:900 11px var(--b);color:#fff;background:linear-gradient(#5aa8ff,#2f6fd8);border-radius:9px;padding:4px 8px;box-shadow:0 2px 0 #1c3f9a}
+#modal .hubLoc{font:800 11.5px/1.4 var(--b);color:#8a5a20;text-align:left;margin:0 0 8px}
+#modal .hubChips{display:flex;gap:5px;margin:0 0 3px}
+#modal .hubChip{flex:1 1 0;min-width:0;background:#fff;border-radius:var(--uR);padding:6px 4px 7px;text-align:center;box-shadow:var(--uSh)}
+#modal .hubChip small{display:block;font:700 10px var(--b);color:#9a7a50;white-space:nowrap;overflow:hidden}
+#modal .hubChip b{display:block;margin-top:1px;font:900 15px var(--b);color:#3a2a10;white-space:nowrap;overflow:hidden}
+#modal .hubSec{display:flex;align-items:baseline;gap:6px;margin:11px 1px 5px;text-align:left}
+#modal .hubSec b{flex:none;font:900 12.5px var(--b);color:#7a5a30}
+#modal .hubSec small{min-width:0;font:700 10.5px var(--b);color:#a89a84;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#modal .hubBr{display:flex;align-items:center;gap:7px;width:100%;margin:0;padding:7px 9px;min-height:50px;border-radius:var(--uR);text-align:left;background:#fff;color:var(--uInk);box-shadow:var(--uSh)}
+#modal .hubBr .ic{flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;background:#eef3fb}
+#modal .hubBr .tx{flex:1;min-width:0;text-align:left}
+#modal .hubBr .tx b{display:block;font:900 13px var(--b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubBr .tx small{display:block;margin-top:1px;font:800 9.5px var(--b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubBr.cur{background:linear-gradient(#7bea62,#2faa45);color:#fff;box-shadow:0 3px 0 #1d7a2a}
+#modal .hubBr.cur .ic{background:rgba(255,255,255,.22)}
+#modal .hubBr.cur small{color:#eafff0}
+#modal .hubBr.go{background:linear-gradient(#7aa8ff,#3a6fd8);color:#fff;box-shadow:0 3px 0 #1f3f9a}
+#modal .hubBr.go .ic{background:rgba(255,255,255,.2)}
+#modal .hubBr.go small{color:#e6efff}
+#modal .hubBr.lock{background:#efe9dd;color:#8a7a6a;box-shadow:none}
+#modal .hubBr.lock .ic{background:#e3dccd;filter:grayscale(1)}
+#modal .hubBr.lock small{color:#9a8a7a}
+#modal .hubBr:disabled{opacity:1}
+#modal .hubMg{display:flex;align-items:center;gap:8px;padding:7px 9px;margin:0 0 5px;min-height:58px;border-radius:var(--uR);background:#fff;box-shadow:var(--uSh);text-align:left}
+#modal .hubMg .ic{flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;background:#eef3fb}
+#modal .hubMg .tx{flex:1;min-width:0;text-align:left}
+#modal .hubMg .tx b{display:block;font:900 13px var(--b);color:var(--uInk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubMg .tx small{display:block;margin-top:1px;font:700 10.5px var(--b);color:var(--uSub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubMg .go{flex:none;width:auto!important;min-width:54px;height:44px;min-height:44px;margin:0!important;padding:0 10px!important;border-radius:10px;font:900 12px var(--b);color:#fff;background:linear-gradient(#b8c2d0,#8a96a8);box-shadow:0 2px 0 #5a6578}
+#modal .hubMg .go.act{background:linear-gradient(#7bea62,#2faa45);box-shadow:0 2px 0 #1d7a2a}
+#modal .hubPrep{display:flex;align-items:center;gap:8px;width:100%;margin:0;padding:8px 9px;min-height:52px;border-radius:var(--uR);background:#fff;box-shadow:var(--uSh);text-align:left}
+#modal .hubPrep .ic{flex:none;width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}
+#modal .hubPrep b{flex:1;min-width:0;font:900 12.5px var(--b);color:var(--uInk);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal .hubPrep em{flex:none;font-style:normal;font:900 16px/1 var(--b);color:#c9bda8}
+#modal .hubYest{margin-top:10px;padding:6px 9px;border-radius:var(--uR2);background:#f6f1e6;font:800 10.5px/1.45 var(--b);color:var(--uSub);text-align:left}
+#modal .hubFoot{position:sticky;bottom:-2px;z-index:6;margin:10px -2px -2px;padding:7px 2px 2px;background:linear-gradient(180deg,rgba(255,248,234,0),#fff8ea 34%)}
+#modal .hubCta{width:100%;margin:0!important;min-height:54px!important;font-size:19px!important;border-radius:16px!important;background:linear-gradient(#7bea62,#2faa45)!important;box-shadow:0 5px 0 #1d7a2a!important}
+/* ---- 결과창: 3부문 스트립 · AI 총평 접기 ---- */
+#v262Strip{display:flex;gap:5px;margin:6px 0;text-align:left}
+#v262Strip .sc{flex:1 1 0;min-width:0;background:#fff;border-radius:var(--uR);padding:6px 6px 7px;box-shadow:var(--uSh)}
+#v262Strip .sc .r1{display:flex;align-items:center;gap:4px}
+#v262Strip .sc .pt{margin-left:auto;font:900 12px var(--b);color:#5a3a20}
+#v262Strip .sc small{display:block;margin-top:3px;font:800 9.5px/1.3 var(--b);color:var(--uSub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dirAI .dirW{background:linear-gradient(#233a6b,#16233f);border-radius:14px;margin:10px 0 2px;box-shadow:0 4px 0 rgba(0,0,0,.25);text-align:left}
+#dirAI .dirW>summary{display:flex;align-items:center;gap:7px;list-style:none;cursor:pointer;padding:11px 12px;min-height:46px;font:900 12.5px var(--b);color:#ffd98a}
+#dirAI .dirW>summary::-webkit-details-marker{display:none}
+#dirAI .dirW>summary:before{content:'\25B8';font-size:12px;color:#8fa6d8}
+#dirAI .dirW[open]>summary:before{content:'\25BE'}
+#dirAI .dirW>summary em{margin-left:auto;flex:none;font-style:normal;font:800 10px var(--b);color:#c9d6ff;background:rgba(255,255,255,.14);border-radius:8px;padding:3px 6px}
+#dirAI .dirW .daib{padding:0 12px 12px;font:700 12.5px/1.55 var(--b);color:#eef3ff;word-break:keep-all;overflow-wrap:anywhere}
+#dirAI .dirW.fb{background:linear-gradient(#4a3a10,#2a2108)}
+#dirAI .dirW.fb>summary{color:#ffd98a}
+/* ---- 수리실 부품 주문 버튼: 부품 이름·가격을 한눈에 ---- */
+#repUI .rpgd button.rpo{all:unset;box-sizing:border-box;cursor:pointer;flex:1 1 30%;min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px 6px;border-radius:11px;text-align:center;color:#fff;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00;font:900 11.5px/1.15 var(--b)}
+#repUI .rpgd button.rpo b{font:900 12.5px var(--b);color:#fff}
+#repUI .rpgd button.rpo s{text-decoration:none;font:800 10px var(--b);color:#5a2a00;opacity:.85}
+#repUI .rpgd button.rpo.low{background:linear-gradient(#ff8a5a,#e8342a);box-shadow:0 3px 0 #8a0f1f}
+#repUI .rpgd button.rpo.low s{color:#fff}
+#repUI .rpgd button.rpo:active{transform:translateY(2px);box-shadow:0 1px 0 #b85a00}
+/* ---- 비즈니스 시트: 내용만큼만 높이를 쓰고 최대 62% ---- */
+#bizUI .bzs{height:auto;max-height:62%}
+#bizUI .bzh button{height:44px;line-height:44px}
+#bizUI .bzt button{height:48px;font:900 11.5px/1.15 var(--b)}
+#bizUI .bze{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:18px 12px;margin:6px 0;background:#fff;border-radius:14px;box-shadow:var(--uSh);text-align:center;font:800 12px/1.5 var(--b);color:#6a5a4a}
+#bizUI .bze em{font-style:normal;font-size:26px}
+#bizUI .bze small{font:700 11px/1.5 var(--b);color:#8a7a6a}
 
 /* ===== 2D 테스트 모드 전용 UI ===== */
 #aip{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:12;width:200px;background:rgba(10,18,38,.88);border:2px solid rgba(255,255,255,.38);border-radius:16px;padding:8px;color:#fff;font:900 12px var(--b);box-shadow:0 6px 18px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -408,7 +487,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.62</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.63</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -1683,8 +1762,8 @@ function repPaint(full){
   } else {
     REP.sel=null;
     body+='<div class="rpc"><h4>📦 부품 재고<em>수리실 소모품</em></h4>'+
-      ['s','b','c'].map(t=>'<div class="rpd"><span>'+RTREAT[t].ic+' '+IT[t].n+'</span><b>'+partAvail(t)+'개</b></div>').join('')+
-      '<div class="rpgd">'+['s','b','c'].map(t=>'<button class="rpo" style="flex:1 1 30%;min-height:44px;all:unset;box-sizing:border-box;text-align:center;cursor:pointer;flex:1;padding:0 6px;border-radius:11px;font:900 11.5px var(--b);color:#fff;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00" data-r="order" data-i="'+t+'">'+RTREAT[t].ic+' +2 $'+(COST[t]*4)+'</button>').join('')+'</div></div>';
+      ['s','b','c'].map(function(t){ const n=partAvail(t); return '<div class="rpd'+(n<=1?' warn':'')+'"><span>'+RTREAT[t].ic+' '+IT[t].n+'</span><b>'+n+'개'+(n<=1?' · 부족':'')+'</b></div>'; }).join('')+
+      '<div class="rpgd">'+['s','b','c'].map(function(t){ const n=partAvail(t); return '<button class="rpo'+(n<=1?' low':'')+'" data-r="order" data-i="'+t+'" aria-label="'+IT[t].n+' 2개 주문 '+(COST[t]*4)+'달러"><b>'+IT[t].n+' +2</b><s>$'+(COST[t]*4)+'</s></button>'; }).join('')+'</div></div>';
     if(!wait.length) body+='<div class="rpc"><h4>접수 대기 없음</h4><small>매장 입구 안내대에서 수리 문의 손님을 <b>접수</b>하면 여기로 쌓여요.<br>접수한 손님은 인내심이 줄어드니 서둘러 진단해 주세요.</small></div>';
     body+=wait.map((j,i)=>{ const pc=Math.max(0,Math.min(100,j.pat/j.patMax*100));
       return '<div class="rpc"><h4>'+(j.data?'📷 ':'')+rDev(j)+'<em>'+(j.auto?'👨‍🔧 서준 처리 중':'진단 대기')+'</em></h4>'+
@@ -3729,7 +3808,7 @@ function bizBuild(){ if(BIZ.built) return; BIZ.built=true; try{ if(typeof floorP
       bx(0.5,0.3,0.03,'#1b1f27',-0.28,0.96,-0.25,g).rotation.y=0.15; bx(0.46,0.26,0.02,['#3a7bff','#22c08a','#ff9a1a'][i%3],-0.28,0.96,-0.236,g).rotation.y=0.15;
       bx(0.5,0.3,0.03,'#1b1f27',0.3,0.96,-0.25,g).rotation.y=-0.15; bx(0.46,0.26,0.02,'#e8ecf4',0.3,0.96,-0.236,g).rotation.y=-0.15;
       bx(0.36,0.02,0.14,'#2a2d38',0,0.78,0.26,g); cyl(0.05,0.1,['#ff5a6a','#ffffff','#ffd23f'][i%3],0.55,0.82,0.3,g);
-      bx(0.5,0.07,0.5,'#2a3142',0,0.37,0.62,g); bx(0.5,0.5,0.08,'#2a3142',0,0.62,0.86,g); cyl(0.04,0.34,'#9aa2b2',0,0.17,0.62,g);
+      bx(0.52,0.09,0.52,'#6b7d9c',0,0.38,0.62,g); bx(0.5,0.52,0.10,'#5a6c8c',0,0.64,0.87,g); bx(0.5,0.07,0.11,'#93a6c4',0,0.91,0.87,g); cyl(0.04,0.34,'#b8c2d2',0,0.19,0.62,g);   /* v2.63: 어두운 카펫 위에서도 의자 실루엣이 읽히게 중간 톤 + 등받이 윗면 하이라이트 */
       g.visible=false; BIZ.deskG.push(g); });
     /* 팀장실: 큰 책상 + 명패 + 책장 (오른쪽 뒤, 유리벽) */
     const mg=new THREE.Group(); mg.position.set(3.4,0,-2.6); mg.rotation.y=Math.PI; sc.add(mg); BIZ.mgrG=mg;   // v2.59: 팀장도 카메라 쪽을 본다
@@ -3759,7 +3838,7 @@ function bizLabel(){ const el=document.createElement('div'); el.className='ft sa
 function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(6,B.desks), r=Math.min(n,B.reps.length);
     BIZ.deskG.forEach((g,i)=>g.visible=i<n); BIZ.room.visible=B.room>0; BIZ.mgrG.visible=!!B.mgr;
     while(BIZ.reps.length>r){ const R=BIZ.reps.pop(); BIZ.scene.remove(R.ch.g); R.el.remove(); }
-    while(BIZ.reps.length<r){ const i=BIZ.reps.length; const ch=makeChar(BASE_MD[(i+1)%BASE_MD.length],{tint:['#2f3a5a','#3a2a4a','#1f4a3a','#4a3a2a','#2a2a2a','#5a2a2a'][i]}); BIZ.scene.add(ch.g); const [x,z]=BIZ.DP[i]; ch.g.position.set(x,0,z-0.62); ch.g.rotation.y=0; ch.g.scale.setScalar(0.85); BIZ.reps.push({ch,el:bizLabel(),i}); }
+    while(BIZ.reps.length<r){ const i=BIZ.reps.length; const ch=makeChar(BASE_MD[(i+1)%BASE_MD.length],{tint:['#3d4a70','#4a3a5e','#2a5a48','#5a4a36','#3a3a3a','#6a3a3a'][i]}); BIZ.scene.add(ch.g); const [x,z]=BIZ.DP[i]; ch.g.position.set(x,0,z-0.62); ch.g.rotation.y=0; ch.g.scale.setScalar(0.85); BIZ.reps.push({ch,el:bizLabel(),i}); }
     if(B.mgr&&!BIZ.mgrCh){ const ch=makeChar(BASE_MD[0],{tint:'#1b1f27'}); BIZ.scene.add(ch.g); ch.g.position.set(3.4,0,-3.35); ch.g.rotation.y=0; ch.g.scale.setScalar(0.85); BIZ.mgrCh={ch,el:bizLabel(),i:'m'}; }
     if(!B.mgr&&BIZ.mgrCh){ BIZ.scene.remove(BIZ.mgrCh.ch.g); BIZ.mgrCh.el.remove(); BIZ.mgrCh=null; }
     const nego=B.deals.filter(d=>d.st==='nego'); BIZ.stk.forEach((s,i)=>s.visible=i<B.deals.length);
@@ -3806,7 +3885,7 @@ function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, v
 function bizOpen(){ if(!bizOn()) return; bizBuild(); if(!BIZ.open){ BIZ.pp={x:player.pos.x,z:player.pos.z}; player.pos.x=0; player.pos.z=-60; try{ tapStop(); }catch(_){} if(quizOpen) try{ closeQuiz(); }catch(_){} } BIZ.open=true;  /* v2.57: 사무실에 있는 동안 사장은 매장에 없다 — 손님이 말을 걸지 않게 매장 밖으로 */ document.body.classList.add('biz'); if(BIZ.labels) BIZ.labels.style.display='block'; try{ initAudio(); snd('ui',0.4); }catch(_){}
   let u=$('bizUI'); if(!u){ u=document.createElement('div'); u.id='bizUI'; document.body.appendChild(u);
     const st=document.createElement('style'); st.textContent='#bizUI{position:fixed;left:0;right:0;bottom:0;top:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
-      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 66px) 8px 0;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:16px;background:rgba(16,22,40,.82);box-shadow:0 3px 10px rgba(0,0,0,.25)}#bizUI .bzh b{flex:1;min-width:0;font:900 16px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bizUI .bzh b small{display:block;font:800 11px var(--b);color:#aab6e8}'+
+      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 60px) 8px 0;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:16px;background:rgba(16,22,40,.82);box-shadow:0 3px 10px rgba(0,0,0,.25)}#bizUI .bzh b{flex:1;min-width:0;font:900 16px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bizUI .bzh b small{display:block;font:800 11px var(--b);color:#aab6e8}'+
       '#bizUI .bzh button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:36px;line-height:36px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
       '#bizUI .bzs{pointer-events:auto;margin-top:auto;height:50%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
       '#bizUI .bzt{display:flex;gap:4px;padding:8px 8px 4px;flex:none}#bizUI .bzt button{all:unset;position:relative;cursor:pointer;flex:1;min-width:0;text-align:center;height:44px;border-radius:12px;font:900 11px/1.15 var(--b);background:#ece6da;color:#5a4a3a;display:flex;flex-direction:column;align-items:center;justify-content:center}#bizUI .bzt button i{font-style:normal;font-size:17px}#bizUI .bzt button.on{background:#3443c8;color:#fff}#bizUI .bzt button em{position:absolute;top:2px;right:4px;min-width:16px;height:16px;border-radius:8px;background:#e8342a;color:#fff;font:900 10px/16px var(--b);font-style:normal}'+
@@ -3825,13 +3904,13 @@ function bizMin(ms){ const m=Math.max(0,Math.ceil(ms/60000)); return m>=60?Math.
 var GRC={A:'#2faa45',B:'#2f6fd8',C:'#ffb020',D:'#e8342a'};
 function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizSyncScene(); const now=Date.now(), fr=bizFreeRep(B);
   let list='';
-  if(BIZ.tab==='deal'){ if(!B.deals.length) list='<div class="bzc">아직 거래가 없어요. 매장에 <b>법인 손님</b>이 오면 [비즈니스 팀에 연결]로 넘겨 주세요.'+(B.mgr?'':' <br>💡 팀장을 두면 거래 배정과 협상 포인트를 대신 처리해요.')+'</div>';
+  if(BIZ.tab==='deal'){ if(!B.deals.length) list='<div class="bze"><em>📋</em><b>아직 거래가 없어요</b><small>매장에 <b>법인 손님</b>이 오면 [비즈니스 팀에 연결]로 넘겨 주세요.'+(B.mgr?'':'<br>💡 팀장을 두면 배정·협상 포인트를 대신 처리해요.')+'</small></div>';
     B.deals.forEach((d,i)=>{ const Z=BIZ_SZ[d.sz], need=d.st==='nego'&&!d.asked&&d.p>=0.5;
       list+='<div class="bzc"><h4>'+(d.tries?'📇 ':'')+d.co+' <small>· '+Z.n+' · $'+d.val+'</small></h4>'+d.title+
         (d.st==='new'?'<div>⏳ 배정 마감까지 '+bizMin(d.dl-now)+' · 협상 약 '+bizMin(d.dur*bizDurK(B))+' · 성공 '+Math.round(bizChance(d,B)*100)+'%</div><div class="bzb">'+(fr!==-1?'<button data-b="assign" data-i="'+i+'">👔 '+bizWho(B,fr)+' 배정</button>':'<button class="bzg">빈 담당자가 없어요</button>')+'</div>'
          :'<div>📞 '+bizWho(B,d.rep)+' 협상 중 · 성공 확률 '+Math.round(bizChance(d,B)*100)+'%'+(need?' · <b style="color:#c0392b">협상 포인트 대응 필요!</b>'+(B.mgr?' <small>(5분 지나면 팀장이 대신)</small>':''):' · 남은 '+bizMin((d.asked?1-d.p:0.5-d.p)*d.dur*bizDurK(B,d)))+'</div><div class="bzp"><i style="width:'+Math.round(d.p*100)+'%"></i></div>'+
           '<div class="bzb">'+(need?'<button class="bzy" data-b="quiz" data-i="'+i+'">❗ 협상 포인트 대응</button>':'')+'<button class="bzg" data-b="rush" data-i="'+i+'">⚡ 즉시 완료 ₩1,200</button></div><div style="font:700 10px var(--b);color:#8a7a6a;margin-top:4px">테스트 결제 · 실제 돈이 나가지 않아요</div>')+'</div>'; }); }
-  else if(BIZ.tab==='later'){ if(!B.later.length) list='<div class="bzc">재영업할 고객이 없어요. 결렬되거나 마감이 지난 거래가 여기로 와요.</div>';
+  else if(BIZ.tab==='later'){ if(!B.later.length) list='<div class="bze"><em>📇</em><b>재영업할 고객이 없어요</b><small>결렬되거나 마감이 지난 거래가 여기로 와요</small></div>';
     B.later.forEach((l,i)=>{ const ok=now>=l.retry; list+='<div class="bzc"><h4>📇 '+l.co+' <small>· '+l.why+'</small></h4>'+l.title+'<div>다시 영업하면 $'+Math.round(l.val*0.9/10)*10+' · 성공 '+Math.round(Math.min(0.85,l.ch0+0.1)*100)+'% (관계가 생겨 조금 쉬워요)</div><div class="bzb">'+(ok?'<button data-b="retry" data-i="'+i+'">📞 다시 영업</button>':'<button class="bzg">'+bizMin(l.retry-now)+' 뒤에 연락 가능</button>')+'</div></div>'; }); }
   else if(BIZ.tab==='team'){ const mc=bizCost('mgr'), mu=bizCost('mgrup');
     list='<div class="bzc"><h4>👔 팀장 '+(B.mgr?B.mgr.name+' <small>Lv.'+B.mgr.lv+'</small>':'<small>없음</small>')+'</h4>'+(B.mgr?'새 거래 자동 배정 · 직접 협상(실력 '+bizSk(B,'m').toFixed(2)+') · 협상 포인트 5분 방치 시 대신 대응(정확 '+Math.round(Math.min(0.92,0.62+0.08*B.mgr.lv)*100)+'%) · 팀 평가':'팀장을 두면 거래 배정·협상 포인트를 대신 처리하고, 직접 협상도 하고, 사원을 평가해요.')+
@@ -3923,6 +4002,7 @@ setInterval(bizTick,1000); setTimeout(()=>{ BIZ.lastT=S.bizLastT||Date.now(); bi
 setInterval(()=>{ S.bizLastT=Date.now(); },5000);
 
 /* =====================================================================
+   v2.63 — UI 정리(허브·수리실·비즈니스 시트·결과창) · 화면 전환/보상 중복 방지 · 375px 대응
    v2.62 — 출근 허브 · 수리실/비즈니스 3D 모션 · AI 브리핑 · 3부문 매니저 평가
    ---------------------------------------------------------------------
    1) 출근 허브: 영업 준비창 앞에 지점 선택 + 부문별 준비 바로가기를 둔다.
@@ -3949,67 +4029,78 @@ function v262Slots(){
 function v262SlotMeta(kind){ try{ return (V262.last&&V262.last.mgrMap&&V262.last.mgrMap[kind])||null; }catch(e){ return null; } }
 
 /* ---------------- 1) 출근 허브 ---------------- */
+function v262Num(v,d){ return (typeof v==='number'&&isFinite(v))?v:(d||0); }
 function v262ChipHTML(l,v){
-  return '<div style="flex:1 1 0;min-width:0;background:#fff;border-radius:11px;padding:5px 3px;text-align:center;box-shadow:0 2px 0 rgba(0,0,0,.07)">'+
-    '<small style="display:block;font:700 9.5px var(--b);color:#9a7a50;white-space:nowrap;overflow:hidden">'+l+'</small>'+
-    '<b style="display:block;font:900 13.5px var(--b);color:#3a2a10;white-space:nowrap;overflow:hidden">'+v+'</b></div>';
+  return '<div class="hubChip"><small>'+l+'</small><b>'+v+'</b></div>';
+}
+/* v2.63: 지점 카드는 '지금 지점 → 이동 가능 → 잠김' 순서로 — 가장 쓸모 있는 카드를 맨 앞에 */
+function v262BranchOrder(){
+  const cur=[], ok=[], lock=[];
+  for(let i=0;i<STN.length;i++){ if(i===STG) cur.push(i); else if(v262OpenStage(i)) ok.push(i); else lock.push(i); }
+  return cur.concat(ok,lock);
 }
 function v262BranchHTML(i){
-  const cur=(i===STG), ok=v262OpenStage(i), stgDay=(typeof STGD!=='undefined'&&STGD[i])?STGD[i][0]+1:'?';
-  const base='width:100%;margin:0;min-height:52px;padding:6px 8px;border-radius:12px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;text-align:left;font:900 12px var(--b);';
-  if(cur) return '<button data-v2="noop" style="'+base+'color:#fff;background:linear-gradient(#7bea62,#2faa45);box-shadow:0 3px 0 #1d7a2a"><span>'+STI[i]+' '+STS[i]+'</span><small style="font:800 9.5px var(--b);opacity:.95">운영 중 · DAY '+((S.day|0)+1)+'</small></button>';
-  if(ok) return '<button data-v2="branch" data-i="'+i+'" style="'+base+'color:#fff;background:linear-gradient(#7aa8ff,#3a6fd8);box-shadow:0 3px 0 #1f3f9a"><span>'+STI[i]+' '+STS[i]+'</span><small style="font:800 9.5px var(--b);opacity:.95">이동 가능 · 눌러서 출근</small></button>';
-  return '<button data-v2="noop" disabled style="'+base+'color:#7a6a5a;background:#e7e0d3;box-shadow:none"><span>🔒 '+STS[i]+'</span><small style="font:800 9.5px var(--b)">DAY '+stgDay+' 개점</small></button>';
+  const cur=(i===STG), ok=v262OpenStage(i);
+  const stgDay=(typeof STGD!=='undefined'&&STGD[i])?STGD[i][0]+1:'?';
+  const nm=hesc(STS[i]), ic=STI[i]||'🏬';
+  if(cur) return '<button class="hubBr cur" data-v2="noop" aria-current="true" aria-label="'+nm+' · 운영 중">'+
+    '<span class="ic">'+ic+'</span><span class="tx"><b>'+nm+'</b><small>운영 중 · DAY '+((S.day|0)+1)+'</small></span></button>';
+  if(ok) return '<button class="hubBr go" data-v2="branch" data-i="'+i+'" aria-label="'+nm+'로 이동">'+
+    '<span class="ic">'+ic+'</span><span class="tx"><b>'+nm+'</b><small>이동 가능</small></span></button>';
+  return '<button class="hubBr lock" disabled aria-label="'+nm+' · DAY '+stgDay+' 개점">'+
+    '<span class="ic">🔒</span><span class="tx"><b>'+nm+'</b><small>DAY '+stgDay+' 개점</small></span></button>';
 }
-function v262SlotHTML(kind,ic,who,sub,btn,btnKey,has){
+function v262SlotHTML(kind,ic,who,sub,btn,btnKey,has,act){
   const m=v262SlotMeta(kind), g=(has&&m)?m.g:null;
-  return '<div style="display:flex;align-items:center;gap:6px;background:#fff;border-radius:12px;padding:6px 8px;margin:4px 0;box-shadow:0 2px 0 rgba(0,0,0,.07);text-align:left">'+
-    '<span style="font-size:17px">'+ic+'</span>'+
-    '<div style="flex:1;min-width:0"><b style="display:block;font:900 12px var(--b);color:#3a2a10;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+hesc(who)+'</b>'+
-    '<small style="display:block;font:700 10px var(--b);color:#8a7a5a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+sub+'</small></div>'+
-    (g?v262Badge(g,20):'')+
-    (btn?'<button data-v2="go" data-k="'+btnKey+'" style="width:auto;flex:none;margin:0;padding:0 9px;height:34px;font:900 11px var(--b);border-radius:9px;background:linear-gradient(#b8c2d0,#8a96a8);box-shadow:0 2px 0 #5a6578">'+btn+'</button>':'')+
+  return '<div class="hubMg"><span class="ic">'+ic+'</span>'+
+    '<span class="tx"><b>'+hesc(who)+'</b><small>'+sub+'</small></span>'+
+    (g?v262Badge(g,22):'')+
+    (btn?'<button class="go'+(act?' act':'')+'" data-v2="go" data-k="'+btnKey+'">'+btn+'</button>':'')+
     '</div>';
+}
+function v262PrepHTML(k,ic,nm,col){
+  return '<button class="hubPrep" data-v2="go" data-k="'+k+'"><span class="ic" style="background:'+col+'">'+ic+'</span><b>'+nm+'</b><em>›</em></button>';
 }
 function v262HubHTML(){
   const cfg=(function(){ try{ return dayCfg(S.day); }catch(e){ return {goal:0,min:4,dur:120,title:'',tip:''}; } })();
-  const M=v262Slots(), day=(S.day|0)+1;
-  let h='<h2 style="margin:0 0 2px;font-size:22px">🏪 출근 허브</h2>';
-  h+='<div style="font:900 12px var(--b);color:#8a5a20;margin:0 0 7px">'+STI[STG]+' '+STN[STG]+' · DAY '+day+' · '+STK[STG]+'</div>';
-  h+='<div style="display:flex;gap:5px;margin:0 0 4px">'+v262ChipHTML('목표 매출','$'+cfg.goal)+v262ChipHTML('최소 평점','★'+(cfg.min||0).toFixed(1))+v262ChipHTML('영업 시간',Math.floor(cfg.dur/60)+'분')+'</div>';
-  if(typeof dayEv!=='undefined'&&dayEv&&EVT[dayEv]) h+='<div class="evc" style="margin:5px 0"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>';
-  h+='<div style="text-align:left;font:900 12px var(--b);color:#7a5a30;margin:8px 0 3px">📍 운영할 지점 <small style="font-weight:700;color:#a8917a">· 해금된 지점으로 이동할 수 있어요</small></div>';
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">';
-  for(let i=0;i<STN.length;i++) h+=v262BranchHTML(i);
-  h+='</div>';
-  h+='<div style="text-align:left;font:900 12px var(--b);color:#7a5a30;margin:9px 0 2px">👔 3대 매니저</div>';
+  const M=v262Slots(), day=(S.day|0)+1, goal=v262Num(cfg.goal,0), min=v262Num(cfg.min,4), dur=v262Num(cfg.dur,120);
+  let h='<div class="hubH"><h2>🏪 출근 허브</h2><em>DAY '+day+'</em></div>';
+  h+='<div class="hubLoc">'+STI[STG]+' '+hesc(STN[STG])+' · '+hesc(STK[STG]||'')+'</div>';
+  h+='<div class="hubChips">'+v262ChipHTML('목표 매출','$'+goal)+v262ChipHTML('최소 평점','★'+min.toFixed(1))+v262ChipHTML('영업 시간',Math.floor(dur/60)+'분')+'</div>';
+  if(typeof dayEv!=='undefined'&&dayEv&&EVT[dayEv]) h+='<div class="evc" style="margin:6px 0 0"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>';
+  h+='<div class="hubSec"><b>📍 운영할 지점</b><small>다른 지점을 고르면 그 매장에서 시작해요</small></div>';
+  h+='<div class="hubGrid">'+v262BranchOrder().map(v262BranchHTML).join('')+'</div>';
+  h+='<div class="hubSec"><b>👔 3대 매니저</b><small>어제 평가 · 오늘 실적</small></div>';
   h+=v262SlotHTML('shop','🏬',M.shop?M.shop.name:'매니저 미배치',
-    M.shop?('👔 '+MGRK[mgrRank(M.shop)]+' · '+Math.round(M.shop.mscore==null?50:M.shop.mscore)+'점 · 만족도 '+(M.shop.sat==null?70:M.shop.sat)):'직원 관리에서 매니저를 채용하세요','관리','crew',!!M.shop);
+    M.shop?('매니저 · '+Math.round(v262Num(M.shop.mscore,50))+'점 · 만족도 '+Math.round(v262Num(M.shop.sat,70))):'직원 관리에서 매니저를 채용하세요','관리','crew',!!M.shop);
   const repUnl=S.unl.includes('repair');
   h+=v262SlotHTML('rep','🔧',M.tech?M.tech.name:'수리 기사 미배치',
-    M.tech?('Lv.'+(M.tech.lv||1)+' · 오늘 수리 '+((dfix&&dfix.n)||0)+'건 · 접수 '+RQ.filter(function(j){ return j.st==='wait'; }).length+'건')
-      :(repUnl?'수리실에서 수리 기사를 채용·배치하세요':'수리 센터가 열리면 수리 기사를 채용하세요'),
-    repUnl?'점검':'',repUnl?'rep':'',!!M.tech);
+    M.tech?('Lv.'+(M.tech.lv||1)+' · 오늘 수리 '+v262Num(dfix&&dfix.n,0)+'건 · 접수 '+RQ.filter(function(j){ return j.st==='wait'; }).length+'건')
+      :(repUnl?'수리실에서 수리 기사를 채용하세요':'수리 센터가 열리면 채용할 수 있어요'),
+    repUnl?'점검':'',repUnl?'rep':'',!!M.tech,repUnl);
   h+=v262SlotHTML('biz','💼',M.biz?(M.biz.name+' 팀장'):'팀장 미배치',
-    M.biz?('Lv.'+(M.biz.lv||1)+' · 계약 '+((M.B&&M.B.won)||0)+' · 결렬 '+((M.B&&M.B.lost)||0)):(M.B?'비즈니스 → 팀에서 팀장을 채용하세요':'비즈니스 팀은 서울 지점부터 열려요'),
-    M.B?'열기':'',M.B?'biz':'',!!M.biz);
-  h+='<div style="text-align:left;font:900 12px var(--b);color:#7a5a30;margin:9px 0 3px">🧰 부문별 준비</div>';
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">'+
-     '<button data-v2="go" data-k="up" style="margin:0;min-height:46px;border-radius:12px;font:900 13px var(--b);background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00">🛠️ 매장 세팅</button>'+
-     '<button data-v2="go" data-k="rep" style="margin:0;min-height:46px;border-radius:12px;font:900 13px var(--b);background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a">🔧 수리실 점검</button>'+
-     '<button data-v2="go" data-k="biz" style="margin:0;min-height:46px;border-radius:12px;font:900 13px var(--b);background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a">💼 비즈니스</button>'+
-     '<button data-v2="go" data-k="crew" style="margin:0;min-height:46px;border-radius:12px;font:900 13px var(--b);background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 3px 0 #4a2a9a">👥 매니저 배치</button>'+
-     '<button data-v2="go" data-k="shop" style="margin:0;min-height:46px;border-radius:12px;font:900 13px var(--b);background:linear-gradient(#ff7ab8,#e8348a);box-shadow:0 3px 0 #9a1a5a">🛒 상점</button>'+
-     '<button data-v2="go" data-k="info" style="margin:0;min-height:46px;border-radius:12px;font:900 13px var(--b);background:linear-gradient(#b8c2d0,#8a96a8);box-shadow:0 3px 0 #5a6578">📋 오늘 정보·전략</button>'+
+    M.biz?('Lv.'+(M.biz.lv||1)+' · 계약 '+v262Num(M.B&&M.B.won,0)+' · 결렬 '+v262Num(M.B&&M.B.lost,0))
+      :(M.B?'비즈니스 → 팀에서 팀장을 채용하세요':'비즈니스 팀은 서울 지점부터 열려요'),
+    M.B?'열기':'',M.B?'biz':'',!!M.biz,!!M.B);
+  h+='<div class="hubSec"><b>🧰 부문별 준비</b><small>영업 전에 한 번씩 점검</small></div>';
+  h+='<div class="hubGrid">'+
+     v262PrepHTML('up','🛠️','매장 세팅','linear-gradient(#ffcf4d,#ff8a1a)')+
+     v262PrepHTML('rep','🔧','수리실 점검','linear-gradient(#4fd06a,#22963e)')+
+     v262PrepHTML('biz','💼','비즈니스','linear-gradient(#5a6cff,#3443c8)')+
+     v262PrepHTML('crew','👥','매니저 배치','linear-gradient(#b07aff,#7a4ad6)')+
+     v262PrepHTML('shop','🛒','상점','linear-gradient(#ff7ab8,#e8348a)')+
+     v262PrepHTML('info','📋','오늘 정보·전략','linear-gradient(#a8b2c0,#77828f)')+
      '</div>';
   if(V262.last&&V262.last.day===S.day-1){
     const L=V262.last;
-    h+='<div style="text-align:left;font:800 10.5px var(--b);color:#8a7a5a;margin:7px 0 0;background:#f6f1e6;border-radius:10px;padding:5px 8px">어제 평가 · 쇼핑 '+v262GradeTxt(L.shop?L.shop.g:null)+' · 수리실 '+v262GradeTxt(L.rep?L.rep.g:null)+' · 비즈니스 '+v262GradeTxt(L.biz?L.biz.g:null)+'</div>';
+    h+='<div class="hubYest">📊 어제 평가 · 쇼핑 '+(L.shop?L.shop.g:'-')+' · 수리실 '+(L.rep?L.rep.g:'-')+' · 비즈니스 '+(L.biz?L.biz.g:'-')+'</div>';
   }
-  h+='<button id="v262Go" style="margin-top:9px;min-height:54px;font-size:19px;background:linear-gradient(#7bea62,#2faa45);box-shadow:0 5px 0 #1d7a2a">영업 시작!</button>';
+  h+='<div class="hubFoot"><button class="hubCta" id="v262Go">영업 시작!</button></div>';
   return h;
 }
 function v262HubOpen(){
+  /* v2.63: 이미 허브가 떠 있으면 다시 그리지 않는다(수리실·비즈니스 복귀 타이머와 겹칠 때 화면이 튀지 않게) */
+  try{ if($('modal').classList.contains('on')&&document.getElementById('v262Go')) return; }catch(e){}
   try{ if(typeof dayState!=='undefined'&&dayState!=='pre') return; }catch(e){}
   V262.hub=1;
   try{ curFace=null; openModal(v262HubHTML()); }catch(e){ console.warn('v262 hub',e); return; }
@@ -4030,6 +4121,8 @@ function v262BranchAsk(i){
 }
 function v262HubGo(k){
   if(k==='branch') return;
+  if(V262.navT&&Date.now()-V262.navT<450) return; /* v2.63: 연속 탭으로 화면 두 번 열기 방지 */
+  V262.navT=Date.now();
   try{ window.__rts=0; }catch(_){}
   if(k==='info'){ v262BeginDay(false); return; }
   if(k==='rep'){
@@ -4057,6 +4150,8 @@ function v262BeginDay(auto){
 /* ---------------- 하루 시작 직후 수리실 자율 점검 ---------------- */
 function v262OnDayStart(){
   try{
+    if(V262.sd===S.day) return; /* v2.63: 허브의 자동 클릭과 준비창의 수동 클릭이 겹쳐 점검이 두 번 돌지 않게 */
+    V262.sd=S.day;
     V262.started=1; V262.bd={rev:0,won:0,lost:0}; V262.repMiss=0; V262.repN0=(dfix&&dfix.n)||0;
     setTimeout(v262RepMorning,1100);
   }catch(e){}
@@ -4293,6 +4388,11 @@ function v262AskAI(which,force){
       '\n계약 '+B.won+' · 결렬 '+B.lost+' · 팀장 '+(B.mgr?B.mgr.name+' Lv.'+B.mgr.lv:'없음')) : '비즈니스 팀 없음';
   }
   A.busy=1;
+  /* v2.63: 동기 예외·응답 없음으로 브리핑이 '갱신 중…'에 갇히지 않게 감싸고 20초 감시를 둔다 */
+  try{ if(A.wd) clearTimeout(A.wd); }catch(e){}
+  const v262Done=function(){ A.busy=0; try{ v262AIPaint(which); }catch(e){} };
+  A.wd=setTimeout(function(){ if(A.busy){ A.at=Date.now(); v262Done(); } },20000);
+  try{
   AI.callAI({kind:'v262'+which,max_tokens:120,temperature:0.65,
     messages:[{role:'system',content:(which==='rep'
       ? '너는 가상의 전자제품 매장 수리실 기사다. 사장에게 오늘 수리실 상황을 존댓말 두 문장 이내(총 90자 이내)로 브리핑한다. 주어진 수치만 근거로 하고 지금 할 일 하나를 제안한다. 인사말과 다른 말은 쓰지 않는다.'
@@ -4301,7 +4401,8 @@ function v262AskAI(which,force){
     fallback:function(){ return (which==='rep')?v262RepLite():v262BizLite(); }})
     .then(function(r){ if(r&&r.text&&String(r.text).trim()){ A.txt=String(r.text).replace(/\s+/g,' ').trim().slice(0,140); A.ok=r.ok?1:0; A.src=r.ok?'AI':'시뮬레이터'; } A.at=Date.now(); })
     .catch(function(){ A.at=Date.now(); })
-    .then(function(){ A.busy=0; v262AIPaint(which); });
+    .then(function(){ try{ clearTimeout(A.wd); }catch(e){} v262Done(); });
+  }catch(e){ try{ clearTimeout(A.wd); }catch(_){} A.ok=0; A.src='시뮬레이터'; A.at=Date.now(); v262Done(); }
 }
 function v262AIPaint(which){
   try{
@@ -4355,37 +4456,40 @@ function v262SectEval(){
     {k:'biz',n:'비즈니스',ic:'💼',sc:bizSc,rev:Math.round(bd.rev),cnt:bd.won,sub:(bizSc==null)?'비즈니스 팀 미해금':'계약 '+bd.won+'건 · $'+Math.round(bd.rev)+' · 결렬 '+bd.lost+'건'}
   ];
   rows.forEach(function(r){ r.g=v262Grade(r.sc); });
+  /* v2.63: 같은 날 '다시 도전'을 반복해도 매니저 경험치·보너스를 두 번 받지 않는다 */
+  const awarded=!!(S.v262&&S.v262.awardDay===S.day);
   const mgrRows=[], bonus=[];
   const applyM=function(kind,sc,who,obj){
     if(sc==null||!who||!obj) return;
     const g=v262Grade(sc);
     const st=(g==='S'||g==='A')?'우수':(g==='B')?'보통':'분발 필요';
-    const exp=(g==='S'?42:g==='A'?30:g==='B'?18:g==='C'?8:2);
-    const rp=(g==='S'?6:g==='A'?4:g==='B'?1:g==='C'?-2:-4);
-    obj.vexp=(obj.vexp||0)+exp; obj.vrep=Math.max(0,Math.min(100,(obj.vrep==null?50:obj.vrep)+rp)); obj.vgrade=g;
-    let up=null;
-    if(obj.vexp>=100&&((obj.lv||1)<5)){ obj.lv=(obj.lv||1)+1; obj.vexp=0; up=obj.lv; }
-    if((g==='S'||g==='A')&&obj.sat!=null) obj.sat=Math.min(100,obj.sat+2);
-    const b=Math.round(goal*(g==='S'?0.025:g==='A'?0.018:g==='B'?0.01:0)/10)*10;
-    if(b>0){ money+=b; try{ shownMoney=money; }catch(e){} bonus.push({who:who,b:b}); }
-    mgrRows.push({kind:kind,who:who,g:g,st:st,exp:exp,rp:rp,up:up,b:b,rep:obj.vrep});
+    let exp=0, rp=0, up=null, b=0;
+    if(!awarded){
+      exp=(g==='S'?42:g==='A'?30:g==='B'?18:g==='C'?8:2);
+      rp=(g==='S'?6:g==='A'?4:g==='B'?1:g==='C'?-2:-4);
+      obj.vexp=(obj.vexp||0)+exp; obj.vrep=Math.max(0,Math.min(100,(obj.vrep==null?50:obj.vrep)+rp)); obj.vgrade=g;
+      if(obj.vexp>=100&&((obj.lv||1)<5)){ obj.lv=(obj.lv||1)+1; obj.vexp=0; up=obj.lv; }
+      if((g==='S'||g==='A')&&obj.sat!=null) obj.sat=Math.min(100,obj.sat+2);
+      b=Math.round(goal*(g==='S'?0.025:g==='A'?0.018:g==='B'?0.01:0)/10)*10;
+      if(b>0){ money+=b; try{ shownMoney=money; }catch(e){} bonus.push({who:who,b:b}); }
+    }
+    mgrRows.push({kind:kind,who:who,g:g,st:st,exp:exp,rp:rp,up:up,b:b,rep:(obj.vrep==null?50:obj.vrep),awarded:awarded?1:0});
   };
   applyM('shop',shopSc,M.shop&&M.shop.name,M.shop);
   applyM('rep',repSc,M.tech&&M.tech.name,M.tech);
   applyM('biz',bizSc,M.biz&&M.biz.name,M.biz);
-  const out={day:S.day,rows:rows,mgr:mgrRows,bonus:bonus.reduce(function(a,x){ return a+x.b; },0),rev:Math.round(dayRev||0),goal:goal};
+  const out={day:S.day,rows:rows,mgr:mgrRows,bonus:bonus.reduce(function(a,x){ return a+x.b; },0),rev:Math.round(dayRev||0),goal:goal,awarded:awarded?1:0};
   rows.forEach(function(r){ out[r.k]={sc:(r.sc==null?null:Math.round(r.sc)),g:r.g,rev:r.rev,n:r.cnt}; });
   out.mgrMap={}; mgrRows.forEach(function(m){ out.mgrMap[m.kind]=m; });
+  if(!awarded){ try{ if(mgrRows.length){ S.v262=S.v262||{}; S.v262.awardDay=S.day; } }catch(e){} out.awarded=0; }
   return out;
 }
 function v262SectStrip(E){
   const d=document.createElement('div'); d.id='v262Strip';
-  d.style.cssText='display:flex;gap:4px;margin:6px 0;text-align:left';
   d.innerHTML=E.rows.map(function(r){
-    return '<div style="flex:1 1 0;min-width:0;background:#fff;border-radius:10px;padding:4px 5px;box-shadow:0 2px 0 rgba(0,0,0,.07)">'+
-      '<div style="display:flex;align-items:center;gap:3px"><span style="font-size:12px">'+r.ic+'</span>'+v262Badge(r.g,18)+
-      '<b style="margin-left:auto;font:900 11px var(--b);color:#5a3a20">'+(r.sc==null?'-':Math.round(r.sc))+'</b></div>'+
-      '<small style="display:block;font:800 9px var(--b);color:#8a7a5a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+r.n.replace('(매장)','')+' '+v262GradeTxt(r.g)+'</small></div>';
+    return '<div class="sc"><div class="r1"><span style="font-size:13px">'+r.ic+'</span>'+v262Badge(r.g,20)+
+      '<b class="pt">'+(r.sc==null?'-':Math.round(r.sc))+'</b></div>'+
+      '<small>'+r.n.replace('(매장)','')+' · '+v262GradeTxt(r.g)+'</small></div>';
   }).join('');
   return d;
 }
@@ -4404,7 +4508,7 @@ function v262SectDetail(E){
     h+=E.mgr.map(function(m){
       return '<div style="display:flex;gap:7px;align-items:flex-start;padding:5px 0;border-top:1px dashed #ece4d4">'+v262Badge(m.g,24)+
         '<div style="flex:1;font:700 12px/1.45 var(--b);color:#4a3a2a"><b>'+hesc(m.who)+'</b> · '+({shop:'쇼핑 매니저',rep:'수리실 담당',biz:'비즈니스 매니저'})[m.kind]+' · <b style="color:'+((m.st==='우수')?'#2faa45':m.st==='보통'?'#2f6fd8':'#e8342a')+'">'+m.st+'</b>'+
-        '<div style="color:#8a7a6a">경험치 +'+m.exp+' · 평판 '+(m.rp>=0?'+':'')+m.rp+' ('+m.rep+')'+(m.b?' · 보너스 +$'+m.b:'')+(m.up?(' · 🎉 Lv.'+m.up+' 승급'):'')+'</div>'+
+        '<div style="color:#8a7a6a">'+(m.awarded?'오늘 몫은 이미 정산했어요 (다시 도전은 평가만 반영)':('경험치 +'+m.exp+' · 평판 '+(m.rp>=0?'+':'')+m.rp+' ('+m.rep+')'+(m.b?' · 보너스 +$'+m.b:'')+(m.up?(' · 🎉 Lv.'+m.up+' 승급'):'')))+'</div>'+
         '<div id="v262m'+m.kind+'" style="color:#3a2a1a"></div></div></div>';
     }).join('');
   } else h+='<div style="font:700 12px var(--b);color:#8a7a6a">배치된 부문 매니저가 없어요. 허브의 [매니저 배치]에서 채용할 수 있어요.</div>';
@@ -4437,6 +4541,9 @@ function v262EvalAsk(E){
 function v262ResultInject(){
   try{
     const mb=$('mbox'); if(!mb) return;
+    /* v2.63: 결과창이 아직 떠 있을 때만 주입한다(닫힌 뒤·허브 화면에 끼어들지 않게) */
+    if(!$('modal').classList.contains('on')) return;
+    if(!mb.querySelector('.dres')) return;
     if(document.getElementById('v262Strip')) return;
     const E=v262SectEval();
     V262.last=E; try{ S.v262=S.v262||{}; S.v262.last=E; save(); }catch(e){}
@@ -4514,15 +4621,16 @@ function dirData(clear){
     crew:crew, crewN:crewN, stockout:stockout, rating:rating, clear:!!clear };
 }
 function dirAIShell(){
-  return '<div class="dirAI busy"><div class="daih">🏢 본사 총괄 디렉터 실시간 리더십 성적표<small>AI 분석 중…</small></div>'+
-    '<div class="daib"><i class="dadots"><s></s><s></s><s></s></i>오늘 운영 데이터를 본사로 올리는 중…</div></div>';
+  /* v2.63: 총평은 접힌 채로 뜨고, 펼쳐야 읽는다 — 결과창에서 다음 날 버튼을 밀어내지 않게 */
+  return '<details class="dirW" open><summary>🏢 본사 총괄 디렉터 총평<em>AI 분석 중…</em></summary>'+
+    '<div class="daib"><i class="dadots"><s></s><s></s><s></s></i>오늘 운영 데이터를 본사로 올리는 중…</div></details>';
 }
 function dirAIAsk(d){
   const box=$('dirAI'); if(!box) return;
   const esc=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
   const fb=()=>{ try{ return (window.TycoonAI&&TycoonAI.fallbackDirector)?TycoonAI.fallbackDirector({data:d}):'본사 총평을 불러오지 못했어요.'; }catch(e){ return '본사 총평을 불러오지 못했어요.'; } };
-  const paint=(txt,ok,ms)=>{ box.innerHTML='<div class="dirAI'+(ok?'':' fb')+'"><div class="daih">🏢 본사 총괄 디렉터 실시간 리더십 성적표<small>'+
-      (ok?'AI 실시간'+(ms?' · '+ms+'ms':''):'오프라인 시뮬레이터')+'</small></div><div class="daib">'+esc(txt).replace(/\n/g,'<br>')+'</div></div>'; };
+  const paint=(txt,ok,ms)=>{ box.innerHTML='<details class="dirW'+(ok?'':' fb')+'"><summary>🏢 본사 총괄 디렉터 총평<em>'+
+      (ok?'AI 실시간'+(ms?' · '+ms+'ms':''):'오프라인 시뮬레이터')+'</em></summary><div class="daib">'+esc(txt).replace(/\n/g,'<br>')+'</div></details>'; };
   try{
     if(!(window.TycoonAI&&typeof TycoonAI.directorReport==='function')){ paint(fb(),false); return; }
     const t0=Date.now();
@@ -4705,7 +4813,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.62';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.63';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
