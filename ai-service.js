@@ -24,8 +24,14 @@ var MODEL    = 'qwen/qwen3.8-27b';
 var MODEL_LABEL = 'Groq (Qwen 27B)';
 var TIMEOUT  = 16000;   /* v2.36: 11초 → 16초 (서버 첫 기동이 느린 경우) */
 
+/* v2.65: 연속 실패 뒤에는 잠시 쉰다(429·5xx 폭주 방지). 단위 ms */
+var COOL_MS  = [0, 5000, 12000, 25000, 45000, 60000];
+/* v2.65: 같은 종류를 연달아 부르지 않는다(버튼 연타·탭 전환) */
+var MIN_GAP  = 2200;
+
 /* 엔진 상태 — ⚙️ 설정 배지와 테스트가 읽는다 */
-var ST = { mode:'idle', ok:0, fail:0, ms:0, err:'', at:0 };
+var ST = { mode:'idle', ok:0, fail:0, ms:0, err:'', at:0, cool:0, coolN:0, rate:0, lastKind:'', lastAt:0 };
+var REQID = 0, INFLIGHT = {}, LAST = {};
 
 /* ---------------- 키 ---------------- */
 function store(){ try{ return window.localStorage; }catch(e){ return null; } }
@@ -63,16 +69,133 @@ function offline(){ try{ return (typeof navigator!=='undefined' && navigator.onL
 /* =====================================================================
    Groq 호출
    ===================================================================== */
+/* =====================================================================
+   v2.65 — 호출 안정화: 쿨다운 · 중복 억제 · 재시도 정책 · 응답 세정
+   ===================================================================== */
+function nowMs(){ return Date.now(); }
+function hashMsgs(msgs){
+  var s = '';
+  for(var i=0;i<msgs.length;i++){ s += (msgs[i] && msgs[i].role) + ':' + String((msgs[i] && msgs[i].content) || '').length + ':'; }
+  s += String(msgs.length ? (msgs[msgs.length-1].content || '') : '').slice(-160);
+  return s;
+}
+function coolLeft(){ return Math.max(0, (ST.cool || 0) - Date.now()); }
+function coolSet(ms){ ST.cool = Math.max(ST.cool || 0, Date.now() + ms); }
+function coolOk(){ ST.cool = 0; ST.coolN = 0; }
+
+/* 종류별 최대 길이 — 넘치면 문장 경계에서 자른다 */
+var CLEAN_MAX = { ping:24, interview:520, report:560, director:700, scout:220,
+  v262rep:170, v262biz:170, v262sect:600, mgreval:560, hqmgr:560, bizeval:560, hrmove:640 };
+function cleanText(t, kind){
+  var max = CLEAN_MAX[kind] || 480;
+  t = String(t == null ? '' : t);
+  /* 추론 모델의 사고 과정(<think>)은 화면에 절대 내보내지 않는다 */
+  t = t.replace(/<think>[\s\S]*?<\/think>/gi, '');
+  t = t.replace(/<\/?think[^>]*>/gi, '');
+  t = t.replace(/<\|?[a-z_]*think[a-z_]*\|?>/gi, '');
+  /* 코드펜스 · 머리말 · 마크다운 강조 */
+  t = t.replace(/```[a-zA-Z0-9]*\s*/g, '');
+  t = t.replace(/^\s*(?:assistant|ai|model|답변|응답|출력)\s*[:：]\s*/i, '');
+  t = t.replace(/\*\*|__/g, '');
+  /* 깨진 문자 · 제어문자 · 제로폭 문자 */
+  t = t.replace(/\uFEFF|[\u200B-\u200D\u2060\u180E]/g, '');
+  t = t.replace(/\uFFFD/g, '');
+  t = t.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
+  t = t.replace(/\r/g, '');
+  t = t.replace(/[ \t]{2,}/g, ' ');
+  t = t.replace(/[ \t]+\n/g, '\n');
+  t = t.replace(/\n{3,}/g, '\n\n');
+  t = t.trim();
+  /* JSON 덩어리만 왔으면 안쪽 문장을 꺼낸다 */
+  if(/^[\[{]/.test(t)){
+    try{
+      var j = JSON.parse(t), pick = '';
+      if(j && typeof j === 'object' && !Array.isArray(j)){
+        pick = j.text || j.answer || j.content || j.message || j['답변'] || j['평가'] || '';
+      } else if(Array.isArray(j) && typeof j[0] === 'string'){ pick = j[0]; }
+      if(typeof pick === 'string' && pick.trim()) t = pick.trim();
+    }catch(e){}
+  }
+  /* 전체를 감싼 따옴표 */
+  if(t.length > 2 && /^["'“”].*["'“”]$/.test(t)) t = t.slice(1, -1).trim();
+  if(t.length > max){
+    var cut = t.slice(0, max);
+    var dot = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('요.'), cut.lastIndexOf('다.'), cut.lastIndexOf('\n'));
+    t = (dot > max * 0.55 ? cut.slice(0, dot + 1) : cut).trim();
+  }
+  return t;
+}
+function withClean(r, kind){
+  try{ if(r && typeof r.text === 'string'){ var c = cleanText(r.text, kind); if(c) r.text = c; } }catch(e){}
+  return r;
+}
+
 function callAI(o){
   o = o || {};
-  /* v2.36: 핑이 아닌 호출은 실패하면 한 번 더 시도한다(서버 첫 기동·일시 오류) */
-  if(o.kind !== 'ping' && !o._retried){
-    return callAI1(o).then(function(r){ if(r && r.ok) return r; if(offline()) return r; return new Promise(function(res){ setTimeout(res, 700); }).then(function(){ var o2 = {}; for(var k in o) o2[k] = o[k]; o2._retried = 1; return callAI1(o2); }); });
+  var kind = String(o.kind || 'gen');
+  var msgs = Array.isArray(o.messages) ? o.messages : [];
+  var key = kind + '|' + (o.key || hashMsgs(msgs));
+  var t0 = nowMs();
+  var id = ++REQID;
+  var tag = function(r){ r = r || {}; r.id = id; r.kind = kind; r.stale = false; return r; };
+
+  /* 1) 쿨다운 — 방금 실패한 엔진은 두드리지 않고 곧바로 시뮬레이터 문장을 준다 */
+  var cl = coolLeft();
+  if(cl > 0 && !o.force){
+    ST.mode = 'cool'; ST.fail++;
+    var cf = withClean(fallback(o, '쿨다운 ' + Math.ceil(cl / 1000) + '초'), kind);
+    cf.cool = 1; cf.coolLeft = cl; cf.id = id; cf.kind = kind;
+    return Promise.resolve(cf);
   }
-  return callAI1(o);
+  /* 2) 같은 요청이 이미 떠 있으면 그 약속을 함께 받는다(연타·중복 호출) */
+  if(INFLIGHT[key] && !o.force){
+    return INFLIGHT[key].then(function(r){ var c = {}; for(var k in r) c[k] = r[k]; c.dedup = 1; return c; });
+  }
+  /* 3) 같은 종류를 최소 간격 안에 또 부르면 최근 결과를 재사용 */
+  var LK = LAST[kind];
+  if(!o.force && LK && LK.r && (t0 - LK.t) < MIN_GAP){
+    var rc = {}; for(var k2 in LK.r) rc[k2] = LK.r[k2];
+    rc.cached = 1; rc.id = id;
+    return Promise.resolve(rc);
+  }
+  ST.lastKind = kind; ST.lastAt = t0;
+
+  var p = run(o, kind).then(function(r){
+    r = tag(r);
+    if(r && r.ok){ coolOk(); LAST[kind] = { t: Date.now(), r: r }; }
+    else if(!offline()){
+      var why = String((r && r.error) || '');
+      if(/HTTP 429|HTTP 5\d\d|시간 초과|abort|Abort|network|Failed to fetch|빈 응답/i.test(why)){
+        ST.coolN = Math.min(6, (ST.coolN || 0) + 1);
+        coolSet(COOL_MS[ST.coolN] || 60000);
+      }
+    }
+    return r;
+  });
+  INFLIGHT[key] = p;
+  var clear = function(){ if(INFLIGHT[key] === p) delete INFLIGHT[key]; };
+  p.then(clear, clear);
+  return p;
 }
-function callAI1(o){
+
+function run(o, kind){
+  if(o.kind === 'ping') return callAI1(o, kind);
+  return callAI1(o, kind).then(function(r){
+    if(r && r.ok) return r;
+    if(offline()) return r;
+    var why = String((r && r.error) || '');
+    /* 429·4xx는 다시 보내지 않는다(같은 요청을 또 보내면 더 오래 막힌다) */
+    if(/HTTP 4\d\d/.test(why)) return r;
+    return new Promise(function(res){ setTimeout(res, 600); }).then(function(){
+      var o2 = {}; for(var k in o) o2[k] = o[k]; o2._retried = 1;
+      return callAI1(o2, kind);
+    });
+  });
+}
+
+function callAI1(o, kind){
   o = o || {};
+  kind = kind || o.kind || 'gen';
   var messages = Array.isArray(o.messages) ? o.messages : [];
   var body = {
     model: o.model || MODEL,
@@ -83,12 +206,8 @@ function callAI1(o){
   var t0 = now();
   var done = function(r){ ST.at = Date.now(); return r; };
 
-  if(typeof fetch !== 'function'){
-    return Promise.resolve(done(fallback(o, 'fetch를 쓸 수 없는 환경')));
-  }
-  if(offline()){
-    return Promise.resolve(done(fallback(o, '오프라인')));
-  }
+  if(typeof fetch !== 'function'){ return Promise.resolve(done(withClean(fallback(o, 'fetch를 쓸 수 없는 환경'), kind))); }
+  if(offline()){ return Promise.resolve(done(withClean(fallback(o, '오프라인'), kind))); }
 
   var ctl = null, timer = 0;
   try{
@@ -109,28 +228,38 @@ function callAI1(o){
     body: JSON.stringify(body),
     signal: ctl ? ctl.signal : undefined
   }).then(function(r){
-    if(timer) clearTimeout(timer);
+    if(timer){ clearTimeout(timer); timer = 0; }
+    var st = r.status || 0;
+    if(st === 429){
+      var ra = 0; try{ ra = parseInt(r.headers.get('Retry-After'), 10) || 0; }catch(e){ ra = 0; }
+      ST.rate++;
+      if(ra > 0) coolSet(Math.min(120000, ra * 1000));
+      return r.text().then(function(t){ throw new Error('HTTP 429' + (t ? ' · ' + cleanText(t, 'ping').slice(0, 80) : '')); },
+                           function(){ throw new Error('HTTP 429'); });
+    }
     if(!r.ok){
-      return r.text().then(function(t){ throw new Error('HTTP '+r.status+(t?' · '+clampStr(t,120):'')); },
-                           function(){ throw new Error('HTTP '+r.status); });
+      return r.text().then(function(t){ throw new Error('HTTP ' + st + (t ? ' · ' + cleanText(t, 'ping').slice(0, 100) : '')); },
+                           function(){ throw new Error('HTTP ' + st); });
     }
     return r.json();
   }).then(function(j){
     var txt = '';
-    try{ txt = (j.choices[0].message.content || '').trim(); }catch(e){ txt=''; }
-    /* v2.35: 이 모델은 추론 모델이다. 추론 과정이 <think>…</think>로 본문에 섞여 오면 화면에 그대로 보이므로 걷어낸다.
-       닫히지 않은 <think>(토큰 한도에서 잘린 경우)는 답이 없는 것으로 보고 시뮬레이터 응답으로 넘긴다. */
-    txt = txt.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
-    if(/<think>/i.test(txt)) txt = '';
+    try{
+      var c = j && j.choices && j.choices[0];
+      txt = (c && c.message && c.message.content) || '';
+      if(Array.isArray(txt)) txt = txt.map(function(x){ return (x && x.text) || ''; }).join('');
+      if(typeof txt !== 'string') txt = String(txt == null ? '' : txt);
+    }catch(e){ txt = ''; }
+    txt = cleanText(txt, kind);
     if(!txt) throw new Error('빈 응답');
     var ms = Math.round(now() - t0);
-    ST.mode='live'; ST.ok++; ST.ms=ms; ST.err='';
+    ST.mode = 'live'; ST.ok++; ST.ms = ms; ST.err = '';
     return done({ ok:true, text:txt, source:'groq', ms:ms, error:'' });
   }).catch(function(e){
-    if(timer) clearTimeout(timer);
+    if(timer){ clearTimeout(timer); timer = 0; }
     var why = (e && (e.message || e.name)) || '호출 실패';
-    if(ctl && why === 'AbortError') why = '응답 시간 초과(' + Math.round((o.timeout||TIMEOUT)/1000) + '초)';
-    return done(fallback(o, why));
+    if(ctl && /abort/i.test(String(why))) why = '응답 시간 초과(' + Math.round((o.timeout || TIMEOUT) / 1000) + '초)';
+    return done(withClean(fallback(o, why), kind));
   });
 }
 
@@ -149,13 +278,14 @@ function fallback(o, why){
   }catch(e){
     text = '지금은 실시간 AI에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.';
   }
-  return { ok:false, text:String(text||''), source:'fallback', ms:0, error:String(why||'') };
+  return { ok:false, text:cleanText(String(text||''), o && o.kind), source:'fallback', ms:0, error:String(why||'') };
 }
 
 function status(){
   var custom = hasCustomKey();
   return {
     mode: ST.mode, ok: ST.ok, fail: ST.fail, ms: ST.ms, err: ST.err, lastAt: ST.at,
+    cool: coolLeft(), coolN: ST.coolN || 0, rate: ST.rate || 0,
     model: MODEL, label: MODEL_LABEL, endpoint: custom ? DIRECT_ENDPOINT : PROXY_ENDPOINT, keyed: custom, ready: true
   };
 }
@@ -167,7 +297,7 @@ function ping(){
       { role:'system', content:'연결 확인용 응답기다. 설명 없이 "OK" 한 단어만 답한다.' },
       { role:'user',   content:'연결 확인' }
     ],
-    max_tokens:8, temperature:0, timeout:6000, kind:'ping',
+    max_tokens:8, temperature:0, timeout:6000, kind:'ping', force:1,
     fallback: function(){ return '연결 실패'; }
   });
 }
@@ -273,7 +403,12 @@ function directorReport(o){
     '크루 친절도(평균 만족도): ' + (d.crew==null?'기록 없음':d.crew+'/100') + ' · 크루 ' + (d.crewN||0) + '명',
     '품절: ' + (d.stockout ? d.stockout : '없음'),
     '오늘 서비스 평점: ★' + (d.rating==null?'-':d.rating) + ' / 목표 판정: ' + (d.clear?'통과':'미달')
-  ].join('\n');
+  ];
+  /* v2.65: 수리실·비즈니스·RSU 실적이 있을 때만 사실 목록에 덧붙인다(없는 항목은 0으로도 쓰지 않는다) */
+  if(d.fixes!=null) facts.push('수리 완료: ' + d.fixes + '건 · 수리 매출 $' + (d.fixRev||0));
+  if(d.bizWon!=null) facts.push('법인 계약 성사: ' + d.bizWon + '건 · 계약 매출 $' + (d.bizRev||0));
+  if(d.rsuSh!=null) facts.push('내 미베스팅 RSU: ' + d.rsuSh + '주 · 주가 $' + (d.rsuP||0));
+  var factsText = facts.join('\n');
   var messages = [
     { role:'system', content:[
         '너는 글로벌 테크 슈퍼스토어 ' + "'메가 테크'" + '의 본사 총괄 디렉터이자 대형 가전·모바일 유통 본부장이다.',
@@ -283,9 +418,10 @@ function directorReport(o){
         '한국어 2~3문장으로만 총평한다. 인사말·머리말·목록 기호 없이 총평 문장만 쓴다.',
         '[수치 규칙] 판매 건수·응대 인원·대기 이탈·매출·민원·평점은 [사실]에 적힌 숫자만 그대로 인용한다. 사실 목록에 없는 숫자(판매 대수, 비율, 시간, 인원, 목표 대수)는 절대 새로 만들지 말고, 필요하면 숫자 없이 말한다.'
       ].join('\n') },
-    { role:'user', content:'아래는 우리 매장에서 직접 영업한 지점 리더의 오늘 운영 결과다. 아래 [사실]에 적힌 수치만 근거로 삼아 이 지점 리더를 매섭고 현실감 넘치게 평가해 줘. 사실에 없는 숫자는 쓰지 마.\n' + facts }
+    { role:'user', content:'아래는 우리 매장에서 직접 영업한 지점 리더의 오늘 운영 결과다. 아래 [사실]에 적힌 수치만 근거로 삼아 이 지점 리더를 매섭고 현실감 넘치게 평가해 줘. 사실에 없는 숫자는 쓰지 마.\n' + factsText }
   ];
   return callAI({ messages:messages, max_tokens:220, temperature:0.8, kind:'director',
+    key:'director|'+(d.day||'')+'|'+Math.round(d.rev||0)+'|'+Math.round((d.comp||0)*10),
     data:d, fallback:function(){ return fbDirector({ data:d }); } });
 }
 
@@ -391,15 +527,24 @@ window.TycoonAI = {
   MODEL: MODEL, MODEL_LABEL: MODEL_LABEL, ENDPOINT: PROXY_ENDPOINT, modelLabel: MODEL_LABEL,
   getKey: getKey, setKey: setKey, hasCustomKey: hasCustomKey, hasKey: function(){ return true; }, clearKey: function(){ return setKey(''); },
   callAI: callAI, ping: ping, status: status,
+  clean: cleanText, coolLeft: coolLeft, RESET: function(){ coolOk(); ST.mode='idle'; ST.err=''; },
   askInterviewer: askInterviewer, interviewReport: interviewReport, directorReport: directorReport,
   fallbackInterview: fbInterview, fallbackReport: fbReport, fallbackDirector: fbDirector
 };
 /* v2.36: 자동 연결 — 게임을 켜면 바로 서버를 깨워 둔다. 설정 창을 열지 않아도 첫 AI 응답이 늦거나 실패하지 않게 한다.
    실패하면 12초·45초 뒤 다시 시도한다(오프라인이면 하지 않음). */
 (function warm(){
+  /* v2.65: 오프라인·쿨다운에서는 재시도를 멈춘다(예전엔 오프라인에서 tries를 한 번에 태웠다) */
   var tries = [1500, 12000, 45000], i = 0;
-  function go(){ if(ST.mode === 'live' || i >= tries.length) return; var wait = tries[i++];
-    setTimeout(function(){ if(ST.mode === 'live' || offline()) { if(ST.mode !== 'live') go(); return; } ping().then(function(r){ if(!(r && r.ok)) go(); }).catch(go); }, wait); }
+  function go(){
+    if(ST.mode === 'live' || i >= tries.length) return;
+    if(offline()) return;
+    var wait = tries[i++];
+    setTimeout(function(){
+      if(ST.mode === 'live' || offline()) return;
+      ping().then(function(r){ if(!(r && r.ok)) go(); }).catch(function(){ go(); });
+    }, wait);
+  }
   try{ if(!(window.__NOWARM)) go(); }catch(e){}
 })();
 })();

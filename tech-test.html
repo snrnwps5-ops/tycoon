@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='v2.64';
+<script>try{(function(){var V='v2.65';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
 <meta name="robots" content="noindex">
-<title>메가 테크 슈퍼스토어 타이쿤 v2.64 · 2D 테스트 모드 (AI QA)</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.65 · 2D 테스트 모드 (AI QA)</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -491,7 +491,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.64</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.65</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 
 <div id="aip"><div id="aih"><b>🤖 AI 조작</b><span id="aistat">2D</span><button id="aitog" title="접기/펼치기">–</button></div>
 <div id="aib">
@@ -626,7 +626,16 @@ const THM={ground:'#7fcf5c',cap:'#2f6fd8',wood:['#eceef2','#e2e5ea','#f2f3f6','#
 /* 바닥 0 < 빛웅덩이 .105 < 네온선 .115 < 입고 .12 < 창고/클래스 .125 < 해금 .13 < 응대링 .135 < 안내링 .14 */
 const FLOOR_Y={pool:0.105,strip:0.115,dock:0.12,rest:0.125,pad:0.13,spot:0.135,gring:0.14};
 let S={day:0,dayStars:[],stats:{srv:0,fix:0,ok:0,earn:0},ms:null,money:30,unl:[],lvl:1,xp:0,tut:0,reviews:[5,5,4],up:{spd:0,cap:0,chk:0,price:0},last:0,cash:0};
-try{ const o=JSON.parse(localStorage.getItem(SAVE)||'null'); if(o) S=Object.assign(S,o); }catch(e){}
+/* v2.65: 깨진 JSON·배열·문자열 세이브를 격리하고, 들어온 수치를 전부 클램프한다 */
+let _raw0=null;
+try{ _raw0=localStorage.getItem(SAVE);
+  const o=_raw0?JSON.parse(_raw0):null;
+  if(o&&typeof o==='object'&&!Array.isArray(o)){ S=Object.assign(S,o); try{ v265ClampSave(); }catch(e){} }
+  else if(_raw0){ window.__v265broken=(window.__v265broken||0)+1; }
+}catch(e){
+  window.__v265broken=(window.__v265broken||0)+1;
+  try{ if(_raw0&&_raw0.length<400000) localStorage.setItem(SAVE+'-broken-'+Date.now().toString(36),String(_raw0).slice(0,200000)); }catch(_){}
+}
 S.up=Object.assign({spd:0,cap:0,chk:0,price:0},S.up||{}); S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); S.ach=S.ach||{}; S.orders=S.orders||[]; S.best=S.best||[]; S.r1=S.r1||[]; S.mast=Object.assign({b:0,s:0,c:0},S.mast||{}); S.stats=Object.assign({srv:0,fix:0,ok:0,earn:0},S.stats||{});
 /* ---- v2.2: 소리·진동 설정 (없는 세이브는 기본값으로) ---- */
 S.opt=Object.assign({bgm:true,bgmVol:0.5,sfx:true,sfxVol:0.8,vib:true},S.opt||{});
@@ -656,7 +665,7 @@ let OFFPLAN=(function(){ try{ return offCalc(Date.now()); }catch(e){ return null
 function saveAgo(){ const s=S.last?Math.max(0,Math.round((Date.now()-S.last)/1000)):null; if(s==null) return '기록 없음'; if(s<30) return '방금 저장됨'; if(s<60) return '1분 전'; if(s<3600) return Math.floor(s/60)+'분 전'; return Math.floor(s/3600)+'시간 전'; }
 let HY=''; try{ const m=(location.hash||'').match(/save=([^&]+)/)||(location.search||'').match(/[?&]save=([^&]+)/); if(m) HY=decodeURIComponent(m[1]); }catch(e){}
 let HYL=0;
-if(HY){ try{ const o=loadCode(HY); S=Object.assign(S,o); delete S.mid; S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); localStorage.setItem(SAVE,JSON.stringify(S)); HYL=1; try{ OFFPLAN=offCalc(Date.now()); }catch(_){} try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }catch(e){ const msg=e&&e.message?e.message:'알 수 없는 오류'; setTimeout(function(){ try{ toast('🔗 세이브 링크를 불러오지 못했어요: '+msg,4); }catch(_){ } },1800); } }
+if(HY){ try{ const o=loadCode(HY); S=Object.assign(S,o); try{ v265ClampSave(); }catch(e){} delete S.mid; S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); localStorage.setItem(SAVE,JSON.stringify(S)); HYL=1; try{ OFFPLAN=offCalc(Date.now()); }catch(_){} try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }catch(e){ const msg=e&&e.message?e.message:'알 수 없는 오류'; setTimeout(function(){ try{ toast('🔗 세이브 링크를 불러오지 못했어요: '+msg,4); }catch(_){ } },1800); } }
 function save(){ if(window.__noSave) return; try{ S.money=Math.floor(money); S.last=Date.now(); S.lastSaveTime=S.last; S.shelf={}; SRC.forEach(s=>{ S.shelf[s.t]=s.n; }); localStorage.setItem(SAVE,JSON.stringify(S)); }catch(e){} }
 /* v2.4: 떠나는 시각을 오프라인 수익의 기준으로 남기고 저장 */
 function offSave(){ S.offAt=Date.now(); save(); }
@@ -1682,10 +1691,11 @@ function repBuild(){ if(REP.built) return; REP.built=true; try{ if(typeof floorP
   /* 화분 두 개 */
   [[-4.6,-3.3],[4.7,3.2]].forEach(q=>{ cl(0.26,0.42,'#8a6a4a',q[0],0.21,q[1]); const lf=new THREE.Mesh(gget('s0.42',()=>new THREE.SphereGeometry(0.42,12,10)),M('#3f8a3a')); lf.position.set(q[0],0.72,q[1]); sc.add(lf); });
   /* 수리 기사 서준 */
-  try{ if(typeof makeChar==='function'){ const ch=makeChar('Suit_Male',{tint:'#22456b'}); ch.g.position.set(1.9,0,-1.95); ch.g.rotation.y=-0.5; ch.g.scale.setScalar(0.98); sc.add(ch.g); REP.eng={ch}; } }catch(e){}
+  try{ if(typeof makeChar==='function'){ const ch=makeChar('Suit_Male',{tint:'#22456b'}); ch.g.position.set(1.9,0,-1.95); ch.g.rotation.y=-0.5; ch.g.scale.setScalar(0.98); sc.add(ch.g); REP.eng={ch}; try{ v265BlobY(ch,0.014); }catch(e){} } }catch(e){}
   /* 카메라 */
   const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100); REP.cam=cam;
   REP.vp=null;
+  try{ v265RepGfx(); }catch(e){}
 }catch(e){ console.warn('repBuild',e); REP.scene=null; } }
 function repRender(dt){ try{ if(!REP.scene) return; const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vp=REP.vp||{top:H*0.2,bot:H*0.55}, avH=Math.max(150,vp.bot-vp.top), vh=Math.max(10.8/a,8.9*H/avH);
   const c=REP.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
@@ -2824,7 +2834,12 @@ function occTick(){ if(!OCC.ok) return; try{
     if(!inn&&Math.abs(st.m.opacity-st.base)<0.03){ if(o.material===st.m) o.material=st.om; try{ st.m.dispose(); }catch(e){} OCC.on.delete(o); } });
  }catch(e){ OCC.ok=false; try{ OCC.on.forEach((st,o)=>{ if(o.material===st.m) o.material=st.om; }); OCC.on.clear(); }catch(_){} } }
 function hint(t){ $('hint').textContent=t; $('hint').style.opacity=1; hintT=1.6; }
-function step(){ const now=performance.now(); let dt=Math.min(0.05,(now-last)/1000)*(window.__TS||1); last=now;
+function step(){ const now=performance.now(); let dt=(now-last)/1000;
+  /* v2.65: 백그라운드 복귀·기기 절전·탭 전환에서 dt가 튀어도 게임 시간은 최대 50ms만 흐른다 */
+  if(!isFinite(dt)||dt<0){ V265.dt.nan++; dt=0; }
+  if(dt>0.05){ if(dt>0.6) V265.dt.jumps++; dt=0.05; }
+  if(dt>V265.dt.max) V265.dt.max=dt;
+  dt*=(window.__TS||1); last=now;
   /* v2.60: 설정·상점·재고·저장 같은 유틸리티 창이 떠 있는 동안에는 영업 시계·손님 스폰·인내심·민원이 흐르지 않는다.
      상담 퀴즈(quizOpen)는 의도된 긴장이라 제외한다. */
   const paused=mgmtOpen(); if(paused) dt=0; time+=dt;
@@ -3836,14 +3851,15 @@ function bizBuild(){ if(BIZ.built) return; BIZ.built=true; try{ if(typeof floorP
     const pl=(x,z,s)=>{ s=s||1; cyl(0.24*s,0.42*s,'#c8743c',x,0.21*s,z); const l=new THREE.Mesh(gget('pls',()=>new THREE.SphereGeometry(0.42,10,8)),M('#4fb06a')); l.scale.setScalar(s); l.position.set(x,0.78*s,z); sc.add(l); };
     pl(-5.0,-3.8,1.1); pl(5.0,-3.8,1.1); pl(2.6,3.9); pl(5.0,3.9,0.8); pl(-5.0,3.8);
     const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100); BIZ.cam=cam;
+    try{ v265BizGfx(); }catch(e){}
     const lb=document.createElement('div'); lb.id='bizLabels'; lb.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:31;display:none'; document.body.appendChild(lb); BIZ.labels=lb;
   }catch(e){ console.warn('bizBuild',e); BIZ.scene=null; } }
 function bizLabel(){ const el=document.createElement('div'); el.className='ft say'; el.style.cssText+=';position:absolute;transform:translate(-50%,-100%);font-size:10px;line-height:1.15;padding:1px 5px;max-width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'; BIZ.labels.appendChild(el); return el; }
 function bizSyncScene(){ try{ if(!BIZ.scene) return; const B=bizS(), n=Math.min(6,B.desks), r=Math.min(n,B.reps.length);
     BIZ.deskG.forEach((g,i)=>g.visible=i<n); BIZ.room.visible=B.room>0; BIZ.mgrG.visible=!!B.mgr;
     while(BIZ.reps.length>r){ const R=BIZ.reps.pop(); BIZ.scene.remove(R.ch.g); R.el.remove(); }
-    while(BIZ.reps.length<r){ const i=BIZ.reps.length; const ch=makeChar(BASE_MD[(i+1)%BASE_MD.length],{tint:['#3d4a70','#4a3a5e','#2a5a48','#5a4a36','#3a3a3a','#6a3a3a'][i]}); BIZ.scene.add(ch.g); const [x,z]=BIZ.DP[i]; ch.g.position.set(x,0,z-0.62); ch.g.rotation.y=0; ch.g.scale.setScalar(0.85); BIZ.reps.push({ch,el:bizLabel(),i}); }
-    if(B.mgr&&!BIZ.mgrCh){ const ch=makeChar(BASE_MD[0],{tint:'#1b1f27'}); BIZ.scene.add(ch.g); ch.g.position.set(3.4,0,-3.35); ch.g.rotation.y=0; ch.g.scale.setScalar(0.85); BIZ.mgrCh={ch,el:bizLabel(),i:'m'}; }
+    while(BIZ.reps.length<r){ const i=BIZ.reps.length; const ch=makeChar(BASE_MD[(i+1)%BASE_MD.length],{tint:['#3d4a70','#4a3a5e','#2a5a48','#5a4a36','#3a3a3a','#6a3a3a'][i]}); BIZ.scene.add(ch.g); try{ v265BlobY(ch,0.016); }catch(e){} const [x,z]=BIZ.DP[i]; ch.g.position.set(x,0,z-0.62); ch.g.rotation.y=0; ch.g.scale.setScalar(0.85); BIZ.reps.push({ch,el:bizLabel(),i}); }
+    if(B.mgr&&!BIZ.mgrCh){ const ch=makeChar(BASE_MD[0],{tint:'#1b1f27'}); BIZ.scene.add(ch.g); try{ v265BlobY(ch,0.016); }catch(e){} ch.g.position.set(3.4,0,-3.35); ch.g.rotation.y=0; ch.g.scale.setScalar(0.85); BIZ.mgrCh={ch,el:bizLabel(),i:'m'}; }
     if(!B.mgr&&BIZ.mgrCh){ BIZ.scene.remove(BIZ.mgrCh.ch.g); BIZ.mgrCh.el.remove(); BIZ.mgrCh=null; }
     const nego=B.deals.filter(d=>d.st==='nego'); BIZ.stk.forEach((s,i)=>s.visible=i<B.deals.length);
     BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ const d=nego.find(x=>x.rep===R.i); R.d=d; const nm=R.i==='m'?'👔 '+B.mgr.name:(B.reps[R.i]||{}).name;
@@ -3880,8 +3896,8 @@ function bizAnim(R,dt){ const ch=R.ch, b=bizBones(ch), t=performance.now()/1000+
   if(ph&&b.phone&&b.FistR){ ch.g.updateMatrixWorld(true); const p=b.FistR.getWorldPosition(new THREE.Vector3()); b.phone.position.copy(p); b.phone.position.y+=0.035; b.phone.rotation.set(0.08,0.42,0); b.phone.visible=true; }   /* 손에 쥔 전화기(화면이 카메라 쪽) */
   else if(b.phone) b.phone.visible=false;
   ch.inner.position.y=0; }
-function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vp=BIZ.vp||{top:H*0.2,bot:H*0.5}, avH=Math.max(120,vp.bot-vp.top), vh=window.__bizVH||Math.max(13.2/a,10.8*H/avH); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
-    const tg=window.__bizTG?new THREE.Vector3(...window.__bizTG):new THREE.Vector3(0.2,0,0), dir=(window.__bizDir?new THREE.Vector3(...window.__bizDir):new THREE.Vector3(6,11,10)).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,((vp.top+vp.bot)/2+avH*0.04-H/2)*vh/H); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
+function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vp=BIZ.vp||{top:H*0.2,bot:H*0.5}, avH=Math.max(120,vp.bot-vp.top), vh=window.__bizVH||v265BizVH(a,avH,H); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
+    const tg=window.__bizTG?new THREE.Vector3(...window.__bizTG):(v265BizTG()||new THREE.Vector3(0.2,0,0)), dir=(window.__bizDir?new THREE.Vector3(...window.__bizDir):new THREE.Vector3(6,11,10)).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,((vp.top+vp.bot)/2+avH*0.04-H/2)*vh/H); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
     BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ bizAnim(R,dt||0.016);
       const v=new THREE.Vector3(R.ch.g.position.x,1.78,R.ch.g.position.z).project(c); R.el.style.left=((v.x+1)/2*W)+'px'; R.el.style.top=((1-v.y)/2*H)+'px'; const sy=(1-v.y)/2*H; R.el.style.display=(sy<vp.top+26||sy>vp.bot-4)?'none':'block'; });
     renderer.render(BIZ.scene,c); BIZ.frames++; }catch(e){ renderer.render(scene,cam); } }
@@ -4397,7 +4413,8 @@ function v262AskAI(which,force){
     msgs=B? ('거래 '+B.deals.map(function(d){ return d.co+' '+BIZ_SZ[d.sz].n+' $'+d.val+' '+(d.st==='nego'?('협상 '+Math.round(d.p*100)+'%'):'배정대기'); }).join(' / ')+
       '\n계약 '+B.won+' · 결렬 '+B.lost+' · 팀장 '+(B.mgr?B.mgr.name+' Lv.'+B.mgr.lv:'없음')) : '비즈니스 팀 없음';
   }
-  A.busy=1;
+  A.busy=1; A.tok=(A.tok||0)+1; const v265T=A.tok;
+  /* v2.65: 패널이 다시 그려지거나 닫힌 뒤 도착한 브리핑은 화면을 덮지 않는다 */
   /* v2.63: 동기 예외·응답 없음으로 브리핑이 '갱신 중…'에 갇히지 않게 감싸고 20초 감시를 둔다 */
   try{ if(A.wd) clearTimeout(A.wd); }catch(e){}
   const v262Done=function(){ A.busy=0; try{ v262AIPaint(which); }catch(e){} };
@@ -4409,7 +4426,7 @@ function v262AskAI(which,force){
       : '너는 가상의 전자제품 회사 B2B 영업팀 비서다. 팀장에게 오늘 영업 상황과 우선순위를 존댓말 두 문장 이내(총 90자 이내)로 보고한다. 주어진 수치만 근거로 하고 지금 할 일 하나를 제안한다. 인사말과 다른 말은 쓰지 않는다.')},
       {role:'user',content:msgs}],
     fallback:function(){ return (which==='rep')?v262RepLite():v262BizLite(); }})
-    .then(function(r){ if(r&&r.text&&String(r.text).trim()){ A.txt=String(r.text).replace(/\s+/g,' ').trim().slice(0,140); A.ok=r.ok?1:0; A.src=r.ok?'AI':'시뮬레이터'; } A.at=Date.now(); })
+    .then(function(r){ if(A.tok!==v265T){ V265.ai.stale++; return; } if(r&&r.text&&String(r.text).trim()){ A.txt=String(r.text).replace(/\s+/g,' ').trim().slice(0,140); A.ok=r.ok?1:0; A.src=r.ok?'AI':'시뮬레이터'; } A.at=Date.now(); })
     .catch(function(){ A.at=Date.now(); })
     .then(function(){ try{ clearTimeout(A.wd); }catch(e){} v262Done(); });
   }catch(e){ try{ clearTimeout(A.wd); }catch(_){} A.ok=0; A.src='시뮬레이터'; A.at=Date.now(); v262Done(); }
@@ -4537,6 +4554,8 @@ function v262EvalAsk(E){
         {role:'user',content:'오늘 매출 $'+E.rev+' / 목표 $'+E.goal+'\n'+rows+'\n매니저: '+mg}],
       fallback:function(){ return ''; }})
       .then(function(r){ if(!r||!r.ok||!r.text) return;
+        /* v2.65: 결과창이 닫힌 뒤 도착한 평가는 버린다 */
+        if(!document.getElementById('v262Strip')){ V265.ai.stale++; return; }
         String(r.text).split('\n').forEach(function(ln){
           const m=ln.match(/^\s*[-*•]?\s*([^:：]{1,14})[:：]\s*(.+)$/); if(!m) return;
           const who=m[1].trim(), txt='🤖 '+m[2].trim().slice(0,80);
@@ -4605,6 +4624,7 @@ function v262ResultInject(){
 })();
 try{ setTimeout(function(){ try{ if(window.__H){ window.__H.v262={hub:v262HubOpen,start:v262BeginDay,sect:v262SectEval,state:V262,rq:function(o){ return rqAdd(o); },dfix:dfix,ai:function(w,f){ if(V262.ai[w]){ V262.ai[w].at=0; v262AskAI(w,true); } }}; } }catch(e){} },0); }catch(e){}
 /* =====================================================================
+   v2.65 — 그래픽 폴리시(매장·수리실·사무실) + AI 점검 안정화 + 세이브/dt 방어
    v2.64 — RSU 하이리스크·하이리턴 + 방치형(Idle) 성장
    ① 내 RSU: 영업 성과(별·부문 등급·법인 계약)로 미베스팅 RSU를 받는다.
       내 RSU 1주 가치 = 주가/10 (주가 100이면 $10). 3영업일마다 베스팅되어
@@ -5008,11 +5028,393 @@ try{
   },true);
 }catch(e){}
 try{ setTimeout(function(){ if(window.__H) window.__H.v264={s:v264S,rate:v264Rate,div:v264DivH,settle:v264Settle,claim:v264ClaimIdle,claimDiv:v264ClaimDiv,up:v264UpOpen,buy:v264Buy,open:v264UpOpen,res:function(){ return V264.res; },off:function(){ return V264.off; },card:v264CardHTML}; },0); }catch(e){}
+/* =========================================================================
+   v2.65 — 그래픽 폴리시 · AI 안정화 · 시스템 안정성
+   원칙: 기존 함수는 '감싸기(wrap)'와 '덧붙이기'만 한다. v2.64의 RSU·방치형·
+   3대 매니저·수리실·비즈니스 로직은 건드리지 않는다.
+   이 블록의 function 선언은 같은 스코프에 호이스팅되므로, 위쪽 세이브 로드
+   코드에서도 v265ClampSave()를 부를 수 있다.
+   ========================================================================= */
+var V265={
+  boot:Date.now(),
+  ai:{call:0,stale:0,fb:0},
+  sv:{fix:0,broken:0},
+  dt:{max:0,nan:0,jumps:0},
+  gfx:{on:0,lv:0,extra:[]},
+  guard:{start:0,end:0,retry:0,begin:0},
+  tok:{}, tex:{}, mat:{}
+};
+
+/* ---------------- 0) 숫자·세이브 클램프 ---------------- */
+function v265Num(v,d,lo,hi){
+  var x=(typeof v==='number')?v:(typeof v==='string'&&v!==''&&isFinite(Number(v))?Number(v):NaN);
+  if(!isFinite(x)) return d;
+  if(lo!=null&&x<lo) x=lo;
+  if(hi!=null&&x>hi) x=hi;
+  return x;
+}
+function v265Put(o,k,d,lo,hi){ if(!o||typeof o!=='object') return 0; var v=o[k], w=v265Num(v,d,lo,hi); if(w!==v){ o[k]=w; return 1; } return 0; }
+function v265PutAll(o,spec){ if(!o||typeof o!=='object') return 0; var n=0; for(var k in spec){ var s=spec[k]; n+=v265Put(o,k,s[0],s[1],s[2]); } return n; }
+function v265ClampSave(){
+  var n=0;
+  try{
+    if(!S||typeof S!=='object'||Array.isArray(S)) return 0;
+    /* 세이브가 배열·문자열로 깨져 들어온 경우를 여기서 한 번 더 막는다 */
+    ['up','stats','mast','inv','hub','stock','opt','v264','hub','paid'].forEach(function(k){
+      if(S[k]!=null&&(typeof S[k]!=='object'||Array.isArray(S[k]))){ S[k]=null; n++; }
+    });
+    n+=v265Put(S,'day',0,0,9999); S.day=Math.floor(v265Num(S.day,0,0,9999));
+    n+=v265Put(S,'money',30,0,1e12);
+    n+=v265Put(S,'lvl',1,1,99); n+=v265Put(S,'xp',0,0,1e7);
+    n+=v265Put(S,'cash',0,0,1e12); n+=v265Put(S,'tut',0,0,1e6);
+    n+=v265Put(S,'last',0,0,4102444800000);
+    n+=v265Put(S,'lastSaveTime',0,0,4102444800000);
+    n+=v265Put(S,'offAt',0,0,4102444800000);
+    n+=v265Put(S,'myScore',60,0,100); n+=v265Put(S,'myWarn',0,0,3);
+    n+=v265Put(S,'myRank',0,0,3); n+=v265Put(S,'mySpd',0,0,40); n+=v265Put(S,'myCap',0,0,40);
+    n+=v265Put(S,'failStreak',0,0,99); n+=v265Put(S,'fails',0,0,1e6);
+    n+=v265Put(S,'lastProfit',0,-1e9,1e12);
+    n+=v265Put(S,'womD',0,0,9999); n+=v265Put(S,'womK',1,0.1,5);
+    n+=v265Put(S,'boostD',-1,-1,9999); n+=v265Put(S,'mercyD',-1,-1,9999);
+    n+=v265Put(S,'offer',0,0,9); n+=v265Put(S,'paidPack',0,0,9); n+=v265Put(S,'vipPass',0,0,1);
+    n+=v265Put(S,'starterT',0,0,1);
+    /* 설정 */
+    if(!S.opt||typeof S.opt!=='object') S.opt={};
+    n+=v265PutAll(S.opt,{bgmVol:[0.5,0,1],sfxVol:[0.8,0,1]});
+    /* 업그레이드 */
+    if(!S.up||typeof S.up!=='object') S.up={spd:0,cap:0,chk:0,price:0};
+    n+=v265PutAll(S.up,{spd:[0,0,30],cap:[0,0,30],chk:[0,0,30],price:[0,0,30]});
+    /* 통계 */
+    if(!S.stats||typeof S.stats!=='object') S.stats={srv:0,fix:0,ok:0,earn:0};
+    n+=v265PutAll(S.stats,{srv:[0,0,1e9],fix:[0,0,1e9],ok:[0,0,1e9],earn:[0,0,1e15],combo:[0,0,1e6],fever:[0,0,1e6],gold:[0,0,1e6],nps50:[0,0,1e6]});
+    /* 재고·마스터리 */
+    if(!S.inv||typeof S.inv!=='object') S.inv={};
+    n+=v265PutAll(S.inv,{p:[10,0,1e6],l:[6,0,1e6],w:[8,0,1e6],b:[6,0,1e6],s:[6,0,1e6],c:[6,0,1e6]});
+    if(!S.mast||typeof S.mast!=='object') S.mast={b:0,s:0,c:0};
+    n+=v265PutAll(S.mast,{b:[0,0,1e6],s:[0,0,1e6],c:[0,0,1e6]});
+    /* 주가 */
+    if(!S.stock||typeof S.stock!=='object') S.stock={p:100,hist:[100],chg:0};
+    n+=v265PutAll(S.stock,{p:[100,5,9999],chg:[-50,0,50]});
+    if(!Array.isArray(S.stock.hist)) S.stock.hist=[S.stock.p];
+    S.stock.hist=S.stock.hist.map(function(v){ return v265Num(v,100,1,99999); }).slice(-60);
+    /* 리뷰·별점 (배열 길이와 값) */
+    if(!Array.isArray(S.reviews)) S.reviews=[5,5,4];
+    S.reviews=S.reviews.filter(function(v){ return isFinite(v265Num(v,NaN)); }).map(function(v){ return v265Num(v,4,1,5); }).slice(-14);
+    if(!S.reviews.length) S.reviews=[5,5,4];
+    if(!Array.isArray(S.dayStars)) S.dayStars=[];
+    S.dayStars=S.dayStars.map(function(v){ return v265Num(v,0,0,3); }).slice(0,200);
+    if(!Array.isArray(S.best)) S.best=[];
+    S.best=S.best.map(function(v){ return v265Num(v,0,0,1e12); }).slice(0,200);
+    if(!Array.isArray(S.bp)) S.bp=[];
+    S.bp=S.bp.map(function(v){ return v265Num(v,0,0,1e12); }).slice(0,200);
+    if(!Array.isArray(S.r1)) S.r1=[];
+    if(!Array.isArray(S.orders)) S.orders=[];
+    if(!Array.isArray(S.unl)) S.unl=[];
+    /* 크루 */
+    if(!Array.isArray(S.crew)) S.crew=[];
+    S.crew=S.crew.filter(function(c){ return c&&typeof c==='object'; }).slice(0,24);
+    S.crew.forEach(function(c){
+      v265Put(c,'spd',1,0.3,2); v265Put(c,'acc',0.9,0,1); v265Put(c,'lv',1,1,9);
+      v265Put(c,'sat',80,0,100); v265Put(c,'wage',15,0,999); v265Put(c,'vexp',0,0,999);
+      v265Put(c,'vrep',50,0,100);
+    });
+    /* 물류·RMA */
+    if(!S.hub||typeof S.hub!=='object') S.hub={};
+    n+=v265PutAll(S.hub,{ccDay:[-1,-1,9999],boxes:[0,0,1e6],perfect:[0,0,1e6],scan:[0,0,1e6],miss:[0,0,1e6],credit:[0,0,1e12],auto:[0,0,1e6],seen:[0,0,1e6]});
+    if(!Array.isArray(S.rma)) S.rma=[];
+    /* v2.64 RSU·방치 */
+    try{ if(typeof v264S==='function') v264S(); }catch(e){}
+    if(S.v264&&typeof S.v264==='object'){
+      n+=v265PutAll(S.v264,{sh:[0,0,1e9],div:[0,0,1e9],vault:[0,0,1e12],divV:[0,0,1e12],vt:[0,0,2],gd:[-1,-1,9999],burn:[0,0,1e9],vested:[0,0,1e15],dn:[0,0,99]});
+      if(!S.v264.inv||typeof S.v264.inv!=='object') S.v264.inv={eng:0,div:0,off:0};
+      n+=v265PutAll(S.v264.inv,{eng:[0,0,5],div:[0,0,5],off:[0,0,5]});
+    }
+  }catch(e){ try{ console.warn('v265ClampSave',e); }catch(_){} }
+  V265.sv.fix=n;
+  return n;
+}
+
+/* ---------------- 1) 화면 토큰 — 늦게 온 AI 응답이 엉뚱한 UI를 덮지 않게 ---------------- */
+function v265Tok(k){ V265.tok[k]=(V265.tok[k]||0)+1; return V265.tok[k]; }
+function v265Fresh(k,t){ return (V265.tok[k]||0)===t; }
+
+/* ---------------- 2) 그래픽: 공용 텍스처·재질 ---------------- */
+function v265SoftTex(key){
+  if(V265.tex[key]) return V265.tex[key];
+  var strong=(key==='blob');
+  V265.tex[key]=canvasTex(function(g,w,h){
+    var gr=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);
+    if(strong){ gr.addColorStop(0,'rgba(9,12,18,.60)'); gr.addColorStop(.45,'rgba(9,12,18,.30)'); gr.addColorStop(1,'rgba(9,12,18,0)'); }
+    else { gr.addColorStop(0,'rgba(9,12,18,.46)'); gr.addColorStop(.52,'rgba(9,12,18,.20)'); gr.addColorStop(1,'rgba(9,12,18,0)'); }
+    g.fillStyle=gr; g.fillRect(0,0,w,h);
+  },64,64);
+  return V265.tex[key];
+}
+function v265SoftMat(key){
+  if(V265.mat[key]) return V265.mat[key];
+  V265.mat[key]=new THREE.MeshBasicMaterial({map:v265SoftTex(key),transparent:true,depthWrite:false,opacity:0.72});
+  return V265.mat[key];
+}
+/* 캐릭터 발밑 그림자 — 캐릭터 그룹의 자식이라 따라다닌다(프레임 비용 0) */
+function v265Blob(ch){
+  try{
+    if(!ch||!ch.g||ch.__blob||typeof THREE==='undefined') return null;
+    var m=new THREE.Mesh(gget('v265blob',function(){ return new THREE.PlaneGeometry(1.25,1.25); }), v265SoftMat('blob'));
+    m.rotation.x=-Math.PI/2; m.position.set(0,0.098,0); m.renderOrder=1; m.castShadow=false; m.receiveShadow=false;
+    ch.g.add(m); ch.__blob=m;
+    return m;
+  }catch(e){ return null; }
+}
+function v265BlobY(ch,y){ try{ if(ch&&ch.__blob) ch.__blob.position.y=y; }catch(e){} }
+
+/* 바닥 그림자(가구 밑) — 매장 조명 대비를 살린다 */
+function v265Contact(x,z,w,d,y){
+  try{
+    var m=new THREE.Mesh(gget('v265c1',function(){ return new THREE.PlaneGeometry(1,1); }), v265SoftMat('contact'));
+    m.rotation.x=-Math.PI/2; m.scale.set(w,d,1); m.position.set(x,(y==null?0.096:y),z);
+    m.renderOrder=1; m.castShadow=false; m.receiveShadow=false;
+    scene.add(m); return m;
+  }catch(e){ return null; }
+}
+
+/* ---------------- 3) 그래픽: 매장 ---------------- */
+function v265StoreGfx(){
+  try{ if(typeof scene==='undefined'||typeof THREE==='undefined') return 0; }catch(e){ return 0; }
+  var n=0, extra=[];
+  try{
+    /* 3-1) 조명 대비 — 천장광을 낮추고 해를 세게 해서 물체 경계를 살린다 + 매장 앞쪽 따뜻한 채광 */
+    scene.traverse(function(o){
+      if(o.isHemisphereLight){ o.intensity=0.66; n++; }
+      else if(o.isDirectionalLight&&o.castShadow){ o.intensity=0.92; n++; }
+    });
+    var fill=new THREE.DirectionalLight(0xfff0d2,0.24); fill.position.set(0,7,16); fill.castShadow=false; scene.add(fill); V265.gfx.fill=fill; n++;
+    /* v2.65: 보조광은 한 개만 — iOS Safari에서 조명 개수는 픽셀 비용으로 바로 이어진다 */
+
+    /* 3-2) 매장 조명 웅덩이 3곳 — 위에서 내려다보는 시점이라 바닥 빛으로만 표현한다(천장등 메시는 화면을 가린다) */
+    [[-2.7,-2.9],[1.2,0.1],[4.6,-1.6]].forEach(function(q){
+      try{ var lp=lightPool(q[0],q[1],1.8,2.1,0.3,FLOOR_Y.pool); if(lp) lp.material.color=new THREE.Color('#ffdc9c'); n++; }catch(e){}
+    });
+
+    /* 3-3) 가구 밑 접지 그림자 — 오브젝트가 바닥에 붙어 보이게 */
+    [[-0.6,-0.6,3.4,2.2],[3.3,-0.6,3.4,2.2],[-3.4,1.4,3.2,2.0],[-5.2,-2.6,3.0,1.5],[0.4,-5.3,3.4,1.6],[2.8,2.6,2.0,1.2],[-1.6,4.0,1.2,1.0]].forEach(function(q){
+      var m=v265Contact(q[0],q[1],q[2],q[3]); if(m){ extra.push(m); n++; }
+    });
+
+    /* 3-4) 입구 웰컴 조명 — 들어오는 손님 위치가 한눈에 보이게 */
+    try{ var wl=lightPool(0,4.9,2.2,1.5,0.3,FLOOR_Y.pool); if(wl) wl.material.color=new THREE.Color('#cfe6ff'); n++; }catch(e){}
+    /* 3-5) 수리실 안내 표지 앞 빛 */
+    try{ var rl=lightPool(5.0,-4.2,1.1,1.0,0.22,FLOOR_Y.pool); if(rl) rl.material.color=new THREE.Color('#9dff9d'); n++; }catch(e){}
+  }catch(e){ try{ console.warn('v265StoreGfx',e); }catch(_){} }
+  extra.forEach(function(m){ V265.gfx.extra.push(m); });
+  return n;
+}
+
+/* ---------------- 4) 그래픽: 수리실 ---------------- */
+function v265RepGfx(){
+  try{
+    if(!REP||!REP.scene||typeof THREE==='undefined') return 0;
+    if(REP.__v265) return 0;
+    REP.__v265=1;
+    var sc=REP.scene, n=0;
+    var bx=function(w,h,d,c,x,y,z,par){ var m=new THREE.Mesh(gget('b'+w+'_'+h+'_'+d,function(){ return new THREE.BoxGeometry(w,h,d); }), v262M(c)); m.position.set(x,y,z); (par||sc).add(m); return m; };
+    var cy=function(r,h,c,x,y,z,par){ var m=new THREE.Mesh(gget('cy'+r+'_'+h,function(){ return new THREE.CylinderGeometry(r,r,h,12); }), v262M(c)); m.position.set(x,y,z); (par||sc).add(m); return m; };
+    var plate=function(txt,w,h,bg,fg,fs){
+      return new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({map:canvasTex(function(g,W,H){
+        g.fillStyle=bg; g.fillRect(0,0,W,H); g.fillStyle=fg; g.font='bold '+(fs||52)+'px "Black Han Sans",sans-serif';
+        g.textAlign='center'; g.textBaseline='middle'; g.fillText(txt,W/2,H/2+2);
+      },160,72)}));
+    };
+    /* 4-1) 조명 — 작업대가 밝고 뒤쪽은 어둡게(깊이) */
+    sc.traverse(function(o){ if(o.isHemisphereLight) o.intensity=1.0; else if(o.isDirectionalLight) o.intensity=0.62; });
+    var fill=new THREE.DirectionalLight(0xdff3ff,0.22); fill.position.set(-4,6,8); fill.castShadow=false; sc.add(fill); n++;
+    /* 4-2) 벽시계 (왼쪽 벽) */
+    try{
+      var clk=new THREE.Mesh(new THREE.CircleGeometry(0.34,24), v262M('#f4f7fb')); clk.position.set(-5.37,2.5,-2.6); clk.rotation.y=Math.PI/2; sc.add(clk);
+      var rim=new THREE.Mesh(new THREE.TorusGeometry(0.35,0.035,8,24), v262M('#2b3440')); rim.position.set(-5.36,2.5,-2.6); rim.rotation.y=Math.PI/2; sc.add(rim);
+      var hh=new THREE.Mesh(gget('v265hand',function(){ return new THREE.BoxGeometry(0.02,0.2,0.03); }), v262M('#39424f'));
+      hh.position.set(-5.35,2.56,-2.6); hh.rotation.z=0.5; sc.add(hh);
+      var mh=new THREE.Mesh(gget('v265hand2',function(){ return new THREE.BoxGeometry(0.018,0.3,0.025); }), v262M('#39424f'));
+      mh.position.set(-5.35,2.46,-2.66); mh.rotation.x=0.5; sc.add(mh);
+      n+=4;
+    }catch(e){}
+    /* 4-3) 공구 보드 라벨 */
+    try{
+      ['드라이버','핀셋','흡착'].forEach(function(t,i){
+        var p=plate(t,0.42,0.12,'#1b2530','#9fe8b0',30); p.position.set(-3.75+i*0.9,2.46,-3.85); sc.add(p);
+      });
+      n+=3;
+    }catch(e){}
+    /* 4-4) 대기/완료 선반 색 구분 — 오른쪽 부품 선반 앞면에 상태 스트립 */
+    try{
+      [0.5,1.1,1.7].forEach(function(y){ var s=bx(2.2,0.05,0.02,'#2f6fd8',4.0,y+0.36,-3.86); s.castShadow=false; s.material=new THREE.MeshBasicMaterial({color:'#3f8fe8'}); });
+      [0.55,1.15,1.75].forEach(function(y){ var s=bx(0.03,0.05,2.2,'#2faa45',-4.93,y+0.36,0.4); s.castShadow=false; s.material=new THREE.MeshBasicMaterial({color:'#5bd06a'}); });
+      n+=6;
+    }catch(e){}
+    /* 4-5) 작업 의자(바퀴) · 공구함 · 케이블 코일 */
+    try{
+      var sg=new THREE.Group(); sg.position.set(0.55,0,-1.15); sc.add(sg);
+      cy(0.05,0.34,'#5b6a7e',0,0.3,0,sg); cy(0.26,0.07,'#39434f',0,0.52,0,sg);
+      for(var k=0;k<5;k++){ var a=k/5*Math.PI*2; var lg=bx(0.3,0.035,0.06,'#6b7480',Math.cos(a)*0.15,0.09,Math.sin(a)*0.15,sg); lg.rotation.y=-a; }
+      var tbx=bx(0.66,0.34,0.36,'#c8402f',-2.2,0.17,1.05); tbx.castShadow=true;
+      bx(0.66,0.06,0.36,'#e0563f',-2.2,0.37,1.05); bx(0.06,0.05,0.06,'#9aa6b4',-2.2,0.42,1.05);
+      var coil=new THREE.Mesh(new THREE.TorusGeometry(0.17,0.035,8,20), v262M('#2a3142')); coil.position.set(-4.55,1.0,-1.5); coil.rotation.x=Math.PI/2; sc.add(coil);
+      n+=10;
+    }catch(e){}
+    /* 4-6) 작업대 스탠드 빛 웅덩이 + '작업 중' 램프 */
+    try{
+      var pool=new THREE.Mesh(new THREE.CircleGeometry(0.95,26), new THREE.MeshBasicMaterial({color:'#fff4c8',transparent:true,opacity:0.16,depthWrite:false}));
+      pool.position.set(0.6,1.045,-2.5); pool.rotation.x=-Math.PI/2; sc.add(pool);
+      var red=new THREE.Mesh(gget('v265red',function(){ return new THREE.SphereGeometry(0.075,10,8); }), new THREE.MeshBasicMaterial({color:'#ff5a4a'}));
+      red.position.set(2.55,2.2,-2.5); sc.add(red);
+      n+=2;
+    }catch(e){}
+    return n;
+  }catch(e){ try{ console.warn('v265RepGfx',e); }catch(_){} return 0; }
+}
+
+/* ---------------- 5) 그래픽: 비즈니스 사무실 ---------------- */
+function v265BizGfx(){
+  try{
+    if(!BIZ||!BIZ.scene||typeof THREE==='undefined') return 0;
+    if(BIZ.__v265) return 0;
+    BIZ.__v265=1;
+    var sc=BIZ.scene, n=0;
+    var bx=function(w,h,d,c,x,y,z,par){ var m=new THREE.Mesh(gget('b'+w+'_'+h+'_'+d,function(){ return new THREE.BoxGeometry(w,h,d); }), v262M(c)); m.position.set(x,y,z); (par||sc).add(m); return m; };
+    var cy=function(r,h,c,x,y,z,par){ var m=new THREE.Mesh(gget('cy'+r+'_'+h,function(){ return new THREE.CylinderGeometry(r,r,h,12); }), v262M(c)); m.position.set(x,y,z); (par||sc).add(m); return m; };
+    /* 5-1) 조명 */
+    sc.traverse(function(o){ if(o.isHemisphereLight) o.intensity=0.98; else if(o.isDirectionalLight) o.intensity=0.6; });
+    var fill=new THREE.DirectionalLight(0xffe9c8,0.24); fill.position.set(-6,7,6); fill.castShadow=false; sc.add(fill); n++;
+    /* 5-2) 벽 라이트바 3개 (발광) */
+    try{
+      [-3.6,-0.6,2.4].forEach(function(x){
+        bx(1.9,0.07,0.08,'#4a5666',x,2.72,-4.16);
+        var b=new THREE.Mesh(gget('v265bar',function(){ return new THREE.BoxGeometry(1.82,0.03,0.05); }), new THREE.MeshBasicMaterial({color:'#fff6da'}));
+        b.position.set(x,2.66,-4.12); sc.add(b);
+      });
+      n+=6;
+    }catch(e){}
+    /* 5-3) 화이트보드 · 실적 TV · 벽시계 */
+    try{
+      var wb=new THREE.Mesh(new THREE.PlaneGeometry(2.0,1.15), new THREE.MeshBasicMaterial({map:canvasTex(function(g,W,H){
+        g.fillStyle='#f7fafc'; g.fillRect(0,0,W,H); g.strokeStyle='#c9d4de'; g.lineWidth=6; g.strokeRect(3,3,W-6,H-6);
+        g.fillStyle='#1b2a5a'; g.font='bold 30px "Noto Sans KR",sans-serif'; g.fillText('이번 주 B2B 목표',18,44);
+        g.strokeStyle='#2f6fd8'; g.lineWidth=5; g.beginPath(); g.moveTo(20,150); g.lineTo(70,120); g.lineTo(120,130); g.lineTo(170,90); g.lineTo(220,100); g.stroke();
+        g.fillStyle='#e8342a'; g.font='bold 26px "Noto Sans KR",sans-serif'; g.fillText('계약 +3',150,52);
+      },320,190)}));
+      wb.position.set(-3.4,1.9,-4.18); sc.add(wb);
+      var tv=new THREE.Mesh(new THREE.PlaneGeometry(1.7,0.98), new THREE.MeshBasicMaterial({map:canvasTex(function(g,W,H){
+        g.fillStyle='#0d1526'; g.fillRect(0,0,W,H); g.fillStyle='#5ad1ff'; g.font='bold 26px monospace'; g.fillText('TEAM KPI',16,34);
+        g.fillStyle='#7bea62'; g.fillRect(16,58,60,80); g.fillStyle='#ffd23f'; g.fillRect(86,84,60,54); g.fillStyle='#ff7aa8'; g.fillRect(156,44,60,94);
+        g.fillStyle='#e9eef5'; g.font='bold 20px monospace'; g.fillText('MON TUE WED',16,166);
+      },256,180)}));
+      tv.position.set(4.3,1.85,-4.17); sc.add(tv);
+      var tvf=bx(1.78,1.04,0.05,'#141a28',4.3,1.85,-4.2); tvf.castShadow=false;
+      var clk=new THREE.Mesh(new THREE.CircleGeometry(0.26,22), v262M('#f4f7fb')); clk.position.set(1.4,2.5,-4.18); sc.add(clk);
+      var rim=new THREE.Mesh(new THREE.TorusGeometry(0.27,0.028,8,22), v262M('#39424f')); rim.position.set(1.4,2.5,-4.16); sc.add(rim);
+      n+=6;
+    }catch(e){}
+    /* 5-4) 책상 소품: 커피컵·화분·서류 트레이 */
+    try{
+      var cupG=gget('v265cup',function(){ return new THREE.CylinderGeometry(0.045,0.038,0.11,10); });
+      var cupM=v262M('#ffffff');
+      BIZ.deskG.forEach(function(g,i){ if(!g) return;
+        var c=new THREE.Mesh(cupG,cupM); c.position.set(-0.34+((i%3)*0.08),0.83,0.05); g.add(c);
+        if(i%2===0){ var tray=new THREE.Mesh(gget('v265tray',function(){ return new THREE.BoxGeometry(0.24,0.03,0.16); }), v262M('#3a4250')); tray.position.set(0.42,0.8,-0.12); g.add(tray); }
+      });
+      var pot=cy(0.14,0.24,'#c8743c',-4.9,0.12,-4.0); var pl=new THREE.Mesh(gget('pls',function(){ return new THREE.SphereGeometry(0.42,10,8); }), v262M('#4fb06a')); pl.scale.setScalar(0.5); pl.position.set(-4.9,0.34,-4.0); sc.add(pl);
+      n+=8;
+    }catch(e){}
+    /* 5-5) 카펫 경계선 — 사무실 깊이감 */
+    try{
+      var rug=new THREE.Mesh(new THREE.PlaneGeometry(8.6,5.2), new THREE.MeshBasicMaterial({map:canvasTex(function(g,W,H){
+        g.clearRect(0,0,W,H); g.strokeStyle='rgba(90,108,255,.35)'; g.lineWidth=10; g.strokeRect(6,6,W-12,H-12);
+      },128,80),transparent:true,depthWrite:false}));
+      rug.rotation.x=-Math.PI/2; rug.position.set(-1.3,0.02,-1.2); sc.add(rug); n++;
+    }catch(e){}
+    return n;
+  }catch(e){ try{ console.warn('v265BizGfx',e); }catch(_){} return 0; }
+}
+
+/* GFX 단계가 낮아지면(기기 부담) 접지 그림자는 끈다 */
+function v265GfxLevel(lv){
+  try{
+    V265.gfx.lv=lv;
+    var hide=(lv>=2);
+    V265.gfx.extra.forEach(function(m){ try{ m.visible=!hide; }catch(e){} });
+    /* 기기 부담이 커지면(v2.65 추가분) 조명·그림자를 원래대로 되돌린다 — v2.64와 같은 비용 */
+    if(V265.gfx.fill){ try{ V265.gfx.fill.intensity=hide?0:0.24; }catch(e){} }
+  }catch(e){}
+}
+function v265Gfx(){
+  if(V265.gfx.on) return V265.gfx.on;
+  var n=0;
+  try{ n+=v265StoreGfx(); }catch(e){}
+  try{ n+=v265RepGfx(); }catch(e){}
+  try{ n+=v265BizGfx(); }catch(e){}
+  V265.gfx.on=n;
+  try{ if(typeof GFX!=='undefined'&&GFX.lv) v265GfxLevel(GFX.lv); }catch(e){}
+  return n;
+}
+
+/* ---------------- 6) 비즈니스 사무실 카메라 — 모바일에서 너무 멀리 보이던 문제 ---------------- */
+function v265BizVH(a,avH,H){
+  var short=(avH/Math.max(1,H))<0.44;
+  return short?Math.max(10.2/a,5.8*H/avH):Math.max(13.2/a,10.8*H/avH);
+}
+function v265BizTG(){
+  try{ var W=VW||innerWidth,H=VH||innerHeight,vp=BIZ.vp||{top:H*0.2,bot:H*0.5}; if(((vp.bot-vp.top)/Math.max(1,H))<0.44) return new THREE.Vector3(0.4,0,-0.7); }catch(e){}
+  return null;
+}
+
+/* ---------------- 7) 타이머/가시성 — 백그라운드 복귀 시 dt 폭주 차단 ---------------- */
+(function(){
+  var reset=function(){ try{ last=performance.now(); }catch(e){} try{ if(typeof BIZ!=='undefined') BIZ.lastT=Date.now(); }catch(e){} };
+  try{ document.addEventListener('visibilitychange',function(){ if(!document.hidden) reset(); }); }catch(e){}
+  try{ addEventListener('pageshow',reset); addEventListener('focus',reset); }catch(e){}
+})();
+
+/* ---------------- 8) 영업 시작/종료/다시 도전 중복 실행 가드 ---------------- */
+function v265BeginGuard(){
+  try{
+    if(dayState==='run') return false;       /* 이미 영업 중이면 새로 시작하지 않는다 */
+  }catch(e){}
+  return true;
+}
+
+/* ---------------- 9) 부팅 ---------------- */
+function v265Boot(){
+  try{ var f=v265ClampSave(); }catch(e){}
+  try{ v265Gfx(); }catch(e){}
+  try{
+    window.__H=window.__H||{};
+    window.__H.v265={
+      ver:'v2.65',
+      state:function(){ return {gfx:V265.gfx.on,lv:V265.gfx.lv,fix:V265.sv.fix,broken:V265.sv.broken,dt:V265.dt,ai:V265.ai,guard:V265.guard,tok:V265.tok}; },
+      clamp:function(){ return v265ClampSave(); },
+      gfx:function(){ return v265Gfx(); },
+      pin:function(lv){ try{ gfxApply(lv==null?0:lv); GFX.warm=-1e9; }catch(e){} return V265.gfx.lv; },
+      unpin:function(){ try{ GFX.warm=0; }catch(e){} },
+      blob:function(){ try{ return custs.filter(function(c){ return c&&c.ch&&c.ch.__blob; }).length; }catch(e){ return -1; } }
+    };
+  }catch(e){}
+}
+try{ v265Boot(); }catch(e){}
+try{ setTimeout(v265Boot,1500); }catch(e){}
+try{ setTimeout(function(){ try{ v265Gfx(); }catch(e){} },4000); }catch(e){}
+
+/* =====================================================================
+   v2.65 — GFX 단계 연동(접지 그림자 등은 기기 부담이 커지면 자동으로 끈다)
+   ===================================================================== */
+try{
+  var _v265GfxApply=gfxApply;
+  gfxApply=function(lv,why){ var r=_v265GfxApply.apply(this,arguments); try{ v265GfxLevel(lv); }catch(e){} return r; };
+}catch(e){}
+
 function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!FTSKIP&&!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(S.mercyD===S.day) setTimeout(()=>toast('🩹 재기 지원: 오늘 매출 +12% · 손님 인내심 +15%',3.6),600); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
   $('dUpg').onclick=()=>{ window.__rts=1; openUp(); }; $('dMap').onclick=()=>{ window.__rts=1; snd('ui',0.4); openWorld(); };
-  $('dayGo').onclick=()=>{ $('modal').classList.remove('on'); initAudio(); useResetDay(); try{ dfix.rev=0; dfix.n=0; }catch(e){} dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 진열대는 창고 재고로 채워져요. 부족하면 하단 [재고]에서 발주!',4.5),2600); } spawnT=0.3; bigBanner('DAY '+(S.day+1),cfg.title); lpDayStart(); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(4.4,0,-4.6); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } }; }
+  $('dayGo').onclick=()=>{ if(dayState==='run'){ V265.guard.begin++; return; } /* v2.65: 영업 중에 시작 버튼이 또 눌려 하루 기록이 초기화되는 것 방지 */ $('modal').classList.remove('on'); initAudio(); useResetDay(); try{ dfix.rev=0; dfix.n=0; }catch(e){} dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 진열대는 창고 재고로 채워져요. 부족하면 하단 [재고]에서 발주!',4.5),2600); } spawnT=0.3; bigBanner('DAY '+(S.day+1),cfg.title); lpDayStart(); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(4.4,0,-4.6); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } }; }
 function endDay(fail){ if(dayState!=='run') return; dayState='end'; try{ if(typeof REP!=='undefined'&&REP.open) repClose(); }catch(e){} GSPOT.occ=null; dayEndT=1.2; S.lastFail=fail?'comp':null; custs.forEach(c=>{ if(c.st!=='leave'){ c.quiet=1; c.el.style.display='none'; if(c.spot){ c.spot.occ=null; c.spot=null; } c.st='leave'; c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(14,0,11.2)]; } }); if(quizOpen) closeQuiz(); bigBanner(fail?'영업 정지!':'영업 종료!',fail?'민원 3건이 쌓였어요':'오늘 결과를 확인해요'); }
 /* =============================================================
    v2.27: 본사 AI 총괄 디렉터 — 일일 리더십 성적표
@@ -5028,8 +5430,14 @@ function dirData(clear){
   let goal=0, rating=null;
   try{ goal=dayCfg(S.day).goal||0; }catch(e){}
   try{ rating=+(dayRating()||0).toFixed(1); }catch(e){}
+  /* v2.65: 수리·법인·RSU 실적도 '사실'로 함께 넘긴다 — AI가 없는 숫자를 지어내지 않게 */
+  let fixes=null, fixRev=null, bizWon=null, bizRev=null, rsuSh=null, rsuP=null;
+  try{ if(typeof dfix!=='undefined'&&dfix){ fixes=dfix.n|0; fixRev=Math.round(dfix.rev||0); } }catch(e){}
+  try{ const bd=(typeof V262!=='undefined'&&V262.bd)?V262.bd:null; if(bd){ bizWon=bd.won|0; bizRev=Math.round(bd.rev||0); } }catch(e){}
+  try{ const v=(typeof v264S==='function')?v264S():null; if(v){ rsuSh=Math.round((v.sh||0)*10)/10; rsuP=Math.round((S.stock&&S.stock.p)||100); } }catch(e){}
   return { branch:(STN[STG]||'대구 동성로점'), rank:myRankName(), name:'전영훈',
     goal:goal, rev:Math.round(dayRev||0), comp:Math.round((dayComp||0)*10)/10, compTypes:types,
+    fixes:fixes, fixRev:fixRev, bizWon:bizWon, bizRev:bizRev, rsuSh:rsuSh, rsuP:rsuP,
     served:(function(){ try{ return (dayRevs||[]).length; }catch(e){ return null; } })(),
     walk:(function(){ try{ return (dayCompTypes&&dayCompTypes['기다리다 이탈'])||0; }catch(e){ return null; } })(),
     crew:crew, crewN:crewN, stockout:stockout, rating:rating, clear:!!clear };
@@ -5047,8 +5455,11 @@ function dirAIAsk(d){
       (ok?'AI 실시간'+(ms?' · '+ms+'ms':''):'오프라인 시뮬레이터')+'</em></summary><div class="daib">'+esc(txt).replace(/\n/g,'<br>')+'</div></details>'; };
   try{
     if(!(window.TycoonAI&&typeof TycoonAI.directorReport==='function')){ paint(fb(),false); return; }
-    const t0=Date.now();
-    TycoonAI.directorReport({data:d}).then(r=>paint((r&&r.text)||fb(), !!(r&&r.ok), r&&r.ms)).catch(()=>paint(fb(),false));
+    /* v2.65: 결과창이 닫히거나 새로 열리면 늦게 온 총평은 버린다 */
+    const tok=v265Tok('dir');
+    const alive=()=>{ try{ return document.getElementById('dirAI')===box||!!document.getElementById('dirAI'); }catch(e){ return false; } };
+    const keep=()=>{ if(!v265Fresh('dir',tok)||!alive()){ V265.ai.stale++; return false; } return true; };
+    TycoonAI.directorReport({data:d}).then(r=>{ if(!keep()) return; paint((r&&r.text)||fb(), !!(r&&r.ok), r&&r.ms); }).catch(()=>{ if(!keep()) return; paint(fb(),false); });
   }catch(e){ paint(fb(),false); }
 }
 function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer) window.__checkVer(); },1500); }catch(e){} const cfg=dayCfg(S.day), r=dayRating(); const okRev=dayRev>=cfg.goal, okRate=r>=cfg.min+(dayEv==='review'?0.2:0)-1e-9, okComp=dayComp<3; const clear=okRev&&okRate&&okComp; const fsNext=clear?0:Math.min(4,(S.failStreak||0)+1), merciful=!clear&&fsNext>=2;
@@ -5227,7 +5638,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.64';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.65';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
