@@ -108,8 +108,8 @@ function drawSpot(sp){
 function drawZoneText(){
   const s=SX(0,0).s;
   ctext('진열대 · 재고',-4.0,-6.6,Math.max(9,s*0.24),'rgba(255,255,255,.95)',true);
-  if(REPG.visible) ctext('수리 센터',5.0,-4.6,Math.max(9,s*0.22),'#ffffff',true);
-  if(SUPG.visible) ctext('소프트웨어 상담',0.4,-5.3,Math.max(8,s*0.2),'#ffffff',true);
+  if(REPG.visible) ctext('수리실 · 별도 화면',5.0,-4.95,Math.max(8,s*0.2),'#ffffff',true);
+  if(SUPG.visible) ctext('상담 데스크',0.4,-5.3,Math.max(8,s*0.2),'#ffffff',true);
   ctext('픽업 카운터',-5.2,-2.6,Math.max(8,s*0.18),'#ffffff',true);
   ctext('계산대',2.8,2.6,Math.max(9,s*0.2),'#2a3144',true);
   ctext('입구 안내',-1.6,4.0,Math.max(8,s*0.2),'#ffffff',true);

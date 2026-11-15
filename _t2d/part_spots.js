@@ -11,12 +11,11 @@ const T1=new THREE.Group(), T2=new THREE.Group(), T3=new THREE.Group(); T2.visib
 salesTable(-0.6,-0.6); spot('buy',-1.2,0.45,Math.PI); spot('buy',0.0,0.45,Math.PI);
 salesTable(3.3,-0.6); spot('buy',2.7,0.45,Math.PI,true); spot('buy',3.9,0.45,Math.PI,true);
 if(STG>=2){ salesTable(-3.4,1.4); spot('buy',-4.0,2.5,Math.PI); spot('buy',-2.8,2.5,Math.PI); }
-// 수리 카운터 (오른쪽)
+// 수리실 안내판 (v2.61: 수리 공간은 매장 밖 별도 화면 — 매장에는 안내만)
 const REPG=new THREE.Group(); REPG.visible=false;
-furn({k:'c',x:5.2,z:-4.6,w:2.5,d:0.8,c:'#eef4ee',label:'수리'});
-if(STG>=1) furn({k:'c',x:3.4,z:-4.6,w:1.3,d:0.8,c:'#e8f0e8',label:''});
-ob(3.95,6.45,-4.97,-4.23); if(STG>=1) ob(2.75,4.05,-4.97,-4.23);
-spot('fix',4.6,-3.6,Math.PI,true); spot('fix',5.8,-3.6,Math.PI,true); if(STG>=1) spot('fix',3.4,-3.6,Math.PI,true);
+furn({k:'c',x:5.0,z:-4.95,w:1.62,d:0.14,c:'#0f2a1e',label:'수리실'});
+furn({k:'c',x:5.0,z:-3.7,w:1.25,d:1.25,c:'rgba(47,170,69,.35)',label:''});
+ob(4.18,5.82,-5.05,-4.93);
 // 소프트웨어 상담 바 (가운데 뒤)
 const SUPG=new THREE.Group(); SUPG.visible=false;
 furn({k:'table',x:0.4,z:-5.3,w:2.6,d:0.8,c:WOOD,label:'상담'});
