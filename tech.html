@@ -1533,7 +1533,7 @@ function rqAdd(o){ o=o||{};
   try{ toast('🔧 수리 접수 · '+rDev(j)+(o.pat>=80?' (예약)':'')+' · 대기 '+RQ.filter(x=>x.st==='wait').length+'건',2.4); }catch(e){}
   return j; }
 function rqDrop(j){ const i=RQ.indexOf(j); if(i>=0) RQ.splice(i,1); if(REP.sel!=null&&!RQ.some(x=>x.id===REP.sel&&x.st==='wait')) REP.sel=null; }
-function rDiagOpts(j){ const ok=j.diag.fix, others=shuffle(Object.keys(RTREAT).filter(k=>k!==ok)).slice(0,3); return shuffle([ok].concat(others)); }
+function rDiagOpts(j){ if(!j.opts){ const ok=j.diag.fix, others=shuffle(Object.keys(RTREAT).filter(k=>k!==ok)).slice(0,3); j.opts=shuffle([ok].concat(others)); } return j.opts; }
 function rPay(raw){ const M=priceMul(); return Math.round(raw*(M>1?Math.pow(M,0.6):M)); }
 /* 수리 완료 정산 — 매출·평점·통계 반영 */
 function repCredit(j,raw,byAuto){
@@ -1581,7 +1581,7 @@ function repTick(dt){
       if(!REP.open&&hasCrew('tech')){ REP.autoT+=dt; if(REP.autoT>14){ REP.autoT=0; const j=RQ.find(x=>x.st==='wait'&&!x.auto); if(j){ j.auto=1; j.ap=4.5; } } }
     }
     /* v2.61: 화면 내용이 실제로 바뀔 때만 다시 그린다(탭 도중 DOM이 갈리지 않게) */
-    REP.paintT-=dt; if(REP.open&&REP.paintT<=0){ REP.paintT=0.5; const sg=repSig(); if(sg!==REP.sig){ repPaint(false); } }
+    if(REP.open){ if(REP.paintT>0) REP.paintT-=dt; repText(); if(REP.paintT<=0){ REP.paintT=0.5; const sg=repSig(); if(sg!==REP.sig) repPaint(false); } }
   }catch(e){ if(!REP.err){ REP.err=1; console.warn('repTick',e); } }
 }
 /* ---- 수리실 3D 작업실 ---- */
@@ -1593,6 +1593,8 @@ function repBuild(){ if(REP.built) return; REP.built=true; try{ if(typeof floorP
   const cl=(r,h,c,x,y,z,p)=>{ const m=new THREE.Mesh(gget('cy'+r+'_'+h,()=>new THREE.CylinderGeometry(r,r,h,14)),M(c)); m.position.set(x,y,z); (p||sc).add(m); return m; };
   const pan=(txt,w,h,bg,fg,font,y,z)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:canvasTex((g,W,H)=>{ g.fillStyle=bg; g.fillRect(0,0,W,H); g.fillStyle=fg; g.font=font||'900 64px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText(txt,W/2,H/2); },256,96)})); m.position.set(0,y,z); sc.add(m); return m; };
   /* 바닥 · 벽 · 천장 조명 */
+  bx(24,0.12,18,'#1d2733',0,-0.16,0);          // 작업실 바깥 바닥
+  bx(16,0.02,12,'#243040',0,-0.09,0);          // 복도 톤
   bx(11,0.2,8,'#39434f',0,-0.1,0);
   bx(11,3.2,0.2,'#222c38',0,1.6,-4); bx(0.2,3.2,8,'#222c38',-5.5,1.6,0); bx(0.2,3.2,8,'#222c38',5.5,1.6,0);
   bx(6.4,0.03,2.2,'#2a6b4a',0.2,0.02,-2.5);
@@ -1687,7 +1689,7 @@ function repOpen(){
       '#repUI .rph b{flex:1;min-width:0;font:900 16px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+
       '#repUI .rph b small{display:block;font:800 11px var(--b);color:#a8e8c4}'+
       '#repUI .rph b small.rpz{color:#ffd98a}'+
-      '#repUI .rph button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:40px;line-height:40px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
+      '#repUI .rph button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:44px;line-height:44px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
       '#repUI .rps{pointer-events:auto;margin-top:auto;max-height:56%;background:#f2fbf5;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.2);display:flex;flex-direction:column;padding:8px 10px calc(10px + env(safe-area-inset-bottom));overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}'+
       '#repUI .rpc{background:#fff;border-radius:14px;padding:9px 11px;margin:5px 0;box-shadow:0 2px 0 rgba(0,0,0,.08);font:800 12px/1.35 var(--b);color:#3a4a3a;text-align:left}'+
       '#repUI .rpc h4{margin:0 0 2px;font:900 14px var(--b);color:#14532d;display:flex;align-items:center;gap:6px}'+
@@ -1709,15 +1711,24 @@ function repOpen(){
   repPaint(true);
 }
 function repClose(){ try{ if(REP.open&&REP.pp){ player.pos.x=REP.pp.x; player.pos.z=REP.pp.z; REP.pp=null; } }catch(e){} REP.open=false; REP.sel=null; document.body.classList.remove('rep'); const u=$('repUI'); if(u) u.style.display='none'; try{ snd('ui',0.35); }catch(_){} repBadge(); }
+function repSubLine(){ try{ return '접수 '+RQ.filter(j=>j.st==='wait').length+'건 · 오늘 수리 '+dfix.n+'건 · 수리 매출 $'+dfix.rev; }catch(e){ return ''; } }
+/* 숫자·게이지만 갱신 (DOM을 갈아끼우지 않아 탭이 끊기지 않는다) */
+function repText(){ try{ const u=$('repUI'); if(!u) return;
+  const sub=u.querySelector('#repSub'); if(sub){ const t=repSubLine(); if(sub.textContent!==t) sub.textContent=t; }
+  const hud=u.querySelector('#repHud'); if(hud){ const t=repHudLine(); if(hud.textContent!==t) hud.textContent=t; }
+  const w=RQ.filter(j=>j.st==='wait');
+  u.querySelectorAll('[data-jid]').forEach(el=>{ const j=w.find(x=>x.id===+el.dataset.jid); if(!j) return; const i=el.querySelector('i'); if(i){ const pc=Math.max(0,Math.min(100,j.pat/j.patMax*100)); i.style.width=pc+'%'; i.style.background=pc>50?'#2faa45':pc>20?'#ffb020':'#e8342a'; } });
+  const pt=u.querySelector('#repPat'); if(pt){ const j=REP.sel!=null?w.find(x=>x.id===REP.sel):null; if(j) pt.textContent=Math.round(j.pat); }
+}catch(e){} }
 function repHudLine(){ try{ const cfg=dayCfg(S.day), left=Math.max(0,Math.floor(dayT));
   return dayState==='run'? '⏱ '+Math.floor(left/60)+':'+String(left%60).padStart(2,'0')+' 남음 · 민원 '+dayComp+'/3 · 매출 $'+dayRev+'/$'+cfg.goal
     : '영업 중이 아니에요 · 수리실은 접수된 건만 처리해요'; }catch(e){ return ''; } }
 function repSig(){ try{ const w=RQ.filter(j=>j.st==='wait');
-  return w.map(j=>j.id+':'+Math.round(j.pat/6)+':'+(j.auto?1:0)+':'+(j.needPart?1:0)+':'+Math.round(j.pat>0?1:0)).join('|')+'#'+(REP.sel||'')+'#'+dfix.n+'#'+dfix.rev+'#'+Math.round(dayT/5)+'#'+dayComp+'#'+dayRev+'#'+(hasCrew('tech')?1:0)+'#'+['s','b','c'].map(t=>partAvail(t)).join(','); }catch(e){ return ''; } }
+  return w.map(j=>j.id+':'+(j.auto?1:0)+':'+(j.needPart?1:0)).join('|')+'#'+(REP.sel||'')+'#'+dfix.n+'#'+(hasCrew('tech')?1:0)+'#'+['s','b','c'].map(t=>partAvail(t)).join(','); }catch(e){ return ''; } }
 function repPaint(full){
   const u=$('repUI'); if(!u) return;
   const wait=RQ.filter(j=>j.st==='wait');
-  const head='<div class="rph"><b>🔧 수리실<small>접수 '+wait.length+'건 · 오늘 수리 '+dfix.n+'건 · 수리 매출 $'+dfix.rev+'</small><small class="rpz" id="repHud">'+repHudLine()+'</small></b><button data-r="close">🏪 매장으로</button></div>';
+  const head='<div class="rph"><b>🔧 수리실<small id="repSub">'+repSubLine()+'</small><small class="rpz" id="repHud">'+repHudLine()+'</small></b><button data-r="close">🏪 매장으로</button></div>';
   let body='';
   const _sel=REP.sel!=null?wait.find(x=>x.id===REP.sel):null;
   if(_sel){
@@ -1726,7 +1737,7 @@ function repPaint(full){
       '<div class="rpd"><span>기기</span><b>'+rDev(j)+'</b></div>'+
       '<div class="rpd"><span>증상</span><b>"'+j.diag.q+'"</b></div>'+
       '<div class="rpd"><span>접수</span><b>'+(j.data?'📷 사진·데이터 중요':'일반 수리')+'</b></div>'+
-      '<div class="rpd"><span>남은 인내심</span><b>'+Math.round(j.pat)+'</b></div>'+
+      '<div class="rpd"><span>남은 인내심</span><b id="repPat">'+Math.round(j.pat)+'</b></div>'+
       (j.needPart?'<div class="rpd warn"><span>부품</span><b>'+IT[t.part].n+' 재고 없음 — 발주 필요</b></div>':'')+
       '<small style="margin-top:6px">어떤 처치가 맞을까요?</small>'+
       opts.map(k=>'<button class="rpt" data-r="pick" data-k="'+k+'"><b>'+RTREAT[k].ic+' '+RTREAT[k].n+'</b><s>'+(RTREAT[k].part?'부품 교체 · 진열대 재고 사용':'현장 서비스 · 부품 없이 바로')+'</s></button>').join('')+
@@ -1739,7 +1750,7 @@ function repPaint(full){
     if(!wait.length) body+='<div class="rpc"><h4>접수 대기 없음</h4><small>매장 입구 안내대에서 수리 문의 손님을 <b>접수</b>하면 여기로 쌓여요.<br>접수한 손님은 인내심이 줄어드니 서둘러 진단해 주세요.</small></div>';
     body+=wait.map((j,i)=>{ const pc=Math.max(0,Math.min(100,j.pat/j.patMax*100));
       return '<div class="rpc"><h4>'+(j.data?'📷 ':'')+rDev(j)+'<em>'+(j.auto?'👨‍🔧 서준 처리 중':'진단 대기')+'</em></h4>'+
-        '<small>"'+j.diag.q+'"</small><div class="rpp"><i style="width:'+pc+'%;background:'+(pc>50?'#2faa45':pc>20?'#ffb020':'#e8342a')+'"></i></div>'+
+        '<small>"'+j.diag.q+'"</small><div class="rpp" data-jid="'+j.id+'"><i style="width:'+pc+'%;background:'+(pc>50?'#2faa45':pc>20?'#ffb020':'#e8342a')+'"></i></div>'+
         '<div class="rpb"><button data-r="diag" data-i="'+j.id+'">🔧 진단하기</button>'+(hasCrew('tech')&&!j.auto?'<button class="rpa" data-r="auto" data-i="'+j.id+'">👨‍🔧 맡기기</button>':'')+'</div></div>'; }).join('');
   }
   const sc=(u.querySelector('.rps')||{}).scrollTop||0;
@@ -1793,7 +1804,7 @@ function openDetailQ(c,n){ quizOpen=true; c.st='consult'; curFace=c.face; const 
     S.stats.ok++; c.happy=1; qToast('✔ '+q.why,3.2); snd('ui',0.4,1.3);
     if(n===1){ openDetailQ(c,2); return; }
     c.dqDone=1; c.detailOK=1; c.spDone=1; c._lt=null; bigBanner('📖 설명 만족!','이 고객 만족 ★5 획득! · NPS +10'); snd('level_up',0.5,1.15); sparkle(c.pos.x,1.6,c.pos.z,'#5ad1ff'); openQuiz(c); }; }
-function openQuiz(c){ if(mgmtOpen()) return; quizOpen=true; c.st='consult'; curFace=c.face; if(c.spType&&!c.spDone) spServed(c); if(c.spType==='detail'&&!c.dqDone){ openDetailQ(c,1); return; } const qcBtn='<button id="qClose" class="gray" style="font-size:14px;margin-top:6px">잠시 후 응대 (닫기)</button>';
+function openQuiz(c){ if(mgmtOpen()) return; quizOpen=true; c.st='consult'; curFace=c.face; if(c.spType&&!c.spDone) spServed(c); if(c.spType==='detail'&&!c.dqDone){ openDetailQ(c,1); return; } const qcBtn='<button id="qClose" class="gray" style="font-size:14px;margin-top:6px;min-height:44px">잠시 후 응대 (닫기)</button>';
   if(c.walkin&&c.spot===GSPOT){ const qn=RQ.filter(j=>j.st==='wait').length; const tl=dayT;
     const opts=[{t:'🔧 수리실로 안내하고 오늘 접수하기',k:'wait'},{t:'가장 빠른 날로 예약 접수',k:'book'},{t:'수리 안 된다고 돌려보내기',k:'no'}];
     openModal('<h2>🔧 수리 접수</h2><p style="font-size:15px"><b>"예약 없이 왔는데 오늘 수리 되나요?"</b><br><small>수리실 대기 '+qn+'건 · 남은 영업 '+Math.ceil(tl)+'초<br>수리는 매장 밖 🔧 수리실에서 진행해요</small></p>'+quizBtns(opts,['#7bea62','#2faa45','#1d7a2a'])+qcBtn);
