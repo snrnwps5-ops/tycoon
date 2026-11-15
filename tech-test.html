@@ -102,7 +102,6 @@ canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;heigh
 .rescta{position:sticky;bottom:-6px;z-index:6;display:flex;flex-direction:column;gap:8px;background:#fff8ea;padding:6px 0 2px;margin-top:4px}
 .rescta button{margin:0!important}
 #dayGo{position:sticky;bottom:-6px;z-index:6}
-.dirAI .daib{max-height:132px;overflow-y:auto;overscroll-behavior:contain}
 #dayBar b{font-family:var(--d);font-size:15px;color:#ffd23f}#dayBar #dbComp.bad{color:#ff6a6a}#dayBar #dbT.low{color:#ff6a6a}
 #dayBar i{position:absolute;left:10px;right:10px;bottom:4px;height:4px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}#dayBar i s{display:block;height:100%;background:#7bea62;width:0}
 .dres{display:flex;justify-content:center;gap:6px;margin:2px 0 6px}.dres i{font-style:normal;font-size:32px;color:#d8cdb8;text-shadow:0 3px 0 rgba(0,0,0,.15)}.dres i.on{color:#ffcf3a}
@@ -2463,7 +2462,7 @@ function step(){ const now=performance.now(); let dt=Math.min(0.05,(now-last)/10
   if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); spawnT-=dt*loadK()*(cfg.spawn||1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1)*mktSpawnMul(); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=(S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5; spawnCust(); } }
   else if(dayState==='end'){ dayEndT-=dt; if(dayEndT<=0&&!quizOpen){ dayState='result'; showResult(); } }
   { const cfg=dayCfg(S.day); $('dbDay').textContent=(STG+1)+'-'+(S.day-[0,4,8,11,15,19][STG]+1); const tt=Math.max(0,Math.ceil(dayState==='run'?dayT:cfg.dur)); $('dbT').textContent=Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0'); $('dbT').classList.toggle('low',dayState==='run'&&dayT<20); $('dbRev').textContent='$'+dayRev+'/$'+cfg.goal; $('dbComp').textContent='민원 '+dayComp+'/3'; $('dbComp').classList.toggle('bad',dayComp>=2); $('dbFill').style.width=Math.min(100,dayRev/cfg.goal*100)+'%';
-    { const _pz=$('dbPause'); if(_pz) _pz.style.display=paused?'':'none'; const _db=$('dayBar'); if(_db) _db.classList.toggle('pz',paused); }
+    { const _pz=$('dbPause'); if(_pz) _pz.style.display=(paused&&dayState==='run')?'':'none'; const _db=$('dayBar'); if(_db) _db.classList.toggle('pz',paused&&dayState==='run'); }
     /* v2.60: 사무실에 있어도 남은 영업 시간·민원을 계속 보여 준다(매장이 방치돼 영업정지되는 걸 바로 알 수 있게) */
     const _bh=$('bizHud'); if(_bh){ if(dayState==='run'){ _bh.textContent='⏱ '+Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0')+' 남음 · 민원 '+dayComp+'/3 · 매출 $'+dayRev+'/$'+cfg.goal; _bh.style.color=dayComp>=2?'#ff9a9a':'#ffd98a'; } else { _bh.textContent='영업 중이 아니에요 · 매장은 쉬고 있어요'; _bh.style.color='#aab6e8'; } } }
   /* v2.10: 손으로 수리하는 동안에는 대기 손님 인내심이 모달 감속(0.3)의 35%로 더 천천히 줄고, 수리 중인 손님은 인내심이 줄지 않는다 */
