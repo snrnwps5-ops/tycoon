@@ -4190,10 +4190,10 @@ function v262BizExtra(){
         if(Math.abs(p.x)<0.02&&p.z>0.55&&p.y<1.0&&m.geometry&&/Box|Cylinder/.test(m.geometry.type)) m.visible=false; });
       const cg=new THREE.Group(); cg.position.set(0.2,0,0.6); cg.rotation.y=0.32; g.add(cg);
       const add=function(w,h,d,c,x,y,z,rx){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),v262M(c)); m.position.set(x,y,z); if(rx) m.rotation.x=rx; cg.add(m); return m; };
-      add(0.72,0.11,0.6,'#dfe6ef',0,0.46,0);
-      add(0.78,0.86,0.12,'#cfd8e4',0,0.94,0.28,-0.1);
-      add(0.56,0.18,0.11,'#dfe6ef',0,1.44,0.32,-0.1);
-      add(0.08,0.08,0.46,'#8a96a8',-0.38,0.66,0.04); add(0.08,0.08,0.46,'#8a96a8',0.38,0.66,0.04);
+      add(0.72,0.11,0.6,'#7ea2c8',0,0.46,0);
+      add(0.8,0.9,0.12,'#4f6f9c',0,0.96,0.3,-0.1);
+      add(0.58,0.2,0.11,'#7ea2c8',0,1.48,0.34,-0.1);
+      add(0.08,0.08,0.46,'#c8d0dc',-0.4,0.66,0.04); add(0.08,0.08,0.46,'#c8d0dc',0.4,0.66,0.04);
       add(0.05,0.26,0.05,'#9aa2b2',-0.38,0.54,-0.16); add(0.05,0.26,0.05,'#9aa2b2',0.38,0.54,-0.16);
       const post=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,0.3,8),v262M('#9aa2b2')); post.position.set(0,0.3,0); cg.add(post);
       for(let k=0;k<5;k++){ const a=k/5*Math.PI*2;
