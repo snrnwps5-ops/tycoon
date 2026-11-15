@@ -430,12 +430,17 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 #repUI .rpgd button.rpo.low s{color:#fff}
 #repUI .rpgd button.rpo:active{transform:translateY(2px);box-shadow:0 1px 0 #b85a00}
 /* ---- 비즈니스 시트: 내용만큼만 높이를 쓰고 최대 62% ---- */
-#bizUI .bzs{height:auto;max-height:62%}
 #bizUI .bzh button{height:44px;line-height:44px}
 #bizUI .bzt button{height:48px;font:900 11.5px/1.15 var(--b)}
 #bizUI .bze{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:18px 12px;margin:6px 0;background:#fff;border-radius:14px;box-shadow:var(--uSh);text-align:center;font:800 12px/1.5 var(--b);color:#6a5a4a}
 #bizUI .bze em{font-style:normal;font-size:26px}
 #bizUI .bze small{font:700 11px/1.5 var(--b);color:#8a7a6a}
+@media (min-width:760px){
+  #repUI .rps{padding-left:max(10px,calc((100% - 760px)/2));padding-right:max(10px,calc((100% - 760px)/2))}
+  #bizUI .bzl{padding-left:max(10px,calc((100% - 760px)/2));padding-right:max(10px,calc((100% - 760px)/2))}
+  #bizUI .bzt{max-width:776px;margin:0 auto}
+  #bizUI .bzh{margin-left:max(8px,calc((100% - 776px)/2));margin-right:max(8px,calc((100% - 776px)/2))}
+}
 
 /* ===== 2D 테스트 모드 전용 UI ===== */
 #aip{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:12;width:200px;background:rgba(10,18,38,.88);border:2px solid rgba(255,255,255,.38);border-radius:16px;padding:8px;color:#fff;font:900 12px var(--b);box-shadow:0 6px 18px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -3887,7 +3892,7 @@ function bizOpen(){ if(!bizOn()) return; bizBuild(); if(!BIZ.open){ BIZ.pp={x:pl
     const st=document.createElement('style'); st.textContent='#bizUI{position:fixed;left:0;right:0;bottom:0;top:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
       '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 60px) 8px 0;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:16px;background:rgba(16,22,40,.82);box-shadow:0 3px 10px rgba(0,0,0,.25)}#bizUI .bzh b{flex:1;min-width:0;font:900 16px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bizUI .bzh b small{display:block;font:800 11px var(--b);color:#aab6e8}'+
       '#bizUI .bzh button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:36px;line-height:36px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
-      '#bizUI .bzs{pointer-events:auto;margin-top:auto;height:50%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
+      '#bizUI .bzs{pointer-events:auto;margin-top:auto;height:auto;max-height:62%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
       '#bizUI .bzt{display:flex;gap:4px;padding:8px 8px 4px;flex:none}#bizUI .bzt button{all:unset;position:relative;cursor:pointer;flex:1;min-width:0;text-align:center;height:44px;border-radius:12px;font:900 11px/1.15 var(--b);background:#ece6da;color:#5a4a3a;display:flex;flex-direction:column;align-items:center;justify-content:center}#bizUI .bzt button i{font-style:normal;font-size:17px}#bizUI .bzt button.on{background:#3443c8;color:#fff}#bizUI .bzt button em{position:absolute;top:2px;right:4px;min-width:16px;height:16px;border-radius:8px;background:#e8342a;color:#fff;font:900 10px/16px var(--b);font-style:normal}'+
       '#bizUI .bzl{flex:1;min-height:0;overflow:auto;padding:2px 10px 12px;-webkit-overflow-scrolling:touch}#bizUI .bzc{background:#fff;border-radius:14px;padding:9px 11px;margin:6px 0;box-shadow:0 2px 0 rgba(0,0,0,.08);font:800 12px var(--b);color:#4a3a2a}'+
       '#bizUI .bzc h4{margin:0 0 2px;font:900 14px var(--b);color:#1b2a5a}#bizUI .bzc .bzb{display:flex;gap:6px;margin-top:6px}#bizUI .bzc .bzb button{all:unset;box-sizing:border-box;text-align:center;line-height:34px;cursor:pointer;flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px;height:34px;border-radius:10px;font:900 13px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1f2a8a}'+
