@@ -3403,7 +3403,7 @@ function bizBuild(){ if(BIZ.built) return; BIZ.built=true; try{ if(typeof floorP
       bx(1.56,1.2,0.06,'#7f8ba3',0,0.6,1.06,g); bx(1.56,0.1,0.1,'#9aa6bd',0,1.2,1.06,g);   // 등 뒤 칸막이
       bx(0.5,0.3,0.03,'#1b1f27',-0.28,0.96,-0.25,g).rotation.y=0.15; bx(0.46,0.26,0.02,['#3a7bff','#22c08a','#ff9a1a'][i%3],-0.28,0.96,-0.236,g).rotation.y=0.15;
       bx(0.5,0.3,0.03,'#1b1f27',0.3,0.96,-0.25,g).rotation.y=-0.15; bx(0.46,0.26,0.02,'#e8ecf4',0.3,0.96,-0.236,g).rotation.y=-0.15;
-      bx(0.36,0.02,0.14,'#2a2d38',0,0.78,0.12,g); cyl(0.05,0.1,['#ff5a6a','#ffffff','#ffd23f'][i%3],0.55,0.82,0.14,g);
+      bx(0.36,0.02,0.14,'#2a2d38',0,0.78,0.26,g); cyl(0.05,0.1,['#ff5a6a','#ffffff','#ffd23f'][i%3],0.55,0.82,0.3,g);
       bx(0.5,0.07,0.5,'#2a3142',0,0.37,0.62,g); bx(0.5,0.5,0.08,'#2a3142',0,0.62,0.86,g); cyl(0.04,0.34,'#9aa2b2',0,0.17,0.62,g);
       g.visible=false; BIZ.deskG.push(g); });
     /* 팀장실: 큰 책상 + 명패 + 책장 (오른쪽 뒤, 유리벽) */
@@ -3449,26 +3449,25 @@ function bizBones(ch){ if(ch.bz) return ch.bz; const b={}; ch.m.traverse(x=>{ if
   /* v2.59: SitDown 마지막 자세를 '앉은 기본 자세'로 저장 — 매 프레임 이 값 + 포즈로 절대 지정한다(예전 += 누적으로 자세가 무너지던 문제) */
   b.sit={}; ['Hips','Abdomen','Torso','Neck','Head','ShoulderL','ShoulderR','UpperArmL','UpperArmR','LowerArmL','LowerArmR','UpperLegL','UpperLegR','LowerLegL','LowerLegR','FootL','FootR'].forEach(n=>{ if(b[n]) b.sit[n]=[b[n].rotation.x,b[n].rotation.y,b[n].rotation.z]; });
   return b; }
-var BZ_TP={ual:[0.04,-0.25,-1.78],lal:[2.04,1.23,-0.02],uar:[0.47,0.29,1.13],lar:[0.89,-1.08,-0.58]};   // 대기: 두 손을 키보드 위로
-var BZ_PH={uar:[0.54,0.14,1.43],lar:[0.44,0.74,0.54]};                                                   // 통화: 오른손을 귀 옆으로
-var BZ_UP={uar:[-1.35,-0.15,0.35],lar:[0.3,0.1,0.1]};                                                    // 협상 포인트: 오른손 번쩍
+var BZ_TP={ual:[-0.19,-0.81,-2.12],lal:[1.22,2.2,0.47],uar:[0.66,0.2,1.15],lar:[0.93,-0.85,-0.76]};   // 대기: 두 손을 책상 앞쪽 키보드 위로
+var BZ_PH={uar:[0.57,-0.08,1.65],lar:[0,0.71,0.01]};                                                   // 통화: 오른손을 귀 옆으로
+var BZ_UP={uar:[0.29,0.14,1.94],lar:[-2.78,0.69,2.45]};                                                 // 협상 포인트: 오른손을 머리 옆으로 번쩍
 function bizAnim(R,dt){ const ch=R.ch, b=bizBones(ch), t=performance.now()/1000+(R.i==='m'?3.1:R.i*1.7), d=R.d;
   ch.mixer.update(dt); if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4; ch.blinkK=1; } if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.1,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); ch.eyeL.forEach(e=>e.scale.y=k); } }
   const S=b.sit||{}, put=(k,x,y,z)=>{ const s=S[k]; if(s&&b[k]) b[k].rotation.set(s[0]+(x||0),s[1]+(y||0),s[2]+(z||0)); };
+  const O=window.__BZP||{}, TP=O.tp||BZ_TP, PHS=O.ph||BZ_PH, UPP=O.up||BZ_UP;
   const ask=!!(d&&d.st==='nego'&&!d.asked&&d.p>=0.5), ph=!!d&&!ask;
   const jr=Math.sin(t*11)*0.045, jl=Math.sin(t*11+1.6)*0.045;
   put('Abdomen',0.05,0,0); put('Torso',0.01,Math.sin(t*1.6)*0.03,0);
-  put('UpperArmL',BZ_TP.ual[0],BZ_TP.ual[1],BZ_TP.ual[2]); put('LowerArmL',BZ_TP.lal[0]+jl,BZ_TP.lal[1],BZ_TP.lal[2]);
+  put('UpperArmL',TP.ual[0],TP.ual[1],TP.ual[2]); put('LowerArmL',TP.lal[0]+jl,TP.lal[1],TP.lal[2]);
   if(ph){   /* 통화 중 — 오른손을 귀 옆에 대고 고개를 끄덕인다 */
-    const BZ=window.__BZPOSE;
     put('Head',0.02+Math.sin(t*2.2)*0.06,0.14,0);
-    if(BZ){ put('UpperArmR',BZ.ua[0],BZ.ua[1],BZ.ua[2]); put('LowerArmR',BZ.la[0],BZ.la[1],BZ.la[2]); }
-    else { put('UpperArmR',BZ_PH.uar[0],BZ_PH.uar[1],BZ_PH.uar[2]); put('LowerArmR',BZ_PH.lar[0],BZ_PH.lar[1],BZ_PH.lar[2]); }
+    put('UpperArmR',PHS.uar[0],PHS.uar[1],PHS.uar[2]); put('LowerArmR',PHS.lar[0],PHS.lar[1],PHS.lar[2]);
   } else if(ask){   /* 협상 포인트 — 손을 번쩍 들어 알린다 */
-    put('Head',0.02,0.1,0); put('UpperArmR',BZ_UP.uar[0],BZ_UP.uar[1],BZ_UP.uar[2]); put('LowerArmR',BZ_UP.lar[0],BZ_UP.lar[1],BZ_UP.lar[2]);
+    put('Head',0.02,0.1,0); put('UpperArmR',UPP.uar[0],UPP.uar[1],UPP.uar[2]); put('LowerArmR',UPP.lar[0],UPP.lar[1],UPP.lar[2]);
   } else {   /* 대기 — 키보드 타이핑 */
     put('Head',0.05+Math.sin(t*0.7)*0.05,0,0);
-    put('UpperArmR',BZ_TP.uar[0],BZ_TP.uar[1],BZ_TP.uar[2]); put('LowerArmR',BZ_TP.lar[0]+jr,BZ_TP.lar[1],BZ_TP.lar[2]);
+    put('UpperArmR',TP.uar[0],TP.uar[1],TP.uar[2]); put('LowerArmR',TP.lar[0]+jr,TP.lar[1],TP.lar[2]);
   }
   if(ph&&b.phone&&b.FistR){ ch.g.updateMatrixWorld(true); const p=b.FistR.getWorldPosition(new THREE.Vector3()); b.phone.position.copy(p); b.phone.position.y+=0.035; b.phone.rotation.set(0.08,0.42,0); b.phone.visible=true; }   /* 손에 쥔 전화기(화면이 카메라 쪽) */
   else if(b.phone) b.phone.visible=false;
