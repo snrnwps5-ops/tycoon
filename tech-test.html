@@ -4719,8 +4719,8 @@ try{
   addEventListener('pagehide',function(){ v264Hide(); });
 }catch(e){}
 /* ---------------- 영업 결과 정산: 부여 · 베스팅 · 소각 · 위약금 · 주가 ---------------- */
-function v264Settle(clear,stars,cfg){
-  var o=v264S(), p0=v264P(), K=null;
+function v264Settle(clear,stars,cfg,p0in){
+  var o=v264S(), p0=(typeof p0in==='number'&&isFinite(p0in)&&p0in>0)?p0in:v264P(), K=null;
   try{ K=rsuStock(); }catch(e){}
   var R={day:(S.day|0),done:0,grant:0,grantVal:0,reasons:[],vestCash:0,vestShares:0,divAdd:0,
          burn:0,burnShares:0,burnPct:0,burnWhy:'',fine:0,p0:p0,p1:p0,pct:0,vt:(o.vt||0),next:3-(o.vt||0),pool:(o.sh||0),share:p0/10};
@@ -4828,6 +4828,18 @@ function v264ResultHTML(R){
   h+='<div style="margin-top:5px;font:800 10.5px var(--b);color:#cfe0ff">🎯 '+hesc(v264GoalLine())+'</div>';
   h+='</div>';
   return h;
+}
+function v264ResultInject(){
+  try{
+    if(!$('modal').classList.contains('on')) return;
+    var mb=$('mbox'); if(!mb) return;
+    if(!mb.querySelector('.dres')) return;
+    if(document.getElementById('v264Res')) return;
+    var h=v264ResultHTML(V264.res); if(!h) return;
+    var w=document.createElement('div'); w.id='v264Res'; w.innerHTML=h;
+    var at=document.getElementById('v262Strip')||mb.querySelector('.dres');
+    if(at&&at.parentNode) at.parentNode.insertBefore(w,at.nextSibling); else mb.insertBefore(w,mb.firstChild);
+  }catch(e){ console.warn('v264 res inject',e); }
 }
 /* ---------------- 다음 한 줄 목표 ---------------- */
 function v264GoalLine(){
@@ -4957,16 +4969,18 @@ function v264Buy(k){
   try{
     var _o=rsuOnResult;
     if(typeof _o==='function') rsuOnResult=function(clear,stars,cfg,nps){
-      var R=null;
+      var R=null, p0=null;
+      try{ p0=rsuStock().p; }catch(e){}
       try{ R=_o.apply(this,arguments); }catch(e){ console.warn('v264 rsu',e); }
-      try{ V264.res=v264Settle(clear,stars,cfg); }catch(e){ V264.res=null; console.warn('v264 settle',e); }
+      try{ V264.res=v264Settle(clear,stars,cfg,p0); }catch(e){ V264.res=null; console.warn('v264 settle',e); }
       return R;
     };
-    var _h=rsuResultHTML;
-    if(typeof _h==='function') rsuResultHTML=function(R){
-      var h=''; try{ h=_h.apply(this,arguments)||''; }catch(e){}
-      try{ h+=v264ResultHTML(V264.res); }catch(e){}
-      return h;
+    /* 결과창에서는 3부문 스트립 바로 아래로 넣는다(영수증·상세 사이에 묻히지 않게) */
+    var _sr=showResult;
+    if(typeof _sr==='function') showResult=function(){
+      var r=_sr.apply(this,arguments);
+      setTimeout(v264ResultInject,430);
+      return r;
     };
     var _hub=v262HubHTML;
     if(typeof _hub==='function') v262HubHTML=function(){
