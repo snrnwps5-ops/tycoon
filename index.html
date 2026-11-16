@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.69';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.70';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.68</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.70</title>
 <link rel="icon" href="icon.jpg">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
 :root{--d:'Black Han Sans','Noto Sans KR',-apple-system,sans-serif;--b:'Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
@@ -460,7 +460,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.69</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.70</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -677,10 +677,10 @@ function canvasTex(draw,w,h){ const cv=document.createElement('canvas'); cv.widt
 /* ---------- assets ---------- */
 const AB=window.BUNSIK_ASSETS||{}, A={};
 const QN=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Casual3_Male','Casual3_Female','Casual_Bald','OldClassy_Male','OldClassy_Female','Suit_Male','Suit_Female','Worker_Male','Worker_Female','Chef_Female'];
-const FN=['bedSingle','bedDouble','washer','dryer','cabinetBedDrawer','lampRoundTable','rugRound','rugRounded','sideTable','loungeSofa','tableCoffeeGlass','bookcaseOpen','kitchenBar','plantSmall2','pottedPlant','coatRackStanding','trashcan','kitchenCoffeeMachine'];
+const FN=[]; /* v2.70: kf()를 부르는 곳이 없어 파싱만 하던 18종(가구) 제거 — assets_extra.js에 보관 */
 const b64=x=>{ const bin=atob(x), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u.buffer; };
-const ZN=['table_medium_long','cactus_small_A','cactus_medium_B','shelf_A_big','chair_stool_wood','bed_single_A','bed_double_A','cabinet_small_decorated','lamp_table','lamp_standing','couch_pillows','armchair_pillows','table_low','rug_oval_A','rug_rectangle_stripes_A','cactus_medium_A','shelf_B_large_decorated','pictureframe_large_A','table_medium','chair_A','cabinet_medium_decorated'];
-const YN=['kitchencounter_straight_B','kitchentable_A','crate_buns','jar_A_medium'];
+const ZN=['cactus_medium_A','cactus_medium_B','rug_rectangle_stripes_A','pictureframe_large_A']; /* v2.70: kz()가 실제로 쓰는 4종만 */
+const YN=['kitchencounter_straight_B']; /* v2.70: YOK() 계산대 판정에 쓰는 1종만 */
 await new Promise(res=>{ const L=new THREE.GLTFLoader(); const all=QN.map(n=>'q:'+n).concat(FN.map(n=>'f:'+n),ZN.map(n=>'z:'+n),YN.map(n=>'y:'+n)); let n=0; const done=()=>{ if(++n>=all.length) res(); };
   all.forEach(k=>{ if(!AB[k]){ done(); return; } try{ L.parse(b64(AB[k]),'',g=>{ A[k]=g; done(); },()=>done()); }catch(e){ done(); } }); setTimeout(res,20000); });
 if(!A['q:Casual_Male']){ bootFail('timeout','models not ready after 20s'); return; }
@@ -735,7 +735,7 @@ function kk(pref,n,w,h,d,x,y,z,ry,p){ const G=A[pref+':'+n], M=pref==='z'?ZM:YM;
   if(!KKB[key]) KKB[key]=new THREE.Box3().setFromObject(G.scene); const b=KKB[key], sz=b.getSize(new THREE.Vector3()), c=b.getCenter(new THREE.Vector3());
   const sx=w?w/sz.x:(h/sz.y), sy=h?h/sz.y:sx, sz2=d?d/sz.z:sx; o.scale.set(sx,sy,sz2); o.position.set(-c.x*sx,-b.min.y*sy,-c.z*sz2);
   o.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; m.material=M; } }); const wr=new THREE.Group(); wr.add(o); wr.position.set(x||0,y||0,z||0); wr.rotation.y=ry||0; (p||scene).add(wr); return wr; }
-const kz=(...a)=>kk('z',...a), ky=(...a)=>kk('y',...a); const ZOK=()=>!!(ZM&&A['z:bed_single_A']), YOK=()=>!!(YM&&A['y:kitchencounter_straight_B']);
+const kz=(...a)=>kk('z',...a), ky=(...a)=>kk('y',...a); const ZOK=()=>!!(ZM&&A['z:cactus_medium_B']), YOK=()=>!!(YM&&A['y:kitchencounter_straight_B']);
 const KFM={}, KFB={};
 function kf(n,w,h,d,x,y,z,ry,p){ const G=A['f:'+n]; if(!G) return null; const o=G.scene.clone(true);
   if(!KFB[n]) KFB[n]=new THREE.Box3().setFromObject(G.scene); const b=KFB[n], sz=b.getSize(new THREE.Vector3()), c=b.getCenter(new THREE.Vector3());
@@ -7093,6 +7093,127 @@ try{
     };
   },0);
 }catch(e){}
+/* ================= v2.70: 하단 CTA 가림 정리 · 7일 저장 백업 배너 · 영업 중 목표/★ 피드백 · 로딩 자산 축소 =================
+   v2.69 로컬 QA(375x667/568)에서 나온 것
+   ① 허브·결과창의 고정 CTA가 '반투명 그라데이션'이라 뒤 내용이 비쳐 글자가 겹쳐 보인다(허브 '매니저' 줄, 결과창 상세 줄).
+   ② 저장 코드 백업 안내가 영업 준비창에만 있어, 요즘 첫 화면인 허브에서는 보이지 않는다.
+   ③ 영업 중 매출이 목표를 넘는 순간·★2(130%)·마지막 10초에 아무 피드백이 없다(하루의 절정이 조용히 지나간다).
+   ④ assets.js 7.46MB 중 실제로 만드는 모델은 26종뿐 — 94종(2.78MB)은 파싱만 하고 버려졌다.
+   원칙: 기존 함수는 '감싸기(wrap)'만 한다. 새 DOM은 모달 내부(허브)에만 넣는다(3D 시트 내부 삽입 금지 규칙 유지). */
+var V270={day:-1,rev:-1,hit:0,star2:0,t10:0,n:{hit:0,star2:0,t10:0,bak:0}};
+try{
+  var _s270=document.createElement('style'); _s270.id='v270css';
+  _s270.textContent=
+    '#modal .hubFoot{background:#fff8ea!important;border-top:1px solid #e7d3ad!important;'
+    +'box-shadow:none!important;padding-top:9px!important;margin-top:12px!important;'
+    +'bottom:-14px!important;padding-bottom:13px!important;border-bottom-left-radius:20px!important;border-bottom-right-radius:20px!important}'
+    +'#modal .rescta{background:#fff8ea!important;border-top:1px solid #e7d3ad!important;'
+    +'box-shadow:none!important;padding-top:9px!important;bottom:-14px!important;'
+    +'padding-bottom:13px!important;border-bottom-left-radius:20px!important;border-bottom-right-radius:20px!important}'
+    +'#dayBar.goal{box-shadow:0 0 0 2px rgba(255,210,63,.55)}'
+    +'#dayBar.goal i s{background:linear-gradient(90deg,#ffd23f,#ff9a1a)!important}'
+    +'#v270Star{display:none;font:900 11px var(--b);color:#5a2a00;background:linear-gradient(#ffe07a,#ffb020);'
+    +'border-radius:9px;padding:2px 6px;margin-left:2px}'
+    +'#v270Bak{margin:9px 0 2px;padding:10px 11px 11px;border-radius:14px;'
+    +'background:linear-gradient(#eef4ff,#dbe7ff);box-shadow:0 3px 0 #b8c9e8;text-align:left}'
+    +'#v270Bak b{display:block;font:900 13px/1.3 var(--b);color:#22355c}'
+    +'#v270Bak small{display:block;margin-top:3px;font:700 10.5px/1.4 var(--b);color:#5a6f96;word-break:keep-all}'
+    +'#v270Bak .row{display:flex;gap:7px;margin-top:9px}'
+    +'#v270Bak .row button{flex:1 1 0!important;width:auto!important;min-width:0!important;margin:0!important;'
+    +'min-height:44px!important;padding:0 6px!important;font-size:13px!important;border-radius:11px!important}'
+    +'#v270BakCopy{background:linear-gradient(#5aa8ff,#2f6fd8)!important;box-shadow:0 3px 0 #1c3f9a!important;color:#fff}'
+    +'#v270BakLater{background:#e6ecf8!important;box-shadow:0 3px 0 #c2cde4!important;color:#4a5a7c}';
+  document.head.appendChild(_s270);
+}catch(e){}
+
+/* ---------------- 1) 7일 주기 저장 백업 배너 (허브 첫 화면 · 원터치 복사) ---------------- */
+function v270BakDue(){
+  try{
+    var day=S.day|0; if(day<2) return false;
+    if((S.bakSkip|0)===day) return false;
+    var at=+S.bakAt||0;
+    if(!at) return true;                               /* 한 번도 백업한 적 없음 */
+    if(Date.now()-at>=7*86400000) return true;         /* 실제 7일 경과 */
+    if(day-((S.bakDay|0)||0)>=7) return true;          /* 게임에서 7영업일 경과 */
+  }catch(e){}
+  return false;
+}
+function v270BakAgo(){
+  try{ var at=+S.bakAt||0;
+    if(!at) return '아직 한 번도 백업하지 않았어요';
+    var d=Math.floor((Date.now()-at)/86400000);
+    return d<=0?(Math.floor((Date.now()-at)/3600000)<1?'방금 백업했어요':'오늘 백업했어요'):('마지막 백업 '+d+'일 전');
+  }catch(e){ return ''; }
+}
+function v270BakMount(){
+  try{
+    var mb=$('mbox'); if(!mb||!$('v262Go')) return;
+    var cur=$('v270Bak'); if(cur&&cur.parentNode) cur.parentNode.removeChild(cur);
+    if(!v270BakDue()) return;
+    var wrap=document.createElement('div');
+    wrap.innerHTML='<div id="v270Bak"><b>💾 저장 코드 백업할 때예요</b>'
+      +'<small>'+v270BakAgo()+' · 폰을 바꾸거나 기록이 지워지면 되살릴 수 없어요</small>'
+      +'<div class="row"><button id="v270BakCopy">저장 코드 복사</button><button id="v270BakLater">나중에</button></div></div>';
+    var el=wrap.firstChild;
+    var st=mb.querySelector('.vStats'), top=mb.querySelector('.vHubTop');
+    if(st&&st.parentNode) st.parentNode.insertBefore(el,st.nextSibling);
+    else if(top&&top.parentNode) top.parentNode.insertBefore(el,top.nextSibling);
+    else mb.insertBefore(el,mb.firstChild);
+    var c=$('v270BakCopy'); if(c) c.onclick=function(e){ e.stopPropagation(); v270BakCopy(); };
+    var l=$('v270BakLater'); if(l) l.onclick=function(e){ e.stopPropagation();
+      S.bakSkip=S.day|0; try{ save(); }catch(_){}
+      if(el.parentNode) el.parentNode.removeChild(el);
+      try{ toast('내일 다시 알려드릴게요',2); }catch(_){} };
+  }catch(e){}
+}
+function v270BakCopy(){
+  var done=function(){ try{ S.bakAt=Date.now(); S.bakDay=S.day|0; delete S.bakSkip; save(); }catch(e){}
+    var el=$('v270Bak'); if(el&&el.parentNode) el.parentNode.removeChild(el);
+    try{ snd('level_up',0.4,1.2); haptic([8,24,8]); }catch(e){}
+    V270.n.bak++; try{ toast('💾 저장 코드를 복사했어요 · 메모장에 붙여 두세요',3.5); }catch(e){} };
+  try{
+    var code=''; try{ code=saveCode(); }catch(e){}
+    if(!code) throw new Error('nocode');
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(done,function(){ try{ openSave(); }catch(e){} });
+    } else { try{ openSave(); }catch(e){} }
+  }catch(e){ try{ openSave(); }catch(_){} }
+}
+(function(){ try{
+  var _b=v266BindHub;
+  v266BindHub=function(){ var r=_b.apply(this,arguments); try{ v270BakMount(); }catch(e){} return r; };
+}catch(e){} })();
+
+/* ---------------- 2) 영업 중 순간 피드백: 목표 · ★2(130%) · 마지막 10초 ---------------- */
+try{ var _bar=$('dayBar'); if(_bar&&!$('v270Star')) _bar.insertAdjacentHTML('beforeend','<span id="v270Star">★2</span>'); }catch(e){}
+function v270Tick(){
+  try{
+    if(typeof dayState==='undefined') return;
+    var day=S.day|0, cfg=dayCfg(S.day), run=(dayState==='run'), bar=$('dayBar');
+    if(V270.day!==day){ V270.day=day; V270.hit=0; V270.star2=0; V270.t10=0; V270.rev=-1; }
+    if(!run){ return; }
+    if(V270.rev>=0&&dayRev+1<V270.rev){ V270.hit=0; V270.star2=0; V270.t10=0; if(bar) bar.classList.remove('goal'); }  /* 같은 날 재도전 */
+    V270.rev=dayRev;
+    var goal=Math.max(1,Math.round(cfg.goal||1)), s2=Math.round(goal*1.3);
+    var sc=$('v270Star'); if(sc) sc.style.display=(dayRev>=s2?'inline-block':'none');
+    if(!V270.hit&&dayRev>=goal){
+      V270.hit=1; if(bar) bar.classList.add('goal');
+      var left=s2-dayRev; V270.n.hit++;
+      try{ bigBanner('🎯 목표 달성!','매출 $'+dayRev+' / $'+goal+(left>0?(' · ★2까지 $'+left):' · ★2도 넘었어요')); }catch(e){}
+      try{ sfxLevel(); haptic([10,30,10]); confetti(player.pos.x,2.2,player.pos.z); }catch(e){}
+    } else if(dayRev>=s2&&!V270.star2){
+      V270.star2=1; V270.n.star2++;
+      try{ bigBanner('⭐ ★2 매출 달성!','$'+dayRev+' · 목표의 130% 돌파'); sfxFever(); }catch(e){}
+    }
+    if(!V270.t10&&dayT<=10&&dayT>0){
+      V270.t10=1; V270.n.t10++;
+      try{ bigBanner('⏰ 마지막 10초!','남은 손님을 정리해요'); sfxWarn(); }catch(e){}
+    }
+  }catch(e){}
+}
+setInterval(v270Tick,250);
+/* __H 본체는 스크립트 끝(부팅 직후)에서 만들어진다 — v262·v269 훅과 같이 한 박자 뒤에 붙인다 */
+try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v270={ ver:'v2.70', state:V270, bind:v270BakMount, due:v270BakDue, copy:v270BakCopy, tick:v270Tick }; }catch(e){} },0); }catch(e){}
 function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!FTSKIP&&!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(S.mercyD===S.day) setTimeout(()=>toast('🩹 재기 지원: 오늘 매출 +12% · 손님 인내심 +15%',3.6),600); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
@@ -7321,7 +7442,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.68';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.70';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -7361,7 +7482,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
     $('tShare').onclick=()=>{ const d={title:'테크 스토어 타이쿤',text:'테크 스토어 타이쿤 같이 해볼래? 수리하고, 상담하고, 매장을 키우는 게임이야',url:APPURL}; if(navigator.share){ navigator.share(d).catch(()=>{}); return; }
       sheet('<h3>🔗 친구에게 공유</h3><div>아래 주소를 보내면 바로 플레이할 수 있어요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>'); $('tsC').onclick=copy; }; } }
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else offResume(); });
-try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
+try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},set dayT(v){dayT=v},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
 try{
 /* =========================================================================
    v2.67에서 들어온 기능 — ② 키오스크 2종 확장 · ③ 오늘의 미션 다양화
