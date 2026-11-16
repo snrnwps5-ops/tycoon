@@ -26,7 +26,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.73';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.74';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.73</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.74</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -485,7 +485,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.73</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.74</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1161,7 +1161,7 @@ function buildDecor(){ while(DECOR.children.length) DECOR.remove(DECOR.children[
 
 /* ---- visual helpers: auras, spot markers, rain ---- */
 const AURAG=new THREE.RingGeometry(0.42,0.56,32); const AURAM={};
-function addAura(c){ if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; } const col=c.influ?'#ff5ab8':c.vip?'#ffd23f':c.flight?'#5ad1ff':c.tough?'#ff4a3a':null; if(!col) return; const m=AURAM[col]||(AURAM[col]=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.85,depthWrite:false})); const r=new THREE.Mesh(AURAG,m); r.rotation.x=-Math.PI/2; r.position.y=0.12; c.ch.g.add(r); c.aura=r; }
+function addAura(c){ if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; } const col=c.influ?'#ff5ab8':c.reg!=null?'#ffb347':c.bulk?'#5ad1ff':c.vip?'#ffd23f':c.flight?'#5ad1ff':c.tough?'#ff4a3a':null; if(!col) return; const m=AURAM[col]||(AURAM[col]=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.85,depthWrite:false})); const r=new THREE.Mesh(AURAG,m); r.rotation.x=-Math.PI/2; r.position.y=0.12; c.ch.g.add(r); c.aura=r; }
 const SPOTCOL={pick:'#ff9a1a',buy:'#2f6fd8',fix:'#2faa45',sw:'#7a4ad6'}; const MKG=new THREE.RingGeometry(0.3,0.4,28), MKD=new THREE.CircleGeometry(0.3,28);
 SPOTS.forEach(s=>{ const col=SPOTCOL[s.type]; if(!col) return; const g=new THREE.Group(); g.position.set(s.x,FLOOR_Y.spot,s.z); const a=new THREE.Mesh(MKG,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.75,depthWrite:false})); const b=new THREE.Mesh(MKD,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.16,depthWrite:false})); [a,b].forEach(m=>{ m.rotation.x=-Math.PI/2; m.renderOrder=2; g.add(m); }); scene.add(g); s.mk=g; s.mka=a; });
 function tickMarkers(t){ SPOTS.forEach(s=>{ if(!s.mk) return; s.mk.visible=s.on; if(s.on){ const k=s.occ?1:1+0.08*Math.sin(t*3+s.x); s.mk.scale.set(k,k,k); s.mka.material.opacity=s.occ?0.35:0.75; } }); }
@@ -1551,7 +1551,7 @@ function SPCM(c){ if(c.spType==='rush'){ const left=c.t0?Math.max(0,Math.ceil(c.
   if(c.spType==='esc'){ if(hasCrew('mgr')) return '🔥 책임자 불러주세요! (매니저 응대 중)'; return '🔥 책임자 불러주세요! ('+Math.max(0,Math.ceil(c.escT||15))+'초 내 응대)'; }
   return ''; }
 const REQ={tour:c=>c.want?IT[c.want].n+' box please!':c.st==='consult'?'상담 중… 🧑‍💼':'Excuse me! (외국인 손님)',corp:c=>'🏢 법인 대량 발주',esc:c=>c.mgr?'매니저와 이야기 중…':'책임자 불러주세요!!',ret:c=>TP(c)+(c.sub==='trade'?'♻️ 보상 판매 문의':c.sub==='lost'?'🚨 분실·도난 상담':c.sub==='gift'?'🎁 선물 구매 상담':'반품 문의 · '+IT[c.want].n),pick:c=>c.st==='xfer'?'데이터 옮기는 중… 옆에 있어 주세요':TP(c)+'픽업 · '+IT[c.want].n+(c.xfer?' + 데이터 이전':''),buy:c=>c.want?IT[c.want].n+' 박스 가져다주세요':c.st==='consult'?'상담 중… 🧑‍💼':'구입 상담 원해요',fix:c=>c.walkin&&c.spot===GSPOT?'예약 없이 왔어요 · 수리 문의':c.st==='repair'?'수리 중…':TP(c)+(c.data?'[데이터 중요] ':'')+(c.mine===1?'🙋 직접 수리 · ':'')+(c.diag&&!c.want?'진단 필요: '+c.diag.q:({b:'배터리 교체',s:'액정 파손',c:'카메라 고장'})[c.want]+(c.want&&partAvail(c.want)<=0?' · 부품 없음 ⚠':'')),sw:c=>TP(c)+'상담: '+c.q.q};
-function priceMul(){ return (1+0.02*(typeof lpDexTier==='function'?lpDexTier():0))*(1+0.08*S.up.price)*(S.unl.includes('flag')?1.5:1)*(0.7+rating()*0.1)*(S.mercyD===S.day?1.12:1); }
+function priceMul(){ return (1+v274RegBuff())*(1+0.02*(typeof lpDexTier==='function'?lpDexTier():0))*(1+0.08*S.up.price)*(S.unl.includes('flag')?1.5:1)*(0.7+rating()*0.1)*(S.mercyD===S.day?1.12:1); }
 function rating(){ const a=S.reviews; return Math.min(5,(a.length?a.reduce((x,y)=>x+y,0)/a.length:4)+intBonus()+opBonus()); }
 /* ---- v2.7: 손님 외형 바리에이션 — 기존 캐주얼/정장/노신사 + 힙스터·비즈니스 우먼·학생·패셔니스타 ---- */
 const SHIRTS=['#e8473d','#46b37a','#f7c948','#ff7aa8','#9b6bff','#ff9f43'];
@@ -1598,18 +1598,35 @@ function spawnCust(){ if(dayState!=='run') return; const cfg=dayCfg(S.day); cons
     else { c.escT=15; c.patMax=Math.max(c.patMax,45); c.pat=c.patMax; }
     c._lt=null;
   }
+  /* v2.74 ①: 단골 재방문 (하루 한 번) — 이름·얼굴 그대로 다시 온다 */
+  if(c.reg==null&&!c.tough&&!c.walkin&&type!=='esc'&&type!=='fix'){
+    var _ri=v274RegPick(type);
+    if(_ri>=0){ var _R=v274Reg(); if(_R.list[_ri]){ c.reg=_ri; c.face=_R.list[_ri].f; c.patMax=Math.round(c.patMax*1.4); c.pat=c.patMax; _R.day=S.day|0;
+      var _rn=_R.list[_ri].n;
+      setTimeout(function(){ try{ toast('👑 단골 '+_rn+' 님 입장! 팁 1.8배',2.6); snd('level_up',0.3,1.5); haptic(12); }catch(_){} },420); } }
+  }
+  /* v2.74 ②: 기업 납품 픽업 — 비즈니스 계약이 만든 박스를 매장에서 넘긴다 */
+  if(c.bulk==null&&type==='pick'&&c.want){
+    var _B=v274Bulk();
+    if(_B.q>0&&(S.day|0)>=2&&Math.random()<0.55){
+      var _bv=v274BulkTake();
+      if(_bv>0){ c.bulk=1; c.bulkV=_bv; var _lbl=IT[c.want].n, _bq=_B.q;
+        setTimeout(function(){ try{ toast('🏢 기업 납품 픽업 · '+_lbl+' '+_bq+'건 · +'+v274Usd(_bv),2.8); snd('ui',0.35); }catch(_){} },600); }
+    }
+  }
   c.el.className='lb'; $('labels').appendChild(c.el); ch.g.position.copy(c.pos); custs.push(c); addAura(c); }
 const faceI=(k,s,cl)=>'<u class="'+cl+'" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></u>'; let curFace=null;
-function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.gold?'💎 ':'')+(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); const sp=(c.spType&&!c.spDone)?SPCM(c):''; const full=sp?'<span class="spl">'+sp+'</span><span class="spq">'+txt+'</span>':txt; if(c._lt!==full){ c._lt=full; c.el.innerHTML=faceI(c.face,26,'fc')+full+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':'')+(sp?' sp-'+c.spType:''); c.el._w=c.el.offsetWidth||120; c.el._h=c.el.offsetHeight||42; } }
+function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.gold?'💎 ':'')+(c.bulk?'🏢 ':'')+(c.reg!=null?'👑 ':'')+(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); const sp=(c.spType&&!c.spDone)?SPCM(c):''; const full=sp?'<span class="spl">'+sp+'</span><span class="spq">'+txt+'</span>':txt; if(c._lt!==full){ c._lt=full; c.el.innerHTML=faceI(c.face,26,'fc')+full+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':'')+(sp?' sp-'+c.spType:''); c.el._w=c.el.offsetWidth||120; c.el._h=c.el.offsetHeight||42; } }
 function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.softLeave||c.escFail) c.quiet=1; if(c.spot){ c.spot.occ=null; c.spot=null; }
   c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(Math.random()<0.5?-14:14,0,11.2)];
   let stars=c.softLeave?3:(ok?4+(c.happy?1:0)-(c.waited>25?1:0):(c.miss?2:(c.walk?2:1))); if(c.detailOK) stars=5; stars=Math.max(1,Math.min(5,stars)); if(!c.quiet||ok) floatText(new THREE.Vector3(c.pos.x,2.9,c.pos.z),['😡','😠','😐','🙂','😍'][stars-1],'emo'); if(c.aura){ c.ch.g.remove(c.aura); c.aura=null; }
   if(c.influ&&dayState==='run'&&!c.softLeave){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } if(!c.softLeave){ S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift(); }
-  if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈'); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
+  if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet&&c.reg==null){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈'); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
   if(ok&&c.type==='ret') hubReturnRma(c);
-  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*(S.boostD===S.day?2:1)*(S.vipPass?1.25:1)); if(c.gold){ pay*=3; S.stats.gold=(S.stats.gold||0)+1; const _gp=pay, _gx=c.pos.x, _gz=c.pos.z; setTimeout(()=>{ try{ bigBanner('💎 황금 손님!','팁 3배 · +$'+_gp); confetti(_gx,2.4,_gz); haptic(30); }catch(_){} },250); } /* v2.37: 배수 체감(예: 4배→2.3배, 10배→4배) — 업그레이드·FEVER·VIP가 겹쳐 하루 목표의 20배가 나오던 문제 */ if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; if(c.type==='fix'&&typeof dfix!=='undefined'&&dfix){ dfix.rev+=pay; dfix.n++; } cashVal+=pay; rebuildCash(); S.stats.srv++; lpCard(c); floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); haptic(15,'cashPill'); c.ch.jump=1; gainXP(1);
+  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.reg!=null?1.8:1)*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*(S.boostD===S.day?2:1)*(S.vipPass?1.25:1)); if(c.bulk&&c.bulkV){ pay+=Math.round(c.bulkV); S.stats.bulk=(S.stats.bulk||0)+1; const _bx=c.pos.x, _bz=c.pos.z, _bv2=Math.round(c.bulkV);
+      setTimeout(function(){ try{ floatText(new THREE.Vector3(_bx,3.25,_bz),'🏢 기업 납품 +'+v274Usd(_bv2),'say'); }catch(_){} },140); } if(c.gold){ pay*=3; S.stats.gold=(S.stats.gold||0)+1; const _gp=pay, _gx=c.pos.x, _gz=c.pos.z; setTimeout(()=>{ try{ bigBanner('💎 황금 손님!','팁 3배 · +$'+_gp); confetti(_gx,2.4,_gz); haptic(30); }catch(_){} },250); } /* v2.37: 배수 체감(예: 4배→2.3배, 10배→4배) — 업그레이드·FEVER·VIP가 겹쳐 하루 목표의 20배가 나오던 문제 */ if(dayState==='run'){ comboHit(); if(['pick','buy','tour','corp'].includes(c.type)&&!c.bag){ c.bag=box(0.26,0.3,0.12,TS.acc,0.36,0.6,0.08,c.ch.g); box(0.18,0.03,0.03,'#ffffff',0.36,0.78,0.08,c.ch.g); } } if(dayState==='run') dayRev+=pay; if(c.type==='fix'&&typeof dfix!=='undefined'&&dfix){ dfix.rev+=pay; dfix.n++; } cashVal+=pay; rebuildCash(); S.stats.srv++; if(c.reg!=null) v274RegVisit(c); lpCard(c); try{ v274RegTry(c,ok,stars); }catch(_){} floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),'+'+pay+'  '+'★'.repeat(stars)); snd('confirm',0.45); haptic(15,'cashPill'); c.ch.jump=1; gainXP(1);
     if(c.ch.acts.Victory){ playA(c.ch,'Victory',0.1); c.lock=0.8; } if(S.stats.srv===1) setTimeout(()=>bigBanner('첫 고객 응대!','돈은 계산대 옆에 쌓여요'),300); }
-  else if(!ok&&!c.softLeave) floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),c.miss?'다른 매장 가볼게요…':'너무 오래 기다렸어요','bad'); }
+  else if(!ok&&!c.softLeave){ if(c.reg!=null) floatText(new THREE.Vector3(c.pos.x,2.6,c.pos.z),'👑 단골은 다음에 다시 와요','say'); else floatText(new THREE.Vector3(c.pos.x,2.3,c.pos.z),c.miss?'다른 매장 가볼게요…':'너무 오래 기다렸어요','bad'); } }
 
 /* ---- quiz modal ---- */
 /* ================= v2.61: 수리실(REPAIR LAB) =================
@@ -1655,12 +1672,15 @@ function rPay(raw){ const M=priceMul(); return Math.round(raw*(M>1?Math.pow(M,0.
 /* 수리 완료 정산 — 매출·평점·통계 반영 */
 function repCredit(j,raw,byAuto){
   const pay=rPay(raw); money+=pay; dayRev+=pay; dfix.rev+=pay; dfix.n++;
+  /* v2.74 ③: 수리 후 액세서리(케이스·충전기) — 수리실 매출이 매장 매출로 이어진다 */
+  const acc=raw>=15?Math.max(1,Math.round(raw*V274_ACCK)):0;
+  if(acc>0){ money+=acc; dayRev+=acc; dfix.rev+=acc; S.stats.acc=(S.stats.acc||0)+acc; }
   S.stats.fix++; S.stats.srv++;
   if(dayState==='run'){ dayRevs.push(5); dayNps.push(9); }
   S.reviews.push(5); if(S.reviews.length>14) S.reviews.shift();
   try{ gainXP(1); snd('confirm',0.45); haptic(15); if(REP.open) sparkle(0.6,1.6,-2.2,'#7bea62'); }catch(e){}
   j.st='done'; setTimeout(()=>rqDrop(j),900);
-  try{ toast('🔧 '+rDev(j)+' 수리 완료 +$'+pay+(byAuto?' · 서준':'')+' ('+dfix.n+'건)',2.6); }catch(e){}
+  try{ toast('🔧 '+rDev(j)+' 수리 완료 +$'+pay+(acc?' · 🎧 액세서리 +$'+acc:'')+(byAuto?' · 서준':'')+' ('+dfix.n+'건)',2.6); }catch(e){}
   try{ save(); }catch(e){}
 }
 function repFail(j,byAuto){
@@ -2396,7 +2416,29 @@ function guide(){ const waiting=custs.filter(c=>c.st==='wait'||c.st==='want');
   return null; }
 /* ---------- juice ---------- */
 let bigT=0, shakeT=0, focusT=0; const focusP=new THREE.Vector3(); let shownMoney=0;
-function bigBanner(t,sub){ $('bigT').textContent=t; $('bigS').textContent=sub||''; $('bigS').style.display=sub?'inline-block':'none'; $('big').classList.add('on'); bigT=2.0; }
+var BIGP=null, BIGPT=0;
+function bigBanner(t,sub){
+  var B=$('bigT'), S2=$('bigS');
+  try{
+    if($('modal').classList.contains('on')){
+      BIGP={t:t,sub:sub};
+      if(!BIGPT) BIGPT=setInterval(function(){
+        try{ if(!$('modal').classList.contains('on')){ clearInterval(BIGPT); BIGPT=0; var q=BIGP; BIGP=null; if(q) bigBanner(q.t,q.sub); } }catch(_){}
+      },500);
+      return;
+    }
+  }catch(_){}
+  B.textContent=t; B.style.fontSize='';
+  try{
+    var pr=document.createElement('span');
+    pr.style.cssText='position:absolute;left:-9999px;top:0;white-space:nowrap;font-weight:900;font-size:48px';
+    pr.style.fontFamily=getComputedStyle(B).fontFamily||'inherit';
+    pr.textContent=t; document.body.appendChild(pr);
+    var w=pr.getBoundingClientRect().width; pr.remove();
+    var mx=(VW||innerWidth)-28; if(w>mx&&w>0) B.style.fontSize=Math.max(22,Math.floor(48*mx/w))+'px';
+  }catch(_){}
+  S2.textContent=sub||''; S2.style.display=sub?'inline-block':'none'; $('big').classList.add('on'); bigT=2.0;
+}
 /* ---- v2.26: 본사 인사 발령·경고장 공문 (영업 결과창과 별개의 오버레이 — 결과창 흐름을 건드리지 않는다) ---- */
 function leadNote(kind,d){ let el=$('leadNote');
   if(!el){ el=document.createElement('div'); el.id='leadNote'; (document.getElementById('app')||document.body).appendChild(el);
@@ -3368,7 +3410,7 @@ function lpDexN(){ let n=0; for(const k in (S.dex||{})) if(S.dex[k]) n++; return
 function lpDexTier(){ const n=lpDexN(); return LPDEXM.filter(m=>n>=m[0]).length; }
 function lpCard(c){ try{ if(!c) return; const ids=['t:'+c.type]; if(c.type==='ret'&&c.sub) ids.push('s:'+c.sub); if(c.tough) ids.push('x:tough'); if(c.flight) ids.push('x:flight'); if(c.vip) ids.push('x:vip'); if(c.influ) ids.push('x:influ'); if(c.lookId) ids.push('l:'+c.lookId);
     ids.forEach(id=>{ if(S.dex[id]) return; const d=LPDEX.find(x=>x.id===id); if(!d) return; const t0=lpDexTier(); S.dex[id]=1; const n=lpDexN();
-      setTimeout(()=>{ toast('📖 새 손님 카드! '+d.ic+' '+d.n+' ('+n+'/'+LPDEX.length+')',2.6); snd('level_up',0.35,1.6); },500);
+      setTimeout(()=>{ if(typeof ftueOn==='function'&&ftueOn()) return; toast('📖 새 손님 카드! '+d.ic+' '+d.n+' ('+n+'/'+LPDEX.length+')',2.6); snd('level_up',0.35,1.6); },500);
       const t1=lpDexTier(); if(t1>t0){ const m=LPDEXM[t1-1]; money+=m[1]; setTimeout(()=>bigBanner('📖 손님 도감 '+m[0]+'장!','+$'+m[1]+' · 판매가 영구 +'+(t1*2)+'%'),1400); } }); }catch(e){ console.warn('lpCard',e); } }
 function openDex(){ const n=lpDexN(), t=lpDexTier(), nx=LPDEXM.find(m=>n<m[0]);
   let h='<h2>📖 손님 도감 '+n+'/'+LPDEX.length+'</h2><p style="margin-top:-4px">처음 응대에 성공한 손님이 등록돼요 · 지금 판매가 <b>+'+(t*2)+'%</b>'+(nx?'<br>'+nx[0]+'장 모으면 $'+nx[1]+' + 판매가 +2%':'<br>도감 완성!')+'</p><div class="dexg">';
@@ -3703,6 +3745,7 @@ function ftueTick(){ try{ const on=ftueOn(); document.body.classList.toggle('ftu
   if(quizOpen){ A.style.display='none'; H.style.display='none'; return; }
   let best=null, bd=1e9; custs.forEach(c=>{ if(c.st!=='wait'||c.claim) return; const d=Math.hypot(c.pos.x-player.pos.x,c.pos.z-player.pos.z); if(d<bd){ bd=d; best=c; } });
   const served=(S.ftue&&S.ftue.sold)||FT.sold;
+  if(best&&!served&&!FT.hello){ FT.hello=1; S.ftue=S.ftue||{}; S.ftue.hello=1; try{ snd('level_up',0.32,1.55); haptic(10); }catch(_){} }
   if(best&&!(served&&S.stats&&S.stats.srv>=3)){ const p=ftueScr(best.pos.x,3.2,best.pos.z); if(p){ A.style.display='block'; A.style.left=p[0]+'px'; A.style.top=p[1]+'px'; } else A.style.display='none'; }
   else A.style.display='none';
   const msg=!served?(best?'👆 손님을 톡 누르면 걸어가서 응대해요':'🚪 손님이 곧 들어와요'):'';
@@ -3903,7 +3946,7 @@ function bizChance(d,B){ B=B||bizS(); return Math.max(0.05,Math.min(0.95,d.ch+0.
 function bizDurK(B,d){ B=B||bizS(); return (1-0.15*B.room)/(d&&d.rep!==-1?bizSk(B,d.rep):1); }
 function bizLater(B,d,why){ B.deals=B.deals.filter(x=>x!==d); B.lost++; if(d.rep!==-1&&d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].lost++; B.later.push({co:d.co,title:d.title,qi:d.qi,sz:d.sz,val:d.val,dur:d.dur,ch0:d.ch0,tries:d.tries,why:why,at:Date.now(),retry:Date.now()+20*60000}); while(B.later.length>12) B.later.shift(); }
 function bizFinish(B,d,here){ const ok=Math.random()<bizChance(d,B);
-  if(ok){ B.deals=B.deals.filter(x=>x!==d); B.won++; if(d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].won++; money+=d.val; if(typeof dayState!=='undefined'&&dayState==='run'){ dayRev+=d.val; } S.stats.earn=(S.stats.earn||0)+d.val; B.log.unshift('✅ '+d.co+' 계약 +$'+d.val+' ('+bizWho(B,d.rep)+')'); if(here) try{ bigBanner('💼 계약 성사!',d.co+' · +$'+d.val); snd('level_up',0.6,1.05); haptic(30); }catch(_){} }
+  if(ok){ B.deals=B.deals.filter(x=>x!==d); B.won++; if(d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].won++; money+=d.val; if(typeof dayState!=='undefined'&&dayState==='run'){ dayRev+=d.val; } S.stats.earn=(S.stats.earn||0)+d.val; try{ v274BulkAdd(d.co,d.val); }catch(_){} B.log.unshift('✅ '+d.co+' 계약 +$'+d.val+' ('+bizWho(B,d.rep)+')'); if(here) try{ bigBanner('💼 계약 성사!',d.co+' · +$'+d.val); snd('level_up',0.6,1.05); haptic(30); }catch(_){} }
   else { bizLater(B,d,'협상 결렬'); B.log.unshift('❌ '+d.co+' 결렬 → 재영업 리스트'); if(here) try{ toast('💼 '+d.co+' 협상 결렬… 재영업 리스트에 올렸어요',3); }catch(_){} }
   B.log.length=Math.min(B.log.length,8); try{ save(); }catch(_){} }
 function bizMgrAnswer(B,d){ const acc=Math.min(0.92,0.62+0.08*B.mgr.lv), ok=Math.random()<acc; d.asked=1; d.ch=Math.max(0.05,Math.min(0.95,d.ch+(ok?0.25:-0.2))); B.log.unshift((ok?'👔 ':'👔❗ ')+B.mgr.name+' 팀장이 '+d.co+' 협상 포인트 '+(ok?'잘 대응':'대응 실패')); B.log.length=Math.min(B.log.length,8); }
@@ -4021,8 +4064,29 @@ function bizAnim(R,dt){ const ch=R.ch, b=bizBones(ch), t=performance.now()/1000+
   if(ph&&b.phone&&b.FistR){ ch.g.updateMatrixWorld(true); const p=b.FistR.getWorldPosition(new THREE.Vector3()); b.phone.position.copy(p); b.phone.position.y+=0.035; b.phone.rotation.set(0.08,0.42,0); b.phone.visible=true; }   /* 손에 쥔 전화기(화면이 카메라 쪽) */
   else if(b.phone) b.phone.visible=false;
   ch.inner.position.y=0; }
+/* v2.74: 사무실 카메라 보정 — 사원·팀장의 머리끝이 상단 바(헤더)에 가리지 않도록
+   화면에서 필요한 만큼만 씬을 아래로 밀어 준다(기준: 발 y=0.02 · 머리 뼈 World). */
+function v274BizFit(vp,H,c,vh){
+  try{
+    var rows=BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]); if(!rows.length) return;
+    var top=vp.top||0, bot=vp.bot||H, m=10, minY=1e9, maxY=-1e9, a=new THREE.Vector3(), b=new THREE.Vector3(), hp=new THREE.Vector3();
+    rows.forEach(function(R){ var p=R.ch.g.position;
+      a.set(p.x,0.02,p.z).project(c);
+      var hd=R.ch.m.getObjectByName('Head');
+      if(hd){ hd.getWorldPosition(hp); } else { hp.set(p.x,1.86,p.z); }
+      b.copy(hp).project(c);
+      var ya=(1-a.y)/2*H, yb=(1-b.y)/2*H, y1=Math.min(ya,yb), y2=Math.max(ya,yb);
+      if(y1<minY) minY=y1; if(y2>maxY) maxY=y2; });
+    var d=(top+m)-minY, up=BIZ.upPx||0;
+    if(d>2.5) up=Math.min(170,up+d); else if(d<-3) up=Math.max(0,up+d);
+    var room=bot-2-maxY; if(up>room) up=Math.max(0,room);
+    BIZ.fitDbg={top:top,bot:bot,minY:minY,maxY:maxY,d:d,up:up,n:rows.length};
+    BIZ.upPx=up;
+  }catch(e){ BIZ.fitErr=''+e; }
+}
 function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vp=BIZ.vp||{top:H*0.2,bot:H*0.5}, avH=Math.max(120,vp.bot-vp.top), vh=window.__bizVH||v265BizVH(a,avH,H); const c=BIZ.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
-    const tg=window.__bizTG?new THREE.Vector3(...window.__bizTG):(v265BizTG()||new THREE.Vector3(0.2,0,0)), dir=(window.__bizDir?new THREE.Vector3(...window.__bizDir):new THREE.Vector3(6,11,10)).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,((vp.top+vp.bot)/2+avH*0.04-H/2)*vh/H); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
+    const tg=window.__bizTG?new THREE.Vector3(...window.__bizTG):(v265BizTG()||new THREE.Vector3(0.2,0,0)), dir=(window.__bizDir?new THREE.Vector3(...window.__bizDir):new THREE.Vector3(6,11,10)).normalize(); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateMatrixWorld(); const Y=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); tg.addScaledVector(Y,((vp.top+vp.bot)/2+avH*0.04-H/2+(BIZ.upPx||0))*vh/H); c.position.copy(tg).addScaledVector(dir,30); c.lookAt(tg); c.updateProjectionMatrix(); c.updateMatrixWorld();
+    v274BizFit(vp,H,c,vh);
     BIZ.reps.concat(BIZ.mgrCh?[BIZ.mgrCh]:[]).forEach(R=>{ bizAnim(R,dt||0.016);
       const v=new THREE.Vector3(R.ch.g.position.x,1.78,R.ch.g.position.z).project(c); R.el.style.left=((v.x+1)/2*W)+'px'; R.el.style.top=((1-v.y)/2*H)+'px'; const sy=(1-v.y)/2*H; R.el.style.display=(sy<vp.top+26||sy>vp.bot-4)?'none':'block'; });
     renderer.render(BIZ.scene,c); BIZ.frames++; }catch(e){ renderer.render(scene,cam); } }
@@ -4030,8 +4094,8 @@ function bizRender(dt){ try{ const W=VW||innerWidth, H=VH||innerHeight, a=W/H, v
 function bizOpen(){ if(!bizOn()) return; bizBuild(); if(!BIZ.open){ BIZ.pp={x:player.pos.x,z:player.pos.z}; player.pos.x=0; player.pos.z=-60; try{ tapStop(); }catch(_){} if(quizOpen) try{ closeQuiz(); }catch(_){} } BIZ.open=true;  /* v2.57: 사무실에 있는 동안 사장은 매장에 없다 — 손님이 말을 걸지 않게 매장 밖으로 */ document.body.classList.add('biz'); if(BIZ.labels) BIZ.labels.style.display='block'; try{ initAudio(); snd('ui',0.4); }catch(_){}
   let u=$('bizUI'); if(!u){ u=document.createElement('div'); u.id='bizUI'; document.body.appendChild(u);
     const st=document.createElement('style'); st.textContent='#bizUI{position:fixed;left:0;right:0;bottom:0;top:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
-      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 60px) 8px 0;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:16px;background:rgba(16,22,40,.82);box-shadow:0 3px 10px rgba(0,0,0,.25)}#bizUI .bzh b{flex:1;min-width:0;font:900 16px var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bizUI .bzh b small{display:block;font:800 11px var(--b);color:#aab6e8}'+
-      '#bizUI .bzh button{all:unset;flex:none;cursor:pointer;border-radius:12px;height:44px;line-height:44px;padding:0 12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
+      '#bizUI .bzh{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 56px) 8px 0;display:flex;align-items:center;gap:6px;padding:5px 6px 5px 10px;border-radius:14px;background:rgba(16,22,40,.82);box-shadow:0 3px 10px rgba(0,0,0,.25)}#bizUI .bzh b{flex:1;min-width:0;font:900 14px/1.15 var(--d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bizUI .bzh b small{display:block;font:800 10px/1.35 var(--b);color:#aab6e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+
+      '#bizUI .bzh button{all:unset;flex:none;cursor:pointer;border-radius:11px;height:40px;line-height:40px;padding:0 11px;font:900 12px var(--b);color:#fff;background:linear-gradient(#4fd06a,#22963e);box-shadow:0 3px 0 #156a2a}'+
       '#bizUI .bzs{pointer-events:auto;margin-top:auto;height:auto;max-height:62%;background:#fff8ee;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}'+
       '#bizUI .bzt{display:flex;gap:4px;padding:8px 8px 4px;flex:none}#bizUI .bzt button{all:unset;position:relative;cursor:pointer;flex:1;min-width:0;text-align:center;height:44px;border-radius:12px;font:900 11px/1.15 var(--b);background:#ece6da;color:#5a4a3a;display:flex;flex-direction:column;align-items:center;justify-content:center}#bizUI .bzt button i{font-style:normal;font-size:17px}#bizUI .bzt button.on{background:#3443c8;color:#fff}#bizUI .bzt button em{position:absolute;top:2px;right:4px;min-width:16px;height:16px;border-radius:8px;background:#e8342a;color:#fff;font:900 10px/16px var(--b);font-style:normal}'+
       '#bizUI .bzl{flex:1;min-height:0;overflow:auto;padding:2px 10px 12px;-webkit-overflow-scrolling:touch}#bizUI .bzc{background:#fff;border-radius:14px;padding:9px 11px;margin:6px 0;box-shadow:0 2px 0 rgba(0,0,0,.08);font:800 12px var(--b);color:#4a3a2a}'+
@@ -4071,7 +4135,7 @@ function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizS
   const nl=B.later.filter(l=>now>=l.retry).length, hp=hrPool().length;
   const need=B.deals.filter(d=>(d.st==='new'&&fr!==-1)||(d.st==='nego'&&!d.asked&&d.p>=0.5)).length;
   const tabs=[['deal','📋','거래',need],['later','📇','재영업',nl],['team','👥','팀',B.mgr?0:'!'],['office','🏢','사무실',0],['hr','🔁','인사',hp]];
-  const head='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀<small>계약 '+B.won+' · 결렬 '+B.lost+' · 사원 '+B.reps.length+'/'+B.desks+(B.mgr?' · 팀장 '+B.mgr.name:'')+'</small>'+'<small id="bizHud" style="color:#ffd98a;font-weight:900">'+((typeof dayState!=='undefined'&&dayState==='run')?'⏱ 영업 중':'영업 중이 아니에요 · 매장은 쉬고 있어요')+'</small></b><button data-b="close">🏬 매장으로</button></div>';
+  const head='<div class="bzh"><b>💼 '+STS[STG]+' 비즈니스 팀<small>계약 '+B.won+' · 결렬 '+B.lost+' · 사원 '+B.reps.length+'/'+B.desks+(B.mgr?' · 팀장 '+B.mgr.name:'')+'</small>'+'<small id="bizHud" style="color:#ffd98a;font-weight:900">'+((typeof dayState!=='undefined'&&dayState==='run')?'⏱ 영업 중':'⏸ 영업 전 · 매장은 쉬고 있어요')+'</small></b><button data-b="close">🏬 매장으로</button></div>';
   const tabH='<div class="bzt">'+tabs.map(([k,ic,n,c])=>'<button data-b="tab" data-i="'+k+'" class="'+(BIZ.tab===k?'on':'')+'"><i>'+ic+'</i>'+n+(c?'<em>'+c+'</em>':'')+'</button>').join('')+'</div>';
   const sc=(u.querySelector('.bzl')||{}).scrollTop||0; u.innerHTML=head+'<div class="bzs">'+tabH+'<div class="bzl">'+list+'</div></div>'; if(!full){ const l=u.querySelector('.bzl'); if(l) l.scrollTop=sc; }
   try{ const hb=u.querySelector('.bzh').getBoundingClientRect(), sb=u.querySelector('.bzs').getBoundingClientRect(); BIZ.vp={top:hb.bottom,bot:sb.top}; }catch(_){}
@@ -5908,7 +5972,7 @@ var V266_RESET_KEYS=['day','dayStars','bp','curStage','branchSnap','crew','inv',
   'exp','expLv','exp2','box','boxLv','auto','autoOrd','hub','orders','rma','stock','shelf','reviews',
   'fails','failStreak','mercyD','boostD','vipD','lastProfit','promo','party','biz','mkt','v262','v264',
   'ev','daily','dstreak','wk','womD','womK','starterT','tut','xp','lvl','cash','mid','ftue'];
-var V266_KEEP_KEYS=['pp','pres','best','r1','stats','opt','dex','know','ach','lp','att','seen','ftueGo','wkBuy',
+var V266_KEEP_KEYS=['pp','pres','best','r1','stats','opt','dex','know','ach','lp','att','seen','ftueGo','wkBuy','reg',
   'sysSeen','hrSeen','vipPass','noAds','paidPack','autoBox','autoPack','slotPaid','paid','bakAt',
   'starter','myRank','myScore','myWarn','mySpd','myCap','offer','lastSaveTime','boxUpSeen'];
 function v266Fresh(){
@@ -7460,12 +7524,178 @@ try{
 }catch(e){}
 /* 새 세대 첫 실행 안내 — 초기화로 진행이 사라진 걸 보고 '버그'로 오해하지 않게 */
 try{ setTimeout(function(){ try{ var _w=window.__v272Reset; if(!_w){ try{ if(sessionStorage.getItem('tech-epoch-wiped')==='1'){ _w=1; sessionStorage.removeItem('tech-epoch-wiped'); } }catch(e){} }
-  if(_w&&!window.__v272Told){ window.__v272Told=1; toast('🌀 새 시즌 시작! 모든 기록을 지우고 DAY 1부터 다시 쌓아요',4.6); } }catch(e){} },2400); }catch(e){}
+  var _wiped=(_w===1)||(!!_w&&(+(_w.removed||0)>0));
+  if(_wiped&&!window.__v272Told){ window.__v272Told=1; toast('🌀 새 시즌 시작! 모든 기록을 지우고 DAY 1부터 다시 쌓아요',4.6); } }catch(e){} },2400); }catch(e){}
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v272={ ver:'v2.72', wipe:function(r){ try{ return window.__v272Wipe(r); }catch(e){ return 0; } }, reset:function(){ try{ return window.__v272Reset||null; }catch(e){ return null; } }, star3:function(){ try{ return LVSTAR3[5].t; }catch(e){ return ''; } }, rt:function(){ try{ return V272_RT; }catch(e){ return -1; } }, optOpen:function(){ try{ openOpt(); return 1; }catch(e){ return 0; } } }; }catch(e){} },0); }catch(e){}
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v273={ ver:'v2.73', biz:(function(){ try{ return {open:!!BIZ.open, reps:BIZ.reps.length, mgr:!!BIZ.mgrCh, frames:BIZ.frames}; }catch(e){ return null; } }), bones:function(i){ try{ var R=(i==='m')?BIZ.mgrCh:BIZ.reps[+i]; if(!R) return null; var o={}; ['Hips','Torso','Neck','Head'].forEach(function(n){ var b=R.ch.m.getObjectByName(n); if(b) o[n]=[+b.rotation.x.toFixed(3),+b.rotation.y.toFixed(3),+b.rotation.z.toFixed(3)]; }); return o; }catch(e){ return null; } } }; }catch(e){} },0); }catch(e){}
 
 /* ---------------- 5) 테스트 훅 ---------------- */
+try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v274={ ver:'v2.74',
+  reg:function(){ try{ var R=v274Reg(); return {n:R.list.length,v:R.v|0,day:R.day,buff:v274RegBuff(),list:R.list.map(function(r){ return {n:r.n,v:r.v|0}; })}; }catch(e){ return null; } },
+  regAdd:function(n,f){ try{ var R=v274Reg(); R.list.push({n:n||'테스트',f:(f|0),v:0,d:S.day|0}); return R.list.length; }catch(e){ return -1; } },
+  regClear:function(){ try{ S.reg={v:0,list:[],day:-1}; return 1; }catch(e){ return 0; } },
+  bulk:function(){ try{ var B=v274Bulk(); return {q:B.q,v:B.v,co:B.co}; }catch(e){ return null; } },
+  bulkAdd:function(co,val){ try{ v274BulkAdd(co,val); return v274Bulk(); }catch(e){ return null; } },
+  bulkClear:function(){ try{ S.bulk={q:0,v:0,co:''}; return 1; }catch(e){ return 0; } },
+  acc:function(){ try{ return (S.stats&&S.stats.acc)||0; }catch(e){ return 0; } },
+  bulkStat:function(){ try{ return (S.stats&&S.stats.bulk)||0; }catch(e){ return 0; } },
+  fit:function(){ try{ return {up:BIZ.upPx||0,dbg:BIZ.fitDbg||null,err:BIZ.fitErr||null,vp:BIZ.vp}; }catch(e){ return null; } },
+  regHtml:function(){ try{ return v274RegHTML(); }catch(e){ return 'err:'+e; } },
+  regModal:function(){ try{ v274RegModal(); return 1; }catch(e){ return 0; } },
+  banner:function(t,s){ try{ bigBanner(t,s); return 1; }catch(e){ return 0; } },
+  price:function(){ try{ return +priceMul().toFixed(4); }catch(e){ return 0; } },
+  repCredit:function(raw){ try{ var j={id:9999,mdl:14,pro:0,diag:{fix:'b'},st:'wait'}; var m0=money, a0=(S.stats.acc||0); repCredit(j,raw||40,false); return {pay:Math.round(money-m0), acc:(S.stats.acc||0)-a0, fix:(S.stats.fix||0)}; }catch(e){ return {err:''+e}; } }
+}; }catch(e){} },0); }catch(e){}
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v271={ ver:'v2.71', state:V271, upMax:v271UpMax, revEst:v271RevEst, upDelta:v271UpDelta, nextBuy:v271NextBuy, fix:v271FixHTML, grow:v271GrowHTML, cost:u=>upCost(u), hk:()=>HARDK.slice(), goal:d=>dayCfg(d).goal }; }catch(e){} },0); }catch(e){}
+
+/* ================= v2.74 신규 콘텐츠 =================
+   ① 👑 단골 손님 — 5★ 응대 성공이 이름을 남기고, DAY 3부터 하루 한 번 다시 찾아온다
+      (팁 1.8배 · 인내심 1.4배 · 실망해도 민원 없음) · 3번 방문마다 영구 판매가 +1% (최대 +10%)
+   ② 🏢 기업 납품 픽업 — 비즈니스 계약 성사가 매장 픽업 손님으로 이어진다 (계약가의 12%)
+   ③ 🎧 수리 액세서리 — 수리 완료 때 케이스·충전기를 함께 판다 (수리비의 35%)
+   세이브: S.reg(프레스티지에도 유지) · S.bulk(프레스티지에서 초기화) */
+var V274_REG_MAX=8, V274_ACCK=0.35, V274_BULKK=0.12;
+function v274Usd(n){ try{ return '$'+Math.round(n).toLocaleString(); }catch(e){ return '$'+Math.round(n); } }
+var V274_REGN=['김민수','이서연','박준호','최지우','정하늘','한지민','오세훈','윤소라','강도현','문채원','서지호','임다은'];
+function v274Reg(){
+  try{
+    if(!S.reg||typeof S.reg!=='object'||Array.isArray(S.reg)) S.reg={v:0,list:[],day:-1};
+    var R=S.reg; if(!Array.isArray(R.list)) R.list=[];
+    if(R.v==null||isNaN(R.v)) R.v=0; if(R.day==null) R.day=-1;
+    R.list=R.list.filter(function(r){ return r&&typeof r.n==='string'; }).slice(0,V274_REG_MAX);
+    return R;
+  }catch(e){ return {v:0,list:[],day:-1}; }
+}
+function v274RegBuff(){ try{ var R=v274Reg(); return Math.min(0.10,0.01*Math.floor((R.v||0)/3)); }catch(e){ return 0; } }
+function v274RegTry(c,ok,stars){
+  try{
+    if(!ok||!c||c.reg!=null||c.softLeave) return;
+    if((S.day|0)<2) return;
+    if(typeof v269Tier==='function'&&v269Tier()<1) return;
+    var R=v274Reg(); if(R.list.length>=V274_REG_MAX) return;
+    if(stars<5||Math.random()>0.25) return;
+    var used=R.list.map(function(r){ return r.n; }), pool=V274_REGN.filter(function(n){ return used.indexOf(n)<0; });
+    if(!pool.length) return;
+    var nm=pool[Math.floor(Math.random()*pool.length)];
+    R.list.push({n:nm,f:(c.face==null?0:c.face)|0,v:0,d:(S.day|0)});
+    try{ toast('👑 단골 등록! '+nm+' · 다음에 또 찾아와요 ('+R.list.length+'/'+V274_REG_MAX+')',3.2); snd('level_up',0.4,1.35); haptic(18); }catch(_){}
+    try{ save(); }catch(_){}
+  }catch(e){}
+}
+function v274RegPick(type){
+  try{
+    var R=v274Reg(); if(!R.list.length) return -1;
+    if((S.day|0)<2) return -1;
+    if(typeof v269Tier==='function'&&v269Tier()<1) return -1;
+    if(R.day===(S.day|0)) return -1;
+    if(['pick','buy','tour','ret','sw'].indexOf(type)<0) return -1;
+    if(Math.random()>0.45) return -1;
+    return Math.floor(Math.random()*R.list.length);
+  }catch(e){ return -1; }
+}
+function v274RegVisit(c){
+  try{
+    var R=v274Reg(), r=R.list[c.reg]; if(!r) return;
+    var b0=Math.floor((R.v||0)/3); r.v=(r.v||0)+1; R.v=(R.v||0)+1; var b1=Math.floor(R.v/3);
+    if(b1>b0){
+      setTimeout(function(){ try{ bigBanner('👑 단골 효과 강화','영구 판매가 +'+b1+'% · '+r.n); snd('level_up',0.5,1.15); haptic(20); confetti(player.pos.x,2.4,player.pos.z); }catch(_){} },260);
+    } else {
+      setTimeout(function(){ try{ toast('👑 단골 '+r.n+' 님 '+r.v+'번째 방문 · 팁 1.8배',2.4); }catch(_){} },260);
+    }
+    try{ save(); }catch(_){}
+  }catch(e){}
+}
+function v274Bulk(){
+  try{
+    if(!S.bulk||typeof S.bulk!=='object'||Array.isArray(S.bulk)) S.bulk={q:0,v:0,co:''};
+    var B=S.bulk; B.q=Math.max(0,Math.min(3,B.q|0)); B.v=Math.max(0,Math.round(+B.v||0)); B.co=B.co||'';
+    return B;
+  }catch(e){ return {q:0,v:0,co:''}; }
+}
+function v274BulkAdd(co,val){
+  try{
+    var B=v274Bulk(); if(B.q>=3) return;
+    var add=Math.max(80,Math.round((+val||0)*V274_BULKK));
+    B.q++; B.v+=add; B.co=co||B.co;
+    try{ toast('🏢 기업 납품 예약 · '+(co||'법인')+' · 매장에서 픽업하면 +$'+add,3.2); snd('ui',0.4); haptic(12); }catch(_){}
+    try{ save(); }catch(_){}
+  }catch(e){}
+}
+function v274BulkTake(){
+  try{ var B=v274Bulk(); if(B.q<=0) return 0;
+    var per=Math.max(60,Math.round(B.v/B.q)); B.q--; B.v=B.q>0?Math.max(0,B.v-per):0; return per;
+  }catch(e){ return 0; }
+}
+function v274RegHTML(){
+  try{
+    if(typeof v269Tier==='function'&&v269Tier()<1) return '';
+    var R=v274Reg(), n=R.list.length, buf=Math.round(v274RegBuff()*100), nb=v274Bulk();
+    if(!n&&!(nb.q>0)) return '';
+    var h='<div id="v274Reg"><b>👑 단골 명단 <small>'+n+'/'+V274_REG_MAX+'</small></b>';
+    if(n){ h+='<div class="ch">'; for(var i=Math.max(0,n-4);i<n;i++){ var r=R.list[i]; h+='<span>'+hesc(r.n)+' · '+((r.v|0))+'회</span>'; } h+='</div>'; }
+    h+='<small>재방문 '+(R.v||0)+'번 · 영구 판매가 +'+buf+'%'+(n?' · 3번 방문마다 +1%':' · 5★ 응대 3번이면 이름이 남아요')+'</small>';
+    if(nb.q>0) h+='<small style="color:#1d5a2a;font-weight:900">🏢 기업 납품 대기 '+nb.q+'건 · 픽업하면 +$'+nb.v+'</small>';
+    if(n) h+='<button id="v274RegGo">👑 단골 명단 보기</button>';
+    h+='</div>'; return h;
+  }catch(e){ return ''; }
+}
+function v274RegModal(){
+  try{
+    var R=v274Reg(), n=R.list.length, buf=Math.round(v274RegBuff()*100);
+    var h='<h2>👑 단골 명단 '+n+'/'+V274_REG_MAX+'</h2><p style="margin-top:-4px;font-size:12px">5★로 응대한 손님이 이름을 남깁니다. DAY 3부터 하루 한 번 다시 찾아오고, 올 때마다 <b>팁 1.8배 · 인내심 1.4배</b>, 실망해도 민원이 없어요.<br><b>재방문 '+(R.v||0)+'번 · 영구 판매가 +'+buf+'%</b> (3번 방문마다 +1%, 최대 +10%)</p><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:7px">';
+    for(var i=0;i<V274_REG_MAX;i++){
+      var r=R.list[i];
+      var face=r?faceI(r.f,34,'fm'):'<span style="width:34px;height:34px;border-radius:50%;background:#e2dbd0;display:inline-block"></span>';
+      h+='<div style="display:flex;align-items:center;gap:7px;padding:7px;border-radius:12px;background:'+(r?'#fff6e2':'#f2eee6')+';border:1px solid '+(r?'#e8c877':'#e2dbd0')+'">'+face+'<div style="min-width:0"><b style="display:block;font:900 12px var(--b);color:#5a3a00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(r?hesc(r.n):'아직 없음')+'</b><small style="font:800 10px var(--b);color:#8a6a30">'+(r?((r.v|0)+'번 방문'):'5★ 응대로 만나요')+'</small></div></div>';
+    }
+    h+='</div><button class="gray" id="mOk">닫기</button>';
+    openModal(h);
+  }catch(e){ try{ console.warn('v274RegModal',e); }catch(_){} }
+}
+function v274Style(){
+  try{
+    if(document.getElementById('v274css')) return;
+    var st=document.createElement('style'); st.id='v274css';
+    st.textContent='#v274Reg{margin:9px 0 2px;padding:9px 11px 10px;border-radius:14px;background:linear-gradient(#fff6e2,#ffe9b8);border:1px solid #e8c877;text-align:left}'
+     +'#v274Reg b{display:block;font:900 12px var(--b);color:#6a4a00}#v274Reg b small{font-weight:900;color:#a06800}'
+     +'#v274Reg>small{display:block;margin-top:5px;font:800 11px/1.45 var(--b);color:#7a5a18;word-break:keep-all}'
+     +'#v274Reg .ch{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}'
+     +'#v274Reg .ch span{font:900 10.5px var(--b);color:#6a4a00;background:#fff;border:1px solid #efd9a8;border-radius:9px;padding:3px 7px}'
+     +'#v274Reg button{display:block;width:100%;margin-top:7px;height:38px;border:0;border-radius:11px;font:900 13px var(--b);color:#4a2a00;background:linear-gradient(#ffd86a,#ffb020);box-shadow:0 3px 0 #9a5a00}';
+    document.head.appendChild(st);
+  }catch(e){}
+}
+try{ setTimeout(v274Style,60); }catch(e){}
+(function(){
+  try{
+    var _h=v262HubHTML;
+    v262HubHTML=function(){
+      var s2=_h.apply(this,arguments);
+      try{
+        if(typeof s2!=='string'||s2.indexOf('id="v274Reg"')>=0) return s2;
+        var add=v274RegHTML(); if(!add) return s2;
+        var a=s2.indexOf('<div id="v271Grow">');
+        if(a<0) a=s2.indexOf('<div class="vNote">');
+        if(a<0) a=s2.indexOf('<div class="vSec"><b>지점');
+        if(a<0) a=s2.indexOf('<div class="hubFoot">');
+        if(a<0) return s2+add;
+        return s2.slice(0,a)+add+s2.slice(a);
+      }catch(e){}
+      return s2;
+    };
+  }catch(e){}
+})();
+(function(){
+  try{
+    var _b=v266BindHub;
+    v266BindHub=function(){
+      var r=_b.apply(this,arguments);
+      try{ var g=$('v274RegGo'); if(g) g.onclick=function(e){ e.stopPropagation(); try{ snd('ui',0.4); }catch(_){} v274RegModal(); }; }catch(e){}
+      return r;
+    };
+  }catch(e){}
+})();
+
 function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!FTSKIP&&!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(S.mercyD===S.day) setTimeout(()=>toast('🩹 재기 지원: 오늘 매출 +12% · 손님 인내심 +15%',3.6),600); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
@@ -7694,7 +7924,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.73';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.74';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
