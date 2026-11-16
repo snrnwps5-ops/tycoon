@@ -1,7 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.71';
+<script>/* v2.72: 세대 초기화(에포크) — 세이브를 읽기 전에 이 기기의 예전 게임 데이터를 '한 번만' 지운다.
+   세이브(bunsik-tech-v1) · 닉네임 · 랭킹 캐시 · 성장 기록 · 설정까지 bunsik-/tech- 접두어 키를 모두 지우고
+   tech-epoch='v272' 하나만 남긴다. 다음부터는 이 값이 같아서 아무것도 지우지 않는다(진행 보존).
+   저장소를 쓸 수 없는 환경(사생활 보호 모드)에서는 아무것도 지우지 않는다. */
+try{(function(){
+  var EP='v272', K='tech-epoch', P=/^(bunsik-|tech-)/;
+  function wipe(){
+    var del=[];
+    try{ for(var i=0;i<localStorage.length;i++){ var n=localStorage.key(i); if(n&&n!==K&&P.test(n)) del.push(n); } }catch(e){ return 0; }
+    for(var j=0;j<del.length;j++){ try{ localStorage.removeItem(del[j]); }catch(e){} }
+    try{ sessionStorage.removeItem('tech-skip'); }catch(e){}
+    return del.length;
+  }
+  /* 설정의 [초기화] 버튼과 QA가 함께 쓰는 공개 함수 */
+  window.__v272Wipe=function(reload){ var n=0;
+    try{ window.__noSave=1; }catch(e){}   /* 먼저 자동 저장을 끈다 — pagehide 저장이 지운 세이브를 되살리는 걸 막는다 */
+    try{ n=wipe(); }catch(e){} try{ localStorage.setItem(K,EP); }catch(e){}
+    if(reload){ try{ sessionStorage.setItem('tech-epoch-wiped','1'); }catch(e){} try{ location.reload(); }catch(e){} }
+    return n; };
+  var cur=null; try{ cur=localStorage.getItem(K); }catch(e){ cur=EP; }   /* 저장소를 못 쓰면 그냥 넘어간다 */
+  if(cur===EP) return;
+  var removed=0; try{ removed=wipe(); }catch(e){}
+  try{ localStorage.setItem(K,EP); }catch(e){}
+  try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
+})();}catch(e){}</script>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.72';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -22,7 +47,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.71</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.72</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -460,7 +485,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.71</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.72</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -2621,6 +2646,7 @@ function openOpt(){
     +'<details class="aiadv"><summary>고급 · 내 API 키 등록</summary><div class="aikey"><input type="password" id="aiKey" placeholder="Groq API 키 (gsk_…)" autocomplete="off" spellcheck="false"><button type="button" id="aiKeySave">키 저장</button></div>'
     +'<p class="shint" id="aiKeyMsg">실시간 AI는 서버(Netlify) 프록시를 거쳐 동작해요 — 앱 안에는 키가 들어 있지 않아요. 내 Groq 키를 쓰려면 위에 입력하세요 · 발급: console.groq.com/keys</p></details>'
     +'<p class="shint">설정은 저장 코드·세이브 링크에도 함께 담겨요.</p>'
+    +'<div class="v272wipe"><div><b>🗑️ 모든 데이터 초기화</b><small>세이브·닉네임·랭킹 기록·설정까지 이 기기에서 지우고 DAY 1부터 새로 시작해요</small></div><button type="button" id="optReset">초기화</button></div>'
     +'<button class="gray" id="mOk">닫기</button>');
   const paint=(k,on)=>{ const b=document.querySelector('#mbox [data-opt="'+k+'"]'); if(!b) return; b.classList.toggle('on',!!on); const t=b.querySelector('b'); if(t) t.textContent=on?'ON':'OFF'; };
   Array.prototype.forEach.call(document.querySelectorAll('#mbox [data-opt]'),b=>{ b.onclick=e=>{ e.stopPropagation(); const k=b.dataset.opt, o2=optO(); o2[k]=!o2[k];
@@ -2633,6 +2659,14 @@ function openOpt(){
       if(key==='sfxVol'){ const n=performance.now(); if(n-lt>150){ lt=n; sfxStep(0); } } };
     r.onchange=e=>{ e.stopPropagation(); save(); }; };
   bindV('oVB','oVBv','bgmVol'); bindV('oVS','oVSv','sfxVol');
+  /* v2.72: 전체 초기화 — 실수 방지를 위해 두 번 눌러야 실행한다(4.5초 안). 지운 뒤 새 게임으로 다시 시작. */
+  if($('optReset')){ $('optReset').onclick=function(e){ e.stopPropagation(); var b=$('optReset'), t=performance.now();
+    /* 확인 상태는 창 밖(모듈 변수)에 둔다 — 설정 창이 다시 그려져도 '한 번 더'가 유지되게 */
+    if(V272_RT&&t-V272_RT<8000){ V272_RT=0; try{ b.disabled=true; b.textContent='지우는 중…'; }catch(_){}
+      try{ if(window.__v272Wipe) window.__v272Wipe(true); else location.reload(); }catch(_){} return; }
+    V272_RT=t; b.textContent='정말 지울까요?'; b.classList.add('danger');
+    try{ toast('한 번 더 누르면 모든 데이터가 지워져요 · 되돌릴 수 없어요',3.4); }catch(_){}
+    setTimeout(function(){ if(performance.now()-V272_RT>=7800){ V272_RT=0; try{ var c=$('optReset'); if(c){ if(c.textContent==='정말 지울까요?') c.textContent='초기화'; c.classList.remove('danger'); } }catch(_){} } },8000); }; }
   /* v2.27: 실시간 AI 엔진 상태 배지 · 키 변경 */
   const aiB=$('aiBadge'), aiS=$('aiStat'), aiSub=$('aiSub'), aiM=$('aiKeyMsg');
   const aiNoKey=()=>{ try{ return !!(window.TycoonAI&&TycoonAI.hasKey&&!TycoonAI.hasKey()); }catch(e){ return false; } };
@@ -3155,7 +3189,7 @@ const LVSTAR3=[
   {t:'NPS +50 이상',ok:x=>x.nps!=null&&x.nps>=50},
   {t:'매출 150% 달성',ok:x=>x.rev>=x.goal*1.5},
   {t:'민원 0건 + 평점 ★4.5 이상',ok:x=>x.comp===0&&x.rate>=4.5-1e-9},
-  {t:'매출 160% + 민원 0건',ok:x=>x.rev>=x.goal*1.6&&x.comp===0}];
+  {t:'매출 150% + 민원 0건',ok:x=>x.rev>=x.goal*1.5&&x.comp===0}];   /* v2.72: 160%는 풀업글+프레스티지(+60%)로도 12회 측정 최고 1.41이라 도달 불가 → 보상 곡선 수정 */
 const LVSEASON3={t:'매출 140% + 민원 0건',ok:x=>x.rev>=x.goal*1.4&&x.comp===0};
 const LVRANKSTAR=[4,14,28];   /* 내 직급 승진에 필요한 누적 별 (파트장→팀장→부점장→점장) */
 function lvStar3(d){ return d>=DAYS.length?LVSEASON3:(LVSTAR3[STAGE_OF(d)]||LVSTAR3[5]); }
@@ -7225,6 +7259,7 @@ function v270Tick(){
 setInterval(v270Tick,250);
 /* __H 본체는 스크립트 끝(부팅 직후)에서 만들어진다 — v262·v269 훅과 같이 한 박자 뒤에 붙인다 */
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v270={ ver:'v2.70', state:V270, bind:v270BakMount, due:v270BakDue, copy:v270BakCopy, tick:v270Tick }; }catch(e){} },0); }catch(e){}
+var V272_RT=0;   /* v2.72: 설정 [초기화] 확인 단계 시각(모듈 변수 — 창을 다시 그려도 유지) */
 /* ================= v2.71: 게임 구조 개편 — 돈→힘 · 난이도 곡선 · 재도전 루프 =================
    v2.70 로컬 QA와 봇 시뮬레이션(23일 × 무과금)에서 나온 구조 진단
    ① 난이도 곡선이 V자: DAY1~4는 목표 대비 2~7배로 너무 쉽고, DAY5~6에서 0.5배로 절벽, 이후 다시 1.9~2.2배로 쉬워진다.
@@ -7271,6 +7306,17 @@ try{
     if(Math.abs(f-1)>0.001) c.goal=Math.round(c.goal*f/10)*10;
   });
 }catch(e){ console.warn('v271 goals',e); }
+
+/* ---------------- 1-b) v2.72: 본사 마지막 두 날(DAY 21·22) 목표 상향 ----------------
+   봇 실측(풀업글 가격 Lv.20 + 프레스티지 +60%, 각 4~12회)에서 매출/목표가
+   DAY 19 0.97 · DAY 20 1.03 · **DAY 21 1.37 · DAY 22 1.62 · DAY 23 1.53** 였다.
+   본사 마지막 사흘이 오히려 가장 쉬워 '마지막 = 보상'처럼 끝나던 것을 1.22·1.35·1.30배로 올려
+   DAY 21 ≈ 1.0 · DAY 22 ≈ 1.1 · DAY 23 ≈ 1.1에 맞춘다(★3 150%는 최고 기록·부스터로만 닿는 자리).
+   측정은 Math.random 시드를 고정한 봇으로 시드 3개(777·4242·9001) × 4일을 돌려 평균을 썼다. */
+try{
+  var V272_G={'20':1.22,'21':1.60,'22':1.56};      /* 0-based 인덱스: 20=DAY21, 21=DAY22, 22=DAY23 */
+  for(var _k in V272_G){ var _i=+_k; if(DAYS[_i]) DAYS[_i].goal=Math.round(DAYS[_i].goal*V272_G[_k]/10)*10; }
+}catch(e){ console.warn('v272 goals',e); }
 
 /* ---------------- 2) 허브: 성장 현황 + 다음 구매 추천 ---------------- */
 function v271NextBuy(){
@@ -7354,6 +7400,11 @@ function v271FixMount(){
     if(star) star.insertAdjacentHTML('afterend',h);
     else if(h2) h2.insertAdjacentHTML('afterend',h);
     else cta.insertAdjacentHTML('beforebegin',h);
+    /* v2.72: 결과창은 열린 뒤에 여러 블록(3부문·RSU 스트립·압축 정리)이 자리를 옮긴다.
+       카드가 별점 바로 아래에서 밀리면 제자리로 다시 붙인다 → '최상단 핵심 자리' 고정 */
+    var v272Pin=function(){ try{ var el=$('v271Fix'), st=mb2.querySelector('.dres');
+      if(!el||!st||!st.parentNode) return; if(el.previousElementSibling!==st) st.parentNode.insertBefore(el,st.nextSibling); }catch(e){} };
+    v272Pin(); setTimeout(v272Pin,420); setTimeout(v272Pin,1200);
     var b1=$('v271FixBuy');
     if(b1) b1.onclick=function(e){ e.stopPropagation(); var nb=v271NextBuy(); if(!nb||money<nb.c) return;
       money-=nb.c; S.up[nb.u.k]=(S.up[nb.u.k]||0)+1; V271.fixBuy++;
@@ -7389,6 +7440,20 @@ try{
    +'#v271Fix button{width:100%;min-height:46px;margin-top:8px;border:0;border-radius:12px;font:900 14px var(--b);color:#fff;background:linear-gradient(#2f6fd8,#1c3f9a);box-shadow:0 3px 0 #12275e}';
   document.head.appendChild(_s271);
 }catch(e){}
+try{
+  var _s272=document.createElement('style'); _s272.id='v272css';
+  _s272.textContent=
+     '.v272wipe{margin:10px 0 4px;padding:11px 12px 12px;border-radius:14px;background:#fff2f2;border:1px solid #f2c4c4;text-align:left}'
+   +'.v272wipe b{display:block;font:900 13px var(--b);color:#a32626}'
+   +'.v272wipe small{display:block;margin-top:3px;font:800 11px/1.45 var(--b);color:#8a5a5a;word-break:keep-all}'
+   +'#mbox .v272wipe button{display:block;width:100%;min-height:44px;margin-top:9px;padding:0 14px;border-radius:12px;border:1px solid #f0b4b4;background:#fff;color:#a32626;font:900 14px var(--b);box-shadow:none}'
+   +'#mbox .v272wipe button.danger{background:linear-gradient(#ff6a5e,#d3231a);border-color:#c01d15;color:#fff}';
+  document.head.appendChild(_s272);
+}catch(e){}
+/* 새 세대 첫 실행 안내 — 초기화로 진행이 사라진 걸 보고 '버그'로 오해하지 않게 */
+try{ setTimeout(function(){ try{ var _w=window.__v272Reset; if(!_w){ try{ if(sessionStorage.getItem('tech-epoch-wiped')==='1'){ _w=1; sessionStorage.removeItem('tech-epoch-wiped'); } }catch(e){} }
+  if(_w&&!window.__v272Told){ window.__v272Told=1; toast('🌀 새 시즌 시작! 모든 기록을 지우고 DAY 1부터 다시 쌓아요',4.6); } }catch(e){} },2400); }catch(e){}
+try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v272={ ver:'v2.72', wipe:function(r){ try{ return window.__v272Wipe(r); }catch(e){ return 0; } }, reset:function(){ try{ return window.__v272Reset||null; }catch(e){ return null; } }, star3:function(){ try{ return LVSTAR3[5].t; }catch(e){ return ''; } }, rt:function(){ try{ return V272_RT; }catch(e){ return -1; } }, optOpen:function(){ try{ openOpt(); return 1; }catch(e){ return 0; } } }; }catch(e){} },0); }catch(e){}
 
 /* ---------------- 5) 테스트 훅 ---------------- */
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v271={ ver:'v2.71', state:V271, upMax:v271UpMax, revEst:v271RevEst, upDelta:v271UpDelta, nextBuy:v271NextBuy, fix:v271FixHTML, grow:v271GrowHTML, cost:u=>upCost(u), hk:()=>HARDK.slice(), goal:d=>dayCfg(d).goal }; }catch(e){} },0); }catch(e){}
@@ -7620,7 +7685,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.71';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.72';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -7962,7 +8027,10 @@ function v267RankCache(){ try{ var j=JSON.parse(localStorage.getItem('tech-rank-
 function v267BrName(stg){ try{ return (STS[stg]||'')+' · '+(STK[stg]||''); }catch(e){ return ''; } }
 function v267RankRows(top,myNick){
   try{
-    if(!top||!top.length) return '<div class="vFootNote">이번 주 첫 기록을 남겨 보세요</div>';
+    if(!top||!top.length) return '<div class="vFootNote v272empty" style="text-align:center;padding:16px 10px 18px">'
+      +'<b style="display:block;font:900 15px var(--b);color:#4a3a1a;margin-bottom:4px">🏆 아직 참가자가 없어요</b>'
+      +'이번 주 첫 번째 주인공이 되어 보세요<br>'
+      +'<small style="display:block;margin-top:6px;font-weight:800;color:#8a7a5a">영업을 마치면 이번 주 매출이 쌓이고, [내 기록 등록]으로 올릴 수 있어요</small></div>';
     return top.map(function(r,i){
       var me=(myNick&&r.nick===myNick)?' style="background:#fff7e0"':'';
       var medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(''+(i+1));

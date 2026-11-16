@@ -1,8 +1,31 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script>/* v2.72: 세대 초기화(에포크) — 세이브를 읽기 전에 이 기기의 예전 게임 데이터를 '한 번만' 지운다.
+   세이브(bunsik-tech-v1) · 닉네임 · 랭킹 캐시 · 성장 기록 · 설정까지 bunsik-/tech- 접두어 키를 모두 지우고
+   tech-epoch='v272' 하나만 남긴다. 다음부터는 이 값이 같아서 아무것도 지우지 않는다(진행 보존).
+   저장소를 쓸 수 없는 환경(사생활 보호 모드)에서는 아무것도 지우지 않는다. */
+try{(function(){
+  var EP='v272', K='tech-epoch', P=/^(bunsik-|tech-)/;
+  function wipe(){
+    var del=[];
+    try{ for(var i=0;i<localStorage.length;i++){ var n=localStorage.key(i); if(n&&n!==K&&P.test(n)) del.push(n); } }catch(e){ return 0; }
+    for(var j=0;j<del.length;j++){ try{ localStorage.removeItem(del[j]); }catch(e){} }
+    try{ sessionStorage.removeItem('tech-skip'); }catch(e){}
+    return del.length;
+  }
+  /* 설정의 [초기화] 버튼과 QA가 함께 쓰는 공개 함수 */
+  window.__v272Wipe=function(reload){ var n=0; try{ n=wipe(); }catch(e){} try{ localStorage.setItem(K,EP); }catch(e){}
+    if(reload){ try{ location.reload(); }catch(e){} }
+    return n; };
+  var cur=null; try{ cur=localStorage.getItem(K); }catch(e){ cur=EP; }   /* 저장소를 못 쓰면 그냥 넘어간다 */
+  if(cur===EP) return;
+  var removed=0; try{ removed=wipe(); }catch(e){}
+  try{ localStorage.setItem(K,EP); }catch(e){}
+  try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
+})();}catch(e){}</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='v2.71';
+<script>try{(function(){var V='v2.72';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -24,6 +47,6 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
 <meta name="robots" content="noindex">
-<title>메가 테크 슈퍼스토어 타이쿤 v2.67 · 2D 테스트 모드 (AI QA)</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.72 · 2D 테스트 모드 (AI QA)</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">

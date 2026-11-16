@@ -1,8 +1,10 @@
-/* 주간 랭킹 (v2.67) — Netlify Blobs 'tycoon-rank'
+/* 주간 랭킹 (v2.67 / v2.72 네임스페이스 w2) — Netlify Blobs 'tycoon-rank'
    - 받는 것: 닉네임(최대 12자) · 주간 매출 · 지점 index(0~5) · 테마('store'|'hotel'). 그 밖의 값은 버린다.
    - 개인정보 없음: 실명·연락처·이메일 모양의 닉네임은 서버에서 거절한다. IP는 저장하지 않고,
      '같은 사람이 같은 닉네임으로 여러 번 올려도 1줄'이 되도록 IP+닉네임 해시를 키로만 쓴다.
-   - 저장: 주간 버킷 w/<YYYY-Www>/<해시> → { n, r, s, t, u } (최고 매출만 남긴다)
+   - 저장: 주간 버킷 w2/<YYYY-Www>/<해시> → { n, r, s, t, u } (최고 매출만 남긴다)
+     v2.72: 기존 QA·테스트 기록(w/)을 읽지 않도록 네임스페이스를 w2/로 올렸다 → 랭킹이 0건에서 새로 시작한다.
+     되돌리려면 이 상수만 w/로 바꾸면 된다(옛 줄은 그대로 남아 있다).
    - GET  /.netlify/functions/rank?week=YYYY-Www&nick=닉네임
        → { week, count, top:[{nick,rev,stg,theme}], me:{rank,nick,rev}|null }
    - POST {nick, rev, stg, theme} → { ok, week, rank, rev, count }
@@ -69,7 +71,7 @@ function limited(ip) {
 async function loadWeek(store, week) {
   const out = [];
   let blobs = [];
-  try { const r = await store.list({ prefix: 'w/' + week + '/' }); blobs = (r && r.blobs) || []; } catch (e) { blobs = []; }
+  try { const r = await store.list({ prefix: 'w2/' + week + '/' }); blobs = (r && r.blobs) || []; } catch (e) { blobs = []; }
   for (const b of blobs.slice(0, LIST_CAP)) {
     try {
       const e = await store.get(b.key, { type: 'json' });
@@ -133,7 +135,7 @@ exports.handler = async function (event) {
   const theme = (b.theme === 'hotel') ? 'hotel' : 'store';
 
   const week = weekKey(Date.now());
-  const key = 'w/' + week + '/' + hash(ip + '|' + nick);
+  const key = 'w2/' + week + '/' + hash(ip + '|' + nick);
   let prev = null;
   try { prev = await store.get(key, { type: 'json' }); } catch (e) { prev = null; }
   if (!prev || !isFinite(prev.r) || rev >= Number(prev.r)) {

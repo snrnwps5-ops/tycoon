@@ -1,6 +1,7 @@
 /* 익명 플레이 통계 (v2.43) — "어디서 그만두는지" 보려고 만든 최소한의 집계.
    - 개인정보 없음: 기기마다 무작위로 만든 id(uid)와 진행 숫자(몇 일차·매장·별)만 받는다. IP는 저장하지 않는다.
-   - 저장: Netlify Blobs 'tycoon-stats' 스토어, 사용자당 키 1개(u/<uid>)를 덮어쓴다 → 동시 쓰기 충돌 없음.
+   - 저장: Netlify Blobs 'tycoon-stats' 스토어, 사용자당 키 1개(u2/<uid>)를 덮어쓴다 → 동시 쓰기 충돌 없음.
+     v2.72: 기존 QA·테스트 집계(u/)를 읽지 않도록 네임스페이스를 u2/로 올렸다 → 통계도 0건에서 새로 시작한다.
    - POST  (게임이 보냄): {uid, ev:'sess'|'day', d, stg, st}
    - GET   (사람이 봄):   /.netlify/functions/stat → 이탈 지점 요약 JSON
    설정에서 '익명 플레이 통계'를 끄면 게임이 아예 보내지 않는다. */
@@ -43,7 +44,7 @@ exports.handler = async function (event) {
     const uid = String(b.uid || '');
     if (!/^[a-z0-9]{12,24}$/.test(uid)) return reply(400, { error: 'uid' });
     const ev = b.ev === 'day' ? 'day' : 'sess';
-    const now = Date.now(), key = 'u/' + uid;
+    const now = Date.now(), key = 'u2/' + uid;
     let u = null; try { u = await store.get(key, { type: 'json' }); } catch (e) { u = null; }
     u = u || { f: now, n: 0, p: 0, d: 0, s: 0, st: 0 };
     u.l = now; u.d = Math.max(u.d || 0, int(b.d, 0, 999)); u.s = Math.max(u.s || 0, int(b.stg, 0, 20)); u.st = Math.max(u.st || 0, int(b.st, 0, 9999));
@@ -55,7 +56,7 @@ exports.handler = async function (event) {
   if (event.httpMethod === 'GET') {
     const now = Date.now(), DAY = 864e5;
     const users = [];
-    const { blobs } = await store.list({ prefix: 'u/' });
+    const { blobs } = await store.list({ prefix: 'u2/' });
     for (const b of blobs.slice(0, 3000)) { try { const u = await store.get(b.key, { type: 'json' }); if (u) users.push(u); } catch (e) {} }
     const quit = users.filter(u => now - u.l > 3 * DAY);           // 3일 넘게 안 들어온 사람 = 이탈로 본다
     const hist = {}; quit.forEach(u => { hist[u.d] = (hist[u.d] || 0) + 1; });
