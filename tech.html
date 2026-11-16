@@ -7347,9 +7347,13 @@ function v271FixHTML(){
 function v271FixMount(){
   try{
     if($('v271Fix')) return;
-    var cta=$('resCta'); if(!cta) return;
+    var cta=$('resCta'); var mb2=$('mbox'); if(!cta||!mb2) return;
     var h=v271FixHTML(); if(!h) return;
-    cta.insertAdjacentHTML('beforebegin',h);
+    /* 결과창은 길어서 아래에 넣으면 스크롤해야 보인다 — 제목·별 바로 아래(첫 화면)에 넣는다 */
+    var star=mb2.querySelector('.dres'), h2=mb2.querySelector('h2');
+    if(star) star.insertAdjacentHTML('afterend',h);
+    else if(h2) h2.insertAdjacentHTML('afterend',h);
+    else cta.insertAdjacentHTML('beforebegin',h);
     var b1=$('v271FixBuy');
     if(b1) b1.onclick=function(e){ e.stopPropagation(); var nb=v271NextBuy(); if(!nb||money<nb.c) return;
       money-=nb.c; S.up[nb.u.k]=(S.up[nb.u.k]||0)+1; V271.fixBuy++;
