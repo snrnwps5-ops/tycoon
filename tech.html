@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.70';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.71';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.70</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.71</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -460,7 +460,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.70</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.71</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -2521,9 +2521,20 @@ addEventListener('pointerdown',e=>{ if(e.target.closest('button,#modal')||(typeo
 addEventListener('pointermove',e=>{ if(!joy.on||e.pointerId!==joy.id) return; let dx=e.clientX-joy.x0, dy=e.clientY-joy.y0; const L=Math.hypot(dx,dy), M=50; if(L>M){ dx*=M/L; dy*=M/L; } joy.dx=dx/M; joy.dy=dy/M; jk.style.transform='translate('+dx+'px,'+dy+'px)'; });
 const jend=e=>{ if(e.pointerId!==joy.id) return; joy.on=false; joy.dx=joy.dy=0; jel.style.display='none'; }; addEventListener('pointerup',jend); addEventListener('pointercancel',jend);
 const UPS=[{k:'spd',n:'이동 속도',d:l=>'+'+(l*10)+'% 빠르게',c:'#4a7bd0',base:40,max:8},{k:'cap',n:'들 수 있는 양',d:l=>'+'+(l*2)+'개',c:'#ff9a2e',base:60,max:6},{k:'chk',n:'손님 인내심',d:l=>'+'+(l*8)+'% 오래 기다려요',c:'#46b37a',base:50,max:6},{k:'price',n:'제품 가격 인상',d:l=>'+'+(l*8)+'%',c:'#e8473d',base:80,max:10}];
-const upCost=u=>Math.round(u.base*Math.pow(1.85,S.up[u.k]));
-function upHTML(){ return '<h2>업그레이드</h2>'+UPS.map(u=>{ const l=S.up[u.k], mx=l>=u.max; return '<div class="uprow"><div class="ui" style="background:'+u.c+'">'+(l+1)+'</div><div class="tx"><b>'+u.n+'</b><small>'+(mx?'최대 레벨':'현재 '+u.d(l)+' → '+u.d(l+1))+'</small></div><button data-up="'+u.k+'" '+(mx||money<upCost(u)?'disabled':'')+'>'+(mx?'MAX':'$'+upCost(u).toLocaleString())+'</button></div>'; }).join('')+'<button class="gray" id="mOk">닫기</button>'; }
-function openUp(){ openModal(upHTML()); $('mbox').onclick=e=>{ const b=e.target.closest('[data-up]'); if(!b) return; const u=UPS.find(x=>x.k===b.dataset.up); const c=upCost(u); if(money<c||S.up[u.k]>=u.max) return; money-=c; S.up[u.k]++; snd('level_up',0.45,1.2); save(); openUp(); }; }
+const upCost=u=>{ try{ var lv=S.up[u.k]||0, est=v271RevEst(), k=Math.max(0.5,est/1200); return Math.max(5,Math.round(u.base*Math.pow(1.15,lv)*k/5)*5); }catch(e){ return u.base; } };
+function upHTML(){
+  var est=v271RevEst();
+  return '<h2>업그레이드</h2><p class="v271upnote" style="margin:-4px 0 6px;font:800 11.5px/1.4 var(--b);color:#7a6a4a">하루 매출 약 '+v271Usd(est)+' 기준 · 사면 다음 영업부터 바로 반영돼요</p>'+UPS.map(u=>{
+    const l=S.up[u.k]||0, mxL=v271UpMax(u), mx=l>=mxL, c=upCost(u), d=v271UpDelta(u,l), pb=c>0?(c/Math.max(1,d)):0;
+    return '<div class="uprow"><div class="ui" style="background:'+u.c+'">'+(l+1)+'</div><div class="tx"><b>'+u.n+' <small class="v271m">Lv.'+l+' / '+mxL+'</small></b>'
+      +'<small>'+(mx?'최고 단계예요':u.d(l)+' → '+u.d(l+1))+'</small>'
+      +'<small class="v271d">'+(mx?'':('하루 약 +$'+d.toLocaleString()+' · '+pb.toFixed(1)+'일이면 본전'))+'</small></div>'
+      +'<button data-up="'+u.k+'" '+(mx||money<c?'disabled':'')+'>'+(mx?'MAX':'$'+c.toLocaleString())+'</button></div>';
+  }).join('')+'<button class="gray" id="mOk">닫기</button>'; }
+function openUp(){ openModal(upHTML()); $('mbox').onclick=e=>{ const b=e.target.closest('[data-up]'); if(!b) return; const u=UPS.find(x=>x.k===b.dataset.up); if(!u) return;
+    const c=upCost(u); if(money<c||(S.up[u.k]||0)>=v271UpMax(u)) return; money-=c; S.up[u.k]=(S.up[u.k]||0)+1;
+    try{ const d=v271UpDelta(u,S.up[u.k]-1); snd('level_up',0.5,1.2); haptic([8,25,8]); bigBanner('⬆ '+u.n+' Lv.'+S.up[u.k],'하루 약 +$'+d.toLocaleString()+' · 다음 영업부터!'); }catch(_){}
+    save(); openUp(); }; }
 /* ---------- missions / menus ---------- */
 const MT={srv:['고객 {n}명 응대',3],fix:['수리 {n}건 완료',2],ok:['상담 정답 {n}번',2],earn:['${n} 벌기',80]};
 function newMission(k){ const lv=S.lvl, base=MT[k][1]; const goal=k==='earn'?Math.round(base*Math.pow(1.6,lv-1)/10)*10:Math.round(base*(1+lv*0.5)); return {k,goal,base:S.stats[k],reward:Math.round((k==='earn'?goal*0.5:goal*15)*(1+lv*0.2))}; }
@@ -3773,7 +3784,7 @@ var AUTO_DEF=[{k:'cash',ic:'💵',n:'자동 수금 레일',d:'계산대 옆 돈�
               {k:'shelf',ic:'📦',n:'자동 진열 로봇',d:'창고 재고로 진열대를 알아서 채워요',base:2.2,iv:[8,6,4.5,3.2,2]}];
 var AUTOT={cash:0,shelf:0};
 function autoLv(k){ return (S.auto&&S.auto[k])||0; }
-function autoCost(d){ try{ return Math.round(dayCfg(S.day).goal*d.base*Math.pow(1.8,autoLv(d.k))/50)*50; }catch(e){ return 999999; } }
+function autoCost(d){ try{ const st=Math.min(5,STAGE_OF(S.day)); return Math.round(d.base*(120+170*st)*Math.pow(1.7,autoLv(d.k))/10)*10; }catch(e){ return 999999; } }
 function autoBuy(k){ const d=AUTO_DEF.find(x=>x.k===k); if(!d) return; if(autoLv(k)>=5){ toast('최고 단계예요',1.6); return; } const c=autoCost(d);
   if(money<c){ toast('💰 $'+(c-money)+' 더 모으면 살 수 있어요',2.4); return; } money-=c; S.auto=S.auto||{}; S.auto[k]=autoLv(k)+1; try{ save(); snd('level_up',0.55,1.15); bigBanner(d.ic+' '+d.n+' Lv.'+autoLv(k)+'!',d.d); }catch(_){}
   const card=$('autoCard'); if(card){ card.outerHTML=autoCard(); autoBind(); } }
@@ -3858,7 +3869,7 @@ function bizChance(d,B){ B=B||bizS(); return Math.max(0.05,Math.min(0.95,d.ch+0.
 function bizDurK(B,d){ B=B||bizS(); return (1-0.15*B.room)/(d&&d.rep!==-1?bizSk(B,d.rep):1); }
 function bizLater(B,d,why){ B.deals=B.deals.filter(x=>x!==d); B.lost++; if(d.rep!==-1&&d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].lost++; B.later.push({co:d.co,title:d.title,qi:d.qi,sz:d.sz,val:d.val,dur:d.dur,ch0:d.ch0,tries:d.tries,why:why,at:Date.now(),retry:Date.now()+20*60000}); while(B.later.length>12) B.later.shift(); }
 function bizFinish(B,d,here){ const ok=Math.random()<bizChance(d,B);
-  if(ok){ B.deals=B.deals.filter(x=>x!==d); B.won++; if(d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].won++; money+=d.val; S.stats.earn=(S.stats.earn||0)+d.val; B.log.unshift('✅ '+d.co+' 계약 +$'+d.val+' ('+bizWho(B,d.rep)+')'); if(here) try{ bigBanner('💼 계약 성사!',d.co+' · +$'+d.val); snd('level_up',0.6,1.05); haptic(30); }catch(_){} }
+  if(ok){ B.deals=B.deals.filter(x=>x!==d); B.won++; if(d.rep!=='m'&&B.reps[d.rep]) B.reps[d.rep].won++; money+=d.val; if(typeof dayState!=='undefined'&&dayState==='run'){ dayRev+=d.val; } S.stats.earn=(S.stats.earn||0)+d.val; B.log.unshift('✅ '+d.co+' 계약 +$'+d.val+' ('+bizWho(B,d.rep)+')'); if(here) try{ bigBanner('💼 계약 성사!',d.co+' · +$'+d.val); snd('level_up',0.6,1.05); haptic(30); }catch(_){} }
   else { bizLater(B,d,'협상 결렬'); B.log.unshift('❌ '+d.co+' 결렬 → 재영업 리스트'); if(here) try{ toast('💼 '+d.co+' 협상 결렬… 재영업 리스트에 올렸어요',3); }catch(_){} }
   B.log.length=Math.min(B.log.length,8); try{ save(); }catch(_){} }
 function bizMgrAnswer(B,d){ const acc=Math.min(0.92,0.62+0.08*B.mgr.lv), ok=Math.random()<acc; d.asked=1; d.ch=Math.max(0.05,Math.min(0.95,d.ch+(ok?0.25:-0.2))); B.log.unshift((ok?'👔 ':'👔❗ ')+B.mgr.name+' 팀장이 '+d.co+' 협상 포인트 '+(ok?'잘 대응':'대응 실패')); B.log.length=Math.min(B.log.length,8); }
@@ -7214,6 +7225,169 @@ function v270Tick(){
 setInterval(v270Tick,250);
 /* __H 본체는 스크립트 끝(부팅 직후)에서 만들어진다 — v262·v269 훅과 같이 한 박자 뒤에 붙인다 */
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v270={ ver:'v2.70', state:V270, bind:v270BakMount, due:v270BakDue, copy:v270BakCopy, tick:v270Tick }; }catch(e){} },0); }catch(e){}
+/* ================= v2.71: 게임 구조 개편 — 돈→힘 · 난이도 곡선 · 재도전 루프 =================
+   v2.70 로컬 QA와 봇 시뮬레이션(23일 × 무과금)에서 나온 구조 진단
+   ① 난이도 곡선이 V자: DAY1~4는 목표 대비 2~7배로 너무 쉽고, DAY5~6에서 0.5배로 절벽, 이후 다시 1.9~2.2배로 쉬워진다.
+      → 어려운 구간이 '초반 한 칸'뿐이라 후반에 긴장이 없다.
+   ② 수익 상한은 '플레이어가 1명씩 상담하는 처리량'이다. 목표가 이 상한을 넘으면 돈을 써도 못 넘는다(돈→힘 변환 실패).
+   ③ 업그레이드는 $80에 +8%뿐이고 최대 10레벨에서 끝나 DAY 12쯤 모두 MAX → 성장 축이 사라진다.
+   ④ 자동화 가격이 '그날 목표×base'라 지점이 올라갈수록 가성비가 무너진다(부산 키오스크가 목표×5).
+   ⑤ 실패하면 '부족 $X'만 보여 주고 무엇을 사야 하는지·얼마면 뚫리는지 알려 주지 않는다.
+   ⑥ 비즈니스 팀 계약 수익은 현금으로만 들어와 그날 목표에 반영되지 않아 세 공간이 따로 논다.
+   원칙: 기존 함수는 감싸기·최소 치환만. 새 DOM은 모달 안에만 넣는다(3D 시트 내부 삽입 금지). */
+var V271={day:-1, buys:0, fails:0, fixBuy:0, fixBoost:0, grow:0};
+
+/* ---------------- 0) 공통 숫자 ---------------- */
+function v271Usd(v){ try{ return v266Usd(v); }catch(e){ return '$'+Math.round(v||0); } }
+function v271UpMax(u){ try{ var st=Math.min(5,STAGE_OF(S.day)); return (u.max|0)+((u.k==='cap'?1:2)*st); }catch(e){ return (u&&u.max)||1; } }
+/* '하루 매출' 추정: 최근 최고 매출과 오늘 목표 중 큰 쪽 (업그레이드 가치를 체감 단위로 보여 준다) */
+function v271RevEst(){
+  try{
+    var d=S.day|0, b=(S.best&&S.best[d])||0, g=dayCfg(d).goal||0;
+    return Math.max(80,Math.max(Math.round(b),Math.round(g*1.05)));
+  }catch(e){ return 300; }
+}
+/* 이 업그레이드 1레벨이 하루에 벌어 주는 돈(추정) */
+function v271UpDelta(u,lv){
+  try{
+    var est=v271RevEst();
+    if(!u) return 0;
+    if(u.k==='price') return Math.round(est*0.08);
+    if(u.k==='spd') return Math.round(est*0.05);
+    if(u.k==='cap') return Math.round(est*0.05);
+    return Math.round(est*0.04);          /* chk: 인내심 → 이탈 감소 */
+  }catch(e){ return 0; }
+}
+
+/* ---------------- 1) 난이도 곡선 재설계 ----------------
+   지점별 배수(HARDK)를 실측 시뮬레이션에 맞춰 다시 잡는다.
+   같은 비율로 DAYS 목표도 함께 늘려 '기본 목표(baseGoal)'는 그대로 둔다
+   — 법인 계약 단가처럼 baseGoal을 쓰는 계산이 함께 흔들리지 않게. */
+try{
+  var V271_OK=[1,2.8,2.6,2.1,2.2,1.85], V271_NK=[1.2,1.7,2.2,3.0,4.6,5.4];
+  for(var _i=0;_i<HARDK.length;_i++){ HARDK[_i]=V271_NK[_i]; }
+  DAYS.forEach(function(c,d){
+    var st=Math.min(5,STAGE_OF(d)), f=V271_NK[st]/V271_OK[st];
+    if(Math.abs(f-1)>0.001) c.goal=Math.round(c.goal*f/10)*10;
+  });
+}catch(e){ console.warn('v271 goals',e); }
+
+/* ---------------- 2) 허브: 성장 현황 + 다음 구매 추천 ---------------- */
+function v271NextBuy(){
+  try{
+    var best=null;
+    for(var i=0;i<UPS.length;i++){
+      var u=UPS[i]; if((S.up[u.k]||0)>=v271UpMax(u)) continue;
+      var c=upCost(u), d=v271UpDelta(u,S.up[u.k]||0), eff=c/Math.max(1,d);
+      if(!best||eff<best.eff) best={u:u,c:c,d:d,eff:eff};
+    }
+    return best;
+  }catch(e){ return null; }
+}
+function v271GrowHTML(){
+  try{
+    if((S.day|0)<1) return '';
+    var price=1+0.08*(S.up.price||0), spd=1+0.10*(S.up.spd||0), auto=0;
+    try{ ['cash','shelf','kiosk'].forEach(function(k){ auto+=(S.auto&&S.auto[k])||0; }); }catch(e){}
+    var crew=(S.crew||[]).length, nb=v271NextBuy();
+    var h='<div id="v271Grow"><b>🌱 성장 현황</b><div class="ch"><span>가격 ×'+price.toFixed(2)+'</span><span>이동 +'+Math.round((spd-1)*100)+'%</span><span>직원 '+crew+'명</span><span>자동화 Lv.'+auto+'</span></div>';
+    h+='<small>'+(nb?('다음 구매 추천 · '+nb.u.n+' Lv.'+(S.up[nb.u.k]||0)+' → '+v271Usd(nb.c)+' · 하루 약 +$'+nb.d.toLocaleString()):'모든 업그레이드가 최고 단계예요')+'</small>';
+    h+='<button id="v271GrowGo">⬆ 업그레이드 열기</button></div>';
+    return h;
+  }catch(e){ return ''; }
+}
+(function(){ try{
+  var _h=v262HubHTML;
+  v262HubHTML=function(){
+    var s=_h.apply(this,arguments);
+    try{
+      if(typeof s!=='string'||s.indexOf('id="v271Grow"')>=0) return s;
+      var add=v271GrowHTML(); if(!add) return s;
+      var a=s.indexOf('<div class="vNote">');
+      if(a<0) a=s.indexOf('<div class="vCard gold">');
+      if(a<0) a=s.indexOf('<div class="vSec"><b>지점');
+      if(a<0) a=s.indexOf('<div class="hubFoot">');
+      if(a<0) return s+add;
+      return s.slice(0,a)+add+s.slice(a);
+    }catch(e){}
+    return s;
+  };
+}catch(e){} })();
+(function(){ try{
+  var _b=v266BindHub;
+  v266BindHub=function(){
+    var r=_b.apply(this,arguments);
+    try{ var g=$('v271GrowGo'); if(g) g.onclick=function(e){ e.stopPropagation(); try{ snd('ui',0.4); openUp(); }catch(_){} }; }catch(e){}
+    return r;
+  };
+}catch(e){} })();
+
+/* ---------------- 3) 실패 → '다음 한 수' 카드 ----------------
+   부족액과, 지금 돈으로 바로 살 수 있는 가장 효율 좋은 업그레이드(또는 부스터)를 한 버튼으로 제시한다. */
+function v271FixHTML(){
+  try{
+    var cfg=dayCfg(S.day), lack=Math.max(0,Math.round((cfg.goal||0)-(dayRev||0)));
+    if(!lack) return '';
+    var nb=v271NextBuy();
+    var h='<div id="v271Fix"><b>부족 '+v271Usd(lack)+' — 다음 한 수</b>';
+    if(nb&&money>=nb.c){
+      h+='<small>'+nb.u.n+' Lv.'+(S.up[nb.u.k]||0)+' → '+v271Usd(nb.c)+' · 하루 약 +$'+nb.d.toLocaleString()+'('+nb.eff.toFixed(1)+'일 본전)</small>'
+        +'<button id="v271FixBuy">⬆ '+nb.u.n+' 사고 바로 한 판 더</button>';
+    } else if(nb){
+      h+='<small>'+nb.u.n+' Lv.'+(S.up[nb.u.k]||0)+'까지 '+v271Usd(nb.c-Math.floor(money))+' 모자라요 · 하루 약 +$'+nb.d.toLocaleString()+'</small>'
+        +'<button id="v271FixShop">🛒 상점에서 자금 채우기</button>';
+    }
+    if(lack<=cfg.goal*0.6&&S.boostD!==S.day){
+      h+='<button id="v271FixBoost" style="margin-top:6px;background:linear-gradient(#6a46e8,#3a1fa0);box-shadow:0 3px 0 #25136b">📈 매출 2배면 '+v271Usd(Math.round(dayRev*2))+' → 바로 뚫려요 · ₩2,500 <small style="font-weight:800;opacity:.9">(테스트 결제)</small></button>';
+    }
+    h+='</div>';
+    return h;
+  }catch(e){ return ''; }
+}
+function v271FixMount(){
+  try{
+    if($('v271Fix')) return;
+    var cta=$('resCta'); if(!cta) return;
+    var h=v271FixHTML(); if(!h) return;
+    cta.insertAdjacentHTML('beforebegin',h);
+    var b1=$('v271FixBuy');
+    if(b1) b1.onclick=function(e){ e.stopPropagation(); var nb=v271NextBuy(); if(!nb||money<nb.c) return;
+      money-=nb.c; S.up[nb.u.k]=(S.up[nb.u.k]||0)+1; V271.fixBuy++;
+      try{ snd('level_up',0.5,1.2); haptic([8,25,8]); bigBanner('⬆ '+nb.u.n+' Lv.'+S.up[nb.u.k],'하루 약 +$'+nb.d.toLocaleString()+' · 이번 판은 다를 거예요'); }catch(_){}
+      save(); var rt=$('dRetry'); if(rt) rt.click(); };
+    var b2=$('v271FixShop');
+    if(b2) b2.onclick=function(e){ e.stopPropagation(); try{ openShop(); }catch(_){} };
+    var b3=$('v271FixBoost');
+    if(b3) b3.onclick=function(e){ e.stopPropagation(); b3.disabled=true; b3.textContent='적용 중…';
+      setTimeout(function(){ try{ S.boostD=S.day; V271.fixBoost++; save(); snd('level_up',0.5,1.2); bigBanner('📈 매출 2배 적용!','이번 판은 2배로 계산돼요'); }catch(_){} var rt=$('dRetry'); if(rt) rt.click(); },450); };
+  }catch(e){}
+}
+(function(){ try{
+  var _r=showResult;
+  showResult=function(){ var r=_r.apply(this,arguments); try{ setTimeout(v271FixMount,80); }catch(e){} return r; };
+}catch(e){} })();
+
+/* ---------------- 4) 스타일 ---------------- */
+try{
+  var _s271=document.createElement('style'); _s271.id='v271css';
+  _s271.textContent=
+    '.uprow .v271d{display:block;margin-top:2px;font:900 11px var(--b);color:#2f7d4f;letter-spacing:-.2px}'
+   +'.uprow .v271m{font-weight:800;color:#8a7a6a}'
+   +'#v271Grow{margin:9px 0 2px;padding:9px 11px 10px;border-radius:14px;background:linear-gradient(#eef7ee,#d9efdc);border:1px solid #b9dcbf;text-align:left}'
+   +'#v271Grow b{display:block;font:900 12px var(--b);color:#1d5a2c}'
+   +'#v271Grow small{display:block;margin-top:5px;font:800 11px/1.45 var(--b);color:#356b41;word-break:keep-all}'
+   +'#v271Grow .ch{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}'
+   +'#v271Grow .ch span{font:900 10.5px var(--b);color:#1d5a2c;background:#fff;border:1px solid #cfe6d4;border-radius:9px;padding:3px 7px}'
+   +'#v271Grow button{width:100%;min-height:44px;margin-top:8px;border:0;border-radius:12px;font:900 14px var(--b);color:#fff;background:linear-gradient(#237a4e,#16553a);box-shadow:0 3px 0 #0d3a26}'
+   +'#v271Fix{margin:9px 0 2px;padding:10px 12px 11px;border-radius:14px;background:linear-gradient(#fff3e8,#ffe1cd);border:1px solid #f0b48a;text-align:left}'
+   +'#v271Fix b{display:block;font:900 13px var(--b);color:#7a3300}'
+   +'#v271Fix small{display:block;margin-top:3px;font:800 11px/1.45 var(--b);color:#8a4a1a;word-break:keep-all}'
+   +'#v271Fix button{width:100%;min-height:46px;margin-top:8px;border:0;border-radius:12px;font:900 14px var(--b);color:#fff;background:linear-gradient(#2f6fd8,#1c3f9a);box-shadow:0 3px 0 #12275e}';
+  document.head.appendChild(_s271);
+}catch(e){}
+
+/* ---------------- 5) 테스트 훅 ---------------- */
+try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v271={ ver:'v2.71', state:V271, upMax:v271UpMax, revEst:v271RevEst, upDelta:v271UpDelta, nextBuy:v271NextBuy, fix:v271FixHTML, grow:v271GrowHTML, cost:u=>upCost(u), hk:()=>HARDK.slice(), goal:d=>dayCfg(d).goal }; }catch(e){} },0); }catch(e){}
 function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; } if(!FTSKIP&&!S.offer&&!S.paidPack&&(S.day>=1||(S.fails||0)>=1)){ openOffer(startDayModal); return; } if(S.vipPass&&S.vipD!==S.day){ S.vipD=S.day; money+=200; setTimeout(()=>toast('⭐ VIP 패스 일일 보상 +$200',3),600); save(); } const cfg=dayCfg(S.day); S.ev=S.ev||{}; if(S.ev[S.day]===undefined){ const ks=Object.keys(EVT); S.ev[S.day]=S.day>=4&&Math.random()<0.6?ks[Math.floor(Math.random()*ks.length)]:''; save(); } dayEv=S.ev[S.day]; influDone=0; waveT=30; setRain(dayEv==='rain'); if(dayEv!=='delay') deliverReady(); else if(S.orders.some(o=>!o.ex&&o.ready)) setTimeout(()=>toast('🚚 물류 지연! 일반 배송은 내일 와요',3),500); if(S.boostD===S.day) setTimeout(()=>toast('📈 매출 2배 부스터 적용 중!',3),400); if(S.mercyD===S.day) setTimeout(()=>toast('🩹 재기 지원: 오늘 매출 +12% · 손님 인내심 +15%',3.6),600); if(cfg.open&&!S.unl.includes(cfg.open)){ S.unl.push(cfg.open); applyUnlocks(); } if(S.unl.includes('repair')&&!S.starterT){ S.starterT=1; if(!S.crew.some(c=>c.role==='tech')){ const nc={role:'tech',name:'서준',spd:0.95,acc:0.9,wage:15,lv:1,sat:80}; S.crew.push(nc); addStaff('tech',nc); setTimeout(()=>{ bigBanner('수리 기사 서준 합류!','부품을 가져와 수리를 도와줘요'); snd('level_up',0.5,1.1); },700); } save(); }
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
@@ -7442,7 +7616,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.70';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.71';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
