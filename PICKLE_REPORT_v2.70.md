@@ -73,16 +73,24 @@
   - 옛 세이브(DAY6·`c3` 없음·백업 기록 없음): 부팅 오류 0 · 진행/닉네임 보존 · 배너 표시
   - 2D 판(`tech-test.html`): 부팅·v2.70 훅·콘솔 에러 0
 - **하단 CTA 겹침 별도 계측**(`v270_footer_check.py`): 375×667·375×568 둘 다 가려진 요소 0, `backgroundImage:none`·`rgb(255,248,234)`.
-- 스크린샷: `downloads/v270_shots/` — `01_hub_day1`, `03_goal_hit`, `04_star2`, `04b_last10`, `05_result`, `06_hub_day8_banner`, `07_hub_after_copy`, `08_old_save_hub`, `09_2d`, `hub_footer_*`, `hub_top_*`.
+- 스크린샷: `downloads/v270_shots/` — `01_hub_day1`, `03_goal_hit`, `04_star2`, `04b_last10`, `05_result`, `06_hub_day8_banner`, `07_hub_after_copy`, `08_old_save_hub`, `09_2d`, `23_bak_banner`, `hub_footer_*`, `hub_top_*`, `20~22_live_*`.
+- 라이브 스크립트: `/workspace/v270_live.py` · 대비 계측 `/workspace/v270_contrast.py`.
 - QA 스크립트: `/workspace/v270_qa.py`(기능 39), `v270_footer_check.py`(겹침), `v270_cmp.py`(로딩 전/후), `v270_measure.py`(리소스별 시간), `v270_assets_split.py`(자산 분리).
 
 ---
 
-## 4. 배포
+## 4. 배포 (main 푸시 2회 + 문서 1회)
 
 - 버전 6곳 일치: `version.txt` · `tech.html` `var V` · `_t2d/part_head.html` `V` · 타이틀 `.tv` · `<title>` · `document.title` = **v2.70**.
 - 시크릿 스캔(`gsk_`/`sk-`/`api_key`) 0건, 실제 브랜드 로고/이름 없음.
-- `main`에 **1회만** 커밋·푸시(Netlify 크레딧 보호).
+- `main` 푸시: `7043222`(본 개발) → `2779d2d`(아래 수정). **원칙은 1회**였으나, 라이브 검증에서 새 기능의 결함이 나와 한 번 더 올렸습니다.
+  - 라이브 스크린샷에서 **백업 배너의 [나중에] 버튼 글자가 흰색**으로 나와 배경(#e6ecf8)과 대비가 1.2:1(사실상 안 보임)이었습니다. 모달 공통 `button{color:#fff}` 규칙이 `!important` 없던 제 색을 덮은 탓입니다 → `color:#3d4c6b!important` + 테두리로 수정(`2779d2d`).
+  - 교훈: 새 버튼은 44px·겹침만이 아니라 **계산된 글자색까지** 확인해야 한다(`v270_contrast.py` 추가).
+
+### 라이브 확인 (https://snrnwps5-ops.github.io/tycoon/, 375×667)
+- `version.txt` = **v2.70** · 부팅 **1.7~2.0초** · 탭 제목 v2.70 · `BUNSIK_ASSETS` **26키**.
+- 허브: 백업 배너 표시(`마지막 백업 9일 전`) · 고정 CTA `rgb(255,248,234)` 불투명 · 가로 넘침 0(357/357).
+- 영업: `🎯 목표 달성!` 배너 발동 확인. 콘솔 에러 0(Netlify 프록시 CORS 제외 — 로컬 실행에서만 발생).
 
 ---
 
