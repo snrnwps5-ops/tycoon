@@ -26,7 +26,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.72';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.73';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.72</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.73</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -485,7 +485,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.72</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.73</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -4491,10 +4491,18 @@ function v262BizAnim2(R,dt){
     const b=ch.__v62biz||(function(){ const o={}; try{ ch.m.traverse(function(x){ if(x.isBone) o[x.name]=x; }); }catch(e){} ch.__v62biz=o; return o; })();
     const t=performance.now()/1000+(R.i==='m'?2.3:(+R.i||0)*1.7);
     const idle=!(R.d&&R.d.st==='nego');
-    if(b.Hips) b.Hips.rotation.y+=Math.sin(t*0.62)*0.05;
-    if(b.Torso) b.Torso.rotation.y+=Math.sin(t*0.55+1.1)*0.05;
-    if(b.Neck) b.Neck.rotation.y+=Math.sin(t*0.4+2.0)*(idle?0.16:0.06);
-    if(idle&&b.UpperArmL) b.UpperArmL.rotation.x+=Math.sin(t*0.7+0.4)*0.05;
+    /* v2.73: 여기서 Hips·Neck에 '+='로 흔들림을 더하고 있었다. 기준값이 없어 프레임마다 쌓였고(초당 최대 9rad)
+       목·몸통·머리가 한 방향으로 계속 돌았다(제보: "비지니스팀 계속 머리가 돌아가"). 바닥에 서 있는 장면이 아니라
+       SitDown 마지막 자세 위에 얹혀야 하므로, bizAnim이 매 프레임 절대값으로 다시 잡아 주는 Torso·팔과 달리
+       이 두 뼈만은 앉은 기본 자세(bizBones가 저장한 ch.bz.sit)를 기준으로 절대값을 지정해 흔들림 폭을 고정한다. */
+    const sit=(ch.bz&&ch.bz.sit)||ch.__v62sit||(ch.__v62sit={});
+    const sway=function(k,x,y,z){ const o=b[k]; if(!o) return; let s=sit[k];
+      if(!s){ s=sit[k]=[o.rotation.x,o.rotation.y,o.rotation.z]; }
+      o.rotation.set(s[0]+(x||0),s[1]+(y||0),s[2]+(z||0)); };
+    sway('Hips',0,Math.sin(t*0.62)*0.05,0);
+    sway('Neck',0,Math.sin(t*0.4+2.0)*(idle?0.16:0.06),0);
+    if(b.Torso) b.Torso.rotation.y+=Math.sin(t*0.55+1.1)*0.05;   /* bizAnim의 put('Torso',…)가 매 프레임 기준값으로 되돌리므로 누적되지 않는다 */
+    if(idle&&b.UpperArmL) b.UpperArmL.rotation.x+=Math.sin(t*0.7+0.4)*0.05;   /* 위와 같음(put('UpperArmL'·'UpperArmR')) */
     if(R.i==='m'&&b.UpperArmR) b.UpperArmR.rotation.x+=Math.sin(t*0.9)*0.04;
     if(V262.b3&&V262.b3.screens) for(let i=0;i<V262.b3.screens.length;i++){ const m=V262.b3.screens[i]; if(m) m.opacity=0.34+0.26*Math.abs(Math.sin(t*0.9+i*1.7)); }
   }catch(e){}
@@ -7454,6 +7462,7 @@ try{
 try{ setTimeout(function(){ try{ var _w=window.__v272Reset; if(!_w){ try{ if(sessionStorage.getItem('tech-epoch-wiped')==='1'){ _w=1; sessionStorage.removeItem('tech-epoch-wiped'); } }catch(e){} }
   if(_w&&!window.__v272Told){ window.__v272Told=1; toast('🌀 새 시즌 시작! 모든 기록을 지우고 DAY 1부터 다시 쌓아요',4.6); } }catch(e){} },2400); }catch(e){}
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v272={ ver:'v2.72', wipe:function(r){ try{ return window.__v272Wipe(r); }catch(e){ return 0; } }, reset:function(){ try{ return window.__v272Reset||null; }catch(e){ return null; } }, star3:function(){ try{ return LVSTAR3[5].t; }catch(e){ return ''; } }, rt:function(){ try{ return V272_RT; }catch(e){ return -1; } }, optOpen:function(){ try{ openOpt(); return 1; }catch(e){ return 0; } } }; }catch(e){} },0); }catch(e){}
+try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v273={ ver:'v2.73', biz:(function(){ try{ return {open:!!BIZ.open, reps:BIZ.reps.length, mgr:!!BIZ.mgrCh, frames:BIZ.frames}; }catch(e){ return null; } }), bones:function(i){ try{ var R=(i==='m')?BIZ.mgrCh:BIZ.reps[+i]; if(!R) return null; var o={}; ['Hips','Torso','Neck','Head'].forEach(function(n){ var b=R.ch.m.getObjectByName(n); if(b) o[n]=[+b.rotation.x.toFixed(3),+b.rotation.y.toFixed(3),+b.rotation.z.toFixed(3)]; }); return o; }catch(e){ return null; } } }; }catch(e){} },0); }catch(e){}
 
 /* ---------------- 5) 테스트 훅 ---------------- */
 try{ setTimeout(function(){ try{ window.__H=window.__H||{}; window.__H.v271={ ver:'v2.71', state:V271, upMax:v271UpMax, revEst:v271RevEst, upDelta:v271UpDelta, nextBuy:v271NextBuy, fix:v271FixHTML, grow:v271GrowHTML, cost:u=>upCost(u), hk:()=>HARDK.slice(), goal:d=>dayCfg(d).goal }; }catch(e){} },0); }catch(e){}
@@ -7685,7 +7694,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.72';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.73';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
