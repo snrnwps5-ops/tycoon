@@ -26,10 +26,11 @@ const GRG=new THREE.Group();
 furn({k:'podium',x:-1.6,z:4.0,w:0.7,d:0.5,c:'#1d2433',label:'안내'});
 ob(-1.95,-1.25,3.75,4.25);
 const GSPOT={type:'greet',x:-1.6,z:4.9,face:Math.PI,occ:null,on:true};
-// 물류 & 재고 센터 데스크 (v2.6 · 백오피스)
-furn({k:'c',x:-5.2,z:-6.42,w:2.2,d:0.78,c:'#2a3144',label:'물류 센터',dark:1});
-furn({k:'podium',x:-4.0,z:-6.78,w:0.5,d:0.5,c:'#c9955a',label:''});
-ob(-6.4,-4.0,-6.82,-6.02);
+// 물류 & 재고 센터 데스크 (v2.6 · 백오피스) — v2.76: 선반 앞 통로 확보를 위해 남쪽으로 0.72m
+const HUBCFG={x:-5.2,z:-5.70,padZ:-4.98};
+furn({k:'c',x:-5.2,z:-5.70,w:2.2,d:0.78,c:'#2a3144',label:'물류 센터',dark:1});
+furn({k:'podium',x:-4.0,z:-6.06,w:0.5,d:0.5,c:'#c9955a',label:''});
+ob(-6.4,-4.0,-6.10,-5.30);
 // 계산대
 const CASH={x:2.8,z:3.4,meshes:[],g:new THREE.Group()};
 furn({k:'c',x:2.8,z:2.6,w:1.4,d:0.6,c:'#fafbfd',label:'계산'});

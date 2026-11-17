@@ -26,7 +26,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.75';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.76';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.75</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.76</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -463,6 +463,7 @@ body.title #camctl,body.title #intp{opacity:0!important;pointer-events:none!impo
   #bizUI .bzt{width:100%;max-width:776px;margin:0 auto}
   #bizUI .bzh{margin-left:max(8px,calc((100% - 776px)/2));margin-right:max(8px,calc((100% - 776px)/2))}
 }
+/* ================= v2.76: 재고 선반 앞 통로 확보(데스크 이동) · 집기 대상 선반 1개 · 힌트 겹침 ================= */
 /* ================= v2.75: 전체 UI 마감 + 신규 콘텐츠 ================= */
 /* 1) 모달 공통 — 여백·닫기 버튼·헤더 여유 */
 #modal .box{padding:16px 14px 18px;scroll-padding-bottom:14px;overscroll-behavior:contain}
@@ -587,7 +588,7 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.75</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.76</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1239,21 +1240,25 @@ const BILLG=new THREE.BoxGeometry(0.5,0.13,0.3); const BILLM=new THREE.MeshLambe
 function bundle(){ const g=new THREE.Group(); const a=new THREE.Mesh(BILLG,BILLM); a.castShadow=true; g.add(a); g.add(new THREE.Mesh(gget('band',()=>new THREE.BoxGeometry(0.1,0.135,0.305)),BANDM)); return g; }
 let cashVal=S.cash||0; function rebuildCash(){ const n=Math.min(36,Math.ceil(cashVal/10)); while(CASH.meshes.length<n){ const i=CASH.meshes.length; const m=bundle(); m.position.set(((i%3)-1)*0.52,(Math.floor(i/9))*0.14+0.07,((Math.floor(i/3)%3)-1)*0.32); CASH.g.add(m); CASH.meshes.push(m); } while(CASH.meshes.length>n) CASH.g.remove(CASH.meshes.pop()); }
 rebuildCash();
-/* ---- v2.6: 물류 & 재고 센터 데스크 (백오피스 · 창고 앞) ---- */
+/* ---- v2.6: 물류 & 재고 센터 데스크 (백오피스 · 창고 앞) ----
+   v2.76: 데스크를 남쪽으로 0.72m 내렸다. 폰/랩탑/워치 선반 앞 통로가 0.70m → 1.42m 로 넓어져
+   재고를 집은 자리에서 데스크·선반·벽 사이에 몸이 끼지 않는다. (0.70m는 몸 폭 0.56m + 14cm 뿐이었다) */
+const HUBCFG={x:-5.2,z:-5.70,padZ:-4.98};
 { const HUBG=new THREE.Group(); scene.add(HUBG);
-  floorPlane(2.8,2.2,tileTex('#dfe3ea','#d3d8e1','#bcc3ce',2),[1.4,1.1],-5.2,-6.3,0.062);
-  rbox(2.2,0.12,0.78,'#2a3144',-5.2,0.92,-6.42,HUBG,0.05);
-  box(0.08,0.86,0.7,'#1d2433',-6.2,0.45,-6.42,HUBG); box(0.08,0.86,0.7,'#1d2433',-4.2,0.45,-6.42,HUBG);
-  box(1.0,0.06,0.6,'#c9ced8',-5.6,0.86,-6.42,HUBG);
-  box(0.54,0.36,0.04,'#0f1420',-5.6,1.2,-6.64,HUBG); box(0.06,0.2,0.06,'#8a93a0',-5.6,1.02,-6.64,HUBG);
-  box(0.32,0.04,0.22,'#c9ced8',-4.62,1.0,-6.22,HUBG); box(0.06,0.1,0.06,'#5ad1ff',-4.62,1.05,-6.22,HUBG);
-  rbox(0.5,0.34,0.44,'#c9955a',-4.0,0.17,-6.78,HUBG,0.03); box(0.5,0.05,0.1,'#f2e3c8',-4.0,0.28,-6.78,HUBG);
+  const HX=HUBCFG.x, HZ=HUBCFG.z;
+  floorPlane(2.8,2.2,tileTex('#dfe3ea','#d3d8e1','#bcc3ce',2),[1.4,1.1],HX,HZ+0.12,0.062);
+  rbox(2.2,0.12,0.78,'#2a3144',HX,0.92,HZ,HUBG,0.05);
+  box(0.08,0.86,0.7,'#1d2433',HX-1.0,0.45,HZ,HUBG); box(0.08,0.86,0.7,'#1d2433',HX+1.0,0.45,HZ,HUBG);
+  box(1.0,0.06,0.6,'#c9ced8',HX-0.4,0.86,HZ,HUBG);
+  box(0.54,0.36,0.04,'#0f1420',HX-0.4,1.2,HZ-0.22,HUBG); box(0.06,0.2,0.06,'#8a93a0',HX-0.4,1.02,HZ-0.22,HUBG);
+  box(0.32,0.04,0.22,'#c9ced8',HX+0.58,1.0,HZ+0.20,HUBG); box(0.06,0.1,0.06,'#5ad1ff',HX+0.58,1.05,HZ+0.20,HUBG);
+  rbox(0.5,0.34,0.44,'#c9955a',HX+1.2,0.17,HZ-0.36,HUBG,0.03); box(0.5,0.05,0.1,'#f2e3c8',HX+1.2,0.28,HZ-0.36,HUBG);
   { const t=canvasTex((g,w,h)=>{ g.fillStyle='#0f2a4a'; g.fillRect(0,0,w,h); g.fillStyle='#5ad1ff'; g.fillRect(0,0,w,9); g.fillStyle='#ffffff'; g.font='bold 60px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('LOGISTICS',w/2,58); g.fillStyle='#cfe0ff'; g.font='bold 26px "Noto Sans KR",sans-serif'; g.fillText('물류 센터',w/2,108); },256,136);
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(0.92,0.48),new THREE.MeshBasicMaterial({map:t})); m.position.set(-5.2,1.62,-6.72); HUBG.add(m);
-    box(0.96,0.54,0.05,'#0f2a4a',-5.2,1.62,-6.76,HUBG); }
+    const m=new THREE.Mesh(new THREE.PlaneGeometry(0.92,0.48),new THREE.MeshBasicMaterial({map:t})); m.position.set(HX,1.62,HZ-0.30); HUBG.add(m);
+    box(0.96,0.54,0.05,'#0f2a4a',HX,1.62,HZ-0.34,HUBG); }
   { const pt=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(22,165,140,.9)'; g.beginPath(); g.arc(w/2,h/2,w/2-6,0,7); g.fill(); g.strokeStyle='#fff'; g.lineWidth=8; g.stroke(); g.fillStyle='#fff'; g.font='bold 42px "Black Han Sans",sans-serif'; g.textAlign='center'; g.fillText('물류',w/2,h/2-8); g.fillText('지원',w/2,h/2+40); },256,256);
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5),new THREE.MeshBasicMaterial({map:pt,transparent:true,depthWrite:false})); m.rotation.x=-Math.PI/2; m.position.set(-5.2,FLOOR_Y.pad,-5.55); m.renderOrder=2; scene.add(m); }
-  ob(-6.4,-4.0,-6.82,-6.02);
+    const m=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5),new THREE.MeshBasicMaterial({map:pt,transparent:true,depthWrite:false})); m.rotation.x=-Math.PI/2; m.position.set(HX,FLOOR_Y.pad,HUBCFG.padZ); m.renderOrder=2; scene.add(m); }
+  ob(HX-1.2,HX+1.2,HZ-0.40,HZ+0.40);
 }
 // decor (unlock)
 const DECOR=new THREE.Group(); scene.add(DECOR);
@@ -2197,7 +2202,7 @@ function openStockout(c){ curFace=c.face; quizOpen=true; c.st0=c.st; c.st='consu
 /* ================= v2.6 작업 9-A: 물류 & 재고 센터 백오피스 재고 업무 =================
    ① 입고 검수(시리얼 스캔) ② 재고 실사(Cycle Count) ③ 불량·반품(RMA) 분리 보관 ④ 재고 담당 Lv2 자율 분담
    오차 = "아직 정리되지 않은 실물" — 미검수 입고 박스 + RMA 보관 대수. 그래서 실사 오차는 플레이어가 만든 상태에서 나옵니다. */
-const HUBP={x:-5.2,z:-5.55};        /* 데스크 앞 발판 (3D·2D 공통 좌표) */
+const HUBP={x:HUBCFG.x,z:HUBCFG.padZ};        /* 데스크 앞 발판 (3D·2D 공통 좌표) — v2.76 데스크와 함께 남쪽으로 이동 */
 const HUB_AUTO=9;                   /* 재고 담당이 박스를 대신 검수하기까지 걸리는 시간 */
 function hubCrew(){ return (S.crew||[]).find(c=>c.role==='runner'&&(c.lv||1)>=2)||null; }
 function hubDockQty(){ return (S.dock||[]).reduce((a,o)=>a+(o.q||0),0); }
@@ -2338,7 +2343,7 @@ function hubTick(dt){ hubScanTick(dt);
     const cr=hubCrew();
     if(cr&&!HUBSCAN.on){ for(let i=0;i<S.dock.length;i++){ const o=S.dock[i]; if(time-(o._t==null?time:o._t)>HUB_AUTO){ hubAutoInspect(i,cr); break; } } } }
   if(window.HUBOPEN||quizOpen||$('modal').classList.contains('on')||window.HUB_LOCK) return;
-  if(hd<1.25) openHub('in'); }
+  if(hd<1.15) openHub('in'); }   /* v2.76: 발판 판정 1.25→1.15 — 데스크 옆 통로를 지나가기만 해도 물류 창이 열리지 않게 */
 addEventListener('keydown',function(e){ if(!HUBSCAN.on) return; if(e.key===' '||e.code==='Space'){ e.preventDefault(); hubScanHit(); } });
 
 /* ---- Today-at session: 오늘의 클래스 ---- */
@@ -2663,6 +2668,7 @@ const v3=new THREE.Vector3(); const fts=[];
 function place(el,p,y){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el.style.left=((v3.x+1)/2*W)+'px'; el.style.top=((1-v3.y)/2*H)+'px'; }
 /* ---- v2.1: 손님 말풍선 겹침 완화 (화면 60px 이내 → 위로 밀기) + 플레이어와 가까운 손님을 맨 위로 ---- */
 const LBV=[];
+var HINTB=0;  /* v2.76: 손님 말풍선이 하단 힌트 자리를 덮는 동안 힌트를 잠시 감춘다 */
 function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el._sx=(v3.x+1)/2*W; el._sy=(1-v3.y)/2*H; el._oy=0; el._d=d||0;
   /* v2.60: 말풍선이 화면 좌우 밖으로 나가지 않게 안쪽으로 붙인다(폭은 CSS max-width가 먼저 줄인다) */
   const _hw=Math.min((el._w||120)/2+4,W/2); el._sx=Math.max(_hw,Math.min(W-_hw,el._sx)); LBV.push(el); }
@@ -2673,7 +2679,10 @@ function lbFlush(){ if(!LBV.length) return; const L=LBV.slice().sort((a,b)=>a._s
       if(!hit) break; a._oy=(hit._sy-hit._oy)+need-a._sy; }
   }
   const D=L.slice().sort((a,b)=>b._d-a._d); for(let i=0;i<D.length;i++) D[i].style.zIndex=String(i+1);
-  for(let i=0;i<L.length;i++){ const el=L[i]; el.style.left=el._sx.toFixed(1)+'px'; el.style.top=(el._sy-el._oy).toFixed(1)+'px'; if(el._oy>0) el.classList.add('lift'); else el.classList.remove('lift'); }
+  const _W=VW||innerWidth,_H=VH||innerHeight;
+  for(let i=0;i<L.length;i++){ const el=L[i]; const _ty=el._sy-el._oy; el.style.left=el._sx.toFixed(1)+'px'; el.style.top=_ty.toFixed(1)+'px'; if(el._oy>0) el.classList.add('lift'); else el.classList.remove('lift');
+    /* v2.76: 말풍선이 하단 힌트(#hint: bottom 100px+safe-area) 자리를 덮으면 힌트를 잠시 감춘다 */
+    try{ if(_ty>_H-175&&_ty<_H-52&&Math.abs(el._sx-_W/2)<200) HINTB=performance.now()+300; }catch(e){} }
   LBV.length=0; }
 function floatText(p,txt,cls){ const el=document.createElement('div'); el.className='ft'+(cls?' '+cls:''); el.textContent=txt; $('labels').appendChild(el); fts.push({el,p:p.clone(),t:0}); }
 let toastT=0, toastLock=0; function toast(m,s,force){ if(toastLock>0&&!force) return; const el=$('toast'); el.textContent=m; el.classList.add('on'); toastT=s||2.5; }
@@ -3122,8 +3131,12 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
   pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); lpTick(dt); expTick(dt); autoTick(dt); inv2Tick(dt); try{ repTick(dt); }catch(e){} clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt);
-  SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); }
-    if(pickT<=0&&s.n>0&&player.stack.length<CAP()&&Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<1.25){ s.n--; useStock(s.t); layoutSrc(s); fly(makeItem(s.t),new THREE.Vector3(s.x,1.0,s.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(s.t); snd('ui',0.3,1.3); pickT=0.18; } });
+  SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); } });
+  /* v2.76: 집기는 사거리 안에서 '가장 가까운 선반 하나'에서만 — 폰을 집으려는데 옆 선반의 랩탑·워치가 같이 딸려와
+     손이 가득 차 정작 폰을 못 들고 가던 문제 수정 */
+  if(pickT<=0&&player.stack.length<CAP()){ let bs=null,bd=1e9;
+    SRC.forEach(s=>{ if(!s.on||s.n<=0) return; const d=Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9)); if(d<1.25&&d<bd){ bd=d; bs=s; } });
+    if(bs){ bs.n--; useStock(bs.t); layoutSrc(bs); fly(makeItem(bs.t),new THREE.Vector3(bs.x,1.0,bs.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(bs.t); snd('ui',0.3,1.3); pickT=0.18; } }
   // cash
   /* v2.10: 계산대 현금 회수는 '영업 중(run)'에만 — 마감 연출(end)·정산창(result)에서 회수되면 영수증 스냅샷과 HUD 현금이 어긋난다. 남은 현금은 다음 날 그대로 있다가 회수된다. */
   cashT-=dt; if(dayState==='run'&&cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
@@ -3226,7 +3239,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   for(let k=fts.length-1;k>=0;k--){ const f=fts[k]; f.t+=dt; place(f.el,f.p,f.p.y+f.t*1.2); f.el.style.opacity=Math.min(1,2.2-f.t*1.6); if(f.t>1.4){ f.el.remove(); fts.splice(k,1); } }
   // guide + hud
   const gd=guide(); if(gd&&Math.hypot(player.pos.x-gd[0],player.pos.z-gd[1])>1.0){ arrow.visible=gring.visible=true; arrow.position.set(gd[0],2.2+Math.abs(Math.sin(time*4))*0.4,gd[1]); arrow.rotation.y+=dt*3; gring.position.set(gd[0],FLOOR_Y.gring,gd[1]); gring.scale.setScalar(1+Math.sin(time*5)*0.12); } else arrow.visible=gring.visible=false;
-  hintT-=dt; if(hintT<=0){ const show=S.lvl<4&&gd; $('hint').style.opacity=show?1:0; if(show) $('hint').textContent=gd[2]; }
+  hintT-=dt; if(hintT<=0){ const show=S.lvl<4&&gd&&performance.now()>HINTB; $('hint').style.opacity=show?1:0; if(show) $('hint').textContent=gd[2]; }
   /* v2.61: HUD 수리실 버튼 배지 (접수 대기 건수) */ try{ repBadge(); }catch(e){}
   shownMoney+=(money-shownMoney)*Math.min(1,dt*10); if(Math.abs(money-shownMoney)<1) shownMoney=money; $('money').textContent=Math.floor(shownMoney).toLocaleString(); $('lv').textContent=S.lvl; $('xp').style.width=Math.min(100,S.xp/(6+S.lvl*4)*100)+'%';
   $('rate').textContent=(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1)); { const nv=npsOf(dayNps); const rm=$('rooms'); rm.textContent='NPS '+(nv==null?'—':(nv>0?'+':'')+nv); rm.style.background=nv==null?'':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'; } setCarry(player.stack.length,CAP());
@@ -8484,7 +8497,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.75';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.76';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -8983,6 +8996,32 @@ try{ v267ClampSave(); }catch(e){}
 /* v2.68: 테마 저장값은 읽지 않고 지운다(어떤 값이 남아 있어도 테크 스토어로 뜬다) */
 try{ try{ localStorage.removeItem('tech-theme'); }catch(_){} }catch(e){}
 
+/* ---------------- v2.76 QA 훅 ---------------- */
+try{ setTimeout(function(){ try{
+  window.__H=window.__H||{};
+  window.__H.v276={
+    ver:'v2.76',
+    desk:function(){ try{ return {x:HUBCFG.x,z:HUBCFG.z,padZ:HUBCFG.padZ,hubP:HUBP,ob:OB.filter(function(b){ return Math.abs(b.x1+6.4)<0.01&&Math.abs(b.z2+5.30)<0.01; })[0]||null}; }catch(e){ return null; } },
+    /* 선반 바로 앞에서 플레이어 중심이 설 수 있는 z 구간(첫 구간) = 통로 폭 */
+    aisle:function(){ try{
+      var R=0.28, out={};
+      [['p',-5.6],['l',-4.0],['w',-2.4]].forEach(function(pair){
+        var x=pair[1], segs=[], cur=null;
+        for(var z=-8.6;z<=-3.2;z+=0.01){ var ok=true;
+          for(var i=0;i<OB.length;i++){ var b=OB[i]; if(b.off) continue; if(x>b.x1-R&&x<b.x2+R&&z>b.z1-R&&z<b.z2+R){ ok=false; break; } }
+          if(ok){ if(cur===null) cur=z; } else if(cur!==null){ segs.push([cur,z-0.01]); cur=null; } }
+        if(cur!==null) segs.push([cur,-3.2]);
+        var f=segs[0]||[null,null];
+        out[pair[0]]={x:x,lo:f[0]==null?null:+f[0].toFixed(2),hi:f[1]==null?null:+f[1].toFixed(2),w:f[0]==null?0:+(f[1]-f[0]).toFixed(2),segs:segs.length};
+      });
+      return out; }catch(e){ return String(e); } },
+    pick:function(){ try{ return {stack:player.stack.slice(), cap:CAP(), shelves:SRC.map(function(s){ return {t:s.t,n:s.n}; })}; }catch(e){ return null; } },
+    escapes:function(x,z){ var out=[];
+      for(var k=0;k<8;k++){ var a=k*Math.PI/4; window.__H.tp(x,z); var p=window.__H.probe(Math.cos(a),Math.sin(a),1.6);
+        out.push(+Math.hypot(p.end[0]-x,p.end[1]-z).toFixed(2)); }
+      return out; }
+  };
+}catch(e){} },0); }catch(e){}
 /* ---------------- 테스트·QA 훅 ---------------- */
 try{
   setTimeout(function(){

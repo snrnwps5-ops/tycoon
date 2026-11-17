@@ -77,7 +77,7 @@
 
 - `python3 check_js.py` → **오류 0건**(tech.html · index.html · tech-test.html · ai-service.js · hq-ui.js)
 - `python3 _t2d/build.py` 2회 → `tech-test.html` **md5 동일**(`50ba8e6f…`), `index.html` = tech.html 동기화
-- **`v275_qa.py` (375×667, Playwright) — 24개 체크 전부 PASS**
+- **`v275_qa.py` (375×667, Playwright) — 26개 체크 전부 PASS**
   - 버전 표기 통일(`document.title`·타이틀 `.tv` = v2.75) · DAY 1 신규 카드 숨김 · DAY 9 세이브 유지
   - 허브 카드·CTA 여유 26px · 준비창 챌린지 카드 · 영업 시작 · HUD 겹침 0 · 칩 높이 28 · 44px 히트박스 · 챌린지 칩
   - 트로피 해금 3종 + **판매가 1.00→1.03 반영** + 3D 금색 3개
