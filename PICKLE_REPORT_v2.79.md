@@ -97,6 +97,12 @@
 
 ---
 
+## 4-1. 라이브 배포·확인
+
+- 커밋 2개를 `main`에 올렸습니다: `47e73d6`(본체) → `a18cd5a`(토스트 첫 프레임 위치 보정). **두 번째 푸시는 라이브 확인 중 발견한 위 4번 항목(HUD 위로 토스트가 한 프레임 스치는 문제) 때문**이며, 버전 표기는 두 커밋 모두 `v2.79` 그대로입니다.
+- 라이브 `https://snrnwps5-ops.github.io/tycoon/` 실측: `version.txt=v2.79`, `document.title=…v2.79`, `__H.v279.ver='v2.79'`, HUD 박스 `hud 6–46 / sub 50–76 / dayBar 82–122(폭 355) / 상점 130 / 전체·기본·꾸미기 184~284`, `toneMapping=4(ACES) · exposure 1.12 · outputEncoding 3001(sRGB) · 보정된 재질 759`, **콘솔 에러 0**.
+- 라이브 스크린샷 `downloads/v279_shots/live_375_run.png`.
+
 ## 5. 세이브·제약
 
 - `tech-epoch='v272'` **변경 없음**, 세이브 키 `bunsik-tech-v1` 그대로, `rank.js(w2/)`·`stat.js(u2/)` **미수정**(git status에 5개 파일만 변경).
