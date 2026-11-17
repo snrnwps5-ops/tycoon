@@ -87,6 +87,8 @@ function drawShelf(x){
   if(!x.on){ quad(x.x,x.z,1.4,0.72,'rgba(120,130,145,.45)','#8a96a8',0); ctext('잠김',x.x,x.z,Math.max(8,s*0.22),'#ffffff'); return; }
   const out=(x.n===0&&(S.inv[x.t]||0)<=0);
   const col=out?'#e8342a':('bsc'.includes(x.t)?'#2a8a3a':'#2f6fd8');
+  /* v2.77: 선반 앞 집기 타일 — 여기서 멈추면 1개씩 담긴다 */
+  quad(x.x,x.z+0.9,1.10,0.68,'rgba(255,255,255,.30)',col,0);
   quad(x.x,x.z,1.4,0.72,'#fbf4e4',col,0);
   quad(x.x-0.44,x.z,0.46,0.44,IT[x.t].c,'#ffffff',2);
   ctext(IT[x.t].n,x.x+0.06,x.z-0.12,Math.max(9,s*0.24),'#1d2433',true);
@@ -105,6 +107,31 @@ function drawSpot(sp){
   ctext(({pick:'픽',buy:'구',fix:'수',sw:'상'}[sp.type]||''),sp.x,sp.z,Math.max(8,s*0.2),col,true);
   if(!sp.on){ const p=SX(sp.x,sp.z); ctx2.strokeStyle='#5a6578'; ctx2.lineWidth=2; ctx2.beginPath(); ctx2.moveTo(p.x-0.25*s,p.y-0.25*s); ctx2.lineTo(p.x+0.25*s,p.y+0.25*s); ctx2.stroke(); }
 }
+/* ---- v2.77: 입고 구역(물류 데스크 옆) + 손에 든 박스 / 선반 배지 ---- */
+function drawInbound2(){
+  const s=SX(0,0).s;
+  quad(DOCK.x,DOCK.z,2.0,1.5,'rgba(255,176,32,.15)','#ffb020',0);
+  ctext('입고 구역',DOCK.x,DOCK.z+0.62,Math.max(8,s*0.20),'#8a5a00',true);
+  const tot=Math.max(0,(S.dock||[]).length-(DOCK.hold||0)), n=Math.min(4,tot);
+  const SP=[[-0.62,0.02],[0,0.34],[0.62,0.02],[0,-0.30]];
+  for(let i=0;i<n;i++){ const o=S.dock[i], p=SP[i]||[0,0];
+    quad(DOCK.x+p[0],DOCK.z+p[1],0.46,0.44,'#c9955a',(typeof BOXC!=='undefined'&&BOXC[o.t])||'#5a3a20',0);
+    ctext(IT[o.t].n,DOCK.x+p[0],DOCK.z+p[1],Math.max(9,s*0.2),'#ffffff',true); }
+  if(tot>4) ctext('+'+(tot-4),DOCK.x,DOCK.z-0.95,Math.max(9,s*0.2),'#ffd23f',true);
+  if(tot>0){ const cnt={}; S.dock.slice(0,tot).forEach(o=>{ cnt[o.t]=(cnt[o.t]||0)+(o.q||1); });
+    ctext(Object.keys(cnt).slice(0,3).map(t=>IT[t].n+' '+cnt[t]).join(' · '),DOCK.x,DOCK.z-0.78,Math.max(9,s*0.2),'#8a5a00',true); }
+}
+function drawCarry2(){
+  const s=SX(0,0).s;
+  SRC.forEach(x=>{ if(!x.on) return; const q=(typeof boxQty==='function')?boxQty(x.t):0;
+    if(q>0) ctext('▼ '+IT[x.t].n+' ×'+q, x.x, x.z-0.62, Math.max(9,s*0.20), '#8a5a00', true); });
+  if(typeof PKH!=='undefined'&&PKH.s&&PKH.t>0){ const k=Math.min(1,PKH.t/PICKDWELL);
+    circ(PKH.s.x,PKH.s.z+0.9,0.20+0.24*k,'rgba(123,234,98,.30)','#2faa45'); }
+  if(typeof CARRY!=='undefined'&&CARRY){ const p=SX(player.pos.x,player.pos.z);
+    ctx2.fillStyle='rgba(201,149,90,.96)'; rrect(ctx2,p.x-0.36*s,p.y-1.02*s,0.72*s,0.30*s,5); ctx2.fill();
+    ctx2.fillStyle='#3a1a00'; ctx2.font='900 '+Math.max(9,0.18*s)+'px "Noto Sans KR",sans-serif'; ctx2.textAlign='center'; ctx2.textBaseline='middle';
+    ctx2.fillText(IT[CARRY.t].n+' ×'+CARRY.q,p.x,p.y-0.87*s); }
+}
 function drawZoneText(){
   const s=SX(0,0).s;
   ctext('진열대 · 재고',-4.0,-6.6,Math.max(9,s*0.24),'rgba(255,255,255,.95)',true);
@@ -113,7 +140,7 @@ function drawZoneText(){
   ctext('픽업 카운터',-5.2,-2.6,Math.max(8,s*0.18),'#ffffff',true);
   ctext('계산대',2.8,2.6,Math.max(9,s*0.2),'#2a3144',true);
   ctext('입구 안내',-1.6,4.0,Math.max(8,s*0.2),'#ffffff',true);
-  ctext('출고 박스',DOCK.x,DOCK.z,Math.max(8,s*0.18),'#7a4a20',true);
+  /* v2.77: '출고 박스' → 입고 구역(박스·라벨은 drawInbound2에서) */
   ctext('물류 지원',-5.2,-5.55,Math.max(8,s*0.18),'#0b6e5c',true);
   ctext('창고',6.15,-2.0,Math.max(8,s*0.18),'#0b6e5c',true);
 }
@@ -199,9 +226,11 @@ function draw2D(){
   drawOutside(); drawFloor(); drawWalls();
   for(const f of FURN) drawFurn(f);
   for(const x of SRC) drawShelf(x);
+  drawInbound2();
   for(const p of PADS){ if(padVisible(p)) drawPad2(p); }
   for(const sp of SPOTS) drawSpot(sp);
   drawZoneText();
+  drawCarry2();
   drawKiosk2();
   drawActors();
   drawTruck2();
@@ -261,7 +290,7 @@ function navStep(dt){
   if(NAV.stuckT>2.0&&NAV.tries<2){ NAV.stuckT=0; NAV.tries++; if(NAV.goal){ const g=NAV.goal; const path=findPath(p.x,p.z,g.x,g.z); if(path&&path.length) NAV.path=path; else { NAV.path=[]; NAV.goal=null; return null; } } }
   return {ix:dx/L, iz:dz/L};
 }
-const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-4.0,-7.55],restock:[5.9,-2.0]};
+const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-3.65,-7.55],restock:[5.9,-2.0],inbound:[-2.0,-5.6]};
 function nudge(dx,dz){ NAV.path=[]; NAV.goal=null; const q={x:player.pos.x,z:player.pos.z};
   for(let i=0;i<6;i++){ const t={x:q.x+dx*0.15,z:q.z+dz*0.15}; collide(t); const mv=Math.hypot(t.x-q.x,t.z-q.z); q.x=t.x; q.z=t.z; if(mv<0.005) break; }
   player.pos.x=q.x; player.pos.z=q.z; player.face=Math.atan2(dx,dz); }

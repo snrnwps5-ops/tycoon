@@ -26,7 +26,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.76';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.77';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.76</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.77</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -588,7 +588,7 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.76</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.77</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1127,7 +1127,8 @@ if(STG>=2){ [[-4.6,4.4],[5.3,1.7]].forEach(([x,z])=>planterTree(x,z)); }
 /* v2.11: 좌우 벽면 진열 케이스 충돌 박스를 케이스 앞면(±6.59)에 맞추고 벽 박스(±7.18)와 붙임 — 보이지 않는 벽·벽 사이 틈 제거 */
 ob(-7.18,-6.62,-0.6,4.6); ob(6.62,7.18,-0.6,4.6);
 { const t=canvasTex((g,w,h)=>{ const gr=g.createLinearGradient(0,0,w,h); gr.addColorStop(0,TS.promo[0]); gr.addColorStop(0.5,TS.promo[1]); gr.addColorStop(1,'#ff5a8a'); g.fillStyle=gr; g.fillRect(0,0,w,h); g.fillStyle='#fff'; g.font='bold 74px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('MEGA SALE',w/2,h/2-18); g.font='bold 28px "Noto Sans KR",sans-serif'; g.fillText('가전·모바일 전 품목 특가',w/2,h/2+38); },512,256);
-  const m=new THREE.Mesh(new THREE.PlaneGeometry(3.4,1.7),new THREE.MeshBasicMaterial({map:t})); m.position.set(-0.6,2.05,-8.78); scene.add(m); box(3.6,1.9,0.08,'#1d2433',-0.6,2.05,-8.84); window.PROMO=m; }
+  /* v2.77: 선반 간격을 2.2m로 넓히면서 워치 선반 자리를 비켜 뒤벽 가운데(0.62)로 옮기고 크기를 줄였다 */
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.1),new THREE.MeshBasicMaterial({map:t})); m.position.set(0.62,2.15,-8.78); scene.add(m); box(2.36,1.24,0.08,'#1d2433',0.62,2.15,-8.84); window.PROMO=m; }
 // entrance mat + sign
 { const t=canvasTex((g,w,h)=>{ g.fillStyle='#2f6fd8'; g.fillRect(0,0,w,h); g.fillStyle='#fff'; g.font='bold 48px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('WELCOME',w/2,h/2+3); },256,96);
   const m=new THREE.Mesh(new THREE.PlaneGeometry(2.2,0.8),new THREE.MeshLambertMaterial({map:t})); m.rotation.x=-Math.PI/2; m.position.set(0,0.1,6.8); scene.add(m);
@@ -1165,7 +1166,13 @@ function addShelf(t,x,z,lock){ const g=new THREE.Group(); g.position.set(x,0,z);
   const initN=(S.shelf&&typeof S.shelf[t]==='number')?S.shelf[t]:4;
   const s={t,x,z,g,n:initN,max:9,tt:0,sm:[],on:!lock,so}; g.visible=!lock; SRC.push(s); layoutSrc(s); return s; }
 function layoutSrc(s){ while(s.sm.length<s.n){ const j=s.sm.length; const m=makeItem(s.t); m.position.set(((j%3)-1)*0.42,[0.47,0.97,1.47][Math.floor(j/3)%3],0.05); s.g.add(m); s.sm.push(m); } while(s.sm.length>s.n) s.g.remove(s.sm.pop()); if(s.so) s.so.visible=s.n===0&&S.inv[s.t]<=0; }
-addShelf('p',-5.6,-8.4); addShelf('l',-4.0,-8.4); addShelf('w',-2.4,-8.4);
+/* v2.77: 폰/랩탑/워치 선반 간격 1.6m → 2.2m — 선반 사이(0.76m)로도 지나갈 수 있고, 붙어 보이지 않는다 */
+addShelf('p',-5.85,-8.4); addShelf('l',-3.65,-8.4); addShelf('w',-1.45,-8.4);
+/* v2.77: 선반 앞 '집기 타일' — 이 타일 위에서 잠깐 멈추면 1개씩 담긴다(지나가기만 하면 안 담김) */
+[['p',-5.85],['l',-3.65],['w',-1.45]].forEach(function(q){
+  const pm=new THREE.Mesh(new THREE.PlaneGeometry(1.10,0.68),new THREE.MeshBasicMaterial({color:IT[q[0]].c,transparent:true,opacity:0.22,depthWrite:false}));
+  pm.rotation.x=-Math.PI/2; pm.position.set(q[1],FLOOR_Y.pad,-7.5); pm.renderOrder=2; scene.add(pm);
+});
 const SHB=addShelf('b',2.6,-8.4,true), SHS=addShelf('s',4.2,-8.4,true), SHC=addShelf('c',5.8,-8.4,true);
 function fixPart(){ return STG>=1&&Math.random()<0.25?'c':Math.random()<0.55?'b':'s'; }
 // stockroom floor tint
@@ -2136,9 +2143,144 @@ function openRank(g){ g=g==null?STAGE_OF(S.day):g; const L=ranking(g), cur=STAGE
   h+='<div style="display:flex;gap:8px"><button id="rMap" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️ 지역 지도</button><button id="rLog" class="gray">영업 일지</button></div><button id="mOk">닫기</button>'; openModal(h);
   $('rLog').onclick=()=>{ snd('ui',0.4); openLog(); }; $('rMap').onclick=()=>{ snd('ui',0.4); openWorld(); }; $('mbox').onclick=e=>{ const b=e.target.closest('[data-g]'); if(b){ snd('ui',0.3); openRank(+b.dataset.g); } }; }
 /* ---- inventory v2: dock receiving, manual restock, alerts, stock-out scenario, auto order ---- */
-S.dock=S.dock||[]; const DOCK={x:4.3,z:5.2,g:new THREE.Group(),t:0}; DOCK.g.position.set(DOCK.x,0,DOCK.z); scene.add(DOCK.g);
-function drawDock(){ while(DOCK.g.children.length) DOCK.g.remove(DOCK.g.children[0]); const n=Math.max(0,Math.min(5,S.dock.length-(DOCK.hold||0))); for(let i=0;i<n;i++){ rbox(0.62,0.42,0.5,'#c9955a',((i%2)-0.5)*0.66,0.21+Math.floor(i/2)*0.43,0,DOCK.g,0.04); box(0.64,0.06,0.12,'#f2e3c8',((i%2)-0.5)*0.66,0.3+Math.floor(i/2)*0.43,0,DOCK.g); } if(n){ const r=new THREE.Mesh(new THREE.RingGeometry(0.95,1.08,32),new THREE.MeshBasicMaterial({color:'#ffb020',transparent:true,opacity:0.8,depthWrite:false})); r.rotation.x=-Math.PI/2; r.position.y=FLOOR_Y.dock; r.renderOrder=2; DOCK.g.add(r); } }
-function receiveDock(who){ if(!S.dock.length) return; S.dock.forEach(o=>{ S.inv[o.t]+=o.q; soWarn[o.t]=0; const s=srcOf2(o.t); if(s&&s.on) fly(makeItem(o.t),new THREE.Vector3(DOCK.x,1.0,DOCK.z),()=>new THREE.Vector3(REST.x,1.0,REST.z),0.6); }); const n=S.dock.reduce((a,o)=>a+o.q,0); S.dock=[]; DOCK.t=0; DOCK.hold=0; drawDock(); toast('📦 입고 처리 완료 · 창고 +'+n+(who?' ('+who+')':''),2.6); snd('coin',0.45,0.9); save(); }
+S.dock=S.dock||[];
+/* ================= v2.77: 입고 구역 + 수동 운반 루프 =================
+   발주 → 트럭 도착 → 물류 데스크 옆 '입고 구역'에 배송 박스 1상자(=발주 묶음 1개)
+   → 플레이어가 박스를 집어 그 품목 선반 앞에 내려놓으면 진열이 채워지고, 넘치는 수량만 창고(S.inv)로.
+   · 박스는 손이 비어 있을 때 1상자, 서서 0.30초 머물면 집힌다(지나가기 방지)
+   · 박스를 든 동안에는 제품 집기가 잠기고, 목표 선반 위에 화살표·배지가 떠서 어디에 넣을지 바로 보인다
+   · 재고 담당(러너)이 있으면 14초 뒤 대신 옮긴다 — 직접 옮기면 즉시 + 조금의 보너스(손맛), 자동은 보험 */
+const DOCK={x:-2.00,z:-5.75,g:new THREE.Group(),t:0};   /* v2.77: 입구 출고 박스 → 물류 데스크 동쪽 '입고 구역' */
+DOCK.g.position.set(DOCK.x,0,DOCK.z); scene.add(DOCK.g);
+const PICKR=0.90, PICKDWELL=0.22, PICKCD=0.36, PICKSLOW=1.20;
+const PKH={s:null,t:0};
+const BOXBONUS=5, BOXWAIT=14, BOXPICK=0.30, BOXGRAB=1.00;
+const BOXC={p:'#2f6fd8',l:'#7a8698',w:'#e8342a',b:'#2a8a3a',s:'#1d2433',c:'#5a6578'};
+let CARRY=null, boxHoldT=0, runBoxT=0, boxWarnT=0, carBoxKey='';
+try{ if(S.carry&&IT[S.carry.t]&&(S.carry.q||0)>0) CARRY={t:S.carry.t,q:Math.max(1,Math.min(9,Math.floor(S.carry.q)))}; }catch(e){ CARRY=null; }
+function boxQty(t){ let n=0; (S.dock||[]).forEach(o=>{ if(o.t===t) n+=(o.q||1); }); if(CARRY&&CARRY.t===t) n+=CARRY.q; return n; }
+function boxShelf(t){ return SRC.find(s=>s.on&&s.t===t)||null; }
+function putInShelf(s,q){ const k=Math.min(Math.max(0,s.max-s.n),q); if(k>0){ s.n+=k; layoutSrc(s); } return q-k; }
+/* 입고 구역 바닥 패드 + 안내 (한 번만 그린다) */
+let INBLAB=null, inbLabKey='';
+function inbLabel(sub){ const k=String(sub||''); if(k===inbLabKey&&INBLAB) return; inbLabKey=k;
+  const lt=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h);
+    const R=(x,y,ww,hh,r)=>{ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+ww,y,x+ww,y+hh,r); g.arcTo(x+ww,y+hh,x,y+hh,r); g.arcTo(x,y+hh,x,y,r); g.arcTo(x,y,x+ww,y,r); g.closePath(); };
+    g.fillStyle='rgba(17,24,39,.86)'; R(3,4,w-6,h-8,18); g.fill(); g.strokeStyle='#ffb020'; g.lineWidth=5; R(3,4,w-6,h-8,18); g.stroke();
+    g.textAlign='center'; g.textBaseline='middle';
+    g.fillStyle='#ffd23f'; g.font='bold 40px "Black Han Sans",sans-serif'; g.fillText('입고 구역',w/2,h*0.31);
+    g.fillStyle='#ffffff'; g.font='bold 30px "Noto Sans KR",sans-serif'; g.fillText(k||'박스를 집어 선반으로',w/2,h*0.70); },384,150);
+  if(!INBLAB){ INBLAB=new THREE.Mesh(new THREE.PlaneGeometry(1.46,0.57),new THREE.MeshBasicMaterial({map:lt,transparent:true,depthWrite:false}));
+    INBLAB.rotation.x=-Math.PI/2; INBLAB.position.set(DOCK.x,FLOOR_Y.dock+0.002,DOCK.z+0.50); INBLAB.renderOrder=3; scene.add(INBLAB); }
+  else { INBLAB.material.map=lt; INBLAB.material.needsUpdate=true; } }
+{ const pad=new THREE.Mesh(new THREE.PlaneGeometry(2.0,1.5),new THREE.MeshBasicMaterial({color:'#ffb020',transparent:true,opacity:0.15,depthWrite:false}));
+  pad.rotation.x=-Math.PI/2; pad.position.set(DOCK.x,FLOOR_Y.dock,DOCK.z); pad.renderOrder=2; scene.add(pad);
+  inbLabel(''); }
+function drawDock(){ while(DOCK.g.children.length) DOCK.g.remove(DOCK.g.children[0]);
+  const total=Math.max(0,(S.dock||[]).length-(DOCK.hold||0)), n=Math.min(4,total);
+  const SP=[[-0.29,-0.50],[0.29,-0.50],[-0.29,0.02],[0.29,0.02]];
+  for(let i=0;i<n;i++){ const o=S.dock[i], p=SP[i]||[0,0];
+    rbox(0.46,0.36,0.44,'#c9955a',p[0],0.18,p[1],DOCK.g,0.04);
+    box(0.48,0.05,0.09,'#f2e3c8',p[0],0.37,p[1],DOCK.g);
+    const lt=canvasTex((g,w,h)=>{ g.fillStyle=BOXC[o.t]||'#5a3a20'; g.fillRect(0,0,w,h); g.fillStyle=(o.t==='l')?'#151b28':'#ffffff'; g.font='bold 66px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText(IT[o.t].n,w/2,h/2+4); },96,96);
+    const lp=new THREE.Mesh(new THREE.PlaneGeometry(0.33,0.33),new THREE.MeshBasicMaterial({map:lt,transparent:true})); lp.position.set(p[0],0.18,p[1]+0.226); DOCK.g.add(lp); }
+  if(total>4){ const lt=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(17,24,39,.94)'; g.fillRect(0,0,w,h); g.fillStyle='#ffd23f'; g.font='bold 44px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('+'+(total-4),w/2,h/2+2); },96,96);
+    const lp=new THREE.Mesh(new THREE.PlaneGeometry(0.32,0.32),new THREE.MeshBasicMaterial({map:lt,transparent:true})); lp.position.set(0.62,0.72,-0.50); DOCK.g.add(lp); }
+  /* 대기 중인 박스 요약 — 어떤 품목이 몇 개 와 있는지 입고 구역 바닥 라벨에 한 줄로 */
+  { const cnt={}; S.dock.slice(0,total).forEach(o=>{ cnt[o.t]=(cnt[o.t]||0)+(o.q||1); });
+    const txt=total>0?Object.keys(cnt).slice(0,3).map(t=>IT[t].n+' '+cnt[t]).join(' · '):'';
+    try{ inbLabel(txt); }catch(e){} }
+  if(n){ const r=new THREE.Mesh(new THREE.RingGeometry(0.95,1.08,32),new THREE.MeshBasicMaterial({color:'#ffb020',transparent:true,opacity:0.8,depthWrite:false})); r.rotation.x=-Math.PI/2; r.position.y=FLOOR_Y.dock+0.003; r.renderOrder=2; DOCK.g.add(r); } }
+function takeBox(){ if(CARRY||!(S.dock||[]).length) return false;
+  if(player.stack.length>0){ if(boxWarnT<=0){ boxWarnT=1.8; toast('손에 든 제품을 먼저 처리해야 박스를 들 수 있어요',2.2); } return false; }
+  const o=S.dock.shift(); CARRY={t:o.t,q:Math.max(1,Math.min(9,o.q||1))}; S.carry={t:CARRY.t,q:CARRY.q};
+  boxHoldT=0; soWarn[CARRY.t]=0; carBoxKey=''; drawDock(); snd('ui',0.42,1.1); haptic(12);
+  toast('📦 '+IT[CARRY.t].n+' 박스 '+CARRY.q+'개를 들었어요 · '+IT[CARRY.t].n+' 선반으로',2.6);
+  save(); return true; }
+function depositBox(s){ const c=CARRY; if(!c) return;
+  CARRY=null; S.carry=null; carBoxKey='';
+  const over=putInShelf(s,c.q); soWarn[s.t]=0;
+  if(over>0) S.inv[s.t]=(S.inv[s.t]||0)+over;
+  money+=BOXBONUS; S.stats.earn=(S.stats.earn||0)+BOXBONUS;
+  try{ sparkle(s.x,1.35,s.z,'#ffd23f'); }catch(e){}
+  try{ fly(makeItem(s.t),new THREE.Vector3(player.pos.x,1.0,player.pos.z),()=>new THREE.Vector3(s.x,1.1,s.z),0.22); }catch(e){}
+  floatText(new THREE.Vector3(s.x,2.2,s.z),'직접 진열 +$'+BOXBONUS,'say');
+  snd('coin',0.5,1.15); haptic(20); pickT=0.4; soWarn[s.t]=0;
+  toast('📦 '+IT[s.t].n+' 선반에 '+(c.q-over)+'개 진열 완료 · 직접 진열 +$'+BOXBONUS+(over>0?' (남은 '+over+'개는 창고)':''),2.8);
+  drawDock(); save(); }
+function stashBox(){ const c=CARRY; if(!c) return; CARRY=null; S.carry=null; carBoxKey='';
+  S.inv[c.t]=(S.inv[c.t]||0)+c.q; drawDock(); toast('📦 '+IT[c.t].n+' '+c.q+'개를 창고에 넣었어요',2.2); save(); }
+function runBox(){ if(!(S.dock||[]).length) return false;
+  const o=S.dock.shift(), s=boxShelf(o.t), q=Math.max(1,o.q||1);
+  if(s){ const over=putInShelf(s,q); if(over>0) S.inv[o.t]=(S.inv[o.t]||0)+over; soWarn[o.t]=0;
+    try{ fly(makeItem(o.t),new THREE.Vector3(DOCK.x,1.0,DOCK.z),()=>new THREE.Vector3(s.x,1.15,s.z),0.55); }catch(e){}
+    try{ sparkle(s.x,1.3,s.z,'#4fe0c8'); }catch(e){}
+  } else S.inv[o.t]=(S.inv[o.t]||0)+q;
+  const cr=(S.crew||[]).find(c=>c.role==='runner');
+  if(cr) toast('🧺 '+cr.name+'(재고 담당)가 '+IT[o.t].n+' 박스를 진열했어요',2.2);
+  drawDock(); save(); return true; }
+function carryTick(dt){
+  if(runBoxT>0) runBoxT-=dt;
+  if(boxWarnT>0) boxWarnT-=dt;
+  /* ① 박스 집기 — 손이 비었고 입고 구역에서 서서 머물면 */
+  if(!CARRY&&(S.dock||[]).length&&!quizOpen&&!$('modal').classList.contains('on')&&player.stack.length===0&&player.speed<PICKSLOW){
+    if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<BOXGRAB){ boxHoldT+=dt; if(boxHoldT>=BOXPICK) takeBox(); }
+    else boxHoldT=Math.max(0,boxHoldT-dt);
+  } else boxHoldT=Math.max(0,boxHoldT-dt*2);
+  /* ② 박스 내려놓기 — 해당 선반 앞에서만 */
+  if(CARRY){ const s=boxShelf(CARRY.t);
+    if(s){ if(Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9))<PICKR+0.12) depositBox(s); }
+    else stashBox();
+    if(CARRY){ SRC.forEach(o=>{ if(!o.on||o.t===CARRY.t) return;
+      if(Math.hypot(player.pos.x-o.x,player.pos.z-(o.z+0.9))<PICKR&&boxWarnT<=0){ boxWarnT=1.8; toast('이 박스는 '+IT[CARRY.t].n+' 재고예요 · '+IT[o.t].n+' 선반이 아니라 '+IT[CARRY.t].n+' 선반에 넣어 주세요',2.6); } }); } }
+  /* ③ 재고 담당 자동 운반 — 직접 옮기는 손맛을 뺏지 않게 14초 뒤부터, 3.5초 간격 */
+  if(!CARRY&&(S.dock||[]).length&&hasCrew('runner')&&runBoxT<=0&&!HUBSCAN.on){
+    const o=S.dock[0], age=(o._t==null?0:time-o._t);
+    if(age>BOXWAIT){ runBoxT=3.5; runBox(); }
+  }
+  drawCarry();
+}
+/* ---- 운반 시각: 손에 든 박스 · 선반 배지(▼) · 집기 머무름 링 ---- */
+const CARBOX=new THREE.Group(); scene.add(CARBOX); CARBOX.visible=false;
+const PKMAT={ring:new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:0.85,depthWrite:false}),
+             ok:new THREE.MeshBasicMaterial({color:'#7bea62',transparent:true,opacity:0.9,depthWrite:false})};   /* 2D 셰임은 color.set을 지원하지 않아 재질을 바꿔 쓴다 */
+const PKRING=new THREE.Mesh(new THREE.RingGeometry(0.34,0.46,28),PKMAT.ring);
+PKRING.rotation.x=-Math.PI/2; PKRING.renderOrder=4; PKRING.visible=false; scene.add(PKRING);
+const SRCBADGE={};
+function badgeFor(s,q){ const key=s.t+'|'+q; if(SRCBADGE[s.t]&&SRCBADGE[s.t].key===key) return SRCBADGE[s.t];
+  if(SRCBADGE[s.t]){ try{ scene.remove(SRCBADGE[s.t].g); }catch(e){} delete SRCBADGE[s.t]; }
+  const g=new THREE.Group();
+  const lt=canvasTex((gg,w,h)=>{ gg.clearRect(0,0,w,h);
+    const R=(x,y,ww,hh,r)=>{ gg.beginPath(); gg.moveTo(x+r,y); gg.arcTo(x+ww,y,x+ww,y+hh,r); gg.arcTo(x+ww,y+hh,x,y+hh,r); gg.arcTo(x,y+hh,x,y,r); gg.arcTo(x,y,x+ww,y,r); gg.closePath(); };
+    gg.fillStyle='rgba(17,24,39,.94)'; R(3,3,w-6,h*0.70,14); gg.fill();
+    gg.strokeStyle='#ffb020'; gg.lineWidth=5; R(3,3,w-6,h*0.70,14); gg.stroke();
+    gg.fillStyle='#ffffff'; gg.font='bold 58px "Black Han Sans",sans-serif'; gg.textAlign='center'; gg.textBaseline='middle';
+    gg.fillText(IT[s.t].n+' ×'+q,w/2,h*0.24);
+    gg.fillStyle='#ffd23f'; gg.font='bold 30px "Noto Sans KR",sans-serif'; gg.fillText('이 선반에 내려놓기',w/2,h*0.53);
+    gg.fillStyle='#ffb020'; gg.beginPath(); gg.moveTo(w/2,h*0.75); gg.lineTo(w/2-26,h*0.99); gg.lineTo(w/2+26,h*0.99); gg.closePath(); gg.fill(); },320,168);
+  const pm=new THREE.Mesh(new THREE.PlaneGeometry(1.30,0.68),new THREE.MeshBasicMaterial({map:lt,transparent:true,depthWrite:false})); g.add(pm);
+  g.renderOrder=5; g.position.set(s.x,2.62,s.z+0.02); scene.add(g);
+  SRCBADGE[s.t]={key:key,g:g}; return SRCBADGE[s.t]; }
+function drawCarry(){
+  const now=performance.now()/1000;
+  if(CARRY){
+    if(carBoxKey!==CARRY.t){ carBoxKey=CARRY.t; while(CARBOX.children.length) CARBOX.remove(CARBOX.children[0]);
+      const tt=CARRY.t, qq=CARRY.q;
+      rbox(0.50,0.42,0.48,'#c9955a',0,0,0,CARBOX,0.04); box(0.52,0.05,0.11,'#f2e3c8',0,0.22,0,CARBOX);
+      const lt=canvasTex((gg,w,h)=>{ gg.fillStyle=BOXC[tt]||'#5a3a20'; gg.fillRect(0,0,w,h); gg.fillStyle=(tt==='l')?'#151b28':'#ffffff'; gg.font='bold 34px "Black Han Sans",sans-serif'; gg.textAlign='center'; gg.textBaseline='middle'; gg.fillText(IT[tt].n+' ×'+qq,w/2,h/2+2); },160,48);
+      const lp=new THREE.Mesh(new THREE.PlaneGeometry(0.46,0.14),new THREE.MeshBasicMaterial({map:lt,transparent:true})); lp.position.set(0,0.10,0.246); CARBOX.add(lp); }
+    const a=player.face||0; CARBOX.visible=true;
+    CARBOX.position.set(player.pos.x+Math.sin(a)*0.34,0.92,player.pos.z+Math.cos(a)*0.34); CARBOX.rotation.y=a;
+  } else CARBOX.visible=false;
+  SRC.forEach(s=>{ if(!s.on) return; const q=boxQty(s.t);
+    if(q>0){ const b=badgeFor(s,q); b.g.visible=true; b.g.position.set(s.x,2.62+0.06*Math.sin(now*3),s.z+0.02); }
+    else if(SRCBADGE[s.t]) SRCBADGE[s.t].g.visible=false; });
+  if(!CARRY&&PKH.s&&PKH.t>0){ const s=PKH.s, k=Math.min(1,PKH.t/PICKDWELL);
+    PKRING.visible=true; PKRING.position.set(s.x,FLOOR_Y.pad+0.004,s.z+0.9); PKRING.scale.setScalar(0.5+0.5*k);
+    PKRING.material=(k>=1)?PKMAT.ok:PKMAT.ring; PKRING.material.opacity=0.25+0.65*k; }
+  else PKRING.visible=false;
+}
+try{ drawDock(); }catch(e){}
 const REST={x:5.6,z:-2.0,t:0}; { box(0.12,1.9,1.2,'#5a6578',6.82,0.95,REST.z); box(0.06,1.7,1.0,'#2a3144',6.74,0.9,REST.z); const t=canvasTex((g,w,h)=>{ g.fillStyle='#16a58c'; g.fillRect(0,0,w,h); g.fillStyle='#fff'; g.font='bold 40px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('창고',w/2,h/2+2); },160,64); const m=new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.3),new THREE.MeshBasicMaterial({map:t})); m.position.set(6.7,2.05,REST.z); m.rotation.y=-Math.PI/2; scene.add(m);
   const pt=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(22,165,140,.9)'; g.beginPath(); g.arc(w/2,h/2,w/2-6,0,7); g.fill(); g.strokeStyle='#fff'; g.lineWidth=8; g.stroke(); g.fillStyle='#fff'; g.font='bold 40px "Black Han Sans",sans-serif'; g.textAlign='center'; g.fillText('진열',w/2,h/2-6); g.fillText('보충',w/2,h/2+38); },256,256); REST.m=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.6),new THREE.MeshBasicMaterial({map:pt,transparent:true,depthWrite:false})); REST.m.rotation.x=-Math.PI/2; REST.m.position.set(REST.x,FLOOR_Y.rest,REST.z); REST.m.renderOrder=2; scene.add(REST.m); }
 function needRestock(){ return SRC.some(s=>s.on&&s.n<s.max&&S.inv[s.t]>0); }
@@ -2157,7 +2299,8 @@ function warnOff(t){ const w=useWarn[t]; if(w) w.on=0; }
 function useResetDay(){ useLog={}; useBeg={}; useWarn={}; }
 let restockTipT=0;
 function inv2Tick(dt){ const run=hasCrew('runner');
-  if(S.dock.length){ DOCK.t+=dt; if(Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z)<1.6) receiveDock(); else if(run&&DOCK.t>22&&!HUBSCAN.on){ const c=S.crew.find(c=>c.role==='runner'); receiveDock(c?c.name:''); }   /* v2.6: 물류 검수 시간을 남기려고 재고 담당의 자동 입고를 22초로 늦춤 (Lv2는 9초 뒤 물류 자동 검수) */ }
+  /* v2.77: 입고 박스는 자동으로 창고에 합산되지 않는다 — 직접 선반으로 옮기거나(carryTick) 재고 담당이 14초 뒤 대신 옮긴다 */
+  DOCK.t=0;
   const nr=needRestock(), near=Math.hypot(player.pos.x-REST.x,player.pos.z-REST.z)<1.4;
   REST.m.visible=true;
   if(nr){
@@ -2187,7 +2330,7 @@ function alertTick(){ const el=$('stockAl'); if(!el) return; const out=[], low=[
     else warnOff(t); });
   const shown=t=>soonP.some(o=>o.t===t)||soonR.some(o=>o.t===t)||quick.some(o=>o.t===t);
   const lowN=low.filter(o=>!shown(o.t)).map(o=>o.nm);
-  let h=''; if(S.dock.length) h+='<b class="dk">📦 입고 박스 도착 · 입구에서 받기</b>'; if(out.length) h+='<b class="ot">⛔ 품절: '+out.join('·')+'</b>';
+  let h=''; if(S.dock.length||CARRY) h+='<b class="dk">📦 '+(CARRY?('박스 들고 있음 · '+IT[CARRY.t].n+' 선반에 내려놓기'):('입고 박스 '+S.dock.length+'개 · 선반으로 옮기기'))+'</b>'; if(out.length) h+='<b class="ot">⛔ 품절: '+out.join('·')+'</b>';
   quick.slice(0,2).forEach(o=>{ h+='<b class="qp">🚚 퀵 도착 '+o.e+'초 전 ('+o.nm+')</b>'; });
   soonR.slice(0,2).forEach(o=>{ h+='<b class="wn">🔧 '+o.nm+' 부품 부족 — 수리 접수 불가</b>'; });
   soonP.slice(0,2).forEach(o=>{ h+='<b class="wn">⏳ '+o.nm+' 곧 품절 (약 '+o.e+'초)</b>'; });
@@ -2426,14 +2569,14 @@ function clsTick(dt){ if(dayState!=='run'){ if(cls){ cls.npcs.forEach(ch=>{ try{
 /* ---- inventory ---- */
 const COST={p:5,l:8,w:3,b:4,s:6,c:7}; let soWarn={}, invDotT=0;
 function srcOf2(t){ return SRC.find(s=>s.t===t); }
-function arrive(o){ S.dock.push({t:o.t,q:o.q}); DOCK.t=0; drawDock(); if(!truckAdd(o.t,o.q,!!o.ex)) arriveSay(o); }
+function arrive(o){ S.dock.push({t:o.t,q:o.q,_t:(typeof time==='number'?time:0)}); DOCK.t=0; drawDock(); if(!truckAdd(o.t,o.q,!!o.ex)) arriveSay(o); }
 function deliverReady(){ const r=S.orders.filter(o=>!o.ex&&o.ready); if(!r.length) return; S.orders=S.orders.filter(o=>!r.includes(o)); r.forEach(arrive); save(); }
 function invTick(dt){ for(const o of S.orders.slice()) if(o.ex){ o.eta-=dt; if(o.eta<=0){ S.orders.splice(S.orders.indexOf(o),1); arrive(o); } }
   invDotT-=dt; if(invDotT>0) return; invDotT=0.5; let low=0; SRC.forEach(s=>{ if(!s.on) return; const tot=s.n+S.inv[s.t]; if(tot<=3) low=1; if(s.n===0&&S.inv[s.t]<=0&&!S.orders.some(o=>o.t===s.t)&&!soWarn[s.t]&&dayState==='run'){ soWarn[s.t]=1; toast(IT[s.t].n+' 품절! 하단 [재고]에서 발주하세요 (퀵 배송 20초)',3.2); snd('ui',0.5,0.6); } });
   const d=$('invDot'); if(d) d.style.display=low||S.dock.length?'block':'none'; alertTick(); }
 function openInv(){ const rows=SRC.filter(s=>s.on).map(s=>{ const t=s.t, on=S.orders.filter(o=>o.t===t), oq=on.reduce((a,o)=>a+o.q,0), tot=s.n+S.inv[t]; const lv=tot<=3?'no':tot<=8?'mid':'ok';
     return '<div class="ivr '+lv+'"><div class="ivh"><b>'+IT[t].n+(lv==='no'?' <span style="color:#e8342a;font-size:12px">부족!</span>':'')+'</b><small>진열 '+s.n+' · 창고 '+S.inv[t]+(oq?' · 배송중 '+oq+(on.some(o=>o.ex)?' ('+Math.ceil(Math.min(...on.filter(o=>o.ex).map(o=>o.eta)))+'초)':''):'')+'</small></div><div class="ivb"><button data-o="'+t+'" data-x="0">+5 내일<br><small>$'+COST[t]*5+'</small></button><button data-o="'+t+'" data-x="1" class="ex">+5 퀵<br><small>$'+Math.round(COST[t]*5*1.6)+'</small></button></div></div>'; }).join('');
-  openModal('<h2>📦 재고 관리</h2><p style="font-size:12px;margin:4px 0">발주 → 입구 박스 받기 → 창고 → 진열 보충 순서예요<br><small>재고 담당이 있으면 박스 받기·진열 보충을 대신 해요<br>물류 데스크에서 시리얼 검수하면 박스마다 <b>+$50</b><br>⏱ 이 화면을 보는 동안에도 영업 시간은 흘러요</small></p><div class="dstat"><span>🤖 자동 발주 '+(hasCrew('mgr')?'':'<small>(매니저 고용 필요)</small>')+'</span><button id="aoBtn" style="width:auto;margin:0;padding:5px 12px;font-size:13px" '+(hasCrew('mgr')?'':'disabled')+'>'+(S.autoOrd&&hasCrew('mgr')?'켜짐':'꺼짐')+'</button></div><div class="ivl">'+rows+'</div><p style="font-size:12px;color:#6f6656;margin:2px 0 4px">보유 <b style="color:#151b28">$'+Math.floor(money).toLocaleString('en-US')+'</b></p><button id="mOk">닫기</button>');
+  openModal('<h2>📦 재고 관리</h2><p style="font-size:12px;margin:4px 0">발주 → <b>입고 박스를 직접 선반으로</b> (넘치는 양은 창고)<br><small>재고 담당이 있으면 14초 뒤 대신 옮겨요 · 직접 옮기면 +$'+BOXBONUS+'<br>물류 데스크에서 시리얼 검수하면 박스마다 <b>+$50</b><br>⏱ 이 화면을 보는 동안에도 영업 시간은 흘러요</small></p><div class="dstat"><span>🤖 자동 발주 '+(hasCrew('mgr')?'':'<small>(매니저 고용 필요)</small>')+'</span><button id="aoBtn" style="width:auto;margin:0;padding:5px 12px;font-size:13px" '+(hasCrew('mgr')?'':'disabled')+'>'+(S.autoOrd&&hasCrew('mgr')?'켜짐':'꺼짐')+'</button></div>'+(S.dock.length||CARRY?'<div class="dstat"><span>📦 입고 박스</span><b>'+(S.dock.length+(CARRY?1:0))+'개</b></div>':'')+'<div class="ivl">'+rows+'</div><p style="font-size:12px;color:#6f6656;margin:2px 0 4px">보유 <b style="color:#151b28">$'+Math.floor(money).toLocaleString('en-US')+'</b></p><button id="mOk">닫기</button>');
   $('mbox').onclick=e=>{ if(e.target.id==='aoBtn'){ S.autoOrd=!S.autoOrd; snd('ui',0.4); save(); openInv(); return; } const b=e.target.closest('[data-o]'); if(!b) return; const t=b.dataset.o, ex=+b.dataset.x, cst=Math.round(COST[t]*5*(ex?1.6:1)); if(money<cst){ toast('돈이 부족해요'); snd('ui',0.4,0.5); return; } money-=cst; if(dayState==='run') dayOrd+=cst; S.orders.push({t,q:5,ex,eta:ex?20:0}); snd('coin',0.4,1.2); save(); openInv(); }; }
 
 /* ---- repair minigame ---- */
@@ -2518,7 +2661,8 @@ function guide(){ const waiting=custs.filter(c=>c.st==='wait'||c.st==='want');
   for(const c of waiting){ if(c.type==='sw'||(c.type==='buy'&&!c.want)||(c.type==='fix'&&c.diag&&!c.want)) return [c.pos.x,c.pos.z,c.type==='fix'?'손님 옆에 가서 고장 원인을 진단해요':'손님 옆에 가서 상담해요']; }
   for(const c of waiting){ const t=c.want; if(!t||c.st==='repair'||c.type==='ret'||c.spot===GSPOT||c.claim) continue; 
     if(player.stack.includes(t)) return [c.pos.x,c.pos.z,josaEul(IT[t].n)+' 손님에게 가져다줘요']; const s=srcOf(t); if(s) return [s.x,s.z+0.9,(t==='b'||t==='s'?IT[t].n+' 부품을':josaEul(IT[t].n))+' 선반에서 들어요']; }
-  if(dayState==='run'&&(S.dock||[]).length&&!hubCrew()) return [HUBP.x,HUBP.z,'물류 데스크에서 입고 검수하면 박스마다 +$50'];
+  if(CARRY){ const cs=boxShelf(CARRY.t); if(cs) return [cs.x,cs.z+0.9,IT[CARRY.t].n+' 박스를 '+IT[CARRY.t].n+' 선반에 내려놓아요']; }
+  if((S.dock||[]).length) return [DOCK.x,DOCK.z,'입고 박스를 집어 '+IT[S.dock[0].t].n+' 선반으로 옮겨요'];
   if(cashVal>=30||(S.stats.srv<3&&cashVal>0)) return [CASH.x,CASH.z,'계산대 옆 돈을 챙겨요'];
   const pad=S.stats.srv>=2&&PADS.find(p=>padVisible(p)&&money>=Math.min(p.price-p.paid,p.price*0.5)); if(pad) return [pad.x,pad.z,'판에 서서 '+pad.t+'!'];
   return null; }
@@ -3130,13 +3274,21 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
     player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;
   player.ch.g.position.copy(player.pos); player.ch.g.rotation.y=angLerp(player.ch.g.rotation.y,player.face,Math.min(1,dt*12)); animChar(player.ch,player.speed,dt,player.stack.length>0); layoutStack(player);
   // shelves restock + pick
-  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); lpTick(dt); expTick(dt); autoTick(dt); inv2Tick(dt); try{ repTick(dt); }catch(e){} clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt);
+  pickT-=dt; invTick(dt); tickRain(dt); tickSnow(dt); comboTick(dt); lpTick(dt); expTick(dt); autoTick(dt); inv2Tick(dt); try{ repTick(dt); }catch(e){} clsTick(dt); hubTick(dt); tickMarkers(performance.now()/1000); occTick(); truckTick(dt); carryTick(dt);
   SRC.forEach(s=>{ if(!s.on) return; s.tt+=dt; if(s.tt>2.2&&s.n<s.max&&S.inv[s.t]>0&&hasCrew('runner')){ s.tt=0; s.n++; S.inv[s.t]--; layoutSrc(s); } });
   /* v2.76: 집기는 사거리 안에서 '가장 가까운 선반 하나'에서만 — 폰을 집으려는데 옆 선반의 랩탑·워치가 같이 딸려와
      손이 가득 차 정작 폰을 못 들고 가던 문제 수정 */
-  if(pickT<=0&&player.stack.length<CAP()){ let bs=null,bd=1e9;
-    SRC.forEach(s=>{ if(!s.on||s.n<=0) return; const d=Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9)); if(d<1.25&&d<bd){ bd=d; bs=s; } });
-    if(bs){ bs.n--; useStock(bs.t); layoutSrc(bs); fly(makeItem(bs.t),new THREE.Vector3(bs.x,1.0,bs.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(bs.t); snd('ui',0.3,1.3); pickT=0.18; } }
+  /* v2.77: 집기는 '선반 앞 타일에서 잠깐 멈추면 1개씩' — 지나가며 손이 다 차던 문제 수정
+     · 사거리 1.25 → 0.90m (선반 간격 2.2m의 절반 1.1m보다 좁아 어떤 자리에서도 두 선반이 동시에 잡히지 않음)
+     · 초당 1.2m보다 느릴 때만 머무름이 쌓인다 → 0.22초 머물면 1개, 담은 뒤 0.36초 쿨다운
+     · 손에 입고 박스(CARRY)를 들고 있으면 제품 집기는 잠긴다(박스 넣기에 집중) */
+  if(pickT<=0&&!CARRY&&player.stack.length<CAP()&&player.speed<PICKSLOW){
+    let bs=null,bd=1e9;
+    SRC.forEach(s=>{ if(!s.on||s.n<=0) return; const d=Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9)); if(d<PICKR&&d<bd){ bd=d; bs=s; } });
+    if(bs){ if(PKH.s===bs&&PKH.t>0) PKH.t+=dt; else { PKH.s=bs; PKH.t=dt; }
+      if(PKH.t>=PICKDWELL){ PKH.s=null; PKH.t=0; bs.n--; useStock(bs.t); layoutSrc(bs); fly(makeItem(bs.t),new THREE.Vector3(bs.x,1.0,bs.z),()=>player.pos.clone().setY(1.2+player.stack.length*0.12),0.22); player.stack.push(bs.t); snd('ui',0.3,1.3); haptic(8); pickT=PICKCD; } }
+    else { PKH.s=null; PKH.t=0; }
+  } else if(player.speed>=PICKSLOW||CARRY){ PKH.s=null; PKH.t=0; }
   // cash
   /* v2.10: 계산대 현금 회수는 '영업 중(run)'에만 — 마감 연출(end)·정산창(result)에서 회수되면 영수증 스냅샷과 HUD 현금이 어긋난다. 남은 현금은 다음 날 그대로 있다가 회수된다. */
   cashT-=dt; if(dayState==='run'&&cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
@@ -8464,11 +8616,11 @@ function truckAdd(t,q,quick){
   if(typeof truckSpawn3==='function'){ try{ truckSpawn3(job); }catch(e){ console.warn('truckSpawn',e); } }
   return job;
 }
-function arriveSay(o){ toast('📦 '+IT[o.t].n+' '+o.q+'개 도착! 입구 옆 박스를 받아 주세요'+(hasCrew('runner')?' (재고 담당이 곧 옮겨요)':''),3.2); snd('coin',0.4,0.8); }
+function arriveSay(o){ toast('📦 '+IT[o.t].n+' '+o.q+'개 도착! 물류 데스크 옆 입고 구역 박스를 '+IT[o.t].n+' 선반으로 옮겨 주세요'+(hasCrew('runner')?' (재고 담당이 곧 옮겨요)':''),3.4); snd('coin',0.4,0.8); }
 function truckDropBox(j){
   DOCK.hold=Math.max(0,(DOCK.hold||0)-1);
   const bx=j.x+(j.quick?0:-1.15), bz=j.z;
-  try{ fly(makeItem(j.t),new THREE.Vector3(bx,1.2,bz),()=>new THREE.Vector3(DOCK.x,0.5,DOCK.z),0.45); }catch(e){}
+  try{ fly(makeItem(j.t),new THREE.Vector3(bx,1.2,bz),()=>new THREE.Vector3(DOCK.x,0.5,DOCK.z),0.72); }catch(e){}
   try{ drawDock(); }catch(e){}
   if(Math.random()<0.5){ try{ sparkle(DOCK.x,0.8,DOCK.z,'#ffb020'); }catch(e){} }
 }
@@ -8497,7 +8649,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.76';
+$('stn').textContent=STI[STG]+' '+TS.name; $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.77';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -9020,6 +9172,44 @@ try{ setTimeout(function(){ try{
       for(var k=0;k<8;k++){ var a=k*Math.PI/4; window.__H.tp(x,z); var p=window.__H.probe(Math.cos(a),Math.sin(a),1.6);
         out.push(+Math.hypot(p.end[0]-x,p.end[1]-z).toFixed(2)); }
       return out; }
+  };
+}catch(e){} },0); }catch(e){}
+/* ---------------- v2.77 QA 훅 ---------------- */
+try{ setTimeout(function(){ try{
+  window.__H=window.__H||{};
+  window.__H.v277={
+    ver:'v2.77',
+    shelves:function(){ try{
+      var L=SRC.filter(function(s){ return s.t==='p'||s.t==='l'||s.t==='w'; }).map(function(s){ return {t:s.t,x:s.x,z:s.z,n:s.n,max:s.max,on:!!s.on}; });
+      return {list:L,gap:+(L[1].x-L[0].x).toFixed(2),gap2:+(L[2].x-L[1].x).toFixed(2),r:PICKR,dwell:PICKDWELL,cd:PICKCD,slow:PICKSLOW,front:[-8.4+0.9]};
+    }catch(e){ return null; } },
+    pickRule:function(){ try{ return {s:PKH.s?PKH.s.t:null,t:+(PKH.t||0).toFixed(3),cd:+(pickT||0).toFixed(3),speed:+(player.speed||0).toFixed(2),stack:player.stack.slice(),ring:!!(PKRING&&PKRING.visible)}; }catch(e){ return null; } },
+    carry:function(){ try{ return {
+      carry:CARRY?{t:CARRY.t,q:CARRY.q}:null, saved:S.carry||null, dockPos:{x:DOCK.x,z:DOCK.z},
+      dock:(S.dock||[]).map(function(o){ return {t:o.t,q:o.q,age:(o._t==null?null:+(time-o._t).toFixed(1))}; }),
+      shelves:SRC.map(function(s){ return {t:s.t,n:s.n,max:s.max}; }),
+      inv:Object.assign({},S.inv), money:Math.floor(money),
+      badge:SRC.filter(function(s){ return s.on&&boxQty(s.t)>0; }).map(function(s){ return s.t+':'+boxQty(s.t); }),
+      badgeVis:SRC.filter(function(s){ return SRCBADGE[s.t]&&SRCBADGE[s.t].g.visible; }).map(function(s){ return s.t; }),
+      boxVis:!!(CARBOX&&CARBOX.visible), boxPos:CARBOX?[+CARBOX.position.x.toFixed(2),+CARBOX.position.y.toFixed(2),+CARBOX.position.z.toFixed(2)]:null
+    }; }catch(e){ return null; } },
+    addBox:function(t,q){ try{ S.dock.push({t:t||'p',q:q||5,_t:time}); drawDock(); return (S.dock||[]).length; }catch(e){ return -1; } },
+    setInv:function(t,n){ try{ S.inv[t]=Math.max(0,Math.floor(n)); return S.inv[t]; }catch(e){ return null; } },
+    setShelf:function(t,n){ try{ var s=srcOf2(t); if(!s) return null; s.n=Math.max(0,Math.min(s.max,n)); layoutSrc(s); return s.n; }catch(e){ return null; } },
+    clearCrew:function(){ try{ S.crew=[]; return true; }catch(e){ return false; } },
+    setRunner:function(lv){ try{ S.crew=[{role:'runner',name:'하준',lv:(lv||1),sat:80,wage:10,spd:1,acc:0.9}]; return true; }catch(e){ return false; } },
+    keepRun:function(){ try{ closeModalUI(); dayState='run'; dayT=9999; return true; }catch(e){ return false; } },
+    clearHand:function(){ try{ var n=0; while(player.stack.length){ returnStackItem(player.stack.pop()); n++; } return n; }catch(e){ return -1; } },
+    order:function(t,q,ex){ try{ S.orders.push({t:t||'p',q:q||5,ex:(ex==null?1:ex),eta:0.3}); return S.orders.length; }catch(e){ return -1; } },
+    pos:function(){ try{ return [+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]; }catch(e){ return null; } },
+    hint:function(){ try{ var g=guide(); return g?{x:g[0],z:g[1],t:g[2]}:null; }catch(e){ return null; } },
+    badgeInfo:function(){ try{ return SRC.map(function(s){ var b=SRCBADGE[s.t]; return {t:s.t,vis:b?b.g.visible:null,kids:b?b.g.children.length:0,pos:b?[+b.g.position.x.toFixed(2),+b.g.position.y.toFixed(2),+b.g.position.z.toFixed(2)]:null}; }); }catch(e){ return String(e); } },
+    dbg:function(){ try{
+      var bs=null,bd=1e9; SRC.forEach(function(s){ if(!s.on||s.n<=0) return; var d=Math.hypot(player.pos.x-s.x,player.pos.z-(s.z+0.9)); if(d<PICKR&&d<bd){ bd=d; bs=s; } });
+      return {inRange:bs?bs.t:null,bd:+bd.toFixed(2),pickT:+pickT.toFixed(2),speed:+(player.speed||0).toFixed(2),stack:player.stack.length,cap:CAP(),
+        pkT:+PKH.t.toFixed(3),pkS:PKH.s?PKH.s.t:null,modal:$('modal').classList.contains('on'),quiz:!!quizOpen,
+        dDock:+Math.hypot(player.pos.x-DOCK.x,player.pos.z-DOCK.z).toFixed(2),dock:(S.dock||[]).length,boxHold:+boxHoldT.toFixed(2),carry:!!CARRY,runBoxT:+runBoxT.toFixed(1),
+        pos:[+player.pos.x.toFixed(2),+player.pos.z.toFixed(2)]}; }catch(e){ return String(e); } }
   };
 }catch(e){} },0); }catch(e){}
 /* ---------------- 테스트·QA 훅 ---------------- */
