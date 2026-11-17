@@ -662,7 +662,7 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 #camctl button#intBtn{display:none;background:linear-gradient(160deg,rgba(14,52,44,.96),rgba(8,24,20,.96));border-color:rgba(89,211,168,.34)}
 #camctl button#intBtn b{color:#c6f6e6}
 /* --- 콤보 · 경고 · 토스트 (세로 스택: v279HudLayout) --- */
-#combo{position:fixed;left:10px;top:0;z-index:5;pointer-events:none;text-align:center;padding:5px 10px 8px;border-radius:11px;
+#combo{position:fixed;left:10px;top:130px;z-index:5;pointer-events:none;text-align:center;padding:5px 10px 8px;border-radius:11px;
   background:linear-gradient(155deg,rgba(46,36,16,.95),rgba(18,14,7,.95));border:1px solid rgba(236,201,138,.42);box-shadow:var(--v279sh);color:#ffe6b8}
 #combo b{display:block;font-family:var(--d);font-size:12.5px;letter-spacing:.2px;color:#f7d79b;text-shadow:none}
 #combo small{font-family:var(--b);font-weight:800;font-size:9.5px;color:#cbb78e}
@@ -670,7 +670,7 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 #combo s{display:block;height:100%;background:#ecc98a}
 #combo.pop{animation:cpop .25s}
 #combo.fv{background:linear-gradient(155deg,rgba(74,23,18,.96),rgba(30,9,6,.96));border-color:rgba(255,140,120,.5);box-shadow:var(--v279sh);animation:none}
-#stockAl{position:fixed;left:50%;transform:translateX(-50%);top:0;z-index:5;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+#stockAl{position:fixed;left:50%;transform:translateX(-50%);top:130px;z-index:5;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
 #stockAl b{font-family:var(--b);font-weight:800;font-size:10.5px;line-height:1.25;color:#e9f1fb;border-radius:8px;padding:4px 9px;white-space:nowrap;
   background:rgba(9,14,24,.9);border:1px solid var(--v279ln2);box-shadow:0 4px 10px rgba(4,8,16,.28)}
 #stockAl .ot{background:rgba(52,16,20,.92);border-color:rgba(255,106,106,.4);color:#ffd9d6;animation:none}
@@ -678,7 +678,7 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 #stockAl .lw{background:rgba(48,36,10,.9);border-color:rgba(240,190,90,.3);color:#ffe9c4}
 #stockAl .dk{background:rgba(9,36,32,.9);border-color:rgba(89,211,168,.3);color:#c9f6e4}
 #stockAl .rs,#stockAl .qp{background:rgba(14,26,48,.9);border-color:rgba(127,182,255,.3);color:#d6e8ff}
-#toast{position:fixed;left:50%;top:0;transform:translate(-50%,0) scale(.96);transform-origin:50% 0;max-width:min(88vw,520px);
+#toast{position:fixed;left:50%;top:130px;transform:translate(-50%,0) scale(.96);transform-origin:50% 0;max-width:min(88vw,520px);
   padding:9px 16px 10px;border-radius:12px;font-family:var(--b);font-weight:800;font-size:12.5px;line-height:1.45;color:var(--v279tx);
   background:rgba(10,16,27,.95);border:1px solid var(--v279ln);box-shadow:0 12px 26px rgba(4,8,16,.42)}
 #toast.on{transform:translate(-50%,0) scale(1)}
@@ -3078,7 +3078,7 @@ function lbFlush(){ if(!LBV.length) return;
     try{ if(bot>_H-238&&Math.abs(el._sx-_W/2)<250) HINTB=performance.now()+400; }catch(e){} }
   LBV.length=0; }
 function floatText(p,txt,cls){ const el=document.createElement('div'); el.className='ft'+(cls?' '+cls:''); el.textContent=txt; $('labels').appendChild(el); fts.push({el,p:p.clone(),t:0}); }
-let toastT=0, toastLock=0; function toast(m,s,force){ if(toastLock>0&&!force) return; const el=$('toast'); el.textContent=m; el.classList.add('on'); toastT=s||2.5; }
+let toastT=0, toastLock=0; function toast(m,s,force){ if(toastLock>0&&!force) return; try{ v279HudLayout(); }catch(e){} const el=$('toast'); el.textContent=m; el.classList.add('on'); toastT=s||2.5; }
 function qToast(m,s){ toastLock=Math.max(toastLock,s||3); toast(m,s,1); }  // 상담 결과 이유는 잠깐 덮어쓰지 않음
 const parts=[]; function sparkle(x,y,z,c){ for(let k=0;k<10;k++){ const m=new THREE.Mesh(gget('sp',()=>new THREE.OctahedronGeometry(0.08)),new THREE.MeshBasicMaterial({color:c||'#ffe14d',transparent:true})); m.position.set(x,y,z); scene.add(m); parts.push({m,v:new THREE.Vector3((Math.random()-0.5)*3,2+Math.random()*2,(Math.random()-0.5)*3),t:0}); } }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }
