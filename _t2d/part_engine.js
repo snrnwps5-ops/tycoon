@@ -93,6 +93,9 @@ function drawShelf(x){
   quad(x.x-0.44,x.z,0.46,0.44,IT[x.t].c,'#ffffff',2);
   ctext(IT[x.t].n,x.x+0.06,x.z-0.12,Math.max(9,s*0.24),'#1d2433',true);
   ctext(out?'품절':(x.n+' / '+x.max),x.x+0.06,x.z+0.16,Math.max(10,s*0.28),x.n===0?'#e8342a':'#1d7a2a',true);
+  /* v2.78: 🔥 오늘의 인기 품목 선반 표시(3D 라벨과 같은 자리) */
+  if(typeof v278HotT==='function'&&v278HotT()===x.t){ circ(x.x,x.z+0.9,0.52,'rgba(255,138,26,.20)','#ff8a1a');
+    ctext('🔥 오늘 인기 +'+Math.round(((typeof V278HOTMUL==='number'?V278HOTMUL:1.4)-1)*100)+'%',x.x,x.z+0.44,Math.max(9,s*0.22),'#c8341a',true); }
 }
 function drawPad2(p){
   const s=SX(0,0).s;
