@@ -11506,6 +11506,7 @@ var V285=(function(){
     h+='<p class="vnote">층마다 오픈 조건이 있어요. 조건을 채우면 건설을 시작할 수 있고, 화면을 꺼도 시간이 흘러요.</p>';
     for(var i=0;i<n;i++) h+=floorHTML(st,i);
     h+='<div class="vdone '+(ok?'on':'')+'">'+(ok?'✅ '+n+'개 층 완공! '+(st<5?'다음 지점으로 넘어갈 수 있어요':'최종 지점까지 완공했어요'):'⏳ '+n+'개 층 중 '+done+'개 완공 · '+ (n-done) +'개 남았어요')+'</div>';
+    if(typeof dayState!=='undefined'&&dayState==='pre') h+='<button data-replay="1" style="background:linear-gradient(160deg,#5fdcc0,#12a08a);box-shadow:0 4px 0 #0a7a68;color:#fff">🔄 이 지점에서 하루 더 영업하기</button>';
     h+='<div class="vtabs"><button data-tab="box" class="gy">🎁 상자</button><button data-tab="gear" class="gy">👕 장비</button><button data-tab="hq" class="gy">🏢 본사</button></div>';
     h+='<button class="gray" id="mOk">닫기</button></div>';
     return h;
@@ -11522,6 +11523,8 @@ var V285=(function(){
       if(s){ e.stopPropagation(); var r2=skipFloor(st,+s.dataset.skip); if(!r2.ok){ try{ toast(r2.why,2.6); }catch(_){}} openBranch(st); return; }
       var tb=e.target.closest('[data-tab]');
       if(tb){ e.stopPropagation(); if(tb.dataset.tab==='box') openBoxes(); else if(tb.dataset.tab==='gear') openGear(); else openHq(); return; }
+      var rp=e.target.closest('[data-replay]');
+      if(rp){ e.stopPropagation(); try{ closeModalUI(); }catch(_){ try{ document.getElementById('modal').classList.remove('on'); }catch(__){} } setTimeout(function(){ try{ startDayModal(); }catch(_){} },220); return; }
     };
   }
 
