@@ -1538,7 +1538,9 @@ function v288H2(h){
     });
   }catch(e){ return h; }
 }
-function openModal(h,opt){ h=v288H2(h); const _box=$('modal').querySelector('.box'), _wasOn=$('modal').classList.contains('on'), _h0=(_box&&_box.querySelector('h2'))?_box.querySelector('h2').textContent:''; if(curFace!=null&&h.indexOf('<h2')===0) h='<div style="margin-bottom:2px">'+faceI(curFace,76,'fm')+'</div>'+h; $('mbox').innerHTML=h; try{ v288StripEmoji($('mbox')); }catch(e){} $('modal').classList.add('on'); window.__mX=(opt&&opt.onClose)||null; $('modal').classList.toggle('canClose',!!window.__mX||(h.indexOf('id="mOk"')>=0)); const b=$('mOk'); if(b) b.onclick=()=>closeModalUI(); /* v2.63: 새 화면이면 스크롤을 맨 위로 — 허브를 내려 눌러도 준비창이 중간부터 열리지 않게 */ const _h1=(_box&&_box.querySelector('h2'))?_box.querySelector('h2').textContent:''; if(_box&&(!_wasOn||_h0!==_h1)) _box.scrollTop=0; }
+function openModal(h,opt){ h=v288H2(h); const _box=$('modal').querySelector('.box'), _wasOn=$('modal').classList.contains('on'), _h0=(_box&&_box.querySelector('h2'))?_box.querySelector('h2').textContent:''; if(curFace!=null&&h.indexOf('<h2')===0) h='<div style="margin-bottom:2px">'+faceI(curFace,76,'fm')+'</div>'+h; $('mbox').innerHTML=h; try{ v288StripEmoji($('mbox')); }catch(e){}
+  try{ setTimeout(function(){ try{ v288StripEmoji($('mbox')); }catch(e){} },90); setTimeout(function(){ try{ v288StripEmoji($('mbox')); }catch(e){} },520); }catch(e){}
+  $('modal').classList.add('on'); window.__mX=(opt&&opt.onClose)||null; $('modal').classList.toggle('canClose',!!window.__mX||(h.indexOf('id="mOk"')>=0)); const b=$('mOk'); if(b) b.onclick=()=>closeModalUI(); /* v2.63: 새 화면이면 스크롤을 맨 위로 — 허브를 내려 눌러도 준비창이 중간부터 열리지 않게 */ const _h1=(_box&&_box.querySelector('h2'))?_box.querySelector('h2').textContent:''; if(_box&&(!_wasOn||_h0!==_h1)) _box.scrollTop=0; }
 function modalX(){ if(typeof window.__mX==='function'){ const f=window.__mX; window.__mX=null; f(); return; } closeModalUI(); }
 $('mX').onclick=e=>{ e.stopPropagation(); modalX(); };
 $('modal').addEventListener('click',e=>{ if(e.target.id!=='modal') return; if(!$('modal').classList.contains('canClose')) return; modalX(); });
@@ -3590,6 +3592,7 @@ function repPaint(full){
   }
   const sc=(u.querySelector('.rps')||{}).scrollTop||0;
   u.innerHTML=head+sum+'<div class="rps">'+body+'</div>';
+  try{ v288StripEmoji(u); }catch(e){}
   if(!full){ const l=u.querySelector('.rps'); if(l) l.scrollTop=sc; }
   try{ const hb=(u.querySelector('.rpsum')||u.querySelector('.rph')).getBoundingClientRect(), sb=u.querySelector('.rps').getBoundingClientRect(); REP.vp={top:hb.bottom,bot:sb.top}; }catch(_){}
   REP.sig=repSig();
@@ -3600,12 +3603,14 @@ function v269RepCard(){
     var d=document.getElementById('v269RepCard');
     if(!d){ d=document.createElement('div'); d.id='v269RepCard'; d.className='v269act v269float'; d.setAttribute('data-r','v269act');
       d.innerHTML='<div class="ic">'+v269BurstCfg('rep').ic+'</div><div class="tx"><b>'+v269BurstCfg('rep').t+'</b><small id="v269RepCardS"></small></div>'+
-        '<button type="button" id="v269RepCardB" data-r="v269act">⚡ 지금!</button>';
+        '<button type="button" id="v269RepCardB" data-r="v269act">지금!</button>';
+      try{ var _ic=d.querySelector('.ic'); if(_ic) _ic.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13 2L4.4 13.6H11l-1 8.4 8.6-11.6H12z"/></svg>'; v288StripEmoji(d); }catch(e){}
       /* 클릭은 repUI의 기존 위임([data-r])이 repAct('v269act')로 받는다 */
       var hb=u.querySelector('.rph');
       if(hb&&hb.nextSibling) u.insertBefore(d,hb.nextSibling); else u.insertBefore(d,u.firstChild);
     } else if(d.parentNode!==u){ var hb2=u.querySelector('.rph'); if(hb2&&hb2.nextSibling) u.insertBefore(d,hb2.nextSibling); else u.insertBefore(d,u.firstChild); }
     v269ActTick();
+    try{ v288StripEmoji(d); }catch(e){}
   }catch(e){}
 }
 function repAct(k,i,el){
@@ -4298,6 +4303,7 @@ function guide(){ const waiting=custs.filter(c=>c.st==='wait'||c.st==='want');
 let bigT=0, shakeT=0, focusT=0; const focusP=new THREE.Vector3(); let shownMoney=0;
 var BIGP=null, BIGPT=0;
 function bigBanner(t,sub){
+  try{ var _s=function(x){ if(!x||!V288_EMO) return x; V288_EMO.lastIndex=0; if(!V288_EMO.test(x)) return x; V288_EMO.lastIndex=0; var w=x.replace(V288_EMO,'').replace(/^[\s·ㅣ|:：-]+/,'').replace(/\s{2,}/g,' '); return w.trim()?w:x; }; t=_s(t); sub=_s(sub); }catch(e){}
   var B=$('bigT'), S2=$('bigS');
   try{
     if($('modal').classList.contains('on')){
@@ -6777,7 +6783,7 @@ function v262Card(which){
   const d=document.createElement('div');
   d.className='rpc'; d.id=which==='rep'?'v262RepAI':'v262BizAI';
   d.style.cssText='background:linear-gradient(#eef6ff,#e0eeff);border:2px solid #9fc4ff;text-align:left';
-  d.innerHTML='<h4 style="color:#1c3f9a">'+(which==='rep'?'👨‍🔧 ':'🤖 ')+hesc(who)+' 브리핑 <em style="background:#dbe8ff;color:#1c3f9a" class="v62s">'+(A.src||'시뮬레이터')+'</em></h4><small class="v62t" style="color:#2a3a5a">'+(A.txt||'')+'</small>';
+  d.innerHTML='<h4 style="color:#1c3f9a;display:flex;align-items:center;gap:5px"><span style="display:inline-flex;width:16px;height:16px;color:#2f6fd8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.4"/><path d="M4.8 20.4c0-4 3.2-6.6 7.2-6.6s7.2 2.6 7.2 6.6"/></svg></span>'+hesc(who)+' 브리핑 <em style="background:#dbe8ff;color:#1c3f9a" class="v62s">'+(A.src||'시뮬레이터')+'</em></h4><small class="v62t" style="color:#2a3a5a">'+(A.txt||'')+'</small>';
   return d;
 }
 function v262CardPut(which,container){
