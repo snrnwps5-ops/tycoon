@@ -26,7 +26,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.86';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.87';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.86</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.87</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -747,6 +747,71 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 @media (max-width:359px){#hud .mbtn{width:34px}#hud .mbtn::after{left:-5px;right:-5px}#hud #back{width:40px}
   #sub .chip2{font-size:10.5px;padding:0 7px}#dayBar{gap:7px;font-size:11px}#dbRev{font-size:11px}}
 
+/* ================= v2.87: 실기기 UI 결함 5건 ================= */
+/* U-3: 좌상단 별 아이콘과 레벨 숫자를 '나란히' 분리 — 두 자리(12)도 겹치지 않는다 */
+#hud .star{width:40px;height:40px;overflow:hidden}
+#hud .star svg{left:1px;top:9px;width:18px;height:18px;filter:drop-shadow(0 1px 0 rgba(199,138,44,.55))}
+#hud .star b{left:20px;right:1px;top:11px;width:auto;height:18px;padding:0;margin:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--d);font-size:12.5px;line-height:1;color:#3f2708;letter-spacing:-.3px;
+  background:linear-gradient(180deg,#fffdf6,#ffefd2);border-radius:6px;box-shadow:0 1px 2px rgba(120,80,20,.22)}
+#hud .star i{left:5px;right:5px;bottom:3px;height:3px}
+@media (max-width:359px){#hud .star{width:38px}#hud .star b{left:20px;font-size:12px}}
+
+/* U-4: 3D 직원 이름표 — 검정 캡슐 → 파스텔 크림 캡슐(짙은 브라운 글자) */
+#labels .ntag{background:rgba(255,252,246,.94);color:#4a3624;border:1.5px solid rgba(236,214,182,.95);border-radius:9px;
+  box-shadow:0 2px 7px rgba(120,90,50,.20),inset 0 1px 0 rgba(255,255,255,.85);
+  font:900 10px var(--b);padding:1px 6px 1px 2px;display:flex;align-items:center;gap:3px;height:16px;line-height:1;letter-spacing:-.2px}
+#labels .ntag i{width:14px;height:14px;font-size:9px}
+#labels .ntag .tg{min-width:13px;height:13px;padding:0 2px;border-radius:4px;font-size:9px;color:#fff}
+#labels .ntag .nm{font-style:normal;font-weight:900;color:#4a3624;white-space:nowrap}
+#labels .ntag.far .nm{display:none}
+#labels .ntag .se{font-size:9.5px;line-height:1}
+
+/* U-5: 375px 현금 잘림 — 고정 폭 해제 + tabular 숫자 + 자릿수별 축소(스크립트) */
+#hud #cashPill{flex:1 1 auto!important;min-width:0!important;padding:0 9px 0 31px}
+#hud #money{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:clip;
+  font-variant-numeric:tabular-nums;letter-spacing:-.3px;text-align:right}
+
+/* v2.87: 층 전환 셀렉터 (좌측 레일) */
+#v287fl{position:fixed;left:8px;top:calc(128px + env(safe-area-inset-top));z-index:6;display:flex;flex-direction:column;gap:4px;
+  pointer-events:auto;touch-action:manipulation}
+#v287fl button{position:relative;width:44px;height:44px;border:1.5px solid rgba(232,186,128,.85);border-radius:13px;
+  background:linear-gradient(160deg,rgba(255,253,247,.97),rgba(255,240,220,.97));color:#7a5a34;
+  box-shadow:0 2px 0 rgba(219,172,113,.45),0 5px 12px rgba(150,105,60,.16);
+  font:900 12px var(--d);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1;
+  -webkit-tap-highlight-color:transparent}
+#v287fl button small{font:800 8px var(--b);color:#a08356;margin-top:2px;letter-spacing:-.3px}
+#v287fl button.cur{background:linear-gradient(160deg,#7bea62,#2fa36a);border-color:#2f9a63;color:#fff;box-shadow:0 3px 0 #1d7a2a,0 6px 14px rgba(40,140,90,.22)}
+#v287fl button.cur small{color:rgba(255,255,255,.92)}
+#v287fl button.lock{background:linear-gradient(160deg,#f2eee4,#e2dccd);color:#a99a80;border-color:rgba(200,186,160,.9)}
+#v287fl button.lock small{color:#b0a48e}
+#v287fl button:active{transform:translateY(1px)}
+#v287fl .mg{font-size:15px}
+body.title #v287fl,body.rep #v287fl,body.biz #v287fl{display:none!important}
+#v287fl .bdg{position:absolute;right:-3px;top:-3px;min-width:15px;height:15px;border-radius:8px;background:#ff8a3c;color:#fff;
+  font:900 9px var(--b);display:flex;align-items:center;justify-content:center;padding:0 3px;box-shadow:0 1px 0 rgba(160,70,10,.5)}
+
+/* v2.87: 층 관리 패널 */
+.v287tabs{display:flex;gap:4px;margin:2px 0 7px}
+#modal .v287tabs button{flex:1 1 0;min-width:0;min-height:44px;padding:0 4px;border-radius:12px;
+  background:linear-gradient(160deg,#f7efdf,#e8dcc6);color:#6a5230;box-shadow:0 3px 0 #c8b492;font:900 12px var(--d)}
+#modal .v287tabs button.on{background:linear-gradient(160deg,#7bea62,#2fa36a);color:#fff;box-shadow:0 3px 0 #1d7a2a}
+#modal .v287tabs button.lk{filter:grayscale(.7);opacity:.6}
+.v287row{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:12px;background:#fbf6ea;border:1px solid #ecdfc7;margin-bottom:6px}
+.v287row .ic{flex:none;width:34px;height:34px;border-radius:10px;background:#f2f7ff;display:flex;align-items:center;justify-content:center;font-size:17px}
+.v287row .tx{flex:1;min-width:0}
+.v287row .tx b{display:block;font:900 12.5px var(--b);color:#3c2b18}
+.v287row .tx small{display:block;font:800 10px/1.4 var(--b);color:#8a7660;margin-top:1px}
+.v287row .tx em{font-style:normal;font:900 10px var(--b);color:#1e7a52}
+.v287row .bt{flex:none;display:flex;flex-direction:column;gap:4px}
+#modal .v287row .bt button{min-width:56px;min-height:34px;padding:0 8px;margin:0;font:900 10.5px var(--b);border-radius:10px;
+  background:linear-gradient(160deg,#dfe9ff,#b8c8f0);color:#26407a;box-shadow:0 2px 0 #8a9ac8}
+#modal .v287row .bt button:disabled{filter:grayscale(.85);opacity:.5}
+#modal .v287row .bt button.go{background:linear-gradient(160deg,#7bea62,#2fa36a);color:#fff;box-shadow:0 2px 0 #1d7a2a}
+.v287bar{height:5px;border-radius:3px;background:#efe4d2;margin:5px 0 2px;overflow:hidden}
+.v287bar s{display:block;height:100%;background:linear-gradient(90deg,#8fe6c8,#12a08a)}
+.v287hd{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:8px 0 4px;font:900 12px var(--d);color:#5a4230}
+.v287hd small{font:800 10px var(--b);color:#8a7660}
 </style>
 <style id="v284ui">
 /* =========================================================================
@@ -1151,7 +1216,7 @@ body.title #v285boost,body.rep #v285boost,body.biz #v285boost{display:none!impor
 <div id="camctl"><button id="camFull" title="전체 보기"><span>🔍</span><b>전체</b></button><button id="camBase" class="on" title="기본 시점"><span>🎯</span><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기"><span>🛋️</span><b>꾸미기</b></button><button id="v285brBtn" title="지점 완공" aria-label="지점 완공"><span>🏗️</span><b id="brTxt">0/2F</b><i></i></button></div>
 <div id="intp"><div class="ihd"><b>🛋️ 인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.86</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad">📂 불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst">📲 홈 화면에 추가</button><button id="tShare">🔗 친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.87</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1901,8 +1966,9 @@ const REPG=new THREE.Group(); scene.add(REPG);
   box(0.07,1.3,0.07,'#39434f',4.25,0.65,-4.99,REPG); box(0.07,1.3,0.07,'#39434f',5.75,0.65,-4.99,REPG);
   const pt=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='rgba(47,170,69,.9)'; g.beginPath(); g.arc(w/2,h/2,w/2-8,0,7); g.fill(); g.strokeStyle='#fff'; g.lineWidth=9; g.stroke();
     g.fillStyle='#fff'; g.font='bold 42px "Black Han Sans",sans-serif'; g.textAlign='center'; g.fillText('수리실',w/2,h/2-12); g.font='bold 24px "Noto Sans KR",sans-serif'; g.fillText('위 🔧 수리실 버튼',w/2,h/2+34); },256,256);
-  const pm=new THREE.Mesh(new THREE.PlaneGeometry(1.3,1.3),new THREE.MeshBasicMaterial({map:pt,transparent:true,depthWrite:false}));
-  pm.rotation.x=-Math.PI/2; pm.position.set(5.38,FLOOR_Y.pad,-2.56); pm.renderOrder=2; scene.add(pm);   /* v2.80: 작업대가 들어와 대기 줄 앞으로 옮김 */
+  /* v2.87: 바닥 '수리실' 원판 삭제 — 상단 HUD 🔧 수리실 칩과 중복이고, '진열 보충' 원판과 58% 겹쳐 둘 다 읽히지 않았다.
+     안내는 위쪽 수리실 간판(REPG)과 HUD 칩이 맡는다. */
+  window.__V287_DISC={repair:0,restock:1};
   ob(4.18,5.82,-5.05,-4.93); }
 /* ================= v2.80: 수리실 테이블 (매장 안 작업대) =================
    v2.61에서 매장 밖으로 뺐던 수리 작업대를, 접수한 손님이 실제로 걸어와 앉는
@@ -2415,7 +2481,7 @@ function addStaff(kind,crew){ if(staff.some(s=>s.crew===crew)) return; const dup
   const ACC={greet:{acc:'headset',accC:'#2f6fd8',accC2:'#1d2433'},runner:{acc:'cap',accC:STAFFC,accC2:'#1d2433'},spec:{acc:'glasses',accC:'#1d2433',accC2:'#1d2433'}}[kind]||{};
   const LKs=staffLook(kind,crew); const APR={greet:'#9fc6ff',runner:'#ffd76b',tech:'#8fe0c0',spec:'#c9b3ff',mgr:'#2f3a58'}[kind];
   const ch=makeChar(LKs.m||MD,Object.assign({tint:kind==='mgr'?null:STAFFC,pants:LKs.pants||'#2a2d38',hat:STAFFC,hair:LKs.hair||undefined,skin:LKs.skin||undefined,apron:kind==='mgr'?null:APR,apronPocket:kind==='runner'?'#ffe9a8':(kind==='greet'?'#cfe3ff':kind==='tech'?'#b8f0dd':'#ded2ff')},LKs.acc?{acc:LKs.acc,accC:LKs.accC,accC2:'#1d2433'}:(LKs.m?{}:ACC))); const h=[HOME[kind][0]+dup*0.9,HOME[kind][1]]; const s={kind,crew,home:h,ch,pos:new THREE.Vector3(h[0],0,h[1]),stack:[],state:'idle',speed:0,face:Math.PI,t:0,wp:[],job:null,el:document.createElement('div')};
-  s.el.className='ntag'; s.el.innerHTML='<i style="background:'+ROLES[kind].c+'">'+ROLES[kind].ic+'</i><em class="tg" style="background:'+TGRADE_COL[crewGrade(crew)]+'">'+crewGrade(crew)+'</em>'+crew.name+' <span class="se">'+satEmo(crew.sat)+'</span>'; $('labels').appendChild(s.el); ch.g.position.copy(s.pos); staff.push(s); }
+  s.el.className='ntag'; s.el.innerHTML='<i style="background:'+ROLES[kind].c+'">'+ROLES[kind].ic+'</i><em class="tg" style="background:'+TGRADE_COL[crewGrade(crew)]+'">'+crewGrade(crew)+'</em><b class="nm">'+crew.name+'</b> <span class="se">'+satEmo(crew.sat)+'</span>'; $('labels').appendChild(s.el); ch.g.position.copy(s.pos); staff.push(s); }
 S.crew.forEach(c=>addStaff(c.role,c));
 
 /* ---- v2.9: HQ UI 모듈(면접실·지점 대시보드·본사 전직 품의서) 어댑터 ---- */
@@ -2578,7 +2644,7 @@ function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.soft
   if(c.influ&&dayState==='run'&&!c.softLeave){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } if(!c.softLeave){ S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift(); }
   if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet&&c.reg==null){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.compKind||(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈')); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
   if(ok&&c.type==='ret') hubReturnRma(c);
-  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.reg!=null?((c.regVip?2.2:1.8)+v275RegTipAdd()):1)*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*(S.boostD===S.day?2:1)*(S.vipPass?1.25:1)*V285.payMul());
+  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.reg!=null?((c.regVip?2.2:1.8)+v275RegTipAdd()):1)*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*(S.boostD===S.day?2:1)*(S.vipPass?1.25:1)*V285.payMul()*(typeof V287!=='undefined'?V287.payMul():1));
     /* v2.78: 🔥 인기 품목 +40% · ⚡ 피크 타임 +25% */
     try{ if(c.want&&c.want===v278HotT()&&['pick','buy','tour','ret','corp'].indexOf(c.type)>=0){ pay=Math.round(pay*V278HOTMUL); v278HotSold(c); } }catch(e){}
     try{ if(V278PK.on){ pay=Math.round(pay*V278PKPAY); V278PK.n++; } }catch(e){}
@@ -3932,7 +3998,7 @@ function lbObstacles(){
   const W=VW||innerWidth, H=VH||innerHeight, now=performance.now();
   if(now-LBOB.t<150 && LBOB.W===W && LBOB.H===H) return LBOB.list;
   LBOB.t=now; LBOB.W=W; LBOB.H=H;
-  const ids=['hud','sub','subR','shopBtn','camctl','v275ch','dayBar','stockAl','combo'];   /* v2.83: 상단 계기판·칩 줄도 직원 이름표가 피한다 */   /* v2.82: 토스트는 하단으로 옮겨 '천장'이 아니라 '바닥'으로 다룬다 */
+  const ids=['hud','sub','subR','shopBtn','camctl','v275ch','dayBar','stockAl','combo','v287fl'];   /* v2.83: 상단 계기판·칩 줄도 직원 이름표가 피한다 */   /* v2.82: 토스트는 하단으로 옮겨 '천장'이 아니라 '바닥'으로 다룬다 */
   const out=[];
   for(let i=0;i<ids.length;i++){
     const e=document.getElementById(ids[i]); if(!e) continue;
@@ -4081,7 +4147,7 @@ function leadHTML(){ const sc=Math.max(0,Math.min(100,S.myScore||0)), wk=Math.ma
   return '<div class="leadbar"><div class="lb1">🎖️ 내 직급 <b>'+myRankName()+'</b><span class="sep">·</span>리더십 <b>'+Math.round(sc)+'</b>/100'+
     (wk?'<span class="warn">· 경고 <b>'+wk+'</b>'+(wk>=2?' 강등 위험':'')+'</span>':'')+
     '<span class="sep">|</span>T.O. 정원 '+to+'</div><i class="lbfill"><s style="width:'+sc+'%"></s></i></div>'; }
-function crewHTML(){ const avg=S.crew.length?Math.round(S.crew.reduce((a,c)=>a+(c.sat==null?70:c.sat),0)/S.crew.length):null, pc=20+15*S.crew.length; let h='<h2>👥 직원 관리</h2><p style="margin:-6px 0 4px;font-size:11px;color:#8a7a60">고용하면 매일 급여 · 바쁘면 만족도↓</p>'+v286ShardBar()+leadHTML()+(avg!=null?'<div class="dstat"><span>팀 만족도 '+satEmo(avg)+' '+avg+'</span><button id="party" style="width:auto;margin:0;padding:6px 10px;font-size:13px" '+(S.party===S.day||money<pc?'disabled':'')+'>🍕 회식 $'+pc+(S.party===S.day?' (완료)':'')+'</button></div>':'')+'<button id="ivOpen" data-hqiv="1" style="margin:2px 0 7px;padding:8px;font-size:14px;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🎙️ AI 면접 채용실</button>'+honorHTML()+'<div class="dlist">';
+function crewHTML(){ try{ if(typeof V287!=='undefined'&&V287.tab()>0){ var _fh=V287.crewHTML(); if(_fh) return _fh; } }catch(e){} const avg=S.crew.length?Math.round(S.crew.reduce((a,c)=>a+(c.sat==null?70:c.sat),0)/S.crew.length):null, pc=20+15*S.crew.length; let h='<h2>👥 직원 관리</h2>'+((typeof V287!=='undefined')?V287.tabs():'')+'<p style="margin:-6px 0 4px;font-size:11px;color:#8a7a60">고용하면 매일 급여 · 바쁘면 만족도↓</p>'+v286ShardBar()+leadHTML()+(avg!=null?'<div class="dstat"><span>팀 만족도 '+satEmo(avg)+' '+avg+'</span><button id="party" style="width:auto;margin:0;padding:6px 10px;font-size:13px" '+(S.party===S.day||money<pc?'disabled':'')+'>🍕 회식 $'+pc+(S.party===S.day?' (완료)':'')+'</button></div>':'')+'<button id="ivOpen" data-hqiv="1" style="margin:2px 0 7px;padding:8px;font-size:14px;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🎙️ AI 면접 채용실</button>'+honorHTML()+'<div class="dlist">';
   Object.keys(ROLES).forEach(r=>{ const R=ROLES[r], lockD=ROLE_UNLOCK[r]; const lock=S.day<lockD; const cur=S.crew.find(c=>c.role===r&&!c.extra);
     const _pm=POSN_MAP[posnOf({role:r})];
     h+='<div class="crow'+(lock?' lock':'')+'"><h4><i style="background:'+R.c+'">'+R.ic+'</i>'+R.n+'<span class="psn" style="background:'+_pm.c+'">'+_pm.ic+' '+(_pm.k==='mgr'?'관리직':_pm.n)+'</span></h4><small>'+R.d+'</small>'+
@@ -4496,6 +4562,18 @@ function hint(t){ sTxt($('hint'),t); sCss($('hint'),'opacity','1'); hintT=1.6; }
 const _dvc=new WeakMap();
 function _dvm(el){ let m=_dvc.get(el); if(!m){ m={}; _dvc.set(el,m); } return m; }
 function sTxt(el,v){ if(!el) return; v=String(v); const c=_dvm(el); if(c.t===v) return; c.t=v; if(el.textContent!==v) el.textContent=v; }
+/* v2.87: 현금 표기 — 375px에서 $ 99,999 이상도 잘리지 않게 자릿수별로 폰트를 줄이고, 100만 이상은 M 축약 */
+function mnyPaint(v){
+  try{
+    v=Math.floor(+v||0); var el=$('money'); if(!el) return '';
+    var t,fs;
+    if(v>=1000000){ t=(v/1000000).toFixed(v>=10000000?1:2).replace(/\.?0+$/,'')+'M'; fs=16; }
+    else { t=v.toLocaleString(); var n=t.length; fs=n<=4?17:(n<=6?15.5:(n<=8?14:12.5)); }
+    if(el._mt!==t){ el._mt=t; el.textContent=t; }
+    if(el._mfs!==fs){ el._mfs=fs; el.style.fontSize=fs+'px'; }
+    return t;
+  }catch(e){ return ''; }
+}
 function sCss(el,p,v){ if(!el) return; v=String(v); const c=_dvm(el); if(c[p]===v) return; c[p]=v; el.style.setProperty(p,v); }
 function sCls(el,c,on){ if(!el) return; on=!!on; const k='c_'+c, m=_dvm(el); if(m[k]===on) return; m[k]=on; el.classList.toggle(c,on); }
 function sAttr(el,a,v){ if(!el) return; v=String(v); const k='a_'+a, m=_dvm(el); if(m[k]===v) return; m[k]=v; el.setAttribute(a,v); }
@@ -4509,6 +4587,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   /* v2.60: 설정·상점·재고·저장 같은 유틸리티 창이 떠 있는 동안에는 영업 시계·손님 스폰·인내심·민원이 흐르지 않는다.
      상담 퀴즈(quizOpen)는 의도된 긴장이라 제외한다. */
   const paused=mgmtOpen(); if(paused) dt=0; time+=dt;
+  try{ V287.bgTick(dt); }catch(e){}
   // player
   let ix=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0), iz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0); if(joy.on&&Math.hypot(joy.dx,joy.dy)>0.15){ ix=joy.dx; iz=joy.dy; tapStop(); } else if(!ix&&!iz){ const ti=tapInput(dt); if(ti){ ix=ti[0]; iz=ti[1]; } }
   const il=Math.hypot(ix,iz); if(il>0.1&&!quizOpen){ const sp=5.6*(1+0.1*S.up.spd+0.1*(S.mySpd||0))*(feverT>0?1.3:1)*Math.min(1,il)*V285.spdMul(); const cx=CAM_OFF.x, cz=CAM_OFF.z, cl=Math.hypot(cx,cz); const fx=-cx/cl, fz=-cz/cl, rx=-fz, rz=fx; const k=sp*dt/Math.max(1,il);
@@ -4538,7 +4617,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   /* v2.10: 계산대 현금 회수는 '영업 중(run)'에만 — 마감 연출(end)·정산창(result)에서 회수되면 영수증 스냅샷과 HUD 현금이 어긋난다. 남은 현금은 다음 날 그대로 있다가 회수된다. */
   cashT-=dt; if(dayState==='run'&&cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
   // customers
-  if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); try{ v282SpawnWatch(); }catch(e){} spawnT-=dt*loadK()*(cfg.spawn||1)*(V278PK.on?V278PKSPAWN:1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1)*mktSpawnMul(); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=((S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5)*v275TrSpawnI(); spawnCust(); } }
+  if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); try{ v282SpawnWatch(); }catch(e){} spawnT-=dt*loadK()*(typeof V287!=='undefined'?V287.spawnMul():1)*(cfg.spawn||1)*(V278PK.on?V278PKSPAWN:1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1)*mktSpawnMul(); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=((S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5)*v275TrSpawnI(); spawnCust(); } }
   else if(dayState==='end'){ dayEndT-=dt; if(dayEndT<=0&&!quizOpen){ dayState='result'; showResult(); } }
   { const cfg=dayCfg(S.day); sTxt($('dbDay'),(STG+1)+'-'+(S.day-[0,4,8,11,15,19][STG]+1)); const tt=Math.max(0,Math.ceil(dayState==='run'?dayT:cfg.dur)); sTxt($('dbT'),Math.floor(tt/60)+':'+String(tt%60).padStart(2,'0')); sCls($('dbT'),'low',dayState==='run'&&dayT<20); sTxt($('dbRev'),'$'+dayRev+'/$'+cfg.goal); sTxt($('dbComp'),'민원 '+dayComp+'/3'); sCls($('dbComp'),'bad',dayComp>=2); sCss($('dbFill'),'width',Math.min(100,Math.round(dayRev/cfg.goal*1000)/10)+'%');
     sCss($('dbPause'),'display',(paused&&dayState==='run')?'':'none'); sCls($('dayBar'),'pz',paused&&dayState==='run');
@@ -4578,7 +4657,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
     c.ch.g.position.copy(c.pos); c.ch.g.rotation.y=angLerp(c.ch.g.rotation.y,c.face,Math.min(1,dt*10)); animChar(c.ch,c.speed,dt,false); }
   lbFlush();
   // staff AI
-  staff.forEach(s=>{ s.speed=0; const sat=s.crew.sat==null?70:s.crew.sat, SM=sat>=80?1.15:sat<40?0.8:1; const SP=3.0*s.crew.spd*(1+0.08*(s.crew.lv-1))*SM*gradeSyn()*(s.crew.boostT>time?(s.crew.boostK||1.15):1)*(s.kind==='runner'&&leadOn('biz')?1.10:1), ACC=Math.min(0.98,s.crew.acc+0.04*(s.crew.lv-1)-(sat<40?0.1:0)+(s.crew.boostT>time?0.03:0)); s.sp=SP;
+  staff.forEach(s=>{ s.speed=0; try{ if(V287.offStaff(s)) return; }catch(e){} const sat=s.crew.sat==null?70:s.crew.sat, SM=sat>=80?1.15:sat<40?0.8:1; const SP=3.0*s.crew.spd*(1+0.08*(s.crew.lv-1))*SM*gradeSyn()*(s.crew.boostT>time?(s.crew.boostK||1.15):1)*(s.kind==='runner'&&leadOn('biz')?1.10:1), ACC=Math.min(0.98,s.crew.acc+0.04*(s.crew.lv-1)-(sat<40?0.1:0)+(s.crew.boostT>time?0.03:0)); s.sp=SP;
     placeTag(s.el,s.pos,2.0);
     if(s.kind==='mgr'&&mgrTick(s,dt,SP)){ s.ch.g.position.copy(s.pos); s.ch.g.rotation.y=angLerp(s.ch.g.rotation.y,s.face,Math.min(1,dt*10)); animChar(s.ch,s.speed,dt,false); return; }
     if(s.kind!=='mgr'){ if(s._hj&&!s.job) s.crew.dj=(s.crew.dj||0)+1; s._hj=!!s.job; }
@@ -4643,12 +4722,13 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   const gd=guide(); if(gd&&Math.hypot(player.pos.x-gd[0],player.pos.z-gd[1])>1.0){ arrow.visible=gring.visible=true; arrow.position.set(gd[0],2.2+Math.abs(Math.sin(time*4))*0.4,gd[1]); arrow.rotation.y+=dt*3; gring.position.set(gd[0],FLOOR_Y.gring,gd[1]); gring.scale.setScalar(1+Math.sin(time*5)*0.12); } else arrow.visible=gring.visible=false;
   hintT-=dt; if(hintT<=0){ const show=S.lvl<4&&gd&&performance.now()>HINTB; sCss($('hint'),'opacity',show?'1':'0'); if(show) sTxt($('hint'),gd[2]); }
   /* v2.61: HUD 수리실 버튼 배지 (접수 대기 건수) */ try{ repBadge(); }catch(e){}
-  shownMoney+=(money-shownMoney)*Math.min(1,dt*10); if(Math.abs(money-shownMoney)<1) shownMoney=money; sTxt($('money'),Math.floor(shownMoney).toLocaleString()); sTxt($('lv'),S.lvl); sCss($('xp'),'width',Math.min(100,Math.round(S.xp/(6+S.lvl*4)*1000)/10)+'%');
+  shownMoney+=(money-shownMoney)*Math.min(1,dt*10); if(Math.abs(money-shownMoney)<1) shownMoney=money; mnyPaint(Math.floor(shownMoney)); sTxt($('lv'),S.lvl); sCss($('xp'),'width',Math.min(100,Math.round(S.xp/(6+S.lvl*4)*1000)/10)+'%');
   sTxt($('rate'),(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1))); { const nv=npsOf(dayNps); const rm=$('rooms'); sTxt(rm,'NPS '+(nv==null?'—':(nv>0?'+':'')+nv)); sCss(rm,'background',nv==null?'transparent':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'); } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
   if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.23: v2.20의 Z축 가둠을 기본 목표로 쓰되, 캐릭터가 화면 밖·버튼 뒤로 나가면 그만큼만 따라간다(camClampT) */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
+  try{ V287.frame(dt); }catch(e){}
   if(!window.__NR){ if(typeof BIZ!=='undefined'&&BIZ.open&&BIZ.scene) bizRender(dt); else if(typeof REP!=='undefined'&&REP.open&&REP.scene) repRender(dt); else renderer.render(scene,cam); } requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
 /* ---- combo & fever ---- */
@@ -10195,7 +10275,7 @@ function dirAIAsk(d){
   }catch(e){ paint(fb(),false); }
 }
 function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer) window.__checkVer(); },1500); }catch(e){} const cfg=dayCfg(S.day), r=dayRating(); const okRev=dayRev>=cfg.goal, okRate=r>=cfg.min+(dayEv==='review'?0.2:0)-1e-9, okComp=dayComp<3; const clear=okRev&&okRate&&okComp; const fsNext=clear?0:Math.min(4,(S.failStreak||0)+1), merciful=!clear&&fsNext>=2;
-  let stars=lvStars(clear,cfg,r); /* v2.34: ★★★ 조건은 매장마다 다르다(lvStar3) */ S.bp=S.bp||[]; const bonusFull=clear?Math.round(cfg.goal*0.2*stars*(dayEv==='review'?2:1)):0, bonus=Math.max(0,bonusFull-(S.bp[S.day]||0)); const moneyPre=Math.floor(money); const wages=S.crew.reduce((a,c)=>a+c.wage,0), rent=RENT[STG]; money=Math.max(0,money-wages-rent); const nps=npsOf(dayNps); let npsB=0, npsMsg=''; if(nps!=null){ if(nps>=50){ S.stats.nps50=(S.stats.nps50||0)+1; S.womD=S.day+1; S.womK=1.15; npsB=Math.round(cfg.goal*0.1); money+=npsB; npsMsg='입소문 효과! 다음 영업 손님 +15%'; } else if(nps<0){ S.womD=S.day+1; S.womK=0.9; npsMsg='나쁜 입소문… 다음 영업 손님 -10%'; } else npsMsg='추천 손님을 늘리면 입소문 보너스!'; }
+  let stars=lvStars(clear,cfg,r); /* v2.34: ★★★ 조건은 매장마다 다르다(lvStar3) */ S.bp=S.bp||[]; const bonusFull=clear?Math.round(cfg.goal*0.2*stars*(dayEv==='review'?2:1)):0, bonus=Math.max(0,bonusFull-(S.bp[S.day]||0)); const moneyPre=Math.floor(money); const wages=S.crew.reduce((a,c)=>a+c.wage,0)+(typeof V287!=='undefined'?V287.wages():0), rent=RENT[STG]; money=Math.max(0,money-wages-rent); const nps=npsOf(dayNps); let npsB=0, npsMsg=''; if(nps!=null){ if(nps>=50){ S.stats.nps50=(S.stats.nps50||0)+1; S.womD=S.day+1; S.womK=1.15; npsB=Math.round(cfg.goal*0.1); money+=npsB; npsMsg='입소문 효과! 다음 영업 손님 +15%'; } else if(nps<0){ S.womD=S.day+1; S.womK=0.9; npsMsg='나쁜 입소문… 다음 영업 손님 -10%'; } else npsMsg='추천 손님을 늘리면 입소문 보너스!'; }
   const crewLines=[]; const load=dayRevs.length/(S.crew.length+1); S.crew.slice().forEach(cr=>{ if(cr.sat==null) cr.sat=70; let d=-3-Math.round(Math.max(0,load-8)*1.5)+(stars>=3?6:stars>=1?3:0)+(dayComp===0?2:-dayComp*2)+(merciful?3:0); cr.sat=merciful?Math.max(28,Math.min(100,cr.sat+d)):Math.max(0,Math.min(100,cr.sat+d)); if(cr.sat<(merciful?18:30)&&Math.random()<0.5){ S.crew.splice(S.crew.indexOf(cr),1); const st=staff.find(s=>s.crew===cr); if(st) removeStaff(st); crewLines.push('<div class="dstat no"><span>😢 '+cr.name+'('+ROLES[cr.role].n+') 퇴사</span><b>만족도 '+cr.sat+'</b></div>'); } else if(cr.sat<45) crewLines.push('<div class="dstat no"><span>😟 '+cr.name+' 퇴사 위험</span><b>만족도 '+cr.sat+'</b></div>'); });
   const RG=STAGE_OF(S.day), rk0=myRank(RG); S.best[S.day]=Math.max(S.best[S.day]||0,dayRev); const rk1=myRank(RG); let r1b=0; if(rk1===1&&!S.r1[RG]){ S.r1[RG]=1; r1b=150; money+=r1b; } S.orders.forEach(o=>{ if(!o.ex) o.ready=1; });
   lvOnResult(clear,stars); const lpRes=lpOnResult(clear,stars,cfg); const mgEv=mgrEval(clear,cfg,stars); const rsuR=rsuOnResult(clear,stars,cfg,nps); const mkR=mktOnResult(clear,cfg); if(!clear) S.fails=(S.fails||0)+1; S.failStreak=fsNext; if(!clear&&fsNext>=1) S.mercyD=S.day+1; if(clear){ S.lastProfit=Math.round(dayRev-dayOrd-wages-rent); S.dayStars[S.day]=Math.max(S.dayStars[S.day]||0,stars); try{ V285.gems(stars*2+(dayRev>=cfg.goal*1.3?2:0),'DAY 클리어'+(dayRev>=cfg.goal*1.3?' · 130% 달성':'')); }catch(_){} money+=bonus; S.bp[S.day]=(S.bp[S.day]||0)+bonus; confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); } else snd('ui',0.5,0.5);
@@ -10226,7 +10306,7 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   openModal('<h2>'+(clear?'DAY '+(S.day+1)+' 클리어!':'DAY '+(S.day+1)+' 실패…')+'</h2><div class="dres">'+[1,2,3].map(k=>'<i class="'+(k<=stars?'on':'')+'">★</i>').join('')+'</div>'+
     '<div class="dstat '+(okRev?'ok':'no')+'"><span>매출 $'+dayRev+' / 목표 $'+cfg.goal+'</span><b>'+(okRev?'달성':'부족')+'</b></div>'+
     '<div class="dstat '+(okRate?'ok':'no')+'"><span>오늘 서비스 평점 ★'+r.toFixed(1)+' / 최소 ★'+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</span><b>'+(okRate?'통과':'미달')+'</b></div>'+
-    (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(dLead>0?'ok':dLead<0?'no':'')+'"><span>'+leadLine+'</span><b>'+(promotion?'승진 🎉':penalty?'경고 ⚠️':dLead>0?'▲ '+dLead:dLead<0?'▼ '+dLead:'유지')+'</b></div>'+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+(merciful?'<div class="dstat ok"><span>🩹 재기 지원 ('+fsNext+'연속 실패)</span><b>벌금 감면 · 경고 유예 · 직원 만족도 보호<br>다음 영업 매출 +12% · 인내심 +15%</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+S.crew.length+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+(brInc?'<div class="dstat ok"><span>지점 자동 매출 합계</span><b>+$'+brInc+'</b></div>':'')+
+    (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(dLead>0?'ok':dLead<0?'no':'')+'"><span>'+leadLine+'</span><b>'+(promotion?'승진 🎉':penalty?'경고 ⚠️':dLead>0?'▲ '+dLead:dLead<0?'▼ '+dLead:'유지')+'</b></div>'+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+(merciful?'<div class="dstat ok"><span>🩹 재기 지원 ('+fsNext+'연속 실패)</span><b>벌금 감면 · 경고 유예 · 직원 만족도 보호<br>다음 영업 매출 +12% · 인내심 +15%</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+(S.crew.length+(typeof V287!=='undefined'?V287.staffCount():0))+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+(brInc?'<div class="dstat ok"><span>지점 자동 매출 합계</span><b>+$'+brInc+'</b></div>':'')+
     v278ResHTML()+mktResultHTML(mkR)+rsuResultHTML(rsuR)+lpResultHTML(lpRes)+mgrEvalHTML(mgEv)+'<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+lvStarHint(cfg)+'</p>':'</p>')+'<div class="rescta" id="resCta"><button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 (★ 더 받기)</button></div>':'<p>'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p><div class="rescta" id="resCta"><button id="dRetry">다시 도전</button><button class="gray" id="dUp">업그레이드 하러 가기</button></div>'));
   lvCompactResult(); inboxPaint(); try{ v286ResultInject(clear); }catch(e){} $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
   try{ dirAIAsk(dirData(clear)); }catch(e){ console.warn('dirAI',e); } try{ mgrEvalAsk(mgEv); }catch(e){} try{ poachSchedule(rsuR); }catch(e){} try{ mktScoutSchedule(mkR); }catch(e){}
@@ -10370,7 +10450,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.86';
+sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.87';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -11275,7 +11355,7 @@ var V285=(function(){
   function norm(){
     var v=S.v285;
     if(!v||typeof v!=='object'||Array.isArray(v)) v={};
-    v.ver='v2.86';
+    v.ver='v2.87';
     v.gem=n0(v.gem);
     v.br=(v.br&&typeof v.br==='object'&&!Array.isArray(v.br))?v.br:{};
     for(var i=0;i<BR.length;i++){
@@ -11826,49 +11906,11 @@ var V285=(function(){
       var bm=new THREE.Mesh(new THREE.PlaneGeometry(2.6,1.14),new THREE.MeshBasicMaterial({map:bd,transparent:true,opacity:0.96}));
       bm.rotation.x=-Math.PI/2; bm.position.set(0,0.128,4.55); g.add(bm);
       box(2.72,0.02,1.26,'#0b1626',0,0.111,4.55,g);
-      /* ③ 층 타워 — 뒤쪽 오른편에서 지붕 위로 솟는다(완공 층수 = 층 수) */
-      var TW={x:2.55,z:-3.95,w:2.1,d:1.4,fh:0.92,base:0.18};   /* v2.86: 매장 안쪽 오른편 통로, 기본 시야 한가운데 */
-      if(dn>0){
-        box(TW.w+0.5,0.30,TW.d+0.5,'#cfc4ae',TW.x,0.15,TW.z,g);
-        box(0.12,0.5,0.12,'#8f9aae',TW.x-TW.w/2,TW.base+0.25,TW.z+TW.d/2,g);   /* v2.86: 기둥으로 실루엣 보강 */
-        box(0.12,0.5,0.12,'#8f9aae',TW.x+TW.w/2,TW.base+0.25,TW.z+TW.d/2,g);
-        for(var f=0;f<dn;f++){
-          var y=TW.base+f*TW.fh;
-          box(TW.w,0.14,TW.d,'#ffffff',TW.x,y,TW.z,g);
-          box(TW.w+0.04,0.09,TW.d+0.04,col,TW.x,y-0.02,TW.z,g);
-          var gl2=box(TW.w-0.10,0.70,0.06,col,TW.x,y+0.40,TW.z+TW.d/2-0.01,g);
-          try{ gl2.material=new THREE.MeshPhongMaterial({color:col,transparent:true,opacity:0.5,shininess:80}); }catch(e){}
-          box(TW.w,0.06,0.10,dark,TW.x,y+0.68,TW.z+TW.d/2-0.01,g);
-          /* v2.86: 층 라벨을 크게 — 멀리서도 1F/2F와 층 이름이 읽히게 */
-          var _fn=BR[st].floors[f]?BR[st].floors[f].n:'';
-          var tf=canvasTex(function(gg,w,h){
-            gg.fillStyle='#0d1b2c'; gg.fillRect(0,0,w,h);
-            gg.strokeStyle=col; gg.lineWidth=10; gg.strokeRect(5,5,w-10,h-10);
-            gg.fillStyle='#ffe9a8'; gg.font='bold 96px "Black Han Sans",sans-serif'; gg.textAlign='left'; gg.textBaseline='middle';
-            gg.fillText((f+1)+'F',26,h/2+2);
-            gg.fillStyle='#eaf6ff'; gg.font='bold 46px "Noto Sans KR",sans-serif';
-            gg.fillText(_fn.length>9?_fn.slice(0,9):_fn,200,h/2+2);
-          },512,160);
-          var pf=new THREE.Mesh(new THREE.PlaneGeometry(1.86,0.58),new THREE.MeshBasicMaterial({map:tf}));
-          pf.position.set(TW.x,y+0.40,TW.z+TW.d/2+0.02); g.add(pf);
-          [-1.16,1.16].forEach(function(dx){ box(0.09,0.62,0.09,dark,TW.x+dx,y+0.40,TW.z+TW.d/2-0.01,g); });
-        }
-        /* 꼭대기 완공 표지판 */
-        var ty2=TW.base+dn*TW.fh;
-        box(TW.w+0.2,0.12,TW.d+0.2,col,TW.x,ty2,TW.z,g);
-        var capT=signTex(dn+'F / '+n+'F','완공 '+Math.round(dn/n*100)+'%',col,'#ffffff');
-        var cp=new THREE.Mesh(new THREE.PlaneGeometry(2.15,0.66),new THREE.MeshBasicMaterial({map:capT}));
-        cp.position.set(TW.x,ty2+0.40,TW.z+TW.d/2+0.05); g.add(cp);
-        box(2.25,0.72,0.06,dark,TW.x,ty2+0.40,TW.z+TW.d/2,g);
-        try{ var l=new THREE.PointLight(0xbfe8ff,0.5,9); l.position.set(TW.x,ty2+0.9,TW.z+1.4); g.add(l); }catch(e){}
-      }
-      /* ④ 최상층 비컨 */
-      if(dn===n&&n>0){
-        var by=TW.base+n*TW.fh+0.9;
-        box(0.07,0.9,0.07,'#cfd6e0',TW.x,by+0.45,TW.z,g);
-        box(0.42,0.26,0.42,'#ffd76a',TW.x,by+0.95,TW.z,g);
-        try{ var l2=new THREE.PointLight(0xffd76a,0.6,7); l2.position.set(TW.x,by+1.0,TW.z+0.6); g.add(l2); }catch(e){}
-      }
+      /* v2.87: 중앙 3D 층 타워·비컨 삭제 — 매장 통로를 막고 충돌체도 없던 구조물.
+         층 상태는 바닥 현황판(②)과 HUD 층 셀렉터가 담당하고, 실제 층 이동은 #v287fl 로 한다.
+         (무대 장식인 1F 체험존 아치와 바닥 현황판만 남긴다) */
+      window.__V285_3DERR=null;
+      try{ if(window.V287) V287.dress(); }catch(e){}
       window.__V285_3DN=dn;
     }catch(e){ try{ window.__V285_3DERR=String(e&&e.message||e); }catch(_){} }
   }
@@ -12025,7 +12067,7 @@ var V285=(function(){
   try{ setTimeout(init,60); }catch(e){}
 
   return {
-    ver:'v2.86', BR:BR, GEAR:GEAR, DEPT:DEPT, RN:RN, RC:RC, FLOORPAY:FLOORPAY,
+    ver:'v2.87', BR:BR, GEAR:GEAR, DEPT:DEPT, RN:RN, RC:RC, FLOORPAY:FLOORPAY,
     norm:norm, br:br, nFloors:nFloors, floorsDone:floorsDone, floorState:floorState, remain:remain, floorSec:floorSec,
     floorCost:floorCost, gemSkip:gemSkip, startFloor:startFloor, skipFloor:skipFloor, finishFloor:finishFloor,
     reqList:reqList, reqMet:reqMet, branchDone:branchDone, pct:pct, doneBranches:doneBranches, condVal:condVal,
@@ -12043,7 +12085,7 @@ var V285=(function(){
   };
 })();
 try{ window.__H=window.__H||{}; window.__H.v285={
-  ver:'v2.86',
+  ver:'v2.87',
   state:function(){ try{ return JSON.parse(JSON.stringify(V285.state())); }catch(e){ return {err:String(e&&e.message)}; } },
   br:function(st){ st=st==null?STG:st; var o={stage:st,floors:V285.nFloors(st),done:V285.floorsDone(st),pct:V285.pct(st),complete:V285.branchDone(st),list:[]};
     for(var i=0;i<V285.nFloors(st);i++) o.list.push({i:i,state:V285.floorState(st,i),rem:V285.remain(st,i),req:V285.reqList(st,i).map(function(c){ return {k:c.k,ok:c.ok,cur:c.cur,need:c.need}; })});
@@ -12145,7 +12187,7 @@ try{
 }catch(e){}
 window.__H=window.__H||{};
 try{ window.__H.v286={
-  ver:'v2.86',
+  ver:'v2.87',
   start:function(){ try{ startDayModal(); return 1; }catch(e){ return String(e&&e.message); } },
   crew:function(){ try{ openCrew(); return 1; }catch(e){ return String(e&&e.message); } },
   goal:function(){ try{ return v264GoalLine(); }catch(e){ return String(e&&e.message); } },
@@ -12153,6 +12195,624 @@ try{ window.__H.v286={
   gate:function(){ try{ return isGateV286(); }catch(e){ return String(e&&e.message); } },
   state:function(){ return {day:(typeof S!=='undefined'?S.day:null), dstate:(typeof dayState!=='undefined'?dayState:null)}; }
 }; }catch(e){}
+/* ==================== v2.87: 실제 층 이동 · 층별 직원·선반 투자 ====================
+   · 1F↔2F↔3F… 를 실제로 오간다. 층마다 테마(색감·조명·가구)가 바뀌고, 그 층에서 영업한다.
+   · 층별로 직원을 따로 채용·교육·승진시킨다(1F는 기존 코어 팀 그대로).
+   · 층별 전용 진열대/시설 투자로 번 돈을 계속 쓴다(돈 싱크).
+   · 보지 않는 층은 그 층 직원이 백그라운드로 매출을 올려 합산된다(직원 0명이면 0).
+   세이브: S.v287 만 추가한다(tech-epoch v272 · w2/ · u2/ 불변). */
+var V287=(function(){
+  'use strict';
+  var D=function(){ return Date.now(); };
+  var CH=null, G=null, myOB=[], FIG=[], FIGC={}, FLM0=null, BG=0;
+  var TH={
+    show:{n:'쇼룸',ic:'🛍',ac:'#2f6fd8',rug:'#e8f0ff',lit:0xdfeaff,tint:'#f4f8ff'},
+    service:{n:'수리·상담',ic:'🔧',ac:'#2a8a3a',rug:'#e6f8ec',lit:0xdaf5e2,tint:'#f1fbf4'},
+    studio:{n:'프로 스튜디오',ic:'🎬',ac:'#6a4ad6',rug:'#efe9ff',lit:0xe6dcff,tint:'#f7f3ff'},
+    vip:{n:'VIP 라운지',ic:'👑',ac:'#b8862f',rug:'#fdf3dc',lit:0xffeec2,tint:'#fffaf0'},
+    b2b:{n:'B2B 상담',ic:'🏢',ac:'#1d3f7a',rug:'#e6edf8',lit:0xd6e2f5,tint:'#f2f6fc'},
+    lounge:{n:'테크 라운지',ic:'☕',ac:'#c8892c',rug:'#fdf0dd',lit:0xffe6c2,tint:'#fff8ee'},
+    duty:{n:'면세 쇼룸',ic:'✈️',ac:'#0f8aa0',rug:'#e2f7fb',lit:0xd4f2f8,tint:'#f1fbfd'},
+    media:{n:'미디어 월',ic:'📺',ac:'#c2308a',rug:'#fde8f4',lit:0xffd6ec,tint:'#fdf3f9'},
+    lab:{n:'R&D 랩',ic:'🧪',ac:'#0f9a8a',rug:'#e2faf5',lit:0xd2f5ee,tint:'#f1fdfa'},
+    ai:{n:'AI 코어',ic:'🤖',ac:'#6a3fd0',rug:'#ece6ff',lit:0xe0d4ff,tint:'#f6f2ff'},
+    logi:{n:'물류 허브',ic:'📦',ac:'#4a5568',rug:'#eceff4',lit:0xdfe6ee,tint:'#f6f8fb'},
+    ctrl:{n:'컨트롤 타워',ic:'🛰',ac:'#123f6a',rug:'#e0ecf7',lit:0xcfe4f6,tint:'#eff6fc'},
+    arena:{n:'키노트 아레나',ic:'🎤',ac:'#8a2a3a',rug:'#fde8ea',lit:0xffd9dd,tint:'#fdf3f4'}
+  };
+  var ROLE={
+    sales:{n:'판매',ic:'🛒',c:'#2f8fd8',wage:24,hire:110},
+    biz:{n:'비즈니스',ic:'🏢',c:'#6a4ad6',wage:30,hire:140},
+    repair:{n:'수리',ic:'🔧',c:'#2a8a3a',wage:28,hire:130},
+    mgr:{n:'매니저',ic:'👔',c:'#2a3a58',wage:56,hire:240}
+  };
+  var RK=['sales','biz','repair','mgr'];
+  var GR=['C','B','A','S','SS','SSS'];
+  var GC={C:'#7c8798',B:'#2f8fd8',A:'#2a9a5a',S:'#a35cf0',SS:'#e8900a',SSS:'#e0342a'};
+  var GW={C:0,B:0.08,A:0.16,S:0.28,SS:0.45,SSS:0.65};
+  var POSN=['사원','주임','대리','리드'];
+  var PLV=[0,2,3,5];
+  var NAME=['하윤','도윤','시우','서준','지안','예린','수빈','다온','재현','민서','지훈','하람','유나','태오','서아','은호','라온','소미','건우','아린','유진','도현'];
+  var SLOTN={
+    show:['진열 확장','체험 테이블','조명·사인'],
+    service:['수리 카운터','공구 랙','대기 라운지'],
+    studio:['촬영 부스','장비 선반','조명 리그'],
+    vip:['VIP 소파','컨시어지 데스크','샴페인 바'],
+    b2b:['회의 테이블','발표 스크린','계약 라운지'],
+    lounge:['라운지 소파','원두 바','음악 스피커'],
+    duty:['면세 진열장','향수 코너','환급 키오스크'],
+    media:['미디어 월','쇼케이스','체험 좌석'],
+    lab:['랩 벤치','장비 캐비닛','테스트 리그'],
+    ai:['AI 서버 랙','데모 스테이지','데이터 월'],
+    logi:['물류 랙','파렛트 존','분류 벨트'],
+    ctrl:['상황판','관제 데스크','통신 랙'],
+    arena:['무대','관객석','키노트 스크린']
+  };
+  function stg(){ return (typeof STG==='number')?STG:0; }
+  function nF(){ try{ return V285.nFloors(stg()); }catch(e){ return 1; } }
+  function fname(i){ try{ return V285.BR[stg()].floors[i].n||((i+1)+'층'); }catch(e){ return (i+1)+'층'; } }
+  function fname2(i){ return String(fname(i)).replace(/^\s*\d+\s*층\s*/,''); }
+  function open(i){ if(i<=0) return true; try{ return V285.floorState(stg(),i)==='done'; }catch(e){ return false; } }
+  function st(){
+    var v=S.v287;
+    if(!v||typeof v!=='object'||Array.isArray(v)) v={};
+    v.br=(v.br&&typeof v.br==='object'&&!Array.isArray(v.br))?v.br:{};
+    var s=stg(), b=v.br[s];
+    if(!b||typeof b!=='object'||Array.isArray(b)) b={};
+    b.f=Math.max(0,Math.min(5,+b.f||0));
+    b.fl=(b.fl&&typeof b.fl==='object'&&!Array.isArray(b.fl))?b.fl:{};
+    b.td=(b.td&&typeof b.td==='object'&&!Array.isArray(b.td))?b.td:{};
+    v.br[s]=b; v.ver='v2.87'; S.v287=v; return v;
+  }
+  function B(){ var v=st(); CH=v.br[stg()]; return CH; }
+  function fo(i){
+    var b=B(), o=b.fl[i];
+    if(!o||typeof o!=='object'||Array.isArray(o)) o={crew:[],inv:[0,0,0]};
+    o.crew=(Array.isArray(o.crew)?o.crew:[]).filter(function(c){ return c&&c.nm; }).map(function(c){
+      var r=ROLE[c.role]?c.role:'sales';
+      return {nm:String(c.nm).slice(0,8),role:r,lv:Math.max(1,Math.min(5,Math.floor(+c.lv||1))),
+        gr:(GC[c.gr]?c.gr:'C'),pos:Math.max(0,Math.min(3,Math.floor(+c.pos||0))),wage:Math.max(10,Math.min(999,Math.floor(+c.wage||ROLE[r].wage)))};
+    });
+    if(!Array.isArray(o.inv)||o.inv.length!==3) o.inv=[0,0,0];
+    o.inv=[0,1,2].map(function(k){ return Math.max(0,Math.min(5,Math.floor(+o.inv[k]||0))); });
+    b.fl[i]=o; return o;
+  }
+  function crew(i){ return fo(i).crew; }
+  function cap(i){ return Math.min(5,1+i+1); }        /* 2F 3명 · 3F 4명 … 최대 5명 */
+  function cur(){ var f=B().f; return open(f)?f:0; }
+  function invSum(i){ var a=fo(i).inv; return a[0]+a[1]+a[2]; }
+  function invMul(i){ return 1+0.05*invSum(i); }
+  function themeOf(i){
+    var nm=fname(i);
+    if(/VIP|컨시어지|이그제큐티브/.test(nm)) return 'vip';
+    if(/B2B|기업/.test(nm)) return 'b2b';
+    if(/수리|상담/.test(nm)) return 'service';
+    if(/스튜디오|워크스테이션|크리에이터/.test(nm)) return 'studio';
+    if(/라운지/.test(nm)) return 'lounge';
+    if(/면세|출국장|키오스크/.test(nm)) return 'duty';
+    if(/미디어|타임스퀘어/.test(nm)) return 'media';
+    if(/R&D|이노베이션/.test(nm)) return 'lab';
+    if(/AI/.test(nm)) return 'ai';
+    if(/물류|서플라이/.test(nm)) return 'logi';
+    if(/컨트롤/.test(nm)) return 'ctrl';
+    if(/아레나/.test(nm)) return 'arena';
+    return 'show';
+  }
+  /* ---------- 매출 모델 ---------- */
+  function dayPerSec(){ try{ var cfg=dayCfg(S.day); return cfg.goal/Math.max(30,cfg.dur||120); }catch(e){ return 1; } }
+  function corePw(){ var p=0; try{ (S.crew||[]).forEach(function(c){ p+=0.9+0.22*((c.lv||1)-1)+(GW[crewGrade(c)]||0); }); }catch(e){} return p; }
+  function floorPw(i){ var p=0; crew(i).forEach(function(c){ p+=0.9+0.22*(c.lv-1)+0.03*c.pos+(GW[c.gr]||0); }); return p; }
+  function pw(i){ return i===0?corePw():floorPw(i); }
+  function rate(i){
+    var p=pw(i); if(p<=0) return 0;
+    return dayPerSec()*0.035*p*invMul(i)*(1+0.12*Math.max(0,i-1));
+  }
+  function dayEst(i){ try{ var cfg=dayCfg(S.day); return Math.round(rate(i)*Math.max(30,cfg.dur||120)); }catch(e){ return 0; } }
+  function wages(){ var t=0; for(var i=1;i<nF();i++) crew(i).forEach(function(c){ t+=c.wage; }); return t; }
+  function curCount(){ return cur()>0?crew(cur()).length:0; }
+  function payMul(){ return 1+0.02*Math.min(6,curCount()); }
+  function spawnMul(){ return 1+0.06*Math.min(5,curCount()); }
+  function bgTick(dt){
+    try{
+      if(typeof dayState==='undefined'||dayState!=='run'||!isFinite(dt)||dt<=0) return;
+      var my=cur(), b=B(), any=0;
+      for(var i=0;i<nF();i++){
+        if(i===my||!open(i)) continue;
+        var r=rate(i); if(r<=0) continue;
+        var add=r*dt; BG+=add; b.td[i]=(b.td[i]||0)+add; any=1;
+      }
+      if(!any) return;
+      if(BG>=1){ var g=Math.floor(BG); BG-=g; money+=g; dayRev+=g; try{ S.stats.earn=(S.stats.earn||0)+g; }catch(e){} }
+    }catch(e){}
+  }
+  /* ---------- 층 이동 ---------- */
+  function setFloor(i){
+    i=Math.max(0,Math.min(nF()-1,i|0));
+    if(!open(i)){ try{ V285.openBranch(stg()); }catch(e){} return 0; }
+    var b=B(); if(b.f===i) return 1;
+    b.f=i; CH=null; B();
+    try{ save(); }catch(e){}
+    try{ dress(); }catch(e){}
+    try{ rail(); }catch(e){}
+    try{ toast('🏢 '+(i+1)+'F '+fname2(i)+'로 이동했어요',2.2); snd('ui',0.4,1.1); }catch(e){}
+    return 1;
+  }
+  /* ---------- 직원 ---------- */
+  function pickGr(){
+    var r=Math.random();
+    if(r<0.30) return 'C'; if(r<0.60) return 'B'; if(r<0.82) return 'A'; if(r<0.95) return 'S'; if(r<0.99) return 'SS'; return 'SSS';
+  }
+  function hireAsk(i,role){
+    var o=fo(i); if(o.crew.length>=cap(i)) return {ok:0,why:'이 층 정원('+cap(i)+'명)이 가득 찼어요'};
+    var R=ROLE[role]; if(!R) return {ok:0,why:'없는 직무'};
+    var cost=Math.round(R.hire*(1+0.35*i));
+    if(money<cost) return {ok:0,why:'자금이 부족해요 ($'+cost.toLocaleString()+' 필요)'};
+    var used=o.crew.map(function(c){ return c.nm; });
+    var nm=NAME.filter(function(n){ return used.indexOf(n)<0; })[0]||('직원'+(o.crew.length+1));
+    money-=cost;
+    var c={nm:nm,role:role,lv:1,gr:pickGr(),pos:0,wage:Math.round(R.wage*(1+0.05*i))};
+    o.crew.push(c); CH=null; B();
+    try{ save(); }catch(e){}
+    try{ bigBanner(nm+' 채용!',(i+1)+'F '+R.n+' 합류'); snd('level_up',0.5,1.1); }catch(e){}
+    return {ok:1,c:c,cost:cost};
+  }
+  function train(i,idx){
+    var c=crew(i)[idx]; if(!c) return {ok:0,why:'없는 직원'};
+    if(c.lv>=5) return {ok:0,why:'이미 Lv.5'};
+    var cost=Math.round(c.wage*4*c.lv);
+    if(money<cost) return {ok:0,why:'자금이 부족해요 ($'+cost.toLocaleString()+' 필요)'};
+    money-=cost; c.lv++; c.wage=Math.round(c.wage*1.15);
+    CH=null; B(); try{ save(); }catch(e){}
+    return {ok:1,cost:cost,lv:c.lv};
+  }
+  function promo(i,idx){
+    var c=crew(i)[idx]; if(!c) return {ok:0,why:'없는 직원'};
+    if(c.pos>=3) return {ok:0,why:'이미 리드'};
+    var np=c.pos+1;
+    if(c.lv<PLV[np]) return {ok:0,why:'Lv.'+PLV[np]+' 이상이어야 승진할 수 있어요'};
+    var cost=Math.round(c.wage*(5+3*c.pos));
+    if(money<cost) return {ok:0,why:'자금이 부족해요 ($'+cost.toLocaleString()+' 필요)'};
+    money-=cost; c.pos=np; c.wage=Math.round(c.wage*1.18);
+    CH=null; B(); try{ save(); }catch(e){}
+    try{ toast('⭐ '+c.nm+' '+POSN[np]+' 승진!',2.6); snd('level_up',0.45,1.2); }catch(e){}
+    return {ok:1,cost:cost,pos:np};
+  }
+  function fire(i,idx){
+    var o=fo(i); var c=o.crew[idx]; if(!c) return {ok:0};
+    o.crew.splice(idx,1); CH=null; B(); try{ save(); }catch(e){}
+    return {ok:1,nm:c.nm};
+  }
+  function invCost(i,k){
+    var lv=fo(i).inv[k]||0;
+    try{ return Math.max(120,Math.round(dayCfg(S.day).goal*(0.22+0.06*i)*(1+0.55*lv)/10)*10); }catch(e){ return 500; }
+  }
+  function invest(i,k){
+    var o=fo(i); if(k<0||k>2) return {ok:0};
+    if(o.inv[k]>=5) return {ok:0,why:'이미 최대 단계'};
+    var cost=invCost(i,k);
+    if(money<cost) return {ok:0,why:'자금이 부족해요 ($'+cost.toLocaleString()+' 필요)'};
+    money-=cost; o.inv[k]++; CH=null; B(); try{ save(); }catch(e){}
+    try{ dress(); }catch(e){}
+    try{ toast('🏗️ '+(i+1)+'F '+(SLOTN[themeOf(i)]||SLOTN.show)[k]+' Lv.'+o.inv[k],2.4); snd('level_up',0.4,1.2); }catch(e){}
+    return {ok:1,cost:cost,lv:o.inv[k]};
+  }
+  /* ---------- 3D: 층 드레싱 ---------- */
+  function ob2(x1,x2,z1,z2){ try{ var b=ob(x1,x2,z1,z2); myOB.push(b); }catch(e){} }
+  function clearOB(){ for(var i=0;i<myOB.length;i++){ var k=OB.indexOf(myOB[i]); if(k>=0) OB.splice(k,1); } myOB=[]; }
+  function lbl(txt,bg,fg,w,h,size){
+    try{ return canvasTex(function(g,W,H){ g.fillStyle=bg; g.fillRect(0,0,W,H); g.strokeStyle='rgba(255,255,255,.55)'; g.lineWidth=6; g.strokeRect(3,3,W-6,H-6);
+      g.fillStyle=fg; g.font='bold '+size+'px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText(txt,W/2,H/2+2); },w||256,h||64); }catch(e){ return null; }
+  }
+  function meshPlane(tex,w,h,x,y,z,ry,G2){
+    try{ var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:tex,transparent:true})); m.position.set(x,y,z); if(ry) m.rotation.y=ry; (G2||G).add(m); return m; }catch(e){ return null; }
+  }
+  function propCounter(x,z,ac,nm){
+    try{
+      box(1.5,0.9,0.62,'#fffdf8',x,0.45,z,G);
+      box(1.58,0.08,0.7,ac,x,0.94,z,G);
+      box(1.2,0.44,0.03,'#f6efe3',x,0.46,z-0.32,G);
+      var t=lbl(nm,ac,'#ffffff',256,64,38); if(t) meshPlane(t,1.24,0.31,x,1.3,z-0.01);
+      box(1.3,0.36,0.05,'#26303e',x,1.3,z-0.03,G);
+      ob2(x-0.82,x+0.82,z-0.36,z+0.36);
+    }catch(e){}
+  }
+  function propSofa(x,z,ac){
+    try{
+      box(1.7,0.36,0.72,ac,x,0.24,z,G); box(1.7,0.5,0.16,'#fffdf8',x,0.62,z-0.28,G);
+      box(0.16,0.42,0.72,'#fffdf8',x-0.78,0.5,z,G); box(0.16,0.42,0.72,'#fffdf8',x+0.78,0.5,z,G);
+      box(0.84,0.1,0.5,'#efe6d4',x,0.16,z+0.75,G); cyl(0.22,0.24,0.14,'#fffdf8',x,0.28,z+0.75,G,14);
+      ob2(x-0.9,x+0.9,z-0.4,z+0.42);
+    }catch(e){}
+  }
+  function propShelf(x,z,ac,nm){
+    try{
+      box(1.5,1.9,0.5,'#fffdf8',x,0.95,z,G);
+      [0.35,0.85,1.35].forEach(function(y,k){ box(1.42,0.05,0.46,ac,x,y,z,G); for(var q=0;q<4;q++) box(0.24,0.18,0.22,['#ffd76a','#8fd8ff','#ff9aa8','#a8e6a0'][(k+q)%4],x-0.5+q*0.34,y+0.12,z,G); });
+      var t=lbl(nm,ac,'#ffffff',256,64,34); if(t) meshPlane(t,1.2,0.3,x,2.02,z+0.26);
+      ob2(x-0.8,x+0.8,z-0.3,z+0.3);
+    }catch(e){}
+  }
+  function propScreen(x,z,ac,nm){
+    try{
+      box(1.9,1.5,0.16,'#e9eef6',x,1.25,z,G);
+      var t=lbl(nm,ac,'#ffffff',256,96,36); if(t) meshPlane(t,1.76,0.66,x,1.3,z+0.1);
+      box(0.1,0.6,0.1,'#9aa6b8',x-0.6,0.35,z,G); box(0.1,0.6,0.1,'#9aa6b8',x+0.6,0.35,z,G);
+      ob2(x-0.98,x+0.98,z-0.25,z+0.2);
+    }catch(e){}
+  }
+  function propTable(x,z,ac,nm){
+    try{
+      cyl(0.62,0.62,0.07,'#fffdf8',x,0.74,z,G,24); cyl(0.09,0.11,0.74,'#b9a58a',x,0.37,z,G,12);
+      cyl(0.7,0.7,0.02,ac,x,0.79,z,G,24);
+      [[0.95,0],[ -0.95,0],[0,0.95],[0,-0.95]].forEach(function(d){ box(0.36,0.36,0.36,'#efe6d4',x+d[0],0.2,z+d[1],G); });
+      var t=lbl(nm,ac,'#ffffff',256,64,34); if(t) meshPlane(t,1.1,0.28,x,1.15,z+0.02);
+      ob2(x-0.75,x+0.75,z-0.75,z+0.75);
+    }catch(e){}
+  }
+  function spotFree(x,z,w,d){
+    try{ for(var i=0;i<OB.length;i++){ var o=OB[i]; if(x+w/2>o.x1&&x-w/2<o.x2&&z+d/2>o.z1&&z-d/2<o.z2) return false; } }catch(e){}
+    if(x<-6.3||x>6.3||z<-8.2||z>5.6) return false;
+    return true;
+  }
+  function pickSpot(w,d,list){
+    for(var i=0;i<list.length;i++){ if(spotFree(list[i][0],list[i][1],w,d)) return list[i]; }
+    return null;
+  }
+  function elevator(fl){
+    try{
+      var EG=new THREE.Group(); EG.position.set(0.55,0,-8.66); G.add(EG);
+      box(1.5,2.4,0.46,'#eef2f8',0,1.2,0,EG);
+      box(1.6,0.14,0.56,'#d7dee8',0,2.44,0,EG);
+      box(0.62,1.98,0.06,'#c3cedd',-0.34,1.0,0.24,EG);
+      box(0.62,1.98,0.06,'#c3cedd',0.34,1.0,0.24,EG);
+      box(0.04,1.98,0.07,'#8f9dae',0,1.0,0.25,EG);
+      box(0.18,0.6,0.05,'#f7fafd',0.86,1.15,0.25,EG);
+      cyl(0.05,0.05,0.03,'#ffb020',0.86,1.28,0.29,EG,12).rotation.x=Math.PI/2;
+      cyl(0.05,0.05,0.03,'#5aa8ff',0.86,1.06,0.29,EG,12).rotation.x=Math.PI/2;
+      var t=lbl((fl+1)+'F','#16324f','#ffe9a8',256,128,96);
+      if(t) meshPlane(t,0.5,0.25,0,2.2,0.245,0,EG);
+      box(0.58,0.32,0.05,'#0f2036',0,2.2,0.22,EG);
+      var s2=lbl('ELEVATOR','#16324f','#9fd8ff',256,64,30);
+      if(s2) meshPlane(s2,0.6,0.15,0,1.98,0.245,0,EG);
+      ob2(-0.22,1.32,-8.92,-8.4);
+    }catch(e){}
+  }
+  function rugs(fl,th){
+    try{
+      if(fl<=0) return;
+      var t=canvasTex(function(g,W,H){
+        g.clearRect(0,0,W,H);
+        g.fillStyle=th.rug; g.fillRect(0,0,W,H);
+        g.strokeStyle=th.ac; g.lineWidth=12; g.globalAlpha=.5; g.strokeRect(12,12,W-24,H-24); g.globalAlpha=1;
+        g.fillStyle=th.ac; g.globalAlpha=.10; g.font='bold 330px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+        g.fillText((fl+1)+'F',W/2,H/2-30); g.globalAlpha=1;
+        var bw=W-120, bh=104, bx=60, by=H-190;
+        g.fillStyle='rgba(255,253,247,.96)'; g.beginPath();
+        var r=26; g.moveTo(bx+r,by); g.arcTo(bx+bw,by,bx+bw,by+bh,r); g.arcTo(bx+bw,by+bh,bx,by+bh,r); g.arcTo(bx,by+bh,bx,by,r); g.arcTo(bx,by,bx+bw,by,r); g.closePath(); g.fill();
+        g.strokeStyle=th.ac; g.lineWidth=5; g.stroke();
+        g.fillStyle=th.ac; g.font='bold 54px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+        g.fillText((fl+1)+'F · '+th.n,W/2,by+bh/2+2);
+      },512,512);
+      var m=new THREE.Mesh(new THREE.PlaneGeometry(6.4,6.4),new THREE.MeshBasicMaterial({map:t,transparent:true,opacity:0.62,depthWrite:false}));
+      m.rotation.x=-Math.PI/2; m.position.set(-0.2,0.144,2.2); m.renderOrder=1; G.add(m);
+      var L=new THREE.PointLight(th.lit,0.55,17); L.position.set(0,3.6,0.6); G.add(L);
+    }catch(e){}
+  }
+  function floorSign(fl,th){
+    try{
+      var x=4.5, z=4.5, n=crew(fl).length, iv=invSum(fl);
+      box(0.12,1.55,0.12,'#b9a58a',x,0.78,z,G);
+      box(0.9,0.62,0.06,'#fffdf8',x,1.5,z,G);
+      var t=canvasTex(function(g,W,H){
+        g.fillStyle='#fffdf7'; g.fillRect(0,0,W,H);
+        g.strokeStyle=th.ac; g.lineWidth=8; g.strokeRect(4,4,W-8,H-8);
+        g.fillStyle=th.ac; g.font='bold 92px "Black Han Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+        g.fillText((fl+1)+'F',W/2,H/2-16);
+        g.fillStyle='#5a4230'; g.font='bold 30px "Noto Sans KR",sans-serif';
+        g.fillText(th.n+' · 직원 '+n+' · 투자 '+iv,W/2,H/2+46);
+      },384,192);
+      if(t) meshPlane(t,0.86,0.43,x,1.5,z+0.04);
+      box(0.4,0.06,0.4,'#b9a58a',x,0.03,z,G);
+      ob2(x-0.5,x+0.5,z-0.3,z+0.3);
+    }catch(e){}
+  }
+  function furniture(fl,th){
+    if(fl<=0) return;
+    var key=themeOf(fl), nm=(SLOTN[key]||SLOTN.show), inv=fo(fl).inv;
+    var C=[[-5.2,-2.2],[-4.9,0.9],[-5.2,3.4],[5.4,1.6],[5.4,-1.6],[-2.6,-3.0],[1.6,-2.4],[0.4,2.6]];
+    var first=pickSpot(1.7,0.9,C)||[-5.2,-2.2];
+    if(key==='vip'||key==='lounge') propSofa(first[0],first[1],th.ac); else propCounter(first[0],first[1],th.ac,nm[0]);
+    var C2=C.filter(function(p){ return Math.hypot(p[0]-first[0],p[1]-first[1])>1.6; });
+    var second=pickSpot(1.9,1.0,C2)||[5.4,-1.6];
+    if(key==='media'||key==='b2b'||key==='ctrl'||key==='arena'||key==='ai') propScreen(second[0],second[1],th.ac,nm[1]);
+    else propShelf(second[0],second[1],th.ac,nm[1]);
+    var C3=C2.filter(function(p){ return Math.hypot(p[0]-second[0],p[1]-second[1])>1.8; });
+    var third=pickSpot(1.2,0.9,C3); if(third) propTable(third[0],third[1],th.ac,nm[2]);
+  }
+  function dress(){
+    try{
+      if(typeof scene==='undefined'||!scene||typeof THREE==='undefined'||typeof box!=='function') return;
+      if(!G||!G.parent){ G=new THREE.Group(); G.name='v287floor'; scene.add(G); }
+      while(G.children.length) G.remove(G.children[0]);
+      clearOB();
+      var fl=cur(), th=TH[themeOf(fl)]||TH.show;
+      rugs(fl,th); furniture(fl,th); elevator(fl); if(fl>0) floorSign(fl,th);
+      /* 바닥 색조 */
+      try{
+        if(typeof FLM!=='undefined'&&FLM&&FLM.material&&FLM.material.color){
+          if(FLM0===null) FLM0='#'+FLM.material.color.getHexString();
+          FLM.material.color.set(fl>0?th.tint:FLM0);
+        }
+      }catch(e){}
+      /* 층 직원 3D */
+      figs(fl,th);
+      window.__V287_3D={fl:fl,theme:themeOf(fl),meshes:G.children.length};
+    }catch(e){ try{ window.__V287_3DERR=String(e&&e.message||e); }catch(_){} }
+  }
+  function figSpots(){
+    var C=[[-4.5,-1.9],[-3.4,2.9],[-1.6,3.4],[1.9,0.2],[-5.0,1.0],[2.4,-2.4]];
+    var out=[];
+    for(var i=0;i<C.length&&out.length<5;i++){ if(spotFree(C[i][0],C[i][1],0.7,0.7)) out.push(C[i]); }
+    return out;
+  }
+  function figs(fl,th){
+    try{
+      if(!FIG) FIG=[];
+      for(var i=0;i<FIG.length;i++){ var F=FIG[i]; if(F&&F.g){ try{ if(F.g.parent) F.g.parent.remove(F.g); }catch(e){} } if(F&&F.el){ F.el.style.display='none'; } }
+      if(fl<=0) return;
+      var cr=crew(fl); if(!cr.length) return;
+      var fk=stg()+'_'+fl;
+      var sig=cr.map(function(c){ return c.nm+c.role+c.lv+c.gr+c.pos; }).join(',')+'|'+fk;
+      var cache=FIGC[fk];
+      if(!cache||cache.sig!==sig){
+        if(cache&&cache.list){ cache.list.forEach(function(f){ try{ scene.remove(f.g); if(f.el) f.el.remove(); }catch(e){} }); }
+        var list=[], sp=figSpots();
+        cr.slice(0,4).forEach(function(c,k){
+          try{
+            var model=['Casual_Male','Casual_Female','Casual2_Male','Casual2_Female','Worker_Male','Casual3_Female','Suit_Male','Casual_Bald'][(k+fl)%8];
+            var ch=makeChar(model,{tint:'#7fb6ff',apron:ROLE[c.role].c,hair:['#1d1a1a','#5a3a22','#8a5a2a','#2a2330'][(k+fl)%4]});
+            var el=document.createElement('div'); el.className='ntag';
+            el.innerHTML='<i style="background:'+ROLE[c.role].c+'">'+ROLE[c.role].ic+'</i><em class="tg" style="background:'+GC[c.gr]+'">'+c.gr+'</em><b class="nm">'+c.nm+'</b> <span class="se">'+POSN[c.pos]+'</span>';
+            el.style.display='none'; $('labels').appendChild(el);
+            list.push({g:ch.g, ch:ch, el:el, x:(sp[k]||[0,-2])[0], z:(sp[k]||[0,-2])[1], t:Math.random()*6, base:0});
+          }catch(e){}
+        });
+        FIGC[fk]={sig:sig,list:list};
+        cache=FIGC[fk];
+      }
+      FIG=cache.list;
+      for(var j=0;j<FIG.length;j++){
+        var f=FIG[j];
+        try{
+          if(!f.g.parent) G.add(f.g);
+          f.g.position.set(f.x,0,f.z); f.g.visible=true;
+          f.el.style.display='';
+        }catch(e){}
+      }
+    }catch(e){}
+  }
+  function frame(dt){
+    try{
+      if(!FIG||!FIG.length) return;
+      if(cur()<=0) return;
+      var t=(performance.now()/1000);
+      for(var i=0;i<FIG.length;i++){
+        var f=FIG[i]; if(!f.g) continue;
+        f.g.rotation.y=Math.PI+Math.sin(t*0.6+i)*0.22;
+        try{ animChar(f.ch,0,Math.min(0.05,dt||0.016),false); }catch(e){}
+        try{ placeTag(f.el,new THREE.Vector3(f.x,1.86,f.z),2.02); }catch(e){}
+      }
+    }catch(e){}
+  }
+  /* ---------- 1F 코어 팀 게이팅 ---------- */
+  function offStaff(s){
+    try{
+      if(cur()===0){ if(s&&s._h287){ s._h287=0; if(s.ch&&s.ch.g) s.ch.g.visible=true; if(s.el) s.el.style.display=''; } return false; }
+      if(s&&!s._h287){ s._h287=1; if(s.ch&&s.ch.g) s.ch.g.visible=false; if(s.el) s.el.style.display='none'; }
+      return true;
+    }catch(e){ return false; }
+  }
+  /* 층을 옮기면 이전 층 손님은 그 층에서 응대가 끝난 것으로 정리한다(자리 반납 포함) */
+  function purgeCust(){
+    try{
+      for(var i=custs.length-1;i>=0;i--){
+        var c=custs[i]; if(!c) continue;
+        if(c.st==='lab'||c.labJ) continue;
+        try{ if(c.spot){ c.spot.occ=null; c.spot=null; } }catch(e){}
+        try{ if(c.claim&&c.claim.job===c){ c.claim.job=null; } }catch(e){}
+        try{ if(c.ch&&c.ch.g) scene.remove(c.ch.g); }catch(e){}
+        try{ if(c.el) c.el.remove(); }catch(e){}
+        custs.splice(i,1);
+      }
+      try{ if(typeof GSPOT!=='undefined'&&GSPOT) GSPOT.occ=null; }catch(e){}
+    }catch(e){}
+  }
+  /* ---------- UI: 좌측 층 셀렉터 ---------- */
+  function rail(){
+    try{
+      var el=document.getElementById('v287fl');
+      if(!el){ el=document.createElement('div'); el.id='v287fl'; document.body.appendChild(el); }
+      if(typeof STG!=='number'){ el.style.display='none'; return; }
+      var my=cur(), h='<button class="mg" data-v287="panel" aria-label="층 관리" title="층 관리">🏢<small>층</small></button>';
+      for(var i=0;i<nF();i++){
+        var op=open(i), cu=(i===my), n=i>0?crew(i).length:0;
+        var sub=!op?'🔒':(i===0?'코어':(n?n+'명':'0명'));
+        h+='<button data-v287="go" data-i="'+i+'" class="'+(cu?'cur':'')+(op?'':' lock')+'" aria-label="'+(i+1)+'층 '+(op?'':'잠김')+'"'+(cu?' aria-current="true"':'')+'>'+(i+1)+'F<small>'+sub+'</small>'+(cu?'':'')+'</button>';
+      }
+      var sig=h; if(el._sg!==sig){ el._sg=sig; el.innerHTML=h; }
+      el.style.display=document.body.classList.contains('title')?'none':'';
+    }catch(e){}
+  }
+  function tabs(){
+    try{
+      var h='<div class="v287tabs">', my=cur(), tb=crewTab();
+      for(var i=0;i<nF();i++){
+        var op=open(i);
+        h+='<button data-v287f="'+i+'" class="'+(tb===i?'on':'')+(op?'':' lk')+'">'+(i+1)+'F'+(op?'':' 🔒')+'</button>';
+      }
+      return h+'</div>';
+    }catch(e){ return ''; }
+  }
+  var TAB=0;
+  function crewTab(){ if(TAB>=nF()) TAB=0; if(TAB>0&&!open(TAB)) TAB=0; return TAB; }
+  function setTab(i){ TAB=Math.max(0,Math.min(nF()-1,i|0)); if(TAB>0&&!open(TAB)){ try{ V285.openBranch(stg()); }catch(e){} TAB=0; } return TAB; }
+  function gb(g){ return '<em class="tg" style="background:'+GC[g]+';min-width:15px;height:14px;border-radius:4px;color:#fff;font:900 9.5px var(--d);display:inline-flex;align-items:center;justify-content:center;padding:0 3px;margin-right:3px">'+g+'</em>'; }
+  function crewHTML(){
+    try{
+      var i=crewTab(); if(i<=0) return '';
+      var th=TH[themeOf(i)], o=fo(i), n=crew(i), ch=cap(i);
+      var h='<h2>👥 직원 관리 · '+(i+1)+'F</h2>'+tabs();
+      h+='<p style="margin:-2px 0 5px;font-size:11px;color:#8a7a60">'+(i+1)+'F '+esc287(fname2(i))+' 전용 직원이에요 · 1F 코어 팀과 따로 채용·교육·승진해요</p>';
+      h+='<div class="dstat"><span>이 층 직원 '+n.length+' / '+ch+'명 · 일 인건비</span><b>$'+n.reduce(function(a,c){ return a+c.wage; },0)+'</b></div>';
+      h+='<div class="dstat"><span>이 층 예상 매출 (하루)</span><b style="color:#1e7a52">$'+dayEst(i).toLocaleString()+'</b></div>';
+      h+='<div class="v287bar"><s style="width:'+Math.round(n.length/ch*100)+'%"></s></div><div class="v287hd">직원 <small>'+(n.length?'교육으로 Lv ▲ · Lv.2/3/5에 승진':'아직 0명 — 채용해야 매출이 나와요')+'</small></div>';
+      if(!n.length) h+='<div class="v287row"><div class="ic">'+th.ic+'</div><div class="tx"><b>직원이 없어요</b><small>직원 0명이면 이 층은 매출이 0이에요. 아래에서 채용하세요.</small></div></div>';
+      n.forEach(function(c,k){
+        var tc=Math.round(c.wage*4*c.lv), pc=Math.round(c.wage*(5+3*c.pos)), need=PLV[Math.min(3,c.pos+1)];
+        h+='<div class="v287row"><div class="ic">'+ROLE[c.role].ic+'</div><div class="tx"><b>'+gb(c.gr)+esc287(c.nm)+' <span style="font:800 10px var(--b);color:#8a7660">'+ROLE[c.role].n+' · Lv.'+c.lv+' · '+POSN[c.pos]+'</span></b>'+
+          '<small>급여 $'+c.wage+'/일 · 이 층 기여 '+(0.9+0.22*(c.lv-1)+0.03*c.pos+(GW[c.gr]||0)).toFixed(2)+'</small></div>'+
+          '<div class="bt"><button data-v287="train" data-i="'+i+'" data-x="'+k+'" '+(c.lv>=5||money<tc?'disabled':'')+'>'+(c.lv>=5?'MAX':'교육 $'+tc+'')+'</button>'+
+          '<button data-v287="promo" data-i="'+i+'" data-x="'+k+'" '+(c.pos>=3||c.lv<need||money<pc?'disabled':'')+'>'+(c.pos>=3?'리드':'승진 $'+pc)+'</button></div></div>';
+      });
+      if(n.length<ch){
+        h+='<div class="v287hd">채용 <small>빈자리 '+(ch-n.length)+'명</small></div>';
+        RK.forEach(function(r){
+          var R=ROLE[r], cost=Math.round(R.hire*(1+0.35*i));
+          h+='<div class="v287row"><div class="ic">'+R.ic+'</div><div class="tx"><b>'+R.n+' 채용</b><small>급여 $'+R.wage+'/일 · 등급 C~SSS 무작위</small></div>'+
+             '<div class="bt"><button class="go" data-v287="hire" data-i="'+i+'" data-r="'+r+'" '+(money<cost?'disabled':'')+'>$'+cost+'</button></div></div>';
+        });
+      }
+      return h+'<button class="gray" id="mOk">닫기</button>';
+    }catch(e){ return '<h2>👥 직원 관리</h2><p>오류: '+esc287(e&&e.message)+'</p><button class="gray" id="mOk">닫기</button>'; }
+  }
+  function esc287(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function panel(){
+    try{
+      var my=cur(), h='<h2>🏢 층 관리 · '+(V285.BR[stg()]?esc287(V285.BR[stg()].short):'')+'</h2>';
+      h+='<div class="dstat"><span>지금 있는 층</span><b>'+(my+1)+'F '+esc287(fname2(my))+'</b></div>';
+      var _tot=0; for(var _q=1;_q<6;_q++) _tot+=crew(_q).length;
+      h+='<div class="dstat"><span>층 직원 · 일 인건비</span><b>'+_tot+'명 · $'+wages()+'</b></div>';
+      h+='<p class="vnote" style="font:800 11px/1.45 var(--b);color:#8a7660">층이 늘어날수록 층마다 직원·진열대를 따로 키워야 매출이 커져요. 지금 보지 않는 층도 그 층 직원이 <b>백그라운드로 매출</b>을 올려 합산돼요(직원 0명 = $0).</p>';
+      for(var i=0;i<nF();i++){
+        var op=open(i), th=TH[themeOf(i)], n=i>0?crew(i).length:0, stt=op?(i===0?'코어 팀 '+(S.crew||[]).length+'명':'직원 '+n+'명'):'🔒 잠김';
+        h+='<div class="v287row"><div class="ic">'+(op?th.ic:'🔒')+'</div><div class="tx"><b>'+(i+1)+'F '+esc287(fname2(i))+'</b>'+
+          '<small>'+(op?('투자 '+invSum(i)+'/15 · 예상 $'+dayEst(i).toLocaleString()+'/일'):'아직 완공되지 않았어요')+' · '+stt+'</small>'+
+          (i>0&&op?'<div class="v287bar"><s style="width:'+Math.round(n/cap(i)*100)+'%"></s></div>':'')+'</div>'+
+          '<div class="bt">'+(op?'<button class="go" data-v287="go" data-i="'+i+'">'+(my===i?'현재':'이동')+'</button>'+(i>0?'<button data-v287="staff" data-i="'+i+'">직원</button><button data-v287="inv" data-i="'+i+'">투자</button>':''):'<button data-v287="build" data-i="'+i+'">건설</button>')+'</div></div>';
+      }
+      return h+'<button class="gray" id="mOk">닫기</button>';
+    }catch(e){ return '<h2>🏢 층 관리</h2><p>오류: '+esc287(e&&e.message)+'</p><button class="gray" id="mOk">닫기</button>'; }
+  }
+  function panelCrew(i){ TAB=i; return crewHTML(); }
+  function invPanel(i){
+    try{
+      var o=fo(i), nm=SLOTN[themeOf(i)]||SLOTN.show, h='<h2>🏗️ '+(i+1)+'F 시설 투자</h2>';
+      h+='<p style="margin:-2px 0 6px;font-size:11px;color:#8a7a60">'+(i+1)+'F '+esc287(fname2(i))+' · 투자 1단계마다 이 층 매출 +5%</p>';
+      for(var k=0;k<3;k++){
+        var lv=o.inv[k], cost=invCost(i,k);
+        h+='<div class="v287row"><div class="ic">'+['🛒','🏗','💡'][k]+'</div><div class="tx"><b>'+esc287(nm[k])+' <span style="color:#c8892c">Lv.'+lv+' / 5</span></b>'+
+          '<div class="v287bar"><s style="width:'+(lv*20)+'%"></s></div></div>'+
+          '<div class="bt"><button class="go" data-v287="inv2" data-i="'+i+'" data-x="'+k+'" '+(lv>=5||money<cost?'disabled':'')+'>'+(lv>=5?'MAX':'$'+cost)+'</button></div></div>';
+      }
+      h+='<div class="dstat"><span>이 층 매출 배율</span><b>×'+invMul(i).toFixed(2)+'</b></div>';
+      return h+'<button class="gray" id="mOk">닫기</button>';
+    }catch(e){ return '<h2>투자</h2><button class="gray" id="mOk">닫기</button>'; }
+  }
+  /* ---------- 클릭 처리 (캡처 단계에서 먼저 받는다) ---------- */
+  function onClick(e){
+    try{
+      var t=e.target&&e.target.closest?e.target:null; if(!t) return;
+      var b=t.closest('[data-v287],[data-v287f]');
+      if(!b) return;
+      var act=b.getAttribute('data-v287');
+      if(b.hasAttribute('data-v287f')){
+        e.preventDefault(); e.stopPropagation();
+        setTab(+b.getAttribute('data-v287f'));
+        try{ openCrew(); }catch(_){}
+        return;
+      }
+      var i=+b.getAttribute('data-i');
+      if(act==='go'){ e.preventDefault(); e.stopPropagation();
+        if(!open(i)){ try{ closeModalUI(); }catch(_){} try{ V285.openBranch(stg()); }catch(_){} return; }
+        setFloor(i);
+        try{ closeModalUI(); }catch(_){}
+        return; }
+      if(act==='panel'){ e.preventDefault(); e.stopPropagation(); try{ snd('ui',0.4); }catch(_){} try{ openModal(panel()); }catch(_){} return; }
+      if(act==='build'){ e.preventDefault(); e.stopPropagation(); try{ closeModalUI(); }catch(_){} try{ V285.openBranch(stg()); }catch(_){} return; }
+      if(act==='staff'){ e.preventDefault(); e.stopPropagation(); TAB=Math.max(0,i); try{ openCrew(); }catch(_){} return; }
+      if(act==='inv'){ e.preventDefault(); e.stopPropagation(); try{ openModal(invPanel(i)); }catch(_){} return; }
+      if(act==='hire'){ e.preventDefault(); e.stopPropagation();
+        var r=hireAsk(i,b.getAttribute('data-r'));
+        if(!r.ok){ try{ toast(r.why||'',2.6); }catch(_){} } else { try{ rail(); }catch(_){} }
+        try{ if(crewTab()>0) openCrew(); else openModal(panel()); }catch(_){}
+        return; }
+      if(act==='train'){ e.preventDefault(); e.stopPropagation();
+        var x1=+b.getAttribute('data-x'), t1=train(i,x1);
+        if(!t1.ok){ try{ toast(t1.why||'',2.4); }catch(_){} } else { try{ toast('Lv.'+t1.lv+' 교육 완료',1.8); snd('level_up',0.4,1.2); }catch(_){} }
+        try{ figs(i,TH[themeOf(i)]); }catch(_){} try{ rail(); }catch(_){}
+        try{ openCrew(); }catch(_){}
+        return; }
+      if(act==='promo'){ e.preventDefault(); e.stopPropagation();
+        var x2=+b.getAttribute('data-x'), t2=promo(i,x2);
+        if(!t2.ok){ try{ toast(t2.why||'',2.4); }catch(_){} }
+        try{ figs(i,TH[themeOf(i)]); }catch(_){} try{ rail(); }catch(_){}
+        try{ openCrew(); }catch(_){}
+        return; }
+      if(act==='inv2'){ e.preventDefault(); e.stopPropagation();
+        var t3=invest(i,+b.getAttribute('data-x'));
+        if(!t3.ok){ try{ toast(t3.why||'',2.4); }catch(_){} }
+        try{ openModal(invPanel(i)); }catch(_){}
+        return; }
+    }catch(err){}
+  }
+  try{ document.addEventListener('click',onClick,true); }catch(e){}
+
+  /* ---------- 초기화 · 상태 API ---------- */
+  function state(){
+    var b=B();
+    return {ver:'v2.87', stage:stg(), floor:b.f, floors:nF(), theme:themeOf(cur()), crewTab:TAB,
+      floorsData:(function(){ var a=[]; for(var i=0;i<nF();i++) a.push({i:i,open:open(i),name:fname(i),theme:themeOf(i),crew:crew(i).length,cap:cap(i),inv:fo(i).inv.slice(),invSum:invSum(i),rate:+rate(i).toFixed(3),dayEst:dayEst(i)}); return a; })(),
+      wages:wages(), payMul:payMul(), spawnMul:spawnMul(), td:B().td, bgTotal:(function(){ var t=0; for(var k in B().td) t+=B().td[k]||0; return +t.toFixed(1); })()};
+  }
+  function init(){
+    try{ st(); }catch(e){}
+    try{ rail(); }catch(e){}
+    try{ dress(); }catch(e){}
+  }
+  try{ setTimeout(init,900); }catch(e){}
+  try{ setTimeout(init,3200); }catch(e){}
+  try{ setInterval(function(){ try{ rail(); }catch(e){} },800); }catch(e){}
+  return {
+    ver:'v2.87', init:init, state:state, dress:dress, rail:rail,
+    cur:cur, open:open, nF:nF, setFloor:setFloor, rate:rate, dayEst:dayEst, invSum:invSum,
+    crew:function(i){ return crew(i===undefined?cur():i); }, hire:hireAsk, train:train, promo:promo, fire:fire,
+    invest:invest, invCost:invCost, staffCount:function(){ var t=0; for(var q=1;q<6;q++) t+=crew(q).length; return t; }, wages:wages, payMul:payMul, spawnMul:spawnMul, bgTick:bgTick, frame:frame,
+    offStaff:offStaff, purge:purgeCust,
+    tabs:tabs, crewHTML:crewHTML, panel:panel, invPanel:invPanel, setTab:setTab, tab:crewTab,
+    openPanel:function(){ try{ openModal(panel()); return 1; }catch(e){ return 0; } },
+    openInv:function(i){ try{ openModal(invPanel(i)); return 1; }catch(e){ return 0; } },
+    theme:themeOf, fname:fname,
+    ui:function(){
+      try{
+        var el=document.getElementById('v287fl');
+        var out=[];
+        if(el) Array.prototype.forEach.call(el.querySelectorAll('button'),function(b){ var r=b.getBoundingClientRect(); out.push({t:b.textContent.trim(),i:b.getAttribute('data-i'),cur:b.classList.contains('cur'),lock:b.classList.contains('lock'),x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height)}); });
+        return {rail:out, mesh:(window.__V287_3D||null), err:window.__V287_3DERR||null};
+      }catch(e){ return {err:String(e&&e.message)}; }
+    },
+    probe:function(){
+      try{
+        var tw=null, disc=window.__V287_DISC||null, elev=0, rug=0, cnt=0;
+        if(G) G.traverse(function(o){ if(o.isMesh) cnt++; });
+        if(typeof scene!=='undefined'&&scene){ scene.traverse(function(o){ if(o&&o.name==='v287floor'){ } if(o&&o.isMesh&&o.name==='v285tower') tw=1; }); }
+        return {tower:!!tw, disc:disc, meshes:cnt, fl:cur(), theme:themeOf(cur())};
+      }catch(e){ return {err:String(e&&e.message)}; }
+    }
+  };
+})();
+try{ window.V287=V287; }catch(e){}
+/* ==================== /v2.87 ==================== */
+
 /* ==================== /v2.86 ==================== */
 
 
