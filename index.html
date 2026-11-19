@@ -7,9 +7,13 @@
    저장소를 쓸 수 없는 환경(사생활 보호 모드)에서는 아무것도 지우지 않는다. */
 try{(function(){
   var EP='v272', K='tech-epoch', P=/^(bunsik-|tech-)/;
+  /* v2.90: ?qa=1 에서는 [초기화]도 qa- 접두어만 지운다 — QA 세션에서 본 세이브가 날아가지 않게 */
+  var QA=/(?:^|[?&])qa=1(?:&|$)/.test(location.search);
   function wipe(){
     var del=[];
-    try{ for(var i=0;i<localStorage.length;i++){ var n=localStorage.key(i); if(n&&n!==K&&P.test(n)) del.push(n); } }catch(e){ return 0; }
+    try{ for(var i=0;i<localStorage.length;i++){ var n=localStorage.key(i);
+      if(QA){ if(n&&n.indexOf('qa-')===0) del.push(n); }
+      else if(n&&n!==K&&P.test(n)) del.push(n); } }catch(e){ return 0; }
     for(var j=0;j<del.length;j++){ try{ localStorage.removeItem(del[j]); }catch(e){} }
     try{ sessionStorage.removeItem('tech-skip'); }catch(e){}
     return del.length;
@@ -26,7 +30,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.89';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.90';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -47,7 +51,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.89</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.90</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
@@ -1321,7 +1325,7 @@ body{font-family:var(--b);letter-spacing:-.15px}
 <div id="camctl"><button id="camFull" title="전체 보기" aria-label="전체 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.2"/><path d="M15.2 15.2L21 21"/></svg><b>전체</b></button><button id="camBase" class="on" title="기본 시점" aria-label="기본 시점"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.6"/><circle cx="12" cy="12" r="3.1"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기" aria-label="인테리어 꾸미기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 12V8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5V12"/><path d="M3 12.5h18a1.5 1.5 0 0 1 1.5 1.5v3.5A1.5 1.5 0 0 1 21 19H3a1.5 1.5 0 0 1-1.5-1.5V14A1.5 1.5 0 0 1 3 12.5z"/><path d="M5.5 19v2M18.5 19v2"/></svg><b>꾸미기</b></button><button id="v285brBtn" title="지점 완공" aria-label="지점 완공"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V6h12"/><path d="M6 6L3 3M18 6v4"/><path d="M15 10h6v2a3 3 0 0 1-6 0z"/><path d="M18 6l3-1"/></svg><b id="brTxt">0/2F</b><i></i></button></div>
 <div id="intp"><div class="ihd"><b>인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.89</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.90</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1359,6 +1363,21 @@ body{font-family:var(--b);letter-spacing:-.15px}
 if(!bootPre()) return;
 const $=id=>document.getElementById(id);
 const SAVE='bunsik-tech-v1', RS=false;
+/* v2.90: ?qa=1 숨은 고속 테스트 모드 — 세이브 키를 SK('qa-'+SAVE)로 분리해 본 계정 진행은 읽지도 쓰지도 않는다.
+   qa=1 이 없으면 QAMODE=false 이고 아래 훅은 아무 일도 하지 않는다. */
+const QAMODE=(function(){ try{ return new URLSearchParams(location.search).get('qa')==='1'; }catch(e){ return false; } })();
+const SK=QAMODE?('qa-'+SAVE):SAVE;
+if(QAMODE){ try{
+  /* QA 세이브는 판이 올라가면 한 번 비운다(옛 스키마가 새 화면을 깨지 않게) — qa- 접두어만 지운다 */
+  var QAV='v2.90', _qk=[];
+  try{ for(var _qi=0;_qi<localStorage.length;_qi++){ var _qn=localStorage.key(_qi); if(_qn&&_qn.indexOf('qa-')===0&&_qn!=='qa-epoch') _qk.push(_qn); } }catch(e){ _qk=[]; }
+  if(localStorage.getItem('qa-epoch')!==QAV){ for(var _qj=0;_qj<_qk.length;_qj++){ try{ localStorage.removeItem(_qk[_qj]); }catch(e){} } try{ localStorage.setItem('qa-epoch',QAV); }catch(e){} }
+  /* 콘솔 오류 카운터 — 부팅 도중에 난 오류까지 세도록 가장 먼저 건다 */
+  window.__QAERR=0; window.__QALOG=[];
+  var _qce=console.error; console.error=function(){ try{ window.__QAERR++; if(window.__QALOG.length<30) window.__QALOG.push(Array.prototype.map.call(arguments,String).join(' ').slice(0,180)); }catch(e){} return _qce.apply(console,arguments); };
+  addEventListener('error',function(e){ try{ window.__QAERR++; if(window.__QALOG.length<30) window.__QALOG.push('error: '+((e&&(e.message||(e.error&&e.error.message)))||'')); }catch(_){} });
+  addEventListener('unhandledrejection',function(e){ try{ window.__QAERR++; if(window.__QALOG.length<30) window.__QALOG.push('reject: '+String((e&&e.reason&&(e.reason.message||e.reason))||'')); }catch(_){} });
+}catch(e){} }
 const THM={ground:'#7fcf5c',cap:'#2f6fd8',wood:['#eceef2','#e2e5ea','#f2f3f6','#e6e8ec'],lob:['#ffffff','#eef1f5','#d0d4db'],pm:1,minTier:0,name:'테크 스토어'};
 /* ---- v2.2: 바닥 장식 y 레이어 (겹치지 않게 고정) ---- */
 /* 바닥 0 < 빛웅덩이 .105 < 네온선 .115 < 입고 .12 < 창고/클래스 .125 < 해금 .13 < 응대링 .135 < 안내링 .14 */
@@ -1366,13 +1385,13 @@ const FLOOR_Y={pool:0.105,strip:0.115,dock:0.12,rest:0.125,pad:0.13,spot:0.135,g
 let S={day:0,dayStars:[],stats:{srv:0,fix:0,ok:0,earn:0},ms:null,money:30,unl:[],lvl:1,xp:0,tut:0,reviews:[5,5,4],up:{spd:0,cap:0,chk:0,price:0},last:0,cash:0};
 /* v2.65: 깨진 JSON·배열·문자열 세이브를 격리하고, 들어온 수치를 전부 클램프한다 */
 let _raw0=null;
-try{ _raw0=localStorage.getItem(SAVE);
+try{ _raw0=localStorage.getItem(SK);
   const o=_raw0?JSON.parse(_raw0):null;
   if(o&&typeof o==='object'&&!Array.isArray(o)){ S=Object.assign(S,o); try{ v265ClampSave(); }catch(e){} }
   else if(_raw0){ window.__v265broken=(window.__v265broken||0)+1; }
 }catch(e){
   window.__v265broken=(window.__v265broken||0)+1;
-  try{ if(_raw0&&_raw0.length<400000) localStorage.setItem(SAVE+'-broken-'+Date.now().toString(36),String(_raw0).slice(0,200000)); }catch(_){}
+  try{ if(_raw0&&_raw0.length<400000) localStorage.setItem(SK+'-broken-'+Date.now().toString(36),String(_raw0).slice(0,200000)); }catch(_){}
 }
 S.up=Object.assign({spd:0,cap:0,chk:0,price:0},S.up||{}); S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); S.ach=S.ach||{}; S.orders=S.orders||[]; S.best=S.best||[]; S.r1=S.r1||[]; S.mast=Object.assign({b:0,s:0,c:0},S.mast||{}); S.stats=Object.assign({srv:0,fix:0,ok:0,earn:0},S.stats||{});
 /* ---- v2.2: 소리·진동 설정 (없는 세이브는 기본값으로) ---- */
@@ -1403,8 +1422,8 @@ let OFFPLAN=(function(){ try{ return offCalc(Date.now()); }catch(e){ return null
 function saveAgo(){ const s=S.last?Math.max(0,Math.round((Date.now()-S.last)/1000)):null; if(s==null) return '기록 없음'; if(s<30) return '방금 저장됨'; if(s<60) return '1분 전'; if(s<3600) return Math.floor(s/60)+'분 전'; return Math.floor(s/3600)+'시간 전'; }
 let HY=''; try{ const m=(location.hash||'').match(/save=([^&]+)/)||(location.search||'').match(/[?&]save=([^&]+)/); if(m) HY=decodeURIComponent(m[1]); }catch(e){}
 let HYL=0;
-if(HY){ try{ const o=loadCode(HY); S=Object.assign(S,o); try{ v265ClampSave(); }catch(e){} delete S.mid; S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); localStorage.setItem(SAVE,JSON.stringify(S)); HYL=1; try{ OFFPLAN=offCalc(Date.now()); }catch(_){} try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }catch(e){ const msg=e&&e.message?e.message:'알 수 없는 오류'; setTimeout(function(){ try{ toast('🔗 세이브 링크를 불러오지 못했어요: '+msg,4); }catch(_){ } },1800); } }
-function save(){ if(window.__noSave) return; try{ S.money=Math.floor(money); S.last=Date.now(); S.lastSaveTime=S.last; S.shelf={}; SRC.forEach(s=>{ S.shelf[s.t]=s.n; }); localStorage.setItem(SAVE,JSON.stringify(S)); }catch(e){} }
+if(HY){ try{ const o=loadCode(HY); S=Object.assign(S,o); try{ v265ClampSave(); }catch(e){} delete S.mid; S.inv=Object.assign({p:10,l:6,w:8,b:6,s:6,c:6},S.inv||{}); localStorage.setItem(SK,JSON.stringify(S)); HYL=1; try{ OFFPLAN=offCalc(Date.now()); }catch(_){} try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }catch(e){ const msg=e&&e.message?e.message:'알 수 없는 오류'; setTimeout(function(){ try{ toast('🔗 세이브 링크를 불러오지 못했어요: '+msg,4); }catch(_){ } },1800); } }
+function save(){ if(window.__noSave) return; try{ S.money=Math.floor(money); S.last=Date.now(); S.lastSaveTime=S.last; S.shelf={}; SRC.forEach(s=>{ S.shelf[s.t]=s.n; }); localStorage.setItem(SK,JSON.stringify(S)); }catch(e){} }
 /* v2.4: 떠나는 시각을 오프라인 수익의 기준으로 남기고 저장 */
 function offSave(){ S.offAt=Date.now(); save(); }
 let money=S.money;
@@ -4673,7 +4692,7 @@ function openLoad(msg){
   $('ldPaste').onclick=e=>{ e.stopPropagation(); const no=()=>{ $('ldMsg').textContent='위 칸을 길게 눌러 "붙여넣기"를 선택하세요'; try{ $('ldTxt').focus(); }catch(_){} }; try{ navigator.clipboard.readText().then(t=>{ if(t){ $('ldTxt').value=t; reset(); $('ldMsg').innerHTML='<span style="color:#2faa45">붙여 넣었어요. 불러오기를 누르세요</span>'; } else no(); }).catch(no); }catch(_){ no(); } };
   $('ldGo').onclick=e=>{ e.stopPropagation(); let o; try{ o=saveParse($('ldTxt').value); }catch(er){ $('ldMsg').textContent='불러오지 못했어요: '+er.message; return; }
     if($('ldGo').dataset.ok!=='1'){ $('ldGo').dataset.ok='1'; $('ldGo').textContent='정말 덮어쓸까요? 한 번 더 누르기'; $('ldMsg').innerHTML='불러올 저장: DAY '+(o.day+1)+' · $'+(o.money||0)+' · 직원 '+((o.crew||[]).length)+'명'+(S.seen?'<br>지금 진행은 사라져요':''); return; }
-    try{ delete o.mid; localStorage.setItem(SAVE,JSON.stringify(o)); window.__noSave=1; try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }catch(er){ $('ldMsg').textContent='저장 공간에 쓸 수 없어요'; } }; }
+    try{ delete o.mid; localStorage.setItem(SK,JSON.stringify(o)); window.__noSave=1; try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }catch(er){ $('ldMsg').textContent='저장 공간에 쓸 수 없어요'; } }; }
 function openSave(msg){
   openModal('<h2>💾 저장</h2><div class="dstat ok"><span>자동 저장 켜짐 (4초마다)</span><b>마지막 저장: '+saveAgo()+'</b></div><p style="font-size:12px;margin:4px 0;text-align:left">• 이 기기의 이 브라우저에만 저장돼요. 사파리와 홈 화면 앱은 저장 공간이 달라요.<br>• 영업 도중에 끄면 그날 영업은 처음부터 다시 시작해요 (돈·직원·해금은 유지).<br>• 저장 코드를 복사해 두면 다른 기기나 홈 화면 앱에서 이어서 할 수 있어요.</p>'+
    '<button id="svNow">지금 저장</button><button id="svCopy" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">저장 코드 복사</button><button id="svLink" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">세이브 링크 복사</button><textarea id="svTxt" placeholder="저장 코드를 여기에 붙여 넣으세요" style="width:100%;box-sizing:border-box;height:58px;margin-top:8px;border-radius:10px;border:2px solid #d8cdb8;padding:6px;font:11px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea><button id="svLoad" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">코드로 불러오기</button><div class="rpmsg" id="svMsg">'+(msg||'')+'</div><button class="gray" id="mOk">닫기</button>');
@@ -4684,7 +4703,7 @@ function openSave(msg){
     try{ navigator.clipboard.writeText(url).then(done).catch(()=>{ $('svTxt').value=url; $('svTxt').select(); $('svMsg').innerHTML='위 칸의 링크를 길게 눌러 복사하세요'; }); }catch(_){ $('svTxt').value=url; $('svTxt').select(); $('svMsg').innerHTML='위 칸의 링크를 길게 눌러 복사하세요'; } };
   $('svLoad').onclick=e=>{ e.stopPropagation(); let o; try{ o=saveParse($('svTxt').value); }catch(er){ $('svMsg').textContent='불러오지 못했어요: '+er.message; return; }
     if($('svLoad').dataset.ok!=='1'){ $('svLoad').dataset.ok='1'; $('svLoad').textContent='정말 덮어쓸까요? 한 번 더 누르기'; $('svMsg').innerHTML='불러올 저장: DAY '+(o.day+1)+' · $'+(o.money||0)+' · 직원 '+((o.crew||[]).length)+'명<br>지금 진행은 사라져요'; return; }
-    try{ delete o.mid; localStorage.setItem(SAVE,JSON.stringify(o)); window.__noSave=1; try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }catch(er){ $('svMsg').textContent='저장 공간에 쓸 수 없어요'; } }; }
+    try{ delete o.mid; localStorage.setItem(SK,JSON.stringify(o)); window.__noSave=1; try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }catch(er){ $('svMsg').textContent='저장 공간에 쓸 수 없어요'; } }; }
 /* ---- v2.2: 설정(⚙️) — BGM/효과음 켜기·음량, 진동 ---- */
 function optSw(k,on){ return '<button type="button" class="swt'+(on?' on':'')+'" data-opt="'+k+'"><i></i><b>'+(on?'ON':'OFF')+'</b></button>'; }
 function optOpen(){ return $('modal').classList.contains('on'); }
@@ -5888,7 +5907,7 @@ setInterval(ftueTick,150);
 var GFX={lv:0,fr:0,t0:0,bad:0,good:0,warm:0,pend:null,pendBusy:0};
 function gfxApply(lv,why){ try{ GFX.lv=lv; const dpr=devicePixelRatio||1; const pr=[Math.min(dpr,2),Math.min(dpr,1.5),1,0.8][lv];
     renderer.setPixelRatio(pr); const shOn=lv<2; if(renderer.shadowMap.enabled!==shOn){ renderer.shadowMap.enabled=shOn; scene.traverse(o=>{ if(o.material){ (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.needsUpdate=true); } }); }
-    VW=0; try{ resize(); }catch(_){} try{ localStorage.setItem('tech-gfx',String(lv)); }catch(_){} if(why) console.log('[gfx] 단계',lv,why); }catch(e){} }
+    VW=0; try{ resize(); }catch(_){} if(!QAMODE) try{ localStorage.setItem('tech-gfx',String(lv)); }catch(_){}   /* v2.90: QA 모드에서는 화면 품질 설정을 기기에 저장하지 않는다 */ if(why) console.log('[gfx] 단계',lv,why); }catch(e){} }
 var GFXOK=(function(){ try{ return !!(renderer&&renderer.shadowMap&&renderer.setPixelRatio&&scene&&scene.traverse); }catch(e){ return false; } })();  /* 2D 빌드에는 그림자·해상도 조절이 없다 */
 try{ const sv=+(localStorage.getItem('tech-gfx')||0); if(GFXOK&&sv>0) gfxApply(Math.min(3,sv)); }catch(e){}
 if(GFXOK) (function gfxLoop(t){ requestAnimationFrame(gfxLoop); if(document.hidden){ GFX.t0=0; return; } if(!GFX.t0){ GFX.t0=t; GFX.fr=0; return; } GFX.fr++;
@@ -5908,7 +5927,7 @@ if(GFXOK) (function gfxLoop(t){ requestAnimationFrame(gfxLoop); if(document.hidd
   } })(0);
 /* ===== v2.43: 익명 플레이 통계 — 무작위 기기 id + 일차·매장·별만 보냄 (설정에서 끌 수 있음). 테스트·로컬에서는 안 보냄 ===== */
 var STAT_URL='https://mega-tech-tycoon.netlify.app/.netlify/functions/stat';
-function statOn(){ try{ if(location.protocol==='file:'||window.__NOFTUE||window.__T||/^(localhost|127\.|192\.168\.)/.test(location.hostname)) return false; return optO().stat!==false; }catch(e){ return false; } }
+function statOn(){ try{ if(QAMODE) return false;   /* v2.90: QA 세션의 판은 익명 통계(u2/)에 보내지 않는다 */ if(location.protocol==='file:'||window.__NOFTUE||window.__T||/^(localhost|127\.|192\.168\.)/.test(location.hostname)) return false; return optO().stat!==false; }catch(e){ return false; } }
 function statUid(){ let u=''; try{ u=localStorage.getItem('tech-uid')||''; }catch(e){} if(!/^[a-z0-9]{16}$/.test(u)){ u=''; const c='abcdefghijklmnopqrstuvwxyz0123456789'; for(let i=0;i<16;i++) u+=c[Math.floor(Math.random()*36)]; try{ localStorage.setItem('tech-uid',u); }catch(e){} } return u; }
 function statSend(ev){ try{ if(!statOn()) return; const st=(S.dayStars||[]).reduce((a,b)=>a+(b||0),0); const body=JSON.stringify({uid:statUid(),ev:ev,d:S.day|0,stg:(typeof STG==='number'?STG:0),st:st});
     if(navigator.sendBeacon&&navigator.sendBeacon(STAT_URL,new Blob([body],{type:'text/plain'}))) return;
@@ -8197,7 +8216,7 @@ function v266DoPrestige(){
     try{ save(); }catch(e){}
     /* save()는 지금 매장의 진열 상태를 되쓴다 — 새 시즌 값으로 한 번 더 정리 */
     try{
-      var raw=JSON.parse(localStorage.getItem(SAVE));
+      var raw=JSON.parse(localStorage.getItem(SK));
       if(raw&&typeof raw==='object'){
         raw.day=0; raw.curStage=0; raw.dayStars=[]; raw.bp=[]; raw.shelf={};
         raw.inv={p:10,l:6,w:8,b:6,s:6,c:6}; raw.box={}; raw.boxLv={}; raw.boxAt=Date.now();
@@ -8207,7 +8226,7 @@ function v266DoPrestige(){
         raw.orders=[]; raw.rma=[]; raw.hub={ccDay:-1,boxes:0,perfect:0,scan:0,miss:0,credit:0,auto:0,seen:0};
         raw.stock={p:100,hist:[100],chg:0}; raw.lastProfit=0; raw.boostD=-1; raw.mercyD=-1;
         raw.fails=0; raw.failStreak=0; raw.mid=0;
-        localStorage.setItem(SAVE,JSON.stringify(raw));
+        localStorage.setItem(SK,JSON.stringify(raw));
       }
     }catch(e){}
     try{ bigBanner('🏆 매장 재창업!','평판 +'+pg+' PP · 영구 매출 +'+Math.round(perm.rev*100)+'%'); sfxPres(); haptic([12,40,12]); confetti(player.pos.x,2.2,player.pos.z); }catch(e){}
@@ -10941,7 +10960,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.89';
+sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.90';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -11330,6 +11349,7 @@ function v267RankLoad(){
 }
 function v267RankSend(){
   try{
+    if(QAMODE){ toast('QA 모드에서는 주간 랭킹에 등록하지 않아요',2.6); return; }   /* v2.90: QA 판이 실제 랭킹(w2/)에 올라가지 않게 */
     var inp=$('v267Nick'), nick=String((inp&&inp.value)||'').trim().replace(/\s+/g,' ').slice(0,12);
     var bad=v267NickBad(nick); if(bad){ toast(bad,2.6); return; }
     var rev=v267WeekRev();
@@ -12558,7 +12578,7 @@ var V285=(function(){
   try{ setTimeout(init,60); }catch(e){}
 
   return {
-    ver:'v2.89', BR:BR, GEAR:GEAR, DEPT:DEPT, RN:RN, RC:RC, FLOORPAY:FLOORPAY,
+    ver:'v2.90', BR:BR, GEAR:GEAR, DEPT:DEPT, RN:RN, RC:RC, FLOORPAY:FLOORPAY,
     norm:norm, br:br, nFloors:nFloors, floorsDone:floorsDone, floorState:floorState, remain:remain, floorSec:floorSec,
     floorCost:floorCost, gemSkip:gemSkip, startFloor:startFloor, skipFloor:skipFloor, finishFloor:finishFloor,
     reqList:reqList, reqMet:reqMet, branchDone:branchDone, pct:pct, doneBranches:doneBranches, condVal:condVal,
@@ -12576,7 +12596,7 @@ var V285=(function(){
   };
 })();
 try{ window.__H=window.__H||{}; window.__H.v285={
-  ver:'v2.89',
+  ver:'v2.90',
   state:function(){ try{ return JSON.parse(JSON.stringify(V285.state())); }catch(e){ return {err:String(e&&e.message)}; } },
   br:function(st){ st=st==null?STG:st; var o={stage:st,floors:V285.nFloors(st),done:V285.floorsDone(st),pct:V285.pct(st),complete:V285.branchDone(st),list:[]};
     for(var i=0;i<V285.nFloors(st);i++) o.list.push({i:i,state:V285.floorState(st,i),rem:V285.remain(st,i),req:V285.reqList(st,i).map(function(c){ return {k:c.k,ok:c.ok,cur:c.cur,need:c.need}; })});
@@ -13555,7 +13575,7 @@ var V289=(function(){
       return 1;
     }catch(e){ return 0; }
   }
-  return {ver:'v2.89', ico:ico, svgify:svgify, dress:dressChar, detail:storeDetail, tune:tune, map:MAP};
+  return {ver:'v2.90', ico:ico, svgify:svgify, dress:dressChar, detail:storeDetail, tune:tune, map:MAP};
 })();
 try{ window.V289=V289; }catch(e){}
 try{ var _om289=openModal; openModal=function(h,o){ try{ if(typeof h==='string') h=V289.svgify(h); }catch(e){} return _om289(h,o); }; }catch(e){}
@@ -13563,6 +13583,206 @@ try{ var _mc289=makeChar; makeChar=function(md,o){ var ch=_mc289(md,o); try{ V28
 try{ setTimeout(function(){ try{ V289.detail(); }catch(e){} },3000); }catch(e){}
 try{ setTimeout(function(){ try{ V289.tune(); }catch(e){} },4200); }catch(e){}
 
+/* ==================== v2.90 — 숨은 QA 모드(?qa=1) ====================
+   · 이 블록은 QAMODE(=URL ?qa=1)일 때만 qaBoot()를 부른다. qa=1 이 없으면
+     버튼·패널·칩·모니터가 하나도 생기지 않고 게임 동작도 그대로다(영향 0).
+   · 세이브는 SK('qa-'+SAVE)로 분리돼 본 계정 진행(bunsik-tech-v1)과 섞이지 않는다.
+   · 배속은 window.__TS(기존 dt 배율 훅)를 쓴다 — dt 캡 0.05s 뒤에 곱해지므로
+     10×에서도 캡에 걸려 멈추지 않는다.
+   · 같은 동작을 window.__QA 로도 부를 수 있다(Playwright 검증용).
+*/
+function qaBoot(){
+  var D=document, QA={ver:'v2.90'};
+  var st={spd:1, mut:{n:0,c:0,a:0,cd:0}, win:[], fps:0, peak:0};
+  function $(id){ return D.getElementById(id); }
+  function errN(){ try{ return window.__QAERR|0; }catch(e){ return 0; } }
+  function errL(){ try{ return (window.__QALOG||[]).slice(0,20); }catch(e){ return []; } }
+  function tt(m,s){ try{ toast(m,s||1.8); }catch(e){} }
+
+  /* ---------- 배속 ---------- */
+  function setSpd(m){ m=Math.round(+m||1); if(m<1) m=1; if(m>10) m=10; st.spd=m; try{ window.__TS=m; }catch(e){} paint(); return m; }
+  function spdBtns(){ return D.querySelectorAll('#qaPanel [data-sp]'); }
+
+  /* ---------- 재화 ---------- */
+  function addCash(n){ n=Math.round(+n||50000); try{ money=Math.max(0,money+n); shownMoney=money; }catch(e){}
+    try{ save(); }catch(e){} try{ mnyPaint(Math.floor(money)); }catch(e){} return Math.floor(money); }
+  function addGem(n){ n=Math.round(+n||100); try{ V285.gems(n,'QA'); }catch(e){} return gemN(); }
+  function gemN(){ try{ return V285.state().gem|0; }catch(e){ return 0; } }
+  /* 별은 하루 최대 3개 규칙을 지켜서 채운다(초과분은 다음 날짜 칸) — 3개를 넘기면
+     다른 화면의 '★'.repeat(3-s) 가 RangeError 를 내기 때문 */
+  function addStars(n){
+    n=Math.round(+n||5); S.dayStars=S.dayStars||[]; var left=n, d, c, a;
+    for(d=0; d<=Math.max(0,S.day|0) && left>0; d++){ c=S.dayStars[d]||0; if(c<3){ a=Math.min(3-c,left); S.dayStars[d]=c+a; left-=a; } }
+    for(d=(S.day|0)+1; d<=(S.day|0)+10 && left>0; d++){ c=S.dayStars[d]||0; if(c<3){ a=Math.min(3-c,left); S.dayStars[d]=c+a; left-=a; } }
+    try{ save(); }catch(e){}
+    return {total:starsN(), left:left};
+  }
+  function starsN(){ try{ return lvTotalStars(); }catch(e){ try{ return (S.dayStars||[]).reduce(function(x,y){ return x+(y||0); },0); }catch(_){ return 0; } } }
+
+  /* ---------- 건설 · 쿨타임 ---------- */
+  function finishBranch(br){ var n=0; try{
+      var N=V285.nFloors(br);
+      for(var i=0;i<N;i++){ try{ if(V285.floorState(br,i)!=='done'){ V285.finishFloor(br,i,1); n++; } }catch(e){} }
+    }catch(e){} return n; }
+  function finishAll(){ var n=0; for(var s=0;s<6;s++) n+=finishBranch(s); return n; }
+  function resetBox(){ try{ V285.state().box.freeAt=0; save(); }catch(e){} return 1; }
+
+  /* ---------- 날짜 · 지점 ---------- */
+  function qaDay(){
+    try{ if(typeof dayState!=='undefined'&&dayState==='run'){ endDay(false); setTimeout(forceDay,1700); return 'ending'; } }catch(e){}
+    forceDay(); return 'next';
+  }
+  function forceDay(){
+    try{ window.__rts=0; }catch(e){}
+    try{ closeModalUI(); }catch(e){}
+    S.day=(S.day|0)+1; S.mid=0;
+    try{ dayState='pre'; }catch(e){}
+    try{ save(); }catch(e){}
+    var stg=STAGE_OF(S.day);
+    if(stg!==STG){ qaBranch(stg); return; }
+    setTimeout(function(){ try{ startDayModal(); }catch(e){} },220);
+  }
+  function qaBranch(target){
+    try{
+      if(target==null) target=(STG|0)+1;
+      target=Math.max(0,Math.min(5,target|0));
+      if(target===(STG|0)){ tt('QA · 이미 '+STS[STG]+' 지점이에요'); return 'same'; }
+      if(typeof dayState!=='undefined'&&dayState==='run'){ endDay(false); setTimeout(function(){ qaBranch(target); },1700); return 'ending'; }
+      finishBranch(STG);                       /* 지금 지점 층을 완공해 두고 넘어간다 */
+      var first=(STGD[target]||[0])[0];
+      if((S.day|0)<first) S.day=first;         /* 그 지점 첫 DAY 로 해금 */
+      try{ save(); }catch(e){}
+      return switchBranch(target)?'switch':'blocked';
+    }catch(e){ tt('QA 오류: '+((e&&e.message)||e),2.6); return 'err'; }
+  }
+
+  /* ---------- 모니터 ---------- */
+  function inQA(n){ try{ var e=(n&&n.nodeType===1)?n:(n&&n.parentNode); return !!(e&&e.closest&&e.closest('#qaWrap')); }catch(e){ return false; } }
+  try{
+    new MutationObserver(function(ms){
+      for(var i=0;i<ms.length;i++){ var m=ms[i]; if(inQA(m.target)) continue;
+        st.mut.n++; if(m.type==='childList') st.mut.c++; else if(m.type==='attributes') st.mut.a++; else st.mut.cd++; }
+    }).observe(D.body,{childList:true,subtree:true,attributes:true,characterData:true});
+  }catch(e){}
+  var f0=0, fc=0;
+  function raf(t){ try{ requestAnimationFrame(raf); }catch(e){ return; }
+    if(D.hidden){ return; }
+    fc++; if(!f0){ f0=t; } else if(t-f0>=1000){ st.fps=Math.round(fc*1000/(t-f0)); fc=0; f0=t; }
+  }
+  try{ requestAnimationFrame(raf); }catch(e){}
+
+  function win(){ return st.win[st.win.length-1]||{n:0,c:0,a:0,cd:0,fps:0}; }
+  function paint(){
+    try{
+      var b=spdBtns(); for(var i=0;i<b.length;i++) b[i].classList.toggle('on',(+b[i].getAttribute('data-sp'))===st.spd);
+      var w=win();
+      var m1=$('qaM1'), m2=$('qaM2'), m3=$('qaM3');
+      if(m1) m1.textContent='FPS '+(st.fps||w.fps||0);
+      if(m2) m2.textContent='DOM '+w.n+'/3s';
+      if(m3){ m3.textContent='ERR '+errN(); m3.style.color=errN()?'#ff8a80':'#9fe0cf'; }
+      var c=$('qaChip'); if(c) c.innerHTML='<b>QA</b><em>'+st.spd+'×</em><span>'+(st.fps||w.fps||0)+'fps · '+w.n+' · err'+errN()+'</span>';
+    }catch(e){}
+  }
+  setInterval(function(){
+    st.win.push({t:Date.now(),n:st.mut.n,c:st.mut.c,a:st.mut.a,cd:st.mut.cd,fps:st.fps});
+    if(st.win.length>30) st.win.shift();
+    if(st.mut.n>st.peak) st.peak=st.mut.n;
+    st.mut.n=st.mut.c=st.mut.a=st.mut.cd=0;
+    paint();
+  },3000);
+
+  /* ---------- 패널 ---------- */
+  function build(){
+    var css=D.createElement('style'); css.id='qaCss';
+    css.textContent='#qaWrap{position:fixed;right:6px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:2147482100;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;touch-action:manipulation}'
+      +'#qaChip{display:flex;align-items:center;gap:5px;height:26px;padding:0 9px;border:1px solid rgba(90,209,255,.6);border-radius:13px;background:rgba(8,18,44,.86);color:#dff1ff;font:900 10px/1 -apple-system,"Apple SD Gothic Neo",sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.4);white-space:nowrap;touch-action:manipulation}'
+      +'#qaChip b{color:#5ad1ff;letter-spacing:.06em}#qaChip em{font-style:normal;color:#ffd23f}#qaChip span{color:#a9c6e8;font-weight:800}'
+      +'#qaPanel{display:none;width:180px;max-height:52vh;overflow:auto;padding:8px 8px 6px;border:1px solid rgba(90,209,255,.45);border-radius:14px;background:rgba(7,15,38,.95);box-shadow:0 10px 26px rgba(0,0,0,.5)}'
+      +'#qaPanel.on{display:block}'
+      +'#qaPanel .qh{display:flex;align-items:center;gap:6px;margin:0 0 6px;color:#9fd4ff;font:900 10px/1 -apple-system,sans-serif;letter-spacing:.04em}'
+      +'#qaPanel .qh b{flex:none;color:#5ad1ff;white-space:nowrap}#qaPanel .qh s{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;text-decoration:none;color:#7f9ec4;font-size:9px}'
+      +'#qaPanel .qx{width:22px;height:22px;flex:none;border:0;border-radius:7px;background:rgba(255,255,255,.1);color:#cfe6ff;font:900 13px/1 -apple-system,sans-serif;padding:0}'
+      +'#qaPanel .qg{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}'
+      +'#qaPanel .qg>span{width:100%;margin:0 0 1px;color:#7f9ec4;font:900 9px/1.2 -apple-system,sans-serif;letter-spacing:.08em}'
+      +'#qaPanel .qb{flex:1 1 auto;min-width:0;height:30px;padding:0 5px;border:0;border-radius:9px;background:linear-gradient(#2b3d75,#17264f);color:#dbe8ff;font:900 11px/1 -apple-system,"Apple SD Gothic Neo",sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 2px 0 rgba(0,0,0,.35);touch-action:manipulation}'
+      +'#qaPanel .qb.on{background:linear-gradient(#6fdcff,#2f7df0);color:#04122c;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 2px 0 #123a86}'
+      +'#qaPanel .qb:active{transform:translateY(1px)}'
+      +'#qaPanel .qm{display:flex;justify-content:space-between;gap:4px;margin-top:2px;padding-top:6px;border-top:1px solid rgba(90,209,255,.18);font:900 9.5px/1.2 -apple-system,sans-serif;color:#9fe0cf}';
+    D.head.appendChild(css);
+    var w=D.createElement('div'); w.id='qaWrap';
+    w.innerHTML='<div id="qaPanel" role="dialog" aria-label="QA 고속 테스트 패널">'
+      +'<div class="qh"><b>QA v2.90</b><s id="qaKey">qa-save</s><button class="qx" id="qaHide" aria-label="QA 패널 닫기">&times;</button></div>'
+      +'<div class="qg"><span>배속</span>'
+        +'<button class="qb" data-sp="1">1&times;</button><button class="qb" data-sp="2">2&times;</button>'
+        +'<button class="qb" data-sp="5">5&times;</button><button class="qb" data-sp="10">10&times;</button></div>'
+      +'<div class="qg"><span>재화</span>'
+        +'<button class="qb" data-act="cash">+$50K</button><button class="qb" data-act="gem">+100💎</button>'
+        +'<button class="qb" data-act="star">+5★</button></div>'
+      +'<div class="qg"><span>진행</span>'
+        +'<button class="qb" data-act="day">다음 DAY</button><button class="qb" data-act="floor">층 완공</button>'
+        +'<button class="qb" data-act="allfloor">전 지점 층</button><button class="qb" data-act="box">상자 쿨</button></div>'
+      +'<div class="qg"><span>지점</span>'
+        +'<button class="qb" data-act="br">다음 지점 &rarr;</button><button class="qb" data-act="br5">본사로</button></div>'
+      +'<div class="qm"><span id="qaM1">FPS —</span><span id="qaM2">DOM —</span><span id="qaM3">ERR 0</span></div>'
+      +'</div>'
+      +'<button id="qaChip" aria-label="QA 패널 열기"><b>QA</b><em>1&times;</em><span>—</span></button>';
+    D.body.appendChild(w);
+    $('qaKey').textContent=SK;
+    $('qaChip').onclick=function(){ var p=$('qaPanel'); p.classList.toggle('on'); if(p.classList.contains('on')) paint(); };
+    $('qaHide').onclick=function(){ $('qaPanel').classList.remove('on'); };
+    var b=spdBtns(); for(var i=0;i<b.length;i++) b[i].onclick=function(){ setSpd(this.getAttribute('data-sp')); };
+    var a=D.querySelectorAll('#qaPanel [data-act]'); for(var j=0;j<a.length;j++) a[j].onclick=function(){ act(this.getAttribute('data-act')); };
+    paint();
+  }
+
+  /* ---------- 동작 ---------- */
+  function act(k){
+    k=String(k||'');
+    try{
+      if(k==='cash'){ var m=addCash(50000); tt('QA · +$50K  ($'+Math.round(m/1000)+'K)'); }
+      else if(k==='gem'){ addGem(100); tt('QA · +100💎  ('+gemN()+')'); }
+      else if(k==='star'){ var r=addStars(5); tt('QA · +5★  (누적 '+r.total+')'); }
+      else if(k==='day'){ qaDay(); }
+      else if(k==='floor'){ var n=finishBranch(STG|0); tt('QA · '+STS[STG]+' 층 '+n+'개 완공'); }
+      else if(k==='allfloor'){ var n2=finishAll(); tt('QA · 전 지점 층 '+n2+'개 완공'); }
+      else if(k==='box'){ resetBox(); tt('QA · 무료 상자 쿨 초기화'); }
+      else if(k==='br'){ qaBranch((STG|0)+1); }
+      else if(k==='br5'){ qaBranch(5); }
+    }catch(e){ tt('QA 오류: '+((e&&e.message)||e),2.6); }
+    paint();
+  }
+
+  function stats(){
+    var w=win();
+    return {ver:'v2.90', on:1, saveKey:SK, spd:st.spd, fps:st.fps,
+      dom:{last:w.n, child:w.c, attr:w.a, char:w.cd, peak:st.peak, wins:st.win.length},
+      err:errN(), errs:errL(),
+      day:S.day, stage:STG, stageName:STS[STG], dayState:(typeof dayState==='string'?dayState:''),
+      money:Math.floor(money), gem:gemN(), stars:starsN(),
+      floors:V285.floorsDone(STG)+'/'+V285.nFloors(STG), branchDone:!!V285.branchDone(STG)};
+  }
+
+  /* ---------- Playwright 훅 ---------- */
+  QA={ver:'v2.90', on:1, saveKey:SK,
+    spd:function(m){ return m==null?st.spd:setSpd(m); },
+    cash:function(n){ return addCash(n==null?50000:n); },
+    gem:function(n){ return addGem(n==null?100:n); },
+    star:function(n){ return addStars(n==null?5:n); },
+    floor:function(){ return finishBranch(STG|0); },
+    allfloor:finishAll, box:resetBox,
+    day:function(){ return qaDay(); }, branch:function(t){ return qaBranch(t); },
+    open:function(){ var p=$('qaPanel'); if(p&&!p.classList.contains('on')) $('qaChip').click(); return !!p; },
+    close:function(){ var p=$('qaPanel'); if(p) p.classList.remove('on'); return 1; },
+    act:act, stats:stats, errs:errL,
+    panel:function(){ try{ return {on:!!($('qaPanel')&&$('qaPanel').classList.contains('on')), chip:$('qaChip')?$('qaChip').innerText:null, mon:[$('qaM1')?$('qaM1').textContent:null,$('qaM2')?$('qaM2').textContent:null,$('qaM3')?$('qaM3').textContent:null]}; }catch(e){ return {}; } }
+  };
+  try{ window.__QA=QA; }catch(e){}
+
+  build();
+  try{ paint(); }catch(e){}
+  return QA;
+}
+try{ if(QAMODE) qaBoot(); }catch(e){ try{ console.warn('qa boot',e); }catch(_){} }
 requestAnimationFrame(step);
 })();
 /* v2.84: UI 레이어를 '맨 마지막 스타일시트'로 다시 붙인다 —

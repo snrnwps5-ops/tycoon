@@ -7,9 +7,13 @@
    저장소를 쓸 수 없는 환경(사생활 보호 모드)에서는 아무것도 지우지 않는다. */
 try{(function(){
   var EP='v272', K='tech-epoch', P=/^(bunsik-|tech-)/;
+  /* v2.90: ?qa=1 에서는 [초기화]도 qa- 접두어만 지운다 — QA 세션에서 본 세이브가 날아가지 않게 */
+  var QA=/(?:^|[?&])qa=1(?:&|$)/.test(location.search);
   function wipe(){
     var del=[];
-    try{ for(var i=0;i<localStorage.length;i++){ var n=localStorage.key(i); if(n&&n!==K&&P.test(n)) del.push(n); } }catch(e){ return 0; }
+    try{ for(var i=0;i<localStorage.length;i++){ var n=localStorage.key(i);
+      if(QA){ if(n&&n.indexOf('qa-')===0) del.push(n); }
+      else if(n&&n!==K&&P.test(n)) del.push(n); } }catch(e){ return 0; }
     for(var j=0;j<del.length;j++){ try{ localStorage.removeItem(del[j]); }catch(e){} }
     try{ sessionStorage.removeItem('tech-skip'); }catch(e){}
     return del.length;
@@ -25,7 +29,7 @@ try{(function(){
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<script>try{(function(){var V='v2.89';
+<script>try{(function(){var V='v2.90';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -47,6 +51,6 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1c66">
 <meta name="robots" content="noindex">
-<title>메가 테크 슈퍼스토어 타이쿤 v2.89 · 2D 테스트 모드 (AI QA)</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.90 · 2D 테스트 모드 (AI QA)</title>
 <link rel="icon" href="icon.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap">

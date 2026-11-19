@@ -124,7 +124,7 @@ $('aistop').onclick=function(){ NAV.path=[]; NAV.goal=null; };
 $('aiv').onclick=function(){ window.__ERR=[]; var _b=$('diagB'); if(_b){ _b.textContent='오류 0'; _b.className=''; } };
 $('aizoom').onclick=function(){ ZOOMI=(ZOOMI+1)%ZOOMS.length; };
 let _resetT=0; $('aireset').onclick=function(){ const b=$('aireset');
-  if(performance.now()-_resetT<4000){ try{ localStorage.removeItem('bunsik-tech-2d-v1'); }catch(e){} location.reload(); return; }
+  if(performance.now()-_resetT<4000){ try{ localStorage.removeItem(typeof SK!=='undefined'?SK:'bunsik-tech-2d-v1'); }catch(e){} location.reload(); return; }
   _resetT=performance.now(); b.textContent='정말 지울까요?';
   setTimeout(function(){ if(performance.now()-_resetT>=3900){ _resetT=0; b.textContent='♻️ 초기화'; } },4100); };
 window.__H2={navTo:navTo,stop:function(){ NAV.path=[]; NAV.goal=null; },pos:function(){ return {x:player.pos.x,z:player.pos.z}; },
