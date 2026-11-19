@@ -30,7 +30,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.94';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v2.95';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v2.94</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v2.95</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
@@ -117,11 +117,20 @@ canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;heigh
 .uprow button:disabled{filter:grayscale(1);opacity:.6}
 /* v2.83: 축하 배너는 화면을 덮지 않는 '슬림 알약' — 크게 부풀었다 줄어드는 튐(scale .4→1)을 없애고
    짧게 떠올랐다 사라진다. 글씨도 48px → 30px, 배경은 반투명 판으로 묶어 매장을 가리지 않는다. */
+/* v2.95: DAY 진입 안내는 슬림 배너 하나로 — 'DAY n · 첫 영업일'을 한 줄로 2.6초만 보여 준다(P2-3) */
+#dayBan{position:fixed;left:50%;right:auto;max-width:calc(100% - 128px);box-sizing:border-box;transform:translateX(-50%) translateY(-6px);top:calc(env(safe-area-inset-top,0px) + 142px);z-index:8;display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:7px 12px;border-radius:12px;background:linear-gradient(160deg,rgba(24,36,60,.92),rgba(12,19,32,.94));border:1px solid rgba(255,225,160,.32);
+  box-shadow:0 6px 16px rgba(4,8,16,.32);color:#ffe9b8;font:900 11.5px var(--b);white-space:nowrap;overflow:hidden;
+  opacity:0;pointer-events:none;transition:opacity .2s ease-out,transform .2s ease-out}
+#dayBan.on{opacity:1;transform:translateX(-50%)}
+#dayBan b{flex:none;font-family:var(--d);font-weight:800;font-size:12.5px;letter-spacing:.5px;color:#ffd23f}
+#dayBan em{font-style:normal;font-weight:800;color:#d6e6fa;min-width:0;overflow:hidden;text-overflow:ellipsis}
+body.title #dayBan,body.rep #dayBan,body.biz #dayBan{opacity:0!important}
 #big{position:fixed;left:0;right:0;top:calc(29% + env(safe-area-inset-top,0px));display:flex;flex-direction:column;align-items:center;gap:5px;padding:0 12px;text-align:center;z-index:9;pointer-events:none;opacity:0;transform:translateY(-8px) scale(.97);transition:opacity .16s ease-out,transform .26s cubic-bezier(.2,.8,.3,1)}
 #big.on{opacity:1;transform:none}
 #big b{display:inline-block;max-width:88vw;box-sizing:border-box;font-family:var(--d);font-size:27px;line-height:1.2;color:#ffe14d;text-shadow:0 2px 0 #6a2400,0 3px 0 #6a2400,0 6px 14px rgba(0,0,0,.35);padding:0 8px}
 #big span{display:inline-block;max-width:88vw;box-sizing:border-box;margin-top:0;padding:4px 12px;border-radius:11px;background:rgba(255,251,243,.95);color:#9a5a18;font:900 12.5px var(--b);border:1.5px solid rgba(232,186,128,.85);box-shadow:0 2px 0 rgba(190,140,92,.3)}
-#help{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translateX(-50%) scale(.6);opacity:0;pointer-events:none;z-index:7;border:0;border-radius:16px;padding:9px 16px 10px;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 5px 0 #b85a00,0 0 0 4px #fff;transition:all .3s cubic-bezier(.3,1.6,.5,1)}
+#help{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translateX(-50%) scale(.6);opacity:0;pointer-events:none;z-index:7;border:0;border-radius:16px;padding:9px 20px 10px;min-height:48px;min-width:132px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 5px 0 #b85a00,0 0 0 4px #fff;transition:all .3s cubic-bezier(.3,1.6,.5,1)}
 #help.on{opacity:1;pointer-events:auto;transform:translateX(-50%) scale(1);animation:hp 1s ease-in-out infinite}@keyframes hp{50%{transform:translateX(-50%) scale(1.06)}}
 #help b{display:block;font-family:var(--d);font-size:17px;color:#fff;text-shadow:0 2px 0 #b85a00;white-space:nowrap}#help span{font:900 11px var(--b);color:#7a3a00}
 #dayBar{position:fixed;left:50%;top:calc(98px + env(safe-area-inset-top));transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:8px;padding:6px 12px 10px;border-radius:14px;background:rgba(20,30,60,.72);color:#fff;font:900 13px var(--b);white-space:nowrap;pointer-events:none}
@@ -169,15 +178,16 @@ canvas#c{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;heigh
 #vig{transition:box-shadow .3s}#vig.fv{box-shadow:inset 0 0 46px 6px rgba(255,110,20,.5)}
 .attg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0}.attc{background:#fff;border-radius:12px;padding:6px 2px;border:2px solid #e6e1d8}.attc small{display:block;font:800 10px var(--b);color:#8a7a6a}.attc i{font-style:normal;font-size:24px;display:block}.attc b{font:900 12px var(--b);color:#3a2a1a}.attc.got{opacity:.5}.attc.now{border-color:#ff8a1a;background:#fff3d6;animation:shb 1s ease-in-out infinite}.attc.big{grid-column:span 2;background:linear-gradient(#fff6dc,#ffe9b0)}
 .dres i{display:inline-block}.dres i.on{animation:stpop .5s cubic-bezier(.3,1.6,.5,1) backwards}.dres i.on:nth-child(2){animation-delay:.25s}.dres i.on:nth-child(3){animation-delay:.5s}@keyframes stpop{0%{transform:scale(0) rotate(-40deg);opacity:0}100%{transform:scale(1);opacity:1}}
-#title{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 9vh) 20px calc(env(safe-area-inset-bottom,0px) + 5vh);background:linear-gradient(180deg,rgba(6,12,40,.55) 0%,rgba(6,12,40,0) 26%,rgba(6,12,40,0) 70%,rgba(6,12,40,.6) 100%),url(keyart.jpg) center/cover no-repeat #0b1c66;transition:opacity .7s,transform .7s}#title.out{opacity:0;transform:scale(1.08);pointer-events:none}
+#title{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 8vh) 20px calc(env(safe-area-inset-bottom,0px) + 3.5vh);background:linear-gradient(180deg,rgba(6,12,40,.55) 0%,rgba(6,12,40,0) 26%,rgba(6,12,40,0) 70%,rgba(6,12,40,.6) 100%),url(keyart.jpg) center/cover no-repeat #0b1c66;transition:opacity .7s,transform .7s}#title.out{opacity:0;transform:scale(1.08);pointer-events:none}
 #title .tb{display:inline-block;font:900 12px var(--b);letter-spacing:5px;color:#06122a;background:linear-gradient(90deg,#5ad1ff,#b9f3ff);border-radius:20px;padding:4px 10px 4px 15px}
 #title h1{margin:10px 0 0;font-family:var(--d);font-weight:400;font-size:60px;line-height:1;color:#fff;text-shadow:0 4px 0 #1c3f9a,0 0 34px rgba(90,209,255,.75);animation:tlg 1s cubic-bezier(.2,1.4,.4,1) backwards}
 #title .ty{margin-top:10px;font:900 15px var(--b);letter-spacing:13px;padding-left:13px;color:#8fe3ff;animation:tlg 1s .15s cubic-bezier(.2,1.4,.4,1) backwards}@keyframes tlg{0%{transform:translateY(-30px) scale(.8);opacity:0}100%{opacity:1}}
 #title .tl{text-align:center}#title .sp{flex:1}
-#tProg{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.28);border-radius:18px;padding:9px 14px;color:#fff;margin-bottom:16px;animation:tup .7s .4s backwards}#tProg i{font-style:normal;font-size:28px}#tProg b{display:block;font:900 15px var(--b)}#tProg small{font:700 12px var(--b);color:#cfe9ff}#tProg em{margin-left:8px;font-style:normal;font:900 14px var(--b);color:#ffd23f}
+/* v2.95: 지점 카드는 CTA 바로 위로 내리고 한 줄 슬림으로 — 키아트 얼굴/주요 그림을 가리지 않는다(P2-4). 탭하면 로드맵 */
+#tProg{display:flex;align-items:center;gap:7px;max-width:min(86vw,320px);box-sizing:border-box;background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.24);border-radius:12px;padding:0 11px;min-height:44px;color:#fff;margin:0 0 8px;cursor:pointer;-webkit-tap-highlight-color:transparent;animation:tup .7s .4s backwards}#tProg:active{transform:scale(.98)}#tProg::after{content:'›';flex:none;font:900 16px var(--b);color:rgba(255,255,255,.55);line-height:1}#tProg i{flex:none;font-style:normal;font-size:17px}#tProg>div{min-width:0;display:flex;align-items:baseline;gap:6px}#tProg b{font:900 12.5px var(--b);white-space:nowrap}#tProg small{font:700 10.5px var(--b);color:#cfe9ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#tProg em{flex:none;margin-left:2px;font-style:normal;font:900 11.5px var(--b);color:#ffd23f;white-space:nowrap}
 #tStart{position:relative;overflow:hidden;width:250px;height:70px;border:0;border-radius:24px;background:linear-gradient(#6fdcff,#2f7df0);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 7px 0 #1a3f96,0 16px 30px rgba(47,125,240,.55);color:#fff;font-family:var(--d);font-size:30px;text-shadow:0 2px 0 #1a3f96;animation:tup .7s .55s backwards,tpu 1.5s 1.4s ease-in-out infinite}#tStart:active{transform:translateY(5px);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 2px 0 #1a3f96}
 #tStart i{position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:tsh 2.4s 1.2s infinite}@keyframes tsh{0%{left:-80px}45%,100%{left:300px}}@keyframes tpu{50%{transform:scale(1.045)}}@keyframes tup{0%{transform:translateY(40px);opacity:0}}
-#title .tv{margin-top:8px;font:700 10px var(--b);color:rgba(255,255,255,.5)}#title .tsv{margin-top:10px;font:800 11px var(--b);color:#ffffff;background:rgba(6,12,40,.5);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:5px 11px;animation:tup .7s .6s backwards}#title .tsv:empty{display:none}
+#title .tv{margin-top:8px;font:700 10px var(--b);color:rgba(255,255,255,.5)}#title .tsv{margin-top:8px;display:flex;align-items:center;gap:7px;max-width:min(88vw,330px);box-sizing:border-box;overflow:hidden;font:800 11px var(--b);color:#ffffff;background:rgba(6,12,40,.5);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:6px 11px;animation:tup .7s .6s backwards;-webkit-tap-highlight-color:transparent}#title .tsv span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#title .tsv:empty{display:none}#title .tsv:active{transform:scale(.98)}
 body.title #hud,body.title #sub,body.title #subR,body.title #dayBar,body.title #bbar,body.title #shopBtn,body.title #combo,body.title #labels,body.title #help,body.title #hint,body.title #toast{opacity:0!important;pointer-events:none!important}#hud,#sub,#subR,#dayBar,#bbar,#shopBtn{transition:opacity .5s}
 #load{background:radial-gradient(circle at 50% 40%,#1a3aa0,#0a1650)!important}#load .t{color:#fff!important;-webkit-text-stroke:0!important;text-shadow:0 4px 0 #1c3f9a,0 0 30px rgba(90,209,255,.7)!important}#load .s{color:#8fe3ff!important}#load:after{content:'';width:150px;height:5px;border-radius:3px;margin-top:16px;background:linear-gradient(90deg,#5ad1ff 40%,rgba(255,255,255,.15) 40%);background-size:250% 100%;animation:ldb 1.2s linear infinite}@keyframes ldb{0%{background-position:100% 0}100%{background-position:-60% 0}}
 #carry b{font-weight:900;margin-right:3px}#carry .cs{display:inline-block;width:9px;height:9px;border-radius:2.5px;border:1.5px solid rgba(255,255,255,.75);margin-left:2px;vertical-align:-1px;font-style:normal}#carry .cs.on{background:#ffd23f;border-color:#ffd23f;box-shadow:0 0 4px rgba(255,210,63,.8)}#carry .cf{margin:0 0 0 5px;color:#ffd23f}#carry.full{background:rgba(232,90,20,.85)}
@@ -658,9 +668,10 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 #labChip.ping .n{animation:v279nb .45s ease-in-out 3}
 @keyframes v279nb{50%{transform:scale(1.24)}}
 #subR{right:10px;z-index:6;display:flex;align-items:center;gap:6px}
-#subR .chip2{width:34px;min-width:34px;height:26px;padding:0;box-sizing:border-box;border-radius:9px;display:flex;align-items:center;justify-content:center;
-  background:rgba(10,16,27,.72);border:1px solid var(--v279ln2);color:#dbe6f6;font-size:12px;cursor:pointer;pointer-events:auto;position:relative}
-#subR .chip2::after{content:"";position:absolute;left:-5px;right:-5px;top:-9px;bottom:-9px}
+/* v2.95: 저장·설정은 44×40 상자 + 바깥 4px 투명 히트(52×48) — 44px 미만 터치 영역 보강(P2-1) */
+#subR .chip2{width:44px;min-width:44px;height:40px;padding:0;box-sizing:border-box;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:rgba(10,16,27,.72);border:1px solid var(--v279ln2);color:#dbe6f6;font-size:14px;cursor:pointer;pointer-events:auto;position:relative}
+#subR .chip2::after{content:"";position:absolute;left:-4px;right:-4px;top:-4px;bottom:-4px}
 #subR .chip2:active{transform:scale(.94)}
 #loadChip{background:rgba(20,38,66,.86)!important;border-color:rgba(127,182,255,.24)!important}
 /* --- 3줄: 진행 바 --- */
@@ -1244,12 +1255,13 @@ body.title #v285boost,body.rep #v285boost,body.biz #v285boost{display:none!impor
 .v286gp .gp2{margin-top:5px;padding-top:5px;border-top:1px dashed #cfdcee;font:800 10px var(--b);color:#446a92}
 /* v2.86: 두 줄 HUD가 서로 겹치지 않게 — 44px 칩 폭만큼 상태 칩 줄을 줄인다 */
 #sub{right:104px!important}
-#subR .chip2{width:44px;min-width:44px;height:26px;border-radius:9px}
-#subR .chip2::after{content:'';position:absolute;left:-2px;right:-2px;top:-9px;bottom:-9px}
+/* v2.95: 저장/설정은 44×40 상자 + 바깥 투명 히트 52×48 (44px 미만 터치 금지, P2-1) */
+#subR .chip2{width:44px;min-width:44px;height:40px;border-radius:12px}
+#subR .chip2::after{content:'';position:absolute;left:-4px;right:-4px;top:-4px;bottom:-4px}
 /* HUD 44px 터치 (M-2, L-1) */
 #hud .mbtn{width:44px!important;height:44px!important}
 #hud #back{width:48px!important;font-size:10px!important;line-height:1.05;letter-spacing:-.4px;padding:0 2px}
-#subR .chip2{min-width:44px!important;height:26px!important;font-size:15px!important;padding:0 4px}
+#subR .chip2{min-width:44px!important;height:40px!important;font-size:16px!important;padding:0 4px}
 #modal>#mX{width:44px!important;height:44px!important;font-size:19px!important}
 /* 힌트 토스트가 ×2 부스터를 덮지 않게 (M-3) */
 #toast{z-index:12!important}
@@ -1379,14 +1391,14 @@ body{font-family:var(--b);letter-spacing:-.15px}
 <div id="stockAl" style="display:none"></div><div id="combo" style="display:none"><b></b><small></small><i><s></s></i></div><div id="dayBar"><b id="dbDay">DAY 1</b><span id="dbT">2:00</span><span id="dbPause" style="display:none">⏸ 일시정지</span><span id="dbRev">$0/$120</span><span id="dbComp">민원 0/3</span><span id="pkChip">⚡ 피크</span><i><s id="dbFill"></s></i></div>
 <div id="hint"></div>
 <div id="toast"></div>
-<div id="big"><b id="bigT"></b><span id="bigS"></span></div>
+<div id="big"><b id="bigT"></b><span id="bigS"></span></div><div id="dayBan" role="status" aria-live="polite"><b id="dayBanT"></b><em id="dayBanS"></em></div>
 <button id="help"><b>급해요! 재고 가득 채우기</b><span>광고 보고 즉시 · 테스트</span></button>
 <div id="evt"><b>단체 관광객!</b><span>매장 매출 ×2</span><em id="evtT">30</em></div>
 <button id="v285boost" aria-label="매출 2배 부스터"></button><div id="joy"><i></i></div>
 <div id="camctl"><button id="camFull" title="전체 보기" aria-label="전체 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.2"/><path d="M15.2 15.2L21 21"/></svg><b>전체</b></button><button id="camBase" class="on" title="기본 시점" aria-label="기본 시점"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.6"/><circle cx="12" cy="12" r="3.1"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기" aria-label="인테리어 꾸미기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 12V8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5V12"/><path d="M3 12.5h18a1.5 1.5 0 0 1 1.5 1.5v3.5A1.5 1.5 0 0 1 21 19H3a1.5 1.5 0 0 1-1.5-1.5V14A1.5 1.5 0 0 1 3 12.5z"/><path d="M5.5 19v2M18.5 19v2"/></svg><b>꾸미기</b></button><button id="v285brBtn" title="지점 완공" aria-label="지점 완공"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V6h12"/><path d="M6 6L3 3M18 6v4"/><path d="M15 10h6v2a3 3 0 0 1-6 0z"/><path d="M18 6l3-1"/></svg><b id="brTxt">0/2F</b><i></i></button></div>
 <div id="intp"><div class="ihd"><b>인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.94</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i>영업 시작</button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v2.95</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1430,7 +1442,7 @@ const QAMODE=(function(){ try{ return new URLSearchParams(location.search).get('
 const SK=QAMODE?('qa-'+SAVE):SAVE;
 if(QAMODE){ try{
   /* QA 세이브는 판이 올라가면 한 번 비운다(옛 스키마가 새 화면을 깨지 않게) — qa- 접두어만 지운다 */
-  var QAV='v2.94', _qk=[];
+  var QAV='v2.95', _qk=[];
   try{ for(var _qi=0;_qi<localStorage.length;_qi++){ var _qn=localStorage.key(_qi); if(_qn&&_qn.indexOf('qa-')===0&&_qn!=='qa-epoch') _qk.push(_qn); } }catch(e){ _qk=[]; }
   if(localStorage.getItem('qa-epoch')!==QAV){ for(var _qj=0;_qj<_qk.length;_qj++){ try{ localStorage.removeItem(_qk[_qj]); }catch(e){} } try{ localStorage.setItem('qa-epoch',QAV); }catch(e){} }
   /* 콘솔 오류 카운터 — 부팅 도중에 난 오류까지 세도록 가장 먼저 건다 */
@@ -3083,7 +3095,7 @@ function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.soft
   if(c.influ&&dayState==='run'&&!c.softLeave){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } if(!c.softLeave){ S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift(); }
   if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet&&c.reg==null){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.compKind||(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈')); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
   if(ok&&c.type==='ret') hubReturnRma(c);
-  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.reg!=null?((c.regVip?2.2:1.8)+v275RegTipAdd()):1)*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*(S.boostD===S.day?2:1)*(S.vipPass?1.25:1)*V285.payMul()*(typeof V287!=='undefined'?V287.payMul():1));
+  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.reg!=null?((c.regVip?2.2:1.8)+v275RegTipAdd()):1)*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*v295ShopMul()*V285.payMul()*(typeof V287!=='undefined'?V287.payMul():1));
     /* v2.78: 🔥 인기 품목 +40% · ⚡ 피크 타임 +25% */
     try{ if(c.want&&c.want===v278HotT()&&['pick','buy','tour','ret','corp'].indexOf(c.type)>=0){ pay=Math.round(pay*V278HOTMUL); v278HotSold(c); } }catch(e){}
     try{ if(V278PK.on){ pay=Math.round(pay*V278PKPAY); V278PK.n++; } }catch(e){}
@@ -3159,7 +3171,9 @@ function v291RepairDone(j){
   }catch(e){}
 }
 /* DAY 2 첫 수리 전에는 출석·상자 안내를 띄우지 않는다(첫 수리 뒤 순서대로) */
-function v291HoldPopups(){ try{ var v=v291S(); return !!(S&&(S.day|0)===1&&S.unl&&S.unl.includes('repair')&&v&&!v.rep1); }catch(e){ return false; } }
+/* v2.95: 보류 범위를 '첫 수리 완료 전' 전체로 넓힌다 — DAY 2 진입 순간(repair 해금 직전)에도
+   출석·상자 팝업이 DAY 브리핑보다 먼저 뜨지 않게 한다(P1-1). */
+function v291HoldPopups(){ try{ var v=v291S(); return !!(S&&(S.day|0)<=1&&v&&!v.rep1); }catch(e){ return false; } }
 function v291DeferredPopups(){
   try{
     if(v291HoldPopups()) return 0;
@@ -4519,11 +4533,11 @@ function bigBanner(t,sub){
   try{ var _s=function(x){ if(!x||!V288_EMO) return x; V288_EMO.lastIndex=0; if(!V288_EMO.test(x)) return x; V288_EMO.lastIndex=0; var w=x.replace(V288_EMO,'').replace(/^[\s·ㅣ|:：-]+/,'').replace(/\s{2,}/g,' '); return w.trim()?w:x; }; t=_s(t); sub=_s(sub); }catch(e){}
   var B=$('bigT'), S2=$('bigS');
   try{
-    if($('modal').classList.contains('on')){
+    if($('modal').classList.contains('on')||(typeof v295BannerOn==='function'&&v295BannerOn())){
       BIGP={t:t,sub:sub};
       if(!BIGPT) BIGPT=setInterval(function(){
-        try{ if(!$('modal').classList.contains('on')){ clearInterval(BIGPT); BIGPT=0; var q=BIGP; BIGP=null; if(q) bigBanner(q.t,q.sub); } }catch(_){}
-      },500);
+        try{ if(!$('modal').classList.contains('on')&&!(typeof v295BannerOn==='function'&&v295BannerOn())){ clearInterval(BIGPT); BIGPT=0; var q=BIGP; BIGP=null; if(q) bigBanner(q.t,q.sub); } }catch(_){}
+      },400);
       return;
     }
   }catch(_){}
@@ -4538,6 +4552,23 @@ function bigBanner(t,sub){
     var mx=(VW||innerWidth)-40; if(w>mx&&w>0) B.style.fontSize=Math.max(17,Math.floor(27*mx/w))+'px';
   }catch(_){}
   S2.textContent=sub||''; S2.style.display=sub?'inline-block':'none'; $('big').classList.add('on'); bigT=1.6;
+}
+/* v2.95: DAY 진입 슬림 배너 — 기존 bigBanner('DAY n', title) + ftHint('손님이 곧 들어와요')가
+   화면 중앙에 세로로 쌓이던 것을 한 줄 배너로 합치고 2.6초 뒤 스스로 사라진다(P2-3). */
+var V295BAN={t:0,timer:0};
+function v295BannerOn(){ return !!V295BAN.t; }
+function v295DayBanner(n,title,tip){
+  try{
+    var el=$('dayBan'), bt=$('dayBanT'), bs=$('dayBanS');
+    if(!el||!bt||!bs) return false;
+    bt.textContent='DAY '+n;
+    bs.textContent=[title,tip].filter(Boolean).join(' · ');
+    el.classList.add('on'); V295BAN.t=2.6;
+    if(V295BAN.timer) clearTimeout(V295BAN.timer);
+    V295BAN.timer=setTimeout(function(){ V295BAN.t=0; V295BAN.timer=0; try{ el.classList.remove('on'); }catch(e){}
+      try{ if(BIGPT){ clearInterval(BIGPT); BIGPT=0; } var q=BIGP; BIGP=null; if(q) bigBanner(q.t,q.sub); }catch(e){} },2600);
+    return true;
+  }catch(e){ return false; }
 }
 /* ---- v2.26: 본사 인사 발령·경고장 공문 (영업 결과창과 별개의 오버레이 — 결과창 흐름을 건드리지 않는다) ---- */
 function leadNote(kind,d){ let el=$('leadNote');
@@ -5524,6 +5555,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.23: v2.20의 Z축 가둠을 기본 목표로 쓰되, 캐릭터가 화면 밖·버튼 뒤로 나가면 그만큼만 따라간다(camClampT) */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
   try{ V287.frame(dt); }catch(e){}
+  try{ V295RINGT+=dt; if(!V295RING||V295RINGT>2){ V295RINGT=0; v295RingMake(); } }catch(e){}
   if(!window.__NR){ if(typeof BIZ!=='undefined'&&BIZ.open&&BIZ.scene) bizRender(dt); else if(typeof REP!=='undefined'&&REP.open&&REP.scene) repRender(dt); else renderer.render(scene,cam); } requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
 /* ---- combo & fever ---- */
@@ -5563,15 +5595,27 @@ function openAttend(then){ S.att=S.att||{n:0}; const i=S.att.n%7;
   openModal('<h2>📅 출석 보상</h2><p style="font-size:12px;margin:0 0 6px">매일 접속하면 보상이 커져요 · 7일차는 대박!</p><div class="attg">'+ATT.map((a,k)=>'<div class="attc'+(k<i?' got':k===i?' now':'')+(k===6?' big':'')+'"><small>'+(k+1)+'일차</small><i>'+(k<i?'✅':a[0])+'</i><b>'+a[1]+'</b></div>').join('')+'</div><button id="attGo">'+(i+1)+'일차 보상 받기</button>');
   $('attGo').onclick=()=>{ ATT[i][2](); S.att.n++; S.att.d=today(); save(); snd('coin',0.6); confetti(player.pos.x,2.5,player.pos.z); $('modal').classList.remove('on'); toast('출석 보상: '+ATT[i][1]+' 받았어요!',2.5); setTimeout(then,500); }; }
 /* ---- shop (test payments) ---- */
+/* v2.95: 상점 매출 배수는 '가산 합산 + 상한' 한 곳에서만 계산한다(P1-3).
+   · 영구 배수: 스타터팩 +100% · VIP +25% → 합산하고 최대 +150%(×2.5)까지
+   · 일일 부스터: 매출 2배 부스터 · 주간 번들 · 보석 부스터가 겹쳐도 최대 ×2
+   상점 문구는 이 규칙과 같게 적는다. */
+var V295_MUL={permCap:1.5, dayCap:1.0};
+function v295PermBonus(){ var b=0; try{ if(S.vipPass) b+=0.25; }catch(e){}
+  try{ if(typeof V285!=='undefined'&&V285&&V285.state&&V285.state().starter) b+=1.0; }catch(e){}
+  return Math.min(V295_MUL.permCap,b); }
+function v295DayBonus(){ var b=0; try{ if(S.boostD===S.day) b+=1.0; }catch(e){}
+  try{ if(typeof V285!=='undefined'&&V285&&V285.boostOn&&V285.boostOn()) b+=1.0; }catch(e){}
+  return Math.min(V295_MUL.dayCap,b); }
+function v295ShopMul(){ return (1+v295PermBonus())*(1+v295DayBonus()); }
 function grantStarter(){ money+=800; S.boostD=S.day; Object.keys(S.inv).forEach(t=>S.inv[t]+=10); S.paidPack=1; }
 const SHOP=[
- {id:'vip',sp:1,ic:'⭐',n:'VIP 패스',d:'영구 매출 +25% · 매일 영업 시작 때 $200 · 광고 제거',p:'₩9,900',tag:'BEST',hot:1,show:()=>!S.vipPass,buy:()=>{ S.vipPass=1; S.noAds=1; money+=200; return '매출 +25% 영구 적용!'; }},
- {id:'boost',sp:2,ic:'📈',n:'매출 2배 부스터',d:'다음(또는 지금) 영업 매출 2배',p:'₩2,500',show:()=>S.boostD!==S.day,buy:()=>{ S.boostD=S.day; return '이번 영업 매출 2배!'; }},
+ {id:'vip',sp:1,ic:'⭐',n:'VIP 패스',d:'영구 매출 +25% · 매일 $200 · 광고 제거 (영구 배수는 +150%까지 합산)',p:'₩9,900',tag:'BEST',hot:1,show:()=>!S.vipPass,buy:()=>{ S.vipPass=1; S.noAds=1; money+=200; return '매출 +25% 영구 적용!'; }},
+ {id:'boost',sp:2,ic:'📈',n:'매출 2배 부스터',d:'이번(또는 다음) 영업 매출 2배 · 영업 부스터끼리는 최대 2배',p:'₩2,500',show:()=>S.boostD!==S.day,buy:()=>{ S.boostD=S.day; return '이번 영업 매출 2배!'; }},
  {id:'cash1',sp:3,ic:'💵',n:'자금 한 줌',d:'$500',p:'₩1,200',show:()=>1,buy:()=>{ money+=500; return '+$500'; }},
  {id:'cash2',sp:4,ic:'💰',n:'자금 가방',d:'$3,000 (+20% 보너스)',p:'₩5,900',tag:'+20%',show:()=>1,buy:()=>{ money+=3000; return '+$3,000'; }},
  {id:'cash3',sp:5,ic:'🏦',n:'자금 금고',d:'$8,000 (+35% 보너스)',p:'₩12,000',tag:'+35%',show:()=>1,buy:()=>{ money+=8000; return '+$8,000'; }},
  {id:'slot',sp:1,ic:'👥',n:'직원 자리 +1',d:'재고 담당·수리 기사를 한 명 더 고용할 수 있는 자리 (영구)',p:'₩4,900',tag:'NEW',show:()=>!S.slotPaid,buy:()=>{ S.slotPaid=1; return '직원 화면에서 추가 채용하세요'; }},
- {id:'noads',sp:7,ic:'🚫',n:'광고 제거',d:'광고 없이 "재고 가득 채우기" 바로 사용',p:'₩4,900',show:()=>!S.noAds,buy:()=>{ S.noAds=1; return '광고가 사라졌어요'; }}];
+ /* v2.95: 단품 '광고 제거'는 VIP 패스에 이미 포함돼 있어 중복 상품을 없앴다(P1-2). */];
 const spI=(k,s)=>{ s=s||48; return '<i class="sp" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></i>'; };
 function openShop(){ const ad=(S.adD===S.day?S.adN||0:0); let h='<h2 style="margin-bottom:2px">🛒 상점</h2><p style="font-size:11px;margin:0 0 6px;color:#9a6a3a">테스트 결제예요 · 실제 돈이 나가지 않아요</p><div class="shl">';
   h+='<div class="shi ad">'+spI(6)+'<div><b>광고 보고 $100 받기</b><small>하루 3번 · 오늘 '+ad+'/3</small></div><button data-ad="1" '+(ad>=3?'disabled':'')+'>무료</button></div>';
@@ -6218,7 +6262,7 @@ function ftueSpd(){ try{ return ftueOn()&&!FT.sold?2.4:1; }catch(e){ return 1; }
 function ftueScr(x,y,z){ try{ const v=new THREE.Vector3(x,y,z).project(cam); if(!isFinite(v.x)||!isFinite(v.y)) return null; return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; }catch(e){ return null; } }
 function ftueTick(){ try{ const on=ftueOn(); document.body.classList.toggle('ftue',on);
   const A=$('ftArrow'), H=$('ftHint'); if(!A||!H) return;
-  if(!on||dayState!=='run'||$('modal').classList.contains('on')){ A.style.display=H.style.display='none'; return; }
+  if(!on||dayState!=='run'||$('modal').classList.contains('on')||(typeof v295BannerOn==='function'&&v295BannerOn())){ A.style.display=H.style.display='none'; return; }
   if(!FT.sold&&dayRev>0){ FT.sold=1; S.ftue=S.ftue||{}; S.ftue.sold=1; try{ confetti(player.pos.x,2,player.pos.z); }catch(_){} }
   if(quizOpen){ A.style.display='none'; H.style.display='none'; return; }
   let best=null, bd=1e9; custs.forEach(c=>{ if(c.st!=='wait'||c.claim) return; const d=Math.hypot(c.pos.x-player.pos.x,c.pos.z-player.pos.z); if(d<bd){ bd=d; best=c; } });
@@ -7327,7 +7371,8 @@ function v262ResultInject(){
   V262._prev=_prev;
   startDayModal=function(){
     try{ if(typeof ftueOn==='function'&&ftueOn()) return _prev.apply(this,arguments); }catch(e){}
-    if(!FTSKIP&&(S.att||{}).d!==today()){ openAttend(startDayModal); return; }
+    /* v2.95: 튜토리얼(첫 수리 완료 전)에는 DAY 브리핑보다 출석 팝업이 먼저 뜨지 않는다(P1-1) */
+    if(!FTSKIP&&(S.att||{}).d!==today()&&!(typeof v291HoldPopups==='function'&&v291HoldPopups())){ openAttend(startDayModal); return; }
     if(!S.offer){ S.offer=1; save(); }   /* v2.86: 2일차 팝업 스타터팩은 상점의 '초보자 스타터팩' 하나로 통합(H-8) */
     try{
       S.ev=S.ev||{};
@@ -7874,28 +7919,51 @@ function v265SoftTex(key){
   var strong=(key==='blob');
   V265.tex[key]=canvasTex(function(g,w,h){
     var gr=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);
-    if(strong){ gr.addColorStop(0,'rgba(9,12,18,.60)'); gr.addColorStop(.45,'rgba(9,12,18,.30)'); gr.addColorStop(1,'rgba(9,12,18,0)'); }
-    else { gr.addColorStop(0,'rgba(9,12,18,.46)'); gr.addColorStop(.52,'rgba(9,12,18,.20)'); gr.addColorStop(1,'rgba(9,12,18,0)'); }
+    /* v2.95: 캐릭터 블롭은 옅게(바닥이 떠 보이던 얼룩 제거), 가구 접촉 그림자만 남긴다(P2-… 그래픽) */
+    if(strong){ gr.addColorStop(0,'rgba(9,12,18,.30)'); gr.addColorStop(.42,'rgba(9,12,18,.14)'); gr.addColorStop(1,'rgba(9,12,18,0)'); }
+    else { gr.addColorStop(0,'rgba(9,12,18,.42)'); gr.addColorStop(.5,'rgba(9,12,18,.17)'); gr.addColorStop(1,'rgba(9,12,18,0)'); }
     g.fillStyle=gr; g.fillRect(0,0,w,h);
   },64,64);
   return V265.tex[key];
 }
 function v265SoftMat(key){
   if(V265.mat[key]) return V265.mat[key];
-  V265.mat[key]=new THREE.MeshBasicMaterial({map:v265SoftTex(key),transparent:true,depthWrite:false,opacity:0.72});
+  V265.mat[key]=new THREE.MeshBasicMaterial({map:v265SoftTex(key),transparent:true,depthWrite:false,opacity:key==='blob'?0.62:0.66});
   return V265.mat[key];
 }
 /* 캐릭터 발밑 그림자 — 캐릭터 그룹의 자식이라 따라다닌다(프레임 비용 0) */
 function v265Blob(ch){
   try{
     if(!ch||!ch.g||ch.__blob||typeof THREE==='undefined') return null;
-    var m=new THREE.Mesh(gget('v265blob',function(){ return new THREE.PlaneGeometry(1.25,1.25); }), v265SoftMat('blob'));
-    m.rotation.x=-Math.PI/2; m.position.set(0,0.098,0); m.renderOrder=1; m.castShadow=false; m.receiveShadow=false;
+    var m=new THREE.Mesh(gget('v265blob',function(){ return new THREE.PlaneGeometry(1.06,1.06); }), v265SoftMat('blob'));
+    m.rotation.x=-Math.PI/2; m.position.set(0,0.094,0); m.renderOrder=1; m.castShadow=false; m.receiveShadow=false;
     ch.g.add(m); ch.__blob=m;
     return m;
   }catch(e){ return null; }
 }
 function v265BlobY(ch,y){ try{ if(ch&&ch.__blob) ch.__blob.position.y=y; }catch(e){} }
+/* v2.95: 사장님(플레이어) 발밑 전용 포지션 링 — 파스텔 골드 + 민트 얇은 링을 항상 띄워
+   손님·직원이 많은 매장에서도 내 위치가 한눈에 들어오게 한다. 캐릭터 그룹의 자식이라 따라다닌다. */
+var V295RING=null, V295RINGT=0;
+function v295RingMake(){
+  try{
+    if(V295RING) return V295RING;
+    if(typeof THREE==='undefined'||typeof player==='undefined'||!player||!player.ch||!player.ch.g) return null;
+    if(typeof scene==='undefined'||!scene) return null;
+    var mk=function(r1,r2,col,op,y,ro){
+      var mt=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,depthWrite:false,side:THREE.DoubleSide});
+      try{ mt.toneMapped=false; }catch(e){}   /* 톤매핑에 씻기지 않게 — 바닥 위에서도 선명하게 */
+      var m=new THREE.Mesh(new THREE.RingGeometry(r1,r2,40), mt);
+      m.rotation.x=-Math.PI/2; m.position.set(0,y,0); m.renderOrder=ro; m.castShadow=false; m.receiveShadow=false;
+      player.ch.g.add(m); return m;
+    };
+    mk(0.486,0.604,'#2e2105',0.30,0.104,4);  /* 바닥 대비용 얇은 그늘 */
+    mk(0.502,0.588,'#ffc247',1.0,0.108,5);   /* 파스텔 골드 외곽 */
+    mk(0.386,0.430,'#6ff0c4',0.80,0.107,5);  /* 민트 안쪽 */
+    V295RING=1;
+    return V295RING;
+  }catch(e){ return null; }
+}
 
 /* 바닥 그림자(가구 밑) — 매장 조명 대비를 살린다 */
 function v265Contact(x,z,w,d,y){
@@ -9166,9 +9234,9 @@ function v266WeekLeft(){ try{ var now=new Date(), k=(now.getDay()+6)%7; var nx=n
 try{
   if(!SHOP.some(function(x){ return x.id==='weekbundle'; })){
     SHOP.push({id:'weekbundle',sp:3,ic:'🎁',n:'주간 특가 번들',
-      d:'$3,000 + 매출 2배 부스터 + 전 품목 재고 +10',p:'₩4,900',old:'₩9,800',tag:'이번 주 한정',hot:1,
+      d:'$3,000 + 이번 영업 매출 2배 + 전 품목 재고 +10',p:'₩4,900',old:'₩9,800',tag:'이번 주 한정',hot:1,
       show:function(){ return S.wkBuy!==v266WeekKey(); },
-      buy:function(){ S.wkBuy=v266WeekKey(); money+=3000; S.boostD=S.day;
+      buy:function(){ S.wkBuy=v266WeekKey(); money+=3000; S.boostD=S.day;   /* v2.95: 일일 부스터는 v295ShopMul에서 최대 2배로 합산 */
         Object.keys(S.inv||{}).forEach(function(t){ S.inv[t]=(S.inv[t]||0)+10; });
         return '$3,000 + 매출 2배 + 재고 +10'; }});
   }
@@ -9196,7 +9264,7 @@ function v266ShopPaint(){
     }
     function sec(t,s){ return '<div class="vShopSec"><b>'+t+'</b><small>'+s+'</small></div>'; }
     var owned=[];
-    try{ if(S.vipPass) owned.push('VIP 패스'); if(S.noAds) owned.push('광고 제거'); if(S.autoBox) owned.push('자동 수금'); if(S.slotPaid) owned.push('직원 자리 +1'); if(S.autoPack) owned.push('자동화 패키지'); }catch(e){}
+    try{ if(S.vipPass) owned.push('VIP 패스'); else if(S.noAds) owned.push('광고 제거'); if(S.autoBox) owned.push('자동 수금'); if(S.slotPaid) owned.push('직원 자리 +1'); if(S.autoPack) owned.push('자동화 패키지'); }catch(e){}
     var h='';
     if(owned.length) h+='<div class="vOwned">'+V266L.owned+' · '+owned.map(function(v){ return '<span>'+hesc(v)+'</span>'; }).join('')+'</div>';
     if(hero){
@@ -11101,7 +11169,7 @@ function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()&&!(typeof v291Hold
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+v278PreHTML()+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
   $('dUpg').onclick=()=>{ window.__rts=1; openUp(); }; $('dMap').onclick=()=>{ window.__rts=1; snd('ui',0.4); openWorld(); };
-  $('dayGo').onclick=()=>{ if(dayState==='run'){ V265.guard.begin++; return; } /* v2.65: 영업 중에 시작 버튼이 또 눌려 하루 기록이 초기화되는 것 방지 */ $('modal').classList.remove('on'); initAudio(); useResetDay(); try{ dfix.rev=0; dfix.n=0; dfix.log=[]; }catch(e){} try{ var _v291=v291S(); if(_v291) _v291.lowWarn={}; }catch(e){} dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 재고가 모자라면 ① 하단 [재고]에서 발주 ② 입고 구역 박스를 집어 ③ 그 품목 선반에 내려놓기',6),2600); } spawnT=0.3; bigBanner('DAY '+(S.day+1),cfg.title); lpDayStart(); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(4.4,0,-4.6); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } try{ v275DayBegin(); }catch(e){} try{ v278DayBegin(); }catch(e){} }; }
+  $('dayGo').onclick=()=>{ if(dayState==='run'){ V265.guard.begin++; return; } /* v2.65: 영업 중에 시작 버튼이 또 눌려 하루 기록이 초기화되는 것 방지 */ $('modal').classList.remove('on'); initAudio(); useResetDay(); try{ dfix.rev=0; dfix.n=0; dfix.log=[]; }catch(e){} try{ var _v291=v291S(); if(_v291) _v291.lowWarn={}; }catch(e){} dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 재고가 모자라면 ① 하단 [재고]에서 발주 ② 입고 구역 박스를 집어 ③ 그 품목 선반에 내려놓기',6),2600); } spawnT=0.3; v295DayBanner(S.day+1,cfg.title,cfg.tip); lpDayStart(); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(4.4,0,-4.6); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(0.4,0,-5.0); focusT=1.6; popIn(SUPG); } try{ v275DayBegin(); }catch(e){} try{ v278DayBegin(); }catch(e){} }; }
 function endDay(fail){ if(dayState!=='run') return; dayState='end'; try{ if(typeof REP!=='undefined'&&REP.open) repClose(); }catch(e){} GSPOT.occ=null; dayEndT=1.2;
   try{ RLAB.seats.concat(RLAB.queue).forEach(function(x){ x.occ=null; }); RQ.forEach(function(j){ if(j.c){ j.c.labJ=null; j.c=null; } }); REP.work=null; REP.sel=null; rlabSignPaint(true); }catch(e){} S.lastFail=fail?'comp':null; custs.forEach(c=>{ if(c.st!=='leave'){ c.quiet=1; c.el.style.display='none'; if(c.spot){ c.spot.occ=null; c.spot=null; } c.st='leave'; c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(14,0,11.2)]; } }); if(quizOpen) closeQuiz(); bigBanner(fail?'영업 정지!':'영업 종료!',fail?'민원 3건이 쌓였어요':'오늘 결과를 확인해요'); }
 /* =============================================================
@@ -11391,7 +11459,7 @@ window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e)
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.94';
+sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v2.95';
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -11420,8 +11488,17 @@ function techRoad(){ const cur=STG, maxS=STAGE_OF(S.day); const TH=i=>{ let t=''
 function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이브 링크로 불러왔어요 · DAY '+(S.day+1),3.6); }catch(e){} },700); } if(S.mid){ S.mid=0; setTimeout(()=>toast('지난 영업이 도중에 끝나서 DAY '+(S.day+1)+'을 처음부터 다시 시작해요',4.5),900); } document.documentElement.style.background=document.body.style.background=TS.ground; const first=!S.seen; if(first){ S.seen=1; setTimeout(()=>{ bigBanner('테크 스토어 오픈!','오늘부터 사장님이에요'); confetti(0,2,3); },300); } if(newStarter) setTimeout(()=>{ bigBanner('첫 직원 하준 합류!','픽업·박스 전달을 같이 해줘요'); snd('level_up',0.5,1.1); },first?2300:500); setTimeout(()=>{ if(openOffline(startDayModal)) return; startDayModal(); },(first?1600:400)+(newStarter?2300:0)); }
 { let skip=false; try{ skip=localStorage.getItem('tech-notitle')==='1'||sessionStorage.getItem('tech-skip')==='1'; sessionStorage.removeItem('tech-skip'); }catch(e){}
   if(skip){ titleOn=false; titleK=0; beginPlay(); }
-  else { document.body.classList.add('title'); const ds=STGD[STG]||[0]; $('tProg').innerHTML='<i>'+STI[STG]+'</i><div><b>'+TS.name+'</b><small>'+(S.seen?'STAGE '+(STG+1)+' · DAY '+(S.day+1):'새 매장을 열어보세요!')+'</small></div>'+(S.seen?'<em>★ '+S.dayStars.reduce((a,b)=>a+(b||0),0)+'</em>':''); $('tStart').lastChild.textContent=S.seen?'이어서 영업':'영업 시작'; { const _tsv=$('tSave'); if(_tsv&&S.seen) _tsv.textContent='마지막 저장: '+saveAgo(); } $('title').style.display='flex';
-    $('tStart').onclick=()=>{ initAudio(); snd('level_up',0.5,1.2); titleOn=false; $('title').classList.add('out'); setTimeout(()=>$('title').remove(),700); setTimeout(()=>{ if(!S.seen&&!S.day&&!window.__NOFTUE){ titleOn=false; document.body.classList.remove('title'); beginPlay(); } else techRoad(); },250); };
+  else { document.body.classList.add('title'); const ds=STGD[STG]||[0]; try{ $('tProg').style.display='none'; }catch(e){} $('tProg').innerHTML='<i>'+STI[STG]+'</i><div><b>'+TS.name+'</b><small>'+(S.seen?'STAGE '+(STG+1)+' · DAY '+(S.day+1):'새 매장을 열어보세요!')+'</small></div>'+(S.seen?'<em>★ '+S.dayStars.reduce((a,b)=>a+(b||0),0)+'</em>':''); $('tStart').lastChild.textContent=S.seen?'이어서 영업':'영업 시작'; { const _tsv=$('tSave'); if(_tsv&&S.seen){ _tsv.innerHTML='<span style="opacity:.9">🏙️ '+TS.name+'</span><span style="opacity:.65">DAY '+(S.day+1)+(S.dayStars&&S.dayStars.length?' · ★'+S.dayStars.reduce((a,b)=>a+(b||0),0):'')+'</span><span style="opacity:.55">'+saveAgo()+'</span><span style="opacity:.7">›</span>';
+      _tsv.setAttribute('role','button'); _tsv.setAttribute('aria-label','로드맵 · 다른 매장 보기'); _tsv.style.cursor='pointer'; } } $('title').style.display='flex';
+    /* v2.95: '이어서 영업'은 로드맵 화면을 한 번 더 거치지 않고 곧바로 현재 매장으로 들어간다(P2-5).
+       로드맵은 바로 위 지점 카드(#tProg)를 눌러 연다. */
+    $('tStart').onclick=()=>{ initAudio(); snd('level_up',0.5,1.2); titleOn=false; const _t1=$('title'); if(_t1) _t1.classList.add('out');
+      setTimeout(()=>{ try{ titleOn=false; document.body.classList.remove('title'); beginPlay(); }catch(e){} },240);
+      setTimeout(()=>{ try{ _t1.remove(); }catch(e){} },860); };
+    { const _tp=$('tSave'); if(_tp){ _tp.setAttribute('role','button'); _tp.setAttribute('aria-label','로드맵 · 다른 매장 보기'); _tp.style.cursor='pointer';
+        _tp.onclick=(e)=>{ try{ e.stopPropagation(); }catch(_){} try{ initAudio(); snd('ui',0.4); }catch(_){}
+          const _t2=$('title'); if(_t2) _t2.classList.add('out'); titleOn=false; try{ document.body.classList.remove('title'); }catch(_){}
+          setTimeout(()=>{ try{ if(_t2) _t2.style.display='none'; techRoad(); }catch(_){} },120); }; } }
     const APPURL='https://snrnwps5-ops.github.io/tycoon/', standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true, onApp=location.hostname.indexOf('github.io')>=0; let dprompt=null; addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); dprompt=e; });
     const sheet=html=>{ const s=$('tSheet'); s.innerHTML=html+'<button class="g" id="tsX">닫기</button>'; s.classList.add('on'); $('tsX').onclick=()=>s.classList.remove('on'); };
     const copy=()=>{ try{ navigator.clipboard.writeText(APPURL).then(()=>{ const b=$('tsC'); if(b) b.textContent='복사했어요!'; }).catch(()=>{}); }catch(e){} };
@@ -12023,7 +12100,7 @@ npcCount:()=>scene.children.length };
 window.__H.nav=()=>({pen:window.__NAVPEN||0,ob:OB.length,sig:PATH.sig,grid:PATH.w+'x'+PATH.h,pad:PATH.pad});
 /* ---------------- v2.93 QA 훅: 이동·충돌·탭 경로 ---------------- */
 try{ window.__H.v293={
-  ver:'v2.94', NAVR:NAVR, NAIR:NAIR, NAVCORNER:NAVCORNER,
+  ver:'v2.95', NAVR:NAVR, NAIR:NAIR, NAVCORNER:NAVCORNER,
   col:(x,z,r)=>!!collideBox(x,z,r==null?NAVR:r),
   obs:()=>OB.map(b=>({x1:+b.x1.toFixed(2),x2:+b.x2.toFixed(2),z1:+b.z1.toFixed(2),z2:+b.z2.toFixed(2),off:b.off?1:0})),
   path:(x0,z0,x1,z1,pad)=>{ const p=pathFind(x0,z0,x1,z1,pad); return p?p.map(q=>[+q.x.toFixed(2),+q.z.toFixed(2)]):null; },
@@ -12545,8 +12622,8 @@ var V285=(function(){
     m*=1+hqLv('sales')*0.03;
     m*=1+hqLv('service')*0.015;
     m*=1+hqLv('repair')*0.04;
-    if(V.starter) m*=2;
-    if(boostOn()) m*=2;
+    /* v2.95: 스타터팩(+100%)·VIP(+25%)·일일 부스터(×2)는 v295ShopMul()이 '가산 합산 + 상한'으로 계산한다.
+       여기서 또 곱하면 배수 상품끼리 무제한 곱연산이 되어 초반 경제가 무너진다. */
     return m;
   }
   function spdMul(){
@@ -13121,10 +13198,10 @@ var V285=(function(){
       }
     }catch(e){}
     saveAll(); try{ paintChips(1); }catch(e){}
-    return '영구 매출 ×2 · 전설 장비 2종 · 매니저 영입 · 💎 300';
+    return '영구 매출 +100% · 전설 장비 2종 · 매니저 영입 · 💎 300';
   }
   try{
-    SHOP.push({id:'v285starter',sp:0,ic:'🎁',n:'초보자 스타터팩',d:'영구 매출 ×2 + 전설 장비(가방·유니폼) + 매니저 + 💎 300',p:'₩3,900',old:'₩19,800',tag:'1회 한정',hot:1,show:function(){ return !V.starter; },buy:function(){ return grantStarter285(); }});
+    SHOP.push({id:'v285starter',sp:0,ic:'🎁',n:'초보자 스타터팩',d:'영구 매출 +100% (VIP +25%와 합산 · 상한 +150%) + 전설 장비(가방·유니폼)·매니저 + 💎 300',p:'₩3,900',old:'₩19,800',tag:'1회 한정',hot:1,show:function(){ return !V.starter; },buy:function(){ return grantStarter285(); }});
     SHOP.push({id:'gem120',sp:4,ic:'💎',n:'보석 120',d:'상자 1회 · 또는 부스터 충전',p:'₩1,200',show:function(){ return 1; },buy:function(){ V.gem+=120; paintChips(1); return '💎 120'; }});
     SHOP.push({id:'gem450',sp:1,ic:'💎',n:'보석 450 (+50)',d:'고급 상자 3회 이상',p:'₩3,900',tag:'+50',show:function(){ return 1; },buy:function(){ V.gem+=450; paintChips(1); return '💎 450'; }});
     SHOP.push({id:'gem1000',sp:5,ic:'💎',n:'보석 1,000 (+150)',d:'전설 상자 3회',p:'₩8,900',tag:'+150',show:function(){ return 1; },buy:function(){ V.gem+=1000; paintChips(1); return '💎 1,000'; }});
@@ -13354,6 +13431,13 @@ try{
     return r; };
 }catch(e){}
 window.__H=window.__H||{};
+try{ window.__H.v295={
+  mul:function(){ return {perm:v295PermBonus(),day:v295DayBonus(),total:v295ShopMul()}; },
+  banner:function(){ return v295BannerOn(); },
+  ring:function(){ return !!V295RING; },
+  hold:function(){ return (typeof v291HoldPopups==='function')?v291HoldPopups():null; },
+  attHold:function(){ return !!(document.getElementById('modal')&&document.getElementById('modal').classList.contains('on')); }
+}; }catch(e){}
 try{ window.__H.v286={
   ver:'v2.87',
   start:function(){ try{ startDayModal(); return 1; }catch(e){ return String(e&&e.message); } },
@@ -14750,7 +14834,7 @@ function qaBoot(){
   /* ---------- 패널 ---------- */
   function build(){
     var css=D.createElement('style'); css.id='qaCss';
-    css.textContent='#qaWrap{position:fixed;right:6px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:2147482100;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;touch-action:manipulation}'
+    css.textContent='#qaWrap{position:fixed;right:6px;bottom:calc(196px + env(safe-area-inset-bottom,0px));z-index:2147482100;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;touch-action:manipulation}'
       +'#qaChip{display:flex;align-items:center;gap:5px;height:26px;padding:0 9px;border:1px solid rgba(90,209,255,.6);border-radius:13px;background:rgba(8,18,44,.86);color:#dff1ff;font:900 10px/1 -apple-system,"Apple SD Gothic Neo",sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.4);white-space:nowrap;touch-action:manipulation}'
       +'#qaChip b{color:#5ad1ff;letter-spacing:.06em}#qaChip em{font-style:normal;color:#ffd23f}#qaChip span{color:#a9c6e8;font-weight:800}'
       +'#qaPanel{display:none;width:180px;max-height:52vh;overflow:auto;padding:8px 8px 6px;border:1px solid rgba(90,209,255,.45);border-radius:14px;background:rgba(7,15,38,.95);box-shadow:0 10px 26px rgba(0,0,0,.5)}'
@@ -14768,6 +14852,7 @@ function qaBoot(){
          패널을 펼치는 동안 AI 조작 패널을 접어 두 패널이 절대 겹치지 않게 한다 */
       +'#qaWrap.q2d{left:90px;right:auto;top:calc(env(safe-area-inset-top,0px) + 126px);bottom:auto;align-items:flex-start;gap:5px}'
       +'#qaWrap.q2d #qaPanel{max-height:min(44vh,300px)}'   /* v2.91: 375x667에서 아래쪽 안내 카드(#help)와도 겹치지 않게 */
+      +'body.title #qaWrap{top:calc(env(safe-area-inset-top,0px) + 10px);bottom:auto}'
       +'#qaWrap.qbusy{opacity:.45;filter:saturate(.6)}'
       +'#qaWrap.qbusy *{pointer-events:none!important}'
       +'#aip.qahide{display:none!important}'
@@ -14775,7 +14860,7 @@ function qaBoot(){
     D.head.appendChild(css);
     var w=D.createElement('div'); w.id='qaWrap';
     w.innerHTML='<div id="qaPanel" role="dialog" aria-label="QA 고속 테스트 패널">'
-      +'<div class="qh"><b>QA v2.94</b><s id="qaKey">qa-save</s><button class="qx" id="qaHide" aria-label="QA 패널 닫기">&times;</button></div>'
+      +'<div class="qh"><b>QA v2.95</b><s id="qaKey">qa-save</s><button class="qx" id="qaHide" aria-label="QA 패널 닫기">&times;</button></div>'
       +'<div class="qg"><span>배속</span>'
         +'<button class="qb" data-sp="1">1&times;</button><button class="qb" data-sp="2">2&times;</button>'
         +'<button class="qb" data-sp="5">5&times;</button><button class="qb" data-sp="10">10&times;</button></div>'
