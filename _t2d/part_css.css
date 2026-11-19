@@ -26,3 +26,7 @@
 @media (max-width:460px){#aip{width:152px;padding:6px}#aib button{font-size:10px;padding:7px 2px}#aiv{font-size:9px}}
 #vig{display:none!important}
 #aib button.go2{background:linear-gradient(#7bea62,#2faa45);box-shadow:0 3px 0 #1d7a2a}
+/* v2.91: 2D에서 QA 칩/패널은 좌상단(층 레일 오른쪽·DAY 바 아래)으로, AI 조작 패널은 우하단 그대로 —
+   두 패널이 서로 겹치지 않게 자리를 나눈다. QA 패널을 펼치는 동안 AI 조작은 접힌다(#aip.qahide). */
+#qaWrap.q2d{left:90px!important;right:auto!important;top:calc(env(safe-area-inset-top,0px) + 126px)!important;bottom:auto!important;align-items:flex-start!important}
+#aip.qahide{display:none!important}
