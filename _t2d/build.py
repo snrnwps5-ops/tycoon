@@ -93,9 +93,7 @@ new_move = ("  // player (2D: 화면 방향 = 월드 방향, A* 자동 이동 �
   "  const nvv=navStep(dt); if(nvv){ ix=nvv.ix; iz=nvv.iz; }\n"
   "  const il=Math.hypot(ix,iz); if(il>0.1&&!quizOpen){ const sp=" + spx + "; const k=sp*dt/Math.max(1,il);\n"
   "    const mx=ix*k, mz=iz*k;\n"
-  "    const ox=player.pos.x, oz=player.pos.z;\n"
-  "    player.pos.x+=mx; collideAxis(player.pos,'x',ox);\n"
-  "    player.pos.z+=mz; collideAxis(player.pos,'z',oz);\n"
+  "    navPlayerStep(mx,mz);   /* v2.93: 축별 충돌 + 모서리 슬라이딩 + 끼임 탈출을 3D와 똑같이 */\n"
   "    player.face=Math.atan2(mx,mz); player.speed=sp; } else player.speed=0;\n")
 text = text[:m.start()] + new_move + text[m.end():]
 
