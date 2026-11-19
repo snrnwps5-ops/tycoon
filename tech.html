@@ -14252,7 +14252,7 @@ var V287=(function(){
         h+='<div class="v287row">'+faceHTML(c,38)+'<div class="tx"><b>'+gb(c.gr)+esc287(c.nm)+' <span style="font:800 10px var(--b);color:#8a7660">'+ROLE[c.role].n+' · Lv.'+c.lv+' · '+rk+'</span></b>'+
           '<small>급여 $'+c.wage+'/일 · 이 층 기여 '+(0.9+0.22*(c.lv-1)+0.03*c.pos+(GW[c.gr]||0)).toFixed(2)+'</small></div>'+
           '<div class="bt"><button data-v287="train" data-i="'+i+'" data-x="'+k+'" '+(c.lv>=5||money<tc?'disabled':'')+'>'+(c.lv>=5?'MAX':'교육 $'+tc+'')+'</button>'+
-          '<button data-v287="promo" data-i="'+i+'" data-x="'+k+'" '+(c.pos>=3||c.lv<need||money<pc?'disabled':'')+'>'+(c.pos>=3?'최고 · '+rk:(nxt?('<span style="display:block;font:800 9px/1 var(--b);opacity:.85">→ '+nxt+'</span>'):'')+'승진 $'+pc)+'</button>'+
+          '<button data-v287="promo" data-i="'+i+'" data-x="'+k+'" '+(c.pos>=3||c.lv<need||money<pc?'disabled':'')+'>'+(c.pos>=3?'최고 ⭐':(nxt?('<span style="display:block;font:800 9px/1 var(--b);opacity:.85">→ '+nxt+'</span>'):'')+'승진 $'+pc)+'</button>'+
           '<button class="v289fire" data-v287="fire" data-i="'+i+'" data-x="'+k+'" aria-label="'+esc287(c.nm)+' 해고">해고</button></div></div>';
       });
       if(n.length<ch){
