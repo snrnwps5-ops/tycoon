@@ -5,7 +5,7 @@ module.exports={name:'주가 · RSU 지급 · 경쟁사 스카우트 · 평판 �
   await T.endDay(1.5,0); const txt=await T.ev(()=>document.getElementById('mbox').textContent);
   assert(/메가 테크 주가/.test(txt),'결과창에 주가가 없어요'); assert(/RSU 지급 · 서준 60주/.test(txt),'RSU 지급 줄이 없어요');
   const sj=await T.ev(()=>window.__H.S.crew.find(c=>c.name==='서준')); assert(sj&&!sj.rsu&&sj.sat>=85,'RSU 지급 뒤 주식이 남았거나 만족도가 안 올랐어요: '+JSON.stringify(sj&&{rsu:sj.rsu,sat:sj.sat}));
-  assert(await T.ev(()=>{ const r=[...document.querySelectorAll('#mbox > .dstat')].some(d=>/RSU 지급/.test(d.textContent)); return r; }),'RSU 지급이 결과창 첫 화면에 없어요');
+  assert(await T.ev(()=>{ const r=[...document.querySelectorAll('#mbox .dstat')].some(d=>/RSU 지급/.test(d.textContent)); return r; }),'RSU 지급이 결과창 첫 화면에 없어요');
   const ch=await T.ev(()=>window.__T.poachChance(window.__H.S.crew.find(c=>c.name==='하준'))); assert(ch>=0.2,'만족도 낮은 A급 직원의 이직 확률이 너무 낮아요: '+ch);
   await T.ev(()=>{ document.getElementById('modal').classList.remove('on'); const c=window.__H.S.crew.find(c=>c.name==='지아'); window.__T.poachOpen({c:c,rival:'울트라 디지털',wage:40}); }); await L.W(500);
   assert(await T.ev(()=>document.getElementById('poachNote').classList.contains('on')),'경쟁사 제안 창이 안 떠요');
