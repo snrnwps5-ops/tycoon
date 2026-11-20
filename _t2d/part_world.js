@@ -1,7 +1,7 @@
 /* ---------- world (2D 평면도 데이터) ---------- */
-var STX=6.6, EXPW=0; const OB=[]; const ob=(x1,x2,z1,z2)=>OB.push({x1:x1,x2:x2,z1:z1,z2:z2});
-const STORE={x1:-7,x2:7,z1:-9,z2:6};
-const WALLS=[[-7,-9,7,-9],[-7,-9,-7,6],[7,-9,7,6],[-7,6,-1.3,6],[1.3,6,7,6]];
+var STX=8.55, SBL=-8.55, SBF=7.05, SBB=-10.05, EXPW=0; const OB=[]; const ob=(x1,x2,z1,z2)=>OB.push({x1:x1,x2:x2,z1:z1,z2:z2});
+const STORE={x1:-9,x2:9,z1:-10.5,z2:7.5};
+const WALLS=[[-9,-10.5,9,-10.5],[-9,-10.5,-9,7.5],[9,-10.5,9,7.5],[-9,7.5,-1.4,7.5],[1.4,7.5,9,7.5]];
 WALLS.forEach(w=>{ const x1=w[0],z1=w[1],x2=w[2],z2=w[3];
   if(Math.abs(z2-z1)<0.01) ob(Math.min(x1,x2)-0.15,Math.max(x1,x2)+0.15,z1-0.18,z1+0.18);
   else ob(x1-0.18,x1+0.18,Math.min(z1,z2)-0.15,Math.max(z1,z2)+0.15); });

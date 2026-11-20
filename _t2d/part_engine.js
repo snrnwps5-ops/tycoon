@@ -24,7 +24,7 @@ function intPaint2(){ if(!TSBASE) TSBASE={floor:TS.floor.slice(),cap:TS.cap,wall
 function fitScale(){ const W=innerWidth,H=innerHeight;
   const top=Math.min(176,H*0.20), bot=Math.min(96,H*0.11), usable=Math.max(120,H-top-bot);
   VIEW.cx=W/2; VIEW.cy=top+usable/2;
-  return Math.max(17,Math.min(112,Math.min((W-20)/15.6,usable/15.8))); }
+  return Math.max(17,Math.min(112,Math.min((W-20)/18.7,usable/18.9))); }   /* v2.98: 18×18m */
 function resize(){ const W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,2);
   cv.width=Math.max(1,Math.round(W*dpr)); cv.height=Math.max(1,Math.round(H*dpr)); cv.style.width=W+'px'; cv.style.height=H+'px';
   ctx2.setTransform(dpr,0,0,dpr,0,0); VIEW.W=W; VIEW.H=H; VIEW.s=fitScale(); VW=W; VH=H; }
@@ -43,26 +43,26 @@ function circ(x,z,r,c,stroke,lw){ const p=SX(x,z), s=p.s; ctx2.beginPath(); ctx2
 function drawOutside(){
   const a=SX(-30,-14), b=SX(30,20);
   ctx2.fillStyle=TS.ground; ctx2.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);
-  const r1=SX(-30,6), r2=SX(30,19);
+  const r1=SX(-30,7.5), r2=SX(30,20.5);
   ctx2.fillStyle='#9aa2ad'; ctx2.fillRect(r1.x,r1.y,r2.x-r1.x,r2.y-r1.y);
-  const d1=SX(-30,9.6), d2=SX(30,13.6);
+  const d1=SX(-30,11.1), d2=SX(30,15.1);
   ctx2.fillStyle='#4a4f5c'; ctx2.fillRect(d1.x,d1.y,d2.x-d1.x,d2.y-d1.y);
-  ctx2.fillStyle='#ffffff'; for(let x=-28;x<=28;x+=4){ const q=SX(x-0.7,11.6); ctx2.fillRect(q.x,q.y,1.4*q.s,0.14*q.s); }
-  const g1=SX(-30,-14), g2=SX(30,-9.15);
+  ctx2.fillStyle='#ffffff'; for(let x=-28;x<=28;x+=4){ const q=SX(x-0.7,13.1); ctx2.fillRect(q.x,q.y,1.4*q.s,0.14*q.s); }
+  const g1=SX(-30,-14), g2=SX(30,-10.65);
   ctx2.fillStyle='#8a9099'; ctx2.fillRect(g1.x,g1.y,g2.x-g1.x,g2.y-g1.y); /* v2.12: 매장 뒤 잔디 -> 보도 포장(3D와 동일) */
 }
 function drawFloor(){
-  const p0=SX(-7,-9), p1=SX(7,6);
+  const p0=SX(-9,-10.5), p1=SX(9,7.5);
   ctx2.fillStyle=TS.floor[0]; ctx2.fillRect(p0.x,p0.y,p1.x-p0.x,p1.y-p0.y);
   ctx2.fillStyle=TS.floor[1]; ctx2.globalAlpha=0.28;
-  for(let x=-7;x<7;x++) for(let z=-9;z<6;z++){ if(((x+z)&1)===0) continue; const q=SX(x,z); ctx2.fillRect(q.x,q.y,q.s+1,q.s+1); }
+  for(let x=-9;x<9;x++) for(let z=-10.5;z<7.5;z++){ if(((x+z)&1)===0) continue; const q=SX(x,z); ctx2.fillRect(q.x,q.y,q.s+1,q.s+1); }
   ctx2.globalAlpha=1;
   ctx2.strokeStyle='rgba(0,0,0,.08)'; ctx2.lineWidth=1;
-  for(let x=-7;x<=7;x++){ const q=SX(x,-9), q2=SX(x,6); ctx2.beginPath(); ctx2.moveTo(q.x,q.y); ctx2.lineTo(q2.x,q2.y); ctx2.stroke(); }
-  for(let z=-9;z<=6;z++){ const q=SX(-7,z), q2=SX(7,z); ctx2.beginPath(); ctx2.moveTo(q.x,q.y); ctx2.lineTo(q2.x,q2.y); ctx2.stroke(); }
-  quad(-4.0,-7.75,5.8,2.3,'rgba(255,255,255,.35)',null,2);
-  quad(0,5.8,2.5,0.8,'#2f6fd8','#ffffff',4);
-  ctext('입구',0,5.8,Math.max(9,VIEW.s*VIEW.zoom*0.3),'#ffffff',true);
+  for(let x=-9;x<=9;x++){ const q=SX(x,-10.5), q2=SX(x,7.5); ctx2.beginPath(); ctx2.moveTo(q.x,q.y); ctx2.lineTo(q2.x,q2.y); ctx2.stroke(); }
+  for(let z=-10.5;z<=7.5;z++){ const q=SX(-9,z), q2=SX(9,z); ctx2.beginPath(); ctx2.moveTo(q.x,q.y); ctx2.lineTo(q2.x,q2.y); ctx2.stroke(); }
+  quad(-4.8,-9.05,8.4,2.3,'rgba(255,255,255,.35)',null,2);
+  quad(0,7.3,2.5,0.8,'#2f6fd8','#ffffff',4);
+  ctext('입구',0,7.3,Math.max(9,VIEW.s*VIEW.zoom*0.3),'#ffffff',true);
   // 매장 간판은 화면 상단 HUD 칩으로 표시 (2D 뷰와 겹치지 않게)
 }
 function drawWalls(){
@@ -137,15 +137,15 @@ function drawCarry2(){
 }
 function drawZoneText(){
   const s=SX(0,0).s;
-  ctext('진열대 · 재고',-4.0,-6.6,Math.max(9,s*0.24),'rgba(255,255,255,.95)',true);
-  if(REPG.visible) ctext('수리실 · 별도 화면',5.0,-4.95,Math.max(8,s*0.2),'#ffffff',true);
-  if(SUPG.visible) ctext('상담 데스크',0.4,-5.3,Math.max(8,s*0.2),'#ffffff',true);
-  ctext('픽업 카운터',-5.2,-2.6,Math.max(8,s*0.18),'#ffffff',true);
-  ctext('계산대',2.8,2.6,Math.max(9,s*0.2),'#2a3144',true);
-  ctext('입구 안내',-1.6,4.0,Math.max(8,s*0.2),'#ffffff',true);
+  ctext('진열대 · 재고',-4.8,-9.0,Math.max(9,s*0.24),'rgba(255,255,255,.95)',true);
+  if(REPG.visible) ctext('수리실 · 별도 화면',6.9,-3.55,Math.max(8,s*0.2),'#ffffff',true);
+  if(SUPG.visible) ctext('상담 데스크',2.6,-6.6,Math.max(8,s*0.2),'#ffffff',true);
+  ctext('픽업 카운터',-7.3,-2.4,Math.max(8,s*0.18),'#ffffff',true);
+  ctext('계산대',3.6,5.4,Math.max(9,s*0.2),'#2a3144',true);
+  ctext('입구 안내',-3.4,5.6,Math.max(8,s*0.2),'#ffffff',true);
   /* v2.77: '출고 박스' → 입고 구역(박스·라벨은 drawInbound2에서) */
-  ctext('물류 지원',-5.2,-5.55,Math.max(8,s*0.18),'#0b6e5c',true);
-  ctext('창고',6.15,-2.0,Math.max(8,s*0.18),'#0b6e5c',true);
+  ctext('물류 지원',-5.6,-6.45,Math.max(8,s*0.18),'#0b6e5c',true);
+  ctext('창고',8.2,-2.0,Math.max(8,s*0.18),'#0b6e5c',true);
 }
 /* v2.66: 자동 상담 키오스크 — 3D 오브젝트와 같은 자리(입구 오른쪽)에 세운다 */
 function drawKiosk2(){
@@ -153,10 +153,10 @@ function drawKiosk2(){
     if(typeof kioskLv!=='function') return;
     const lv=kioskLv(); if(!lv) return;
     const s=SX(0,0).s, on=(typeof V266!=='undefined'&&V266.kiosk&&V266.kiosk.flash>0);
-    quad(5.3,4.4,0.78,0.5,'#2a3144','#1b1f27',0);
-    quad(5.3,4.33,0.5,0.16,on?'#ffffff':'#0f2a4a',on?'#ffd23f':'#5ad1ff',0);
-    ctext('셀프',5.3,4.62,Math.max(8,s*0.17),'#ffffff',true);
-    if(on) circ(5.3,4.4,0.44,'rgba(90,209,255,.16)','#5ad1ff');
+    quad(6.7,3.9,0.78,0.5,'#2a3144','#1b1f27',0);
+    quad(6.7,3.83,0.5,0.16,on?'#ffffff':'#0f2a4a',on?'#ffd23f':'#5ad1ff',0);
+    ctext('셀프',6.7,4.12,Math.max(8,s*0.17),'#ffffff',true);
+    if(on) circ(6.7,3.9,0.44,'rgba(90,209,255,.16)','#5ad1ff');
   }catch(e){}
 }
 function drawActors(){
@@ -243,7 +243,7 @@ function draw2D(){
 
 /* ---- AI 내비게이션 (A* 격자 경로) ---- */
 const NAV={path:[],goal:null,stuckT:0,tries:0};
-const GRID=0.35, GX0=-6.6, GZ0=-8.6, GX1=6.6, GZ1=5.6;
+const GRID=0.35, GX0=-8.5, GZ0=-10.0, GX1=8.5, GZ1=7.0;
 const GW=Math.round((GX1-GX0)/GRID)+1, GH=Math.round((GZ1-GZ0)/GRID)+1;
 function blockedAt(x,z,pad){ pad=(pad==null)?0.30:pad;
   if(x<GX0-0.05||x>GX1+0.05||z<GZ0-0.05||z>GZ1+0.05) return true;
@@ -293,7 +293,7 @@ function navStep(dt){
   if(NAV.stuckT>2.0&&NAV.tries<2){ NAV.stuckT=0; NAV.tries++; if(NAV.goal){ const g=NAV.goal; const path=findPath(p.x,p.z,g.x,g.z); if(path&&path.length) NAV.path=path; else { NAV.path=[]; NAV.goal=null; return null; } } }
   return {ix:dx/L, iz:dz/L};
 }
-const GOTO={door:[-1.6,5.4],fix:[5.2,-3.1],sw:[0.4,-3.9],cash:[2.8,3.95],shelf:[-3.65,-7.55],restock:[5.9,-2.0],inbound:[-2.0,-5.6]};
+const GOTO={door:[0,6.6],fix:[7.9,-4.4],sw:[2.6,-5.2],cash:[3.6,6.9],shelf:[-4.8,-9.0],restock:[7.4,-9.0],inbound:[-1.2,-6.3]};
 function nudge(dx,dz){ NAV.path=[]; NAV.goal=null; const q={x:player.pos.x,z:player.pos.z};
   for(let i=0;i<6;i++){ const t={x:q.x+dx*0.15,z:q.z+dz*0.15}; collide(t); const mv=Math.hypot(t.x-q.x,t.z-q.z); q.x=t.x; q.z=t.z; if(mv<0.005) break; }
   player.pos.x=q.x; player.pos.z=q.z; player.face=Math.atan2(dx,dz); }
@@ -302,4 +302,4 @@ let _pd={x:0,y:0,t:0,id:null};
 addEventListener('pointerdown',function(e){ if(e.target&&e.target.closest&&e.target.closest('button,#modal,#aip')) return; _pd={x:e.clientX,y:e.clientY,t:performance.now(),id:e.pointerId}; },true);
 addEventListener('pointerup',function(e){ if(!_pd.id||e.pointerId!==_pd.id) return; const dt2=performance.now()-_pd.t, dist=Math.hypot(e.clientX-_pd.x,e.clientY-_pd.y); _pd.id=null;
   if(dt2>600||dist>12) return; if(e.target&&e.target.closest&&e.target.closest('button,#modal,#aip')) return;
-  const p=screenToWorld(e.clientX,e.clientY); if(p.x<-6.6||p.x>6.6||p.z<-8.7||p.z>5.7) return; navTo(p.x,p.z); },true);
+  const p=screenToWorld(e.clientX,e.clientY); if(p.x<SBL||p.x>STX||p.z<SBB-0.1||p.z>SBF+0.1) return; navTo(p.x,p.z); },true);

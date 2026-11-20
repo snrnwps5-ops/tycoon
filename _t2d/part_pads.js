@@ -1,8 +1,8 @@
 /* ---- unlock pads ---- */
 const PADS=[
-  {id:'table2',x:3.3,z:1.6,price:150,ic:'table',t:'체험 테이블 2',req:null},
-  {id:'decor',x:5.0,z:3.6,price:550,ic:'star',t:'매장 꾸미기',req:'table2'},
-  {id:'flag',x:0,z:2.6,price:1200,ic:'star',t:'플래그십 승격',req:'decor'}
+  {id:'table2',x:4.25,z:2.5,price:150,ic:'table',t:'체험 테이블 2',req:null},
+  {id:'decor',x:8.0,z:3.4,price:550,ic:'star',t:'매장 꾸미기',req:'table2'},
+  {id:'flag',x:0,z:2.3,price:1200,ic:'star',t:'플래그십 승격',req:'decor'}
 ];
 PADS.forEach(p=>{ p.paid=(S.paid&&S.paid[p.id])||0; p.m={visible:false,scale:{set:function(){},setScalar:function(){}}}; p.tex={needsUpdate:false}; });
 function drawPad(){}
