@@ -30,7 +30,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v3.01';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v3.02';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v3.01</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v3.02</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
@@ -147,7 +147,7 @@ body.title #dayBan,body.rep #dayBan,body.biz #dayBan{opacity:0!important}
 .dlist{max-height:52vh;overflow:auto;text-align:left}.dli{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:8px 10px;margin:6px 0}.dli b{font-family:var(--d);font-size:16px;color:#4a2a10;flex:1}.dli small{font:700 11px var(--b);color:#8a6a4a;display:block}.dli em{font-style:normal;color:#ffcf3a;font-size:16px}.dli.lock{opacity:.5}
 #hint{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom));transform:translateX(-50%);padding:8px 16px;border-radius:18px;background:rgba(20,30,60,.6);color:#fff;font:900 14px var(--b);white-space:nowrap;z-index:5;pointer-events:none;transition:opacity .3s}
 #load{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(#5aa8ff,#e9f1ff);transition:opacity .4s}
-#load .t{font-family:var(--d);font-size:46px;color:#ffe14d;-webkit-text-stroke:3px #7a2a00;paint-order:stroke fill;text-shadow:0 5px 0 #7a2a00}
+#load .t{max-width:92%;text-align:center;font-family:var(--d);font-size:34px;line-height:1.16;color:#ffe14d;-webkit-text-stroke:3px #7a2a00;paint-order:stroke fill;text-shadow:0 5px 0 #7a2a00;word-break:keep-all}
 #load .s{margin-top:14px;font:900 14px var(--b);color:#7a4a20}
 #load.done{opacity:0;pointer-events:none}
 #modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(10,20,40,.55)}
@@ -189,7 +189,13 @@ body.title #dayBan,body.rep #dayBan,body.biz #dayBan{opacity:0!important}
 #tStart i{position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:tsh 2.4s 1.2s infinite}@keyframes tsh{0%{left:-80px}45%,100%{left:300px}}@keyframes tpu{50%{transform:scale(1.045)}}@keyframes tup{0%{transform:translateY(40px);opacity:0}}
 #title .tv{margin-top:8px;font:700 10px var(--b);color:rgba(255,255,255,.5)}#title .tsv{margin-top:8px;display:flex;align-items:center;gap:7px;max-width:min(88vw,330px);box-sizing:border-box;overflow:hidden;font:800 11px var(--b);color:#ffffff;background:rgba(6,12,40,.5);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:6px 11px;animation:tup .7s .6s backwards;-webkit-tap-highlight-color:transparent}#title .tsv span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#title .tsv:empty{display:none}#title .tsv:active{transform:scale(.98)}
 body.title #hud,body.title #sub,body.title #subR,body.title #dayBar,body.title #bbar,body.title #shopBtn,body.title #combo,body.title #labels,body.title #help,body.title #hint,body.title #toast{opacity:0!important;pointer-events:none!important}#hud,#sub,#subR,#dayBar,#bbar,#shopBtn{transition:opacity .5s}
-#load{background:radial-gradient(circle at 50% 40%,#1a3aa0,#0a1650)!important}#load .t{color:#fff!important;-webkit-text-stroke:0!important;text-shadow:0 4px 0 #1c3f9a,0 0 30px rgba(90,209,255,.7)!important}#load .s{color:#8fe3ff!important}#load:after{content:'';width:150px;height:5px;border-radius:3px;margin-top:16px;background:linear-gradient(90deg,#5ad1ff 40%,rgba(255,255,255,.15) 40%);background-size:250% 100%;animation:ldb 1.2s linear infinite}@keyframes ldb{0%{background-position:100% 0}100%{background-position:-60% 0}}
+#load{background:radial-gradient(circle at 50% 40%,#1a3aa0,#0a1650)!important}#load .t{color:#fff!important;-webkit-text-stroke:0!important;text-shadow:0 4px 0 #1c3f9a,0 0 30px rgba(90,209,255,.7)!important}#load .s{color:#8fe3ff!important}#load #ldRow{display:flex;align-items:center;gap:9px;margin-top:16px}
+#load #ldBar{position:relative;width:158px;height:9px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.16);box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+#load #ldBar i{display:block;height:100%;width:42%;border-radius:6px;background:linear-gradient(90deg,#5ad1ff,#9fe9ff);animation:ldind 1.15s linear infinite}
+#load #ldBar.prog i{width:0;background:linear-gradient(90deg,#5ad1ff,#7bea62);animation:none;transition:width .32s ease}
+#load #ldPct{min-width:38px;font:900 12px var(--b);font-family:system-ui,-apple-system,'Apple SD Gothic Neo',sans-serif;font-variant-numeric:tabular-nums;color:#8fe3ff;letter-spacing:0;text-align:left}
+#load #ldTip{margin-top:13px;max-width:280px;min-height:2.9em;padding:0 10px;text-align:center;font:800 12px/1.45 var(--b);color:#c6e7ff;opacity:1;transition:opacity .22s}
+@keyframes ldind{0%{transform:translateX(-110%)}100%{transform:translateX(360%)}}
 #carry b{font-weight:900;margin-right:3px}#carry .cs{display:inline-block;width:9px;height:9px;border-radius:2.5px;border:1.5px solid rgba(255,255,255,.75);margin-left:2px;vertical-align:-1px;font-style:normal}#carry .cs.on{background:#ffd23f;border-color:#ffd23f;box-shadow:0 0 4px rgba(255,210,63,.8)}#carry .cf{margin:0 0 0 5px;color:#ffd23f}#carry.full{background:rgba(232,90,20,.85)}
 i.sp{display:inline-block;flex:none;border-radius:13px;background-image:url(shop.jpg);background-repeat:no-repeat;box-shadow:0 2px 0 rgba(0,0,0,.18)}
 #road{position:fixed;inset:0;z-index:39;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px);background:var(--rbg,#0b1c66);animation:rdin .45s ease-out}#road.out{opacity:0;transform:scale(1.06);transition:opacity .5s,transform .5s;pointer-events:none}@keyframes rdin{0%{opacity:0;transform:translateY(30px)}}
@@ -830,6 +836,20 @@ body.title #v287fl,body.rep #v287fl,body.biz #v287fl{display:none!important}
 .v287hd small{font:800 10px var(--b);color:#8a7660}
 .v29i{display:inline-block;width:1.04em;height:1.04em;vertical-align:-.15em;margin:0 .10em;flex:none;color:inherit}
 .v29i svg{width:100%;height:100%;display:block}
+/* ================= v3.02: 로딩 진행바 · 신규 타이틀 · 실패 화면 위계 ================= */
+#tGear{align-items:center;justify-content:center;gap:7px;margin-top:14px;min-height:44px;padding:0 18px;border:1px solid rgba(255,255,255,.45);border-radius:15px;background:rgba(6,12,40,.55);color:#dbe8ff;font:800 13.5px var(--b);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#tGear:active{transform:translateY(2px)}
+#tGear .ci{display:flex}#tGear .ci svg{width:16px;height:16px}
+#title.v302new #tLoad,#title.v302new .tsh{display:none!important}
+#title .tsv{min-height:44px}
+#modal #v302rt{margin:8px 0 2px}
+#modal #v302rt #dRetry{min-height:58px;font-size:20px;border-radius:16px;box-shadow:0 5px 0 #0a7a68}
+#modal #v271Fix{background:#f6f2ea;border:1px solid #e3d9c7}
+#modal #v271Fix b{color:#5a4a36}
+#modal #v271Fix small{color:#7d6c56}
+#modal #mbox #v271Fix button{width:100%;min-height:44px!important;margin-top:8px;padding:8px 10px!important;border:1.5px solid #ddd2be!important;border-radius:12px;font:900 13px/1.3 var(--b)!important;color:#5a4a36!important;text-shadow:none!important;background:#fff!important;box-shadow:0 2px 0 #ddd2be!important}
+#modal #mbox #v271Fix button:before{display:none!important}
+#modal #v271Fix button small{display:inline;color:#8a7a62}
 </style>
 <style id="v284ui">
 /* =========================================================================
@@ -1697,7 +1717,7 @@ body{font-family:var(--b);letter-spacing:-.15px}
   <div class="pill" id="gemPill" role="button" tabindex="0" aria-label="보석 · 가챠 상자"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M7 3h10l4 6-9 12L3 9z"/><path d="M3 9h18M9.6 3L8 9l4 12 4-12-1.6-6"/></svg></span><b id="gemNum">0</b></div>
   <button id="shopBtn"><span class="sp"></span><b>상점</b><em>SALE</em></button><button class="mbtn" id="branchBtn" aria-label="지점 네트워크 · 다른 지점 이동" title="지점 네트워크 · 다른 지점 이동"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 21V6.5L10 4v17"/><path d="M10 21V9.5L20 12v9"/><path d="M2.5 21h19"/><path d="M6.4 9.2h1.4M6.4 12.4h1.4M6.4 15.6h1.4M13 13.2h1.6M13 16.6h1.6"/></svg></button><button class="mbtn" id="mute" aria-label="소리" title="소리">♪</button><button class="mbtn" id="back" aria-label="타이틀 화면" title="타이틀 화면">타이틀</button>
 </div>
-<div id="sub"><div class="chip2" id="stn" style="background:rgba(255,210,63,.9);color:#5a2a00"></div><div class="chip2" id="rate">★ 4.0</div><div class="chip2" id="labChip" role="button" aria-label="수리실 열기"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M14.7 6.3a4.2 4.2 0 0 0 5.4 5.4l-8.6 8.6a2.6 2.6 0 0 1-3.7-3.7z"/><path d="M17.4 3.2l3.4 3.4-2.1 2.1-3.4-3.4z"/></svg></span>수리실</div><div class="chip2" id="rooms">NPS —</div><div class="chip2" id="carry" role="button" aria-label="들고 있는 물건 보기"></div></div><div id="subR"><div class="chip2" id="loadChip" role="button" aria-label="저장 코드 불러오기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>&nbsp;불러오기</span></div><div class="chip2" id="saveChip" role="button" aria-label="저장"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg></div><div class="chip2" id="optChip" role="button" aria-label="설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg></div></div>
+<div id="sub"><div class="chip2" id="stn" style="background:rgba(255,210,63,.9);color:#5a2a00"></div><div class="chip2" id="rate">★ 4.0</div><div class="chip2" id="labChip" role="button" aria-label="수리실 열기"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M14.7 6.3a4.2 4.2 0 0 0 5.4 5.4l-8.6 8.6a2.6 2.6 0 0 1-3.7-3.7z"/><path d="M17.4 3.2l3.4 3.4-2.1 2.1-3.4-3.4z"/></svg></span>수리실</div><div class="chip2" id="rooms">NPS —</div><div class="chip2" id="carry" role="button" aria-label="들고 있는 물건 보기"></div></div><div id="subR"><div class="chip2" id="loadChip" role="button" aria-label="다른 기기에서 이어하기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>&nbsp;이어하기</span></div><div class="chip2" id="saveChip" role="button" aria-label="저장"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg></div><div class="chip2" id="optChip" role="button" aria-label="설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg></div></div>
 <div id="bbar"><button id="upBtn" class="bb g"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 3l7 8h-4v9H9v-9H5z" fill="#fff"/></svg><span>업그레이드</span><i id="upDot"></i></button><button id="crewBtn" class="bb p"><svg viewBox="0 0 24 24" width="26" height="26"><circle cx="9" cy="8" r="3.5" fill="#fff"/><circle cx="16.5" cy="9" r="2.8" fill="#fff" opacity=".8"/><path d="M2.5 20c0-4 3-6.5 6.5-6.5s6.5 2.5 6.5 6.5z" fill="#fff"/><path d="M14 20c.3-2.8 1.6-5 4-5s3.6 2 3.8 5z" fill="#fff" opacity=".8"/></svg><span>직원</span><i id="crewDot"></i></button><button id="msBtn" class="bb o"><svg viewBox="0 0 24 24" width="26" height="26"><rect x="5" y="3" width="14" height="18" rx="2" fill="#fff"/><path d="M8 9h8M8 13h8M8 17h5" stroke="#ff8a1a" stroke-width="2"/></svg><span>미션</span><i id="msDot"></i></button><button id="invBtn" class="bb t"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M3 8l9-4 9 4v10l-9 4-9-4z" fill="#fff"/><path d="M3 8l9 4 9-4M12 12v10" stroke="#16a58c" stroke-width="1.6" fill="none"/></svg><span>재고</span><i id="invDot"></i></button><button id="mapBtn" class="bb b"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M7 3h10v4a5 5 0 0 1-10 0z" fill="#fff"/><path d="M7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4" stroke="#fff" stroke-width="1.6" fill="none"/><rect x="10.5" y="11" width="3" height="5" fill="#fff"/><rect x="7" y="16" width="10" height="4" rx="1" fill="#fff"/></svg><span>랭킹</span></button></div>
 <div id="stockAl" style="display:none"></div><div id="combo" style="display:none"><b></b><small></small><i><s></s></i></div><div id="dayBar"><b id="dbDay">DAY 1</b><span id="dbT">2:00</span><span id="dbPause" style="display:none">⏸ 일시정지</span><span id="dbRev">$0/$120</span><span id="dbComp">민원 0/3</span><span id="pkChip">⚡ 피크</span><i><s id="dbFill"></s></i></div>
 <div id="hint"></div>
@@ -1709,7 +1729,7 @@ body{font-family:var(--b);letter-spacing:-.15px}
 <div id="camctl"><button id="camFull" title="전체 보기" aria-label="전체 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.2"/><path d="M15.2 15.2L21 21"/></svg><b>전체</b></button><button id="camBase" class="on" title="기본 시점" aria-label="기본 시점"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.6"/><circle cx="12" cy="12" r="3.1"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기" aria-label="인테리어 꾸미기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 12V8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5V12"/><path d="M3 12.5h18a1.5 1.5 0 0 1 1.5 1.5v3.5A1.5 1.5 0 0 1 21 19H3a1.5 1.5 0 0 1-1.5-1.5V14A1.5 1.5 0 0 1 3 12.5z"/><path d="M5.5 19v2M18.5 19v2"/></svg><b>꾸미기</b></button><button id="v285brBtn" title="지점 완공" aria-label="지점 완공"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V6h12"/><path d="M6 6L3 3M18 6v4"/><path d="M15 10h6v2a3 3 0 0 1-6 0z"/><path d="M18 6l3-1"/></svg><b id="brTxt">0/2F</b><i></i></button></div>
 <div id="intp"><div class="ihd"><b>인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i><span class="v3si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg></span><span class="v3st"><span class="tx">영업 시작</span><em id="tStartBadge"></em></span></button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>불러오기 <small style="font-weight:700;opacity:.8">· 저장 코드·링크</small></button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v3.01</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">매장 문 여는 중…</div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i><span class="v3si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg></span><span class="v3st"><span class="tx">영업 시작</span><em id="tStartBadge"></em></span></button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>다른 기기에서 이어하기</button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><button id="tGear" style="display:none"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg></span>설정</button><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v3.02</div></div><div id="load"><div class="t">메가 테크 슈퍼스토어</div><div class="s" id="lds">게임 파일을 내려받는 중…</div><div id="ldRow"><div id="ldBar"><i></i></div><b id="ldPct"></b></div><div id="ldTip"></div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1726,6 +1746,37 @@ body{font-family:var(--b);letter-spacing:-.15px}
     var t=document.getElementById('title'); if(t) t.style.display='none'; document.body.classList.remove('title');
     document.getElementById('beRetry').onclick=function(){ location.reload(); }; };
   window.bootOK=function(){ done=true; };
+  /* v3.02: 로딩 화면 진행바 + 게임 팁 — 실제 부팅 단계에서만 값을 올린다(가짜 진행 없음) */
+  window.LD=(function(){
+    var TIPS=[
+      '🎯 매출 목표를 채우면 정산에서 별을 받아요',
+      '🔧 수리 손님은 진단하고 접수해야 별점이 쌓여요',
+      '📦 재고가 떨어지면 손님이 그냥 돌아가요 · 미리 채워 두세요',
+      '💬 상담은 정확하고 빠를수록 평점이 올라가요',
+      '🎁 상자 가챠에서 사장님 장비가 나와요',
+      '🏢 층을 올리면 한 번에 더 많이 팔 수 있어요',
+      '⏰ 영업 도중에 끄면 그날 영업은 처음부터예요'
+    ];
+    var el=null,bar=null,fill=null,pct=null,lds=null,tip=null,ti=0,tim=0;
+    function q(id){ try{ return document.getElementById(id); }catch(e){ return null; } }
+    function boot(){
+      if(el) return; el=q('load'); if(!el) return;
+      bar=q('ldBar'); fill=bar?bar.querySelector('i'):null; pct=q('ldPct'); lds=q('lds'); tip=q('ldTip');
+      if(!tip) return;
+      try{ tip.textContent=TIPS[0]; }catch(e){}
+      try{ tim=setInterval(function(){ ti=(ti+1)%TIPS.length; try{ tip.style.opacity=0; }catch(e){}
+        setTimeout(function(){ try{ tip.textContent=TIPS[ti]; tip.style.opacity=1; }catch(e){} },220); },2500); }catch(e){}
+    }
+    function set(p,label){
+      try{ boot(); if(label&&lds) lds.textContent=label; if(p==null||!bar) return;
+        p=Math.max(0,Math.min(100,Math.round(p))); bar.classList.add('prog');
+        if(fill) fill.style.width=p+'%'; if(pct) pct.textContent=p+'%'; }catch(e){}
+    }
+    function done(){ try{ set(100,'매장 문 여는 중…'); if(tim){ clearInterval(tim); tim=0; } }catch(e){} }
+    function y(){ return new Promise(function(r){ setTimeout(r,0); }); }
+    try{ boot(); }catch(e){}
+    return {set:set,done:done,y:y};
+  })();
   window.bootPre=function(){ if(typeof THREE==='undefined'||!THREE.GLTFLoader){ bootFail('lib',typeof THREE==='undefined'?'three.js not loaded':'GLTFLoader not loaded'); return false; }
     if(!window.BUNSIK_ASSETS){ bootFail('asset','assets.js not loaded'); return false; }
     var ok=false; try{ var c=document.createElement('canvas'); ok=!!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl'))); }catch(e){}
@@ -1745,6 +1796,7 @@ body{font-family:var(--b);letter-spacing:-.15px}
 <script>
 (async function(){
 if(!bootPre()) return;
+try{ if(window.LD) LD.set(8,'게임 파일 확인 완료'); }catch(e){}
 const $=id=>document.getElementById(id);
 const SAVE='bunsik-tech-v1', RS=false;
 /* v2.90: ?qa=1 숨은 고속 테스트 모드 — 세이브 키를 SK('qa-'+SAVE)로 분리해 본 계정 진행은 읽지도 쓰지도 않는다.
@@ -1753,7 +1805,7 @@ const QAMODE=(function(){ try{ return new URLSearchParams(location.search).get('
 const SK=QAMODE?('qa-'+SAVE):SAVE;
 if(QAMODE){ try{
   /* QA 세이브는 판이 올라가면 한 번 비운다(옛 스키마가 새 화면을 깨지 않게) — qa- 접두어만 지운다 */
-  var QAV='v3.01', _qk=[];
+  var QAV='v3.02', _qk=[];
   try{ for(var _qi=0;_qi<localStorage.length;_qi++){ var _qn=localStorage.key(_qi); if(_qn&&_qn.indexOf('qa-')===0&&_qn!=='qa-epoch') _qk.push(_qn); } }catch(e){ _qk=[]; }
   if(localStorage.getItem('qa-epoch')!==QAV){ for(var _qj=0;_qj<_qk.length;_qj++){ try{ localStorage.removeItem(_qk[_qj]); }catch(e){} } try{ localStorage.setItem('qa-epoch',QAV); }catch(e){} }
   /* 콘솔 오류 카운터 — 부팅 도중에 난 오류까지 세도록 가장 먼저 건다 */
@@ -2088,9 +2140,11 @@ const FN=[]; /* v2.70: kf()를 부르는 곳이 없어 파싱만 하던 18종(�
 const b64=x=>{ const bin=atob(x), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u.buffer; };
 const ZN=['cactus_medium_A','cactus_medium_B','rug_rectangle_stripes_A','pictureframe_large_A']; /* v2.70: kz()가 실제로 쓰는 4종만 */
 const YN=['kitchencounter_straight_B']; /* v2.70: YOK() 계산대 판정에 쓰는 1종만 */
-await new Promise(res=>{ const L=new THREE.GLTFLoader(); const all=QN.map(n=>'q:'+n).concat(FN.map(n=>'f:'+n),ZN.map(n=>'z:'+n),YN.map(n=>'y:'+n)); let n=0; const done=()=>{ if(++n>=all.length) res(); };
+await new Promise(res=>{ const L=new THREE.GLTFLoader(); const all=QN.map(n=>'q:'+n).concat(FN.map(n=>'f:'+n),ZN.map(n=>'z:'+n),YN.map(n=>'y:'+n)); let n=0; const done=()=>{ if(++n>=all.length){ try{ if(window.LD) LD.set(48,'캐릭터·소품 준비 완료'); }catch(e){} res(); } else { try{ if(window.LD) LD.set(8+Math.round(40*n/all.length),'캐릭터·소품 준비'); }catch(e){} } };
   all.forEach(k=>{ if(!AB[k]){ done(); return; } try{ L.parse(b64(AB[k]),'',g=>{ A[k]=g; done(); },()=>done()); }catch(e){ done(); } }); setTimeout(res,20000); });
 if(!A['q:Casual_Male']){ bootFail('timeout','models not ready after 20s'); return; }
+try{ if(window.LD) LD.set(52,'매장 바닥 까는 중'); }catch(e){}
+await (window.LD?LD.y():0);
 // sounds
 let AC=null; const SB={}; let bgmG=null, sfxG=null, bgmHold=false;
 /* ---- v2.2: 소리 설정(S.opt) — BGM/SFX 버스를 나눠 따로 조절, 진동 ---- */
@@ -2853,6 +2907,8 @@ const BILLG=new THREE.BoxGeometry(0.5,0.13,0.3); const BILLM=new THREE.MeshLambe
 function bundle(){ const g=new THREE.Group(); const a=new THREE.Mesh(BILLG,BILLM); a.castShadow=true; g.add(a); g.add(new THREE.Mesh(gget('band',()=>new THREE.BoxGeometry(0.1,0.135,0.305)),BANDM)); return g; }
 let cashVal=S.cash||0; function rebuildCash(){ const n=Math.min(36,Math.ceil(cashVal/10)); while(CASH.meshes.length<n){ const i=CASH.meshes.length; const m=bundle(); m.position.set(((i%3)-1)*0.52,(Math.floor(i/9))*0.14+0.07,((Math.floor(i/3)%3)-1)*0.32); CASH.g.add(m); CASH.meshes.push(m); } while(CASH.meshes.length>n) CASH.g.remove(CASH.meshes.pop()); }
 rebuildCash();
+try{ if(window.LD) LD.set(64,'진열대·계산대 놓는 중'); }catch(e){}
+await (window.LD?LD.y():0);
 /* ---- v2.6: 물류 & 재고 센터 데스크 (백오피스 · 창고 앞) ----
    v2.76: 데스크를 남쪽으로 0.72m 내렸다. 폰/랩탑/워치 선반 앞 통로가 0.70m → 1.42m 로 넓어져
    재고를 집은 자리에서 데스크·선반·벽 사이에 몸이 끼지 않는다. (0.70m는 몸 폭 0.56m + 14cm 뿐이었다) */
@@ -3053,6 +3109,8 @@ function applyUnlocks(){ const U=id=>S.unl.includes(id);
   if(!U('repair')){ OB.forEach(b=>{ if(b.x1===3.95&&b.z1===-4.97) b.off=true; }); } else OB.forEach(b=>{ if(b.x1===3.95&&b.z1===-4.97) b.off=false; });
   buildDecor(); }
 applyUnlocks();
+try{ if(window.LD) LD.set(74,'직원·손님 준비'); }catch(e){}
+await (window.LD?LD.y():0);
 
 
 /* v2.27: 바닥 인테리어 패드(INTPAD3·intPadVis3) 제거 — 인테리어 상점은 화면 [🛋️ 꾸미기] 버튼으로만 연다 */
@@ -3402,6 +3460,7 @@ const PROMOS={norm:{n:'⚖️ 정가 판매',d:'기본 가격 · 기본 회전'}
 
 /* ---- customers ---- */
 const custs=[]; const TYPEW={pick:3,buy:3,fix:3,sw:2,ret:1.2,tour:2,corp:1.4,esc:1};
+try{ if(window.LD) LD.set(82,'손님 맞을 준비'); }catch(e){}
 const TP=c=>c.tough?'까다로운 · ':'';
 function SPCM(c){ if(c.spType==='rush'){ const left=c.t0?Math.max(0,Math.ceil(c.rushWin-(time-c.t0))):c.rushWin; return '⏰ 급해요! ('+left+'초 안에 응대 시 매출 1.5배)'; }
   if(c.spType==='detail') return '📖 꼼꼼한 설명 원해요 (연속 2문항)';
@@ -5322,21 +5381,21 @@ function slotClick(e){ const hb=e.target.closest('[data-xhire]'), fb=e.target.cl
   return false; }
 /* ---- save: status, manual save, export / import code ---- */
 function saveCode(){ save(); return 'NOVA1.'+btoa(unescape(encodeURIComponent(JSON.stringify(S)))); }
-function loadCode(txt){ txt=(txt||'').trim(); if(txt.indexOf('NOVA1.')!==0) throw new Error('저장 코드가 아니에요'); let o; try{ o=JSON.parse(decodeURIComponent(escape(atob(txt.slice(6))))); }catch(e){ throw new Error('코드가 손상됐거나 일부만 복사됐어요'); } if(!o||typeof o.day!=='number'||!Array.isArray(o.unl)) throw new Error('코드가 손상됐어요'); return o; }
-function saveParse(t){ t=(t||'').trim(); let i=t.indexOf('NOVA1.'); if(i<0){ try{ t=decodeURIComponent(t); }catch(_){} i=t.indexOf('NOVA1.'); } if(i<0) throw new Error('저장 코드나 세이브 링크가 아니에요 (NOVA1. 로 시작해요)'); t=t.slice(i).split(/[\s&#"'<>]/)[0]; try{ t=decodeURIComponent(t); }catch(_){} return loadCode(t); } /* v2.15: 저장 코드와 세이브 링크(#save=…) 둘 다 받는다 */
+function loadCode(txt){ txt=(txt||'').trim(); if(txt.indexOf('NOVA1.')!==0) throw new Error('이어하기 코드가 아니에요'); let o; try{ o=JSON.parse(decodeURIComponent(escape(atob(txt.slice(6))))); }catch(e){ throw new Error('코드가 손상됐거나 일부만 복사됐어요'); } if(!o||typeof o.day!=='number'||!Array.isArray(o.unl)) throw new Error('코드가 손상됐어요'); return o; }
+function saveParse(t){ t=(t||'').trim(); let i=t.indexOf('NOVA1.'); if(i<0){ try{ t=decodeURIComponent(t); }catch(_){} i=t.indexOf('NOVA1.'); } if(i<0) throw new Error('이어하기 코드나 링크가 아니에요 (NOVA1. 로 시작해요)'); t=t.slice(i).split(/[\s&#"'<>]/)[0]; try{ t=decodeURIComponent(t); }catch(_){} return loadCode(t); } /* v2.15: 저장 코드와 세이브 링크(#save=…) 둘 다 받는다 */
 function openLoad(msg){
-  openModal('<h2>📂 불러오기</h2><p style="font-size:12.5px;margin:4px 0 6px;text-align:left">사파리와 홈 화면 앱은 저장 공간이 따로예요. 원래 하던 곳에서 <b>💾 → 저장 코드 복사</b>(또는 세이브 링크 복사)를 한 뒤, 여기에 붙여 넣으면 이어서 할 수 있어요.</p>'+
-   '<textarea id="ldTxt" placeholder="저장 코드(NOVA1.…)나 세이브 링크를 붙여 넣으세요" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" style="width:100%;box-sizing:border-box;height:84px;border-radius:10px;border:2px solid #d8cdb8;padding:8px;font:16px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea>'+
-   '<button id="ldPaste" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">📋 붙여넣기</button><button id="ldGo" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">불러오기</button><div class="rpmsg" id="ldMsg">'+(msg||'')+'</div><button class="gray" id="mOk">닫기</button>');
-  const reset=()=>{ const b=$('ldGo'); if(b&&b.dataset.ok==='1'){ b.dataset.ok=''; b.textContent='불러오기'; } };
+  openModal('<h2>📂 다른 기기에서 이어하기</h2><p style="font-size:12.5px;margin:4px 0 6px;text-align:left">사파리와 홈 화면 앱은 저장 공간이 따로예요. 원래 하던 곳에서 <b>💾 → 이어하기 코드 복사</b>(또는 링크 복사)를 한 뒤, 여기에 붙여 넣으면 이어서 할 수 있어요.</p>'+
+   '<textarea id="ldTxt" placeholder="이어하기 코드(NOVA1.…)나 링크를 붙여 넣으세요" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" style="width:100%;box-sizing:border-box;height:84px;border-radius:10px;border:2px solid #d8cdb8;padding:8px;font:16px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea>'+
+   '<button id="ldPaste" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">📋 붙여넣기</button><button id="ldGo" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">이 코드로 이어하기</button><div class="rpmsg" id="ldMsg">'+(msg||'')+'</div><button class="gray" id="mOk">닫기</button>');
+  const reset=()=>{ const b=$('ldGo'); if(b&&b.dataset.ok==='1'){ b.dataset.ok=''; b.textContent='이 코드로 이어하기'; } };
   $('ldTxt').oninput=reset; $('ldTxt').onclick=e=>e.stopPropagation();
-  $('ldPaste').onclick=e=>{ e.stopPropagation(); const no=()=>{ $('ldMsg').textContent='위 칸을 길게 눌러 "붙여넣기"를 선택하세요'; try{ $('ldTxt').focus(); }catch(_){} }; try{ navigator.clipboard.readText().then(t=>{ if(t){ $('ldTxt').value=t; reset(); $('ldMsg').innerHTML='<span style="color:#2faa45">붙여 넣었어요. 불러오기를 누르세요</span>'; } else no(); }).catch(no); }catch(_){ no(); } };
+  $('ldPaste').onclick=e=>{ e.stopPropagation(); const no=()=>{ $('ldMsg').textContent='위 칸을 길게 눌러 "붙여넣기"를 선택하세요'; try{ $('ldTxt').focus(); }catch(_){} }; try{ navigator.clipboard.readText().then(t=>{ if(t){ $('ldTxt').value=t; reset(); $('ldMsg').innerHTML='<span style="color:#2faa45">붙여 넣었어요. 이 코드로 이어하기를 누르세요</span>'; } else no(); }).catch(no); }catch(_){ no(); } };
   $('ldGo').onclick=e=>{ e.stopPropagation(); let o; try{ o=saveParse($('ldTxt').value); }catch(er){ $('ldMsg').textContent='불러오지 못했어요: '+er.message; return; }
     if($('ldGo').dataset.ok!=='1'){ $('ldGo').dataset.ok='1'; $('ldGo').textContent='정말 덮어쓸까요? 한 번 더 누르기'; $('ldMsg').innerHTML='불러올 저장: DAY '+(o.day+1)+' · $'+(o.money||0)+' · 직원 '+((o.crew||[]).length)+'명'+(S.seen?'<br>지금 진행은 사라져요':''); return; }
     try{ delete o.mid; localStorage.setItem(SK,JSON.stringify(o)); window.__noSave=1; try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }catch(er){ $('ldMsg').textContent='저장 공간에 쓸 수 없어요'; } }; }
 function openSave(msg){
-  openModal('<h2>💾 저장</h2><div class="dstat ok"><span>자동 저장 켜짐 (4초마다)</span><b>마지막 저장: '+saveAgo()+'</b></div><p style="font-size:12px;margin:4px 0;text-align:left">• 이 기기의 이 브라우저에만 저장돼요. 사파리와 홈 화면 앱은 저장 공간이 달라요.<br>• 영업 도중에 끄면 그날 영업은 처음부터 다시 시작해요 (돈·직원·해금은 유지).<br>• 저장 코드를 복사해 두면 다른 기기나 홈 화면 앱에서 이어서 할 수 있어요.</p>'+
-   '<button id="svNow">지금 저장</button><button id="svCopy" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">저장 코드 복사</button><button id="svLink" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">세이브 링크 복사</button><textarea id="svTxt" placeholder="저장 코드를 여기에 붙여 넣으세요" style="width:100%;box-sizing:border-box;height:58px;margin-top:8px;border-radius:10px;border:2px solid #d8cdb8;padding:6px;font:11px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea><button id="svLoad" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">코드로 불러오기</button><div class="rpmsg" id="svMsg">'+(msg||'')+'</div><button class="gray" id="mOk">닫기</button>');
+  openModal('<h2>💾 저장 · 다른 기기에서 이어하기</h2><div class="dstat ok"><span>자동 저장 켜짐 (4초마다)</span><b>마지막 저장: '+saveAgo()+'</b></div><p style="font-size:12px;margin:4px 0;text-align:left">• 이 기기의 이 브라우저에만 저장돼요. 사파리와 홈 화면 앱은 저장 공간이 달라요.<br>• 영업 도중에 끄면 그날 영업은 처음부터 다시 시작해요 (돈·직원·해금은 유지).<br>• 이어하기 코드를 복사해 두면 다른 기기나 홈 화면 앱에서 이어서 할 수 있어요.</p>'+
+   '<button id="svNow">지금 저장</button><button id="svCopy" style="background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">이어하기 코드 복사</button><button id="svLink" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">이어하기 링크 복사</button><textarea id="svTxt" placeholder="이어하기 코드를 여기에 붙여 넣으세요" style="width:100%;box-sizing:border-box;height:58px;margin-top:8px;border-radius:10px;border:2px solid #d8cdb8;padding:6px;font:11px monospace;touch-action:auto;-webkit-user-select:text;user-select:text"></textarea><button id="svLoad" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">이 코드로 이어하기</button><div class="rpmsg" id="svMsg">'+(msg||'')+'</div><button class="gray" id="mOk">닫기</button>');
   $('svNow').onclick=e=>{ e.stopPropagation(); save(); snd('coin',0.4); openSave('<span style="color:#2faa45">저장했어요</span>'); };
   $('svCopy').onclick=e=>{ e.stopPropagation(); const code=saveCode(); $('svTxt').value=code; const done=()=>{ $('svMsg').innerHTML='<span style="color:#2faa45">복사했어요. 메모장 등에 붙여 넣어 보관하세요</span>'; }; try{ navigator.clipboard.writeText(code).then(done).catch(()=>{ $('svTxt').select(); $('svMsg').innerHTML='위 칸의 코드를 길게 눌러 복사하세요'; }); }catch(_){ $('svTxt').select(); $('svMsg').innerHTML='위 칸의 코드를 길게 눌러 복사하세요'; } };
   $('svLink').onclick=e=>{ e.stopPropagation(); const code=saveCode(); const url=location.origin+location.pathname+'#save='+encodeURIComponent(code);
@@ -5361,7 +5420,7 @@ function openOpt(){
     +'<div class="srow"><div class="snm">🤖 실시간 AI: 고성능 LPU 엔진 가동 중 🟢 <span id="aiStat">(LIVE)</span><small id="aiSub">AI 면접실·본사 성적표에 실시간으로 답해요</small></div><b class="aibadge" id="aiBadge">LIVE</b></div>'
     +'<details class="aiadv"><summary>고급 · 내 API 키 등록</summary><div class="aikey"><input type="password" id="aiKey" placeholder="Groq API 키 (gsk_…)" autocomplete="off" spellcheck="false"><button type="button" id="aiKeySave">키 저장</button></div>'
     +'<p class="shint" id="aiKeyMsg">실시간 AI는 서버(Netlify) 프록시를 거쳐 동작해요 — 앱 안에는 키가 들어 있지 않아요. 내 Groq 키를 쓰려면 위에 입력하세요 · 발급: console.groq.com/keys</p></details>'
-    +'<p class="shint">설정은 저장 코드·세이브 링크에도 함께 담겨요.</p>'
+    +'<p class="shint">설정은 이어하기 코드·링크에도 함께 담겨요.</p>'
     +'<div class="v272wipe"><div><b>🗑️ 모든 데이터 초기화</b><small>세이브·닉네임·랭킹 기록·설정까지 이 기기에서 지우고 DAY 1부터 새로 시작해요</small></div><button type="button" id="optReset">초기화</button></div>'
     +'<button class="gray" id="mOk">닫기</button>');
   const paint=(k,on)=>{ const b=document.querySelector('#mbox [data-opt="'+k+'"]'); if(!b) return; b.classList.toggle('on',!!on); const t=b.querySelector('b'); if(t) t.textContent=on?'ON':'OFF'; };
@@ -6053,7 +6112,7 @@ function openShop(){ const ad=(S.adD===S.day?S.adN||0:0); let h='<h2 style="marg
   h+='<div class="shi ad">'+spI(6)+'<div><b>광고 보고 $100 받기</b><small>하루 3번 · 오늘 '+ad+'/3</small></div><button data-ad="1" '+(ad>=3?'disabled':'')+'>무료</button></div>';
   h+='<div class="shi ad"><i>🎒</i><div><b>🎒 가방</b><small>승급 조각 · 본사 연구 조각 · 사장님 장비</small></div><button data-bag="1">열기</button></div>';
   SHOP.filter(x=>x.show()).forEach(x=>{ h+='<div class="shi'+(x.hot?' hot':'')+'">'+(x.tag?'<em>'+x.tag+'</em>':'')+spI(x.sp)+'<div><b>'+x.n+'</b><small>'+x.d+'</small></div><button data-buy="'+x.id+'">'+(x.old?'<s>'+x.old+'</s>':'')+x.p+'</button></div>'; });
-  h+='</div><button id="shSave" class="gray" style="background:linear-gradient(#b8c2d0,#8a96a8)">💾 저장 코드 · 세이브 링크</button><button id="mOk" class="gray">닫기</button>'; openModal(h);
+  h+='</div><button id="shSave" class="gray" style="background:linear-gradient(#b8c2d0,#8a96a8)">💾 다른 기기로 이어하기 (코드·링크)</button><button id="mOk" class="gray">닫기</button>'; openModal(h);
   $('shSave').onclick=()=>{ openSave(); };
   $('mbox').onclick=e=>{ const bg=e.target.closest('[data-bag]'); if(bg){ e.stopPropagation(); try{ V285.openBag(); }catch(_){} return; }
     const ab=e.target.closest('[data-ad]'); if(ab&&!ab.disabled){ ab.disabled=true; ab.textContent='광고 중…'; setTimeout(()=>{ if(S.adD!==S.day){ S.adD=S.day; S.adN=0; } S.adN++; money+=100; snd('coin',0.5); toast('+$100 받았어요'); save(); openShop(); },1200); return; }
@@ -6897,7 +6956,7 @@ try{ const st=document.createElement('style'); st.textContent='#cashPill.pop{ani
 (function(){ const _s=startDayModal; startDayModal=function(){ const r=_s.apply(this,arguments);
   try{ const go=$('dayGo'); if(!go||$('bakRow')||S.day<3) return r; const now=Date.now(); if(S.bakAt&&now-S.bakAt<7*864e5) return r;
     const d=document.createElement('button'); d.id='bakRow'; d.style.cssText='display:block;width:100%;margin:6px 0;height:32px;border:0;border-radius:10px;font:900 12px var(--b);color:#2a3a5a;background:#e3ecfa';
-    d.textContent='💾 진행 백업하기 (저장 코드 복사) — 7일마다 권장';
+    d.textContent='💾 백업하기 (다른 기기에서 이어하기) — 7일마다 권장';
     d.onclick=e=>{ e.stopPropagation(); S.bakAt=Date.now(); try{ save(); }catch(_){} openSave(); };
     const h2=$('mbox').querySelector('h2'); if(h2) h2.after(d); else go.before(d); }catch(e){} return r; }; })();
 /* ===== v2.53: 주간 목표 — 7일 동안 ★15 모으면 큰 보상 ===== */
@@ -10520,16 +10579,16 @@ function v271FixHTML(){
     var cfg=dayCfg(S.day), lack=Math.max(0,Math.round((cfg.goal||0)-(dayRev||0)));
     if(!lack) return '';
     var nb=v271NextBuy();
-    var h='<div id="v271Fix"><b>부족 '+v271Usd(lack)+' — 다음 한 수</b>';
+    var h='<div id="v271Fix"><b>다음 영업 준비 · 선택</b><small>목표까지 '+v271Usd(lack)+' 모자랐어요</small>';
     if(nb&&money>=nb.c){
       h+='<small>'+nb.u.n+' Lv.'+(S.up[nb.u.k]||0)+' → '+v271Usd(nb.c)+' · 하루 약 +$'+nb.d.toLocaleString()+'('+nb.eff.toFixed(1)+'일 본전)</small>'
-        +'<button id="v271FixBuy">⬆ '+nb.u.n+' 사고 바로 한 판 더</button>';
+        +'<button id="v271FixBuy">⬆ '+nb.u.n+' 업그레이드 · '+v271Usd(nb.c)+'</button>';
     } else if(nb){
       h+='<small>'+nb.u.n+' Lv.'+(S.up[nb.u.k]||0)+'까지 '+v271Usd(nb.c-Math.floor(money))+' 모자라요 · 하루 약 +$'+nb.d.toLocaleString()+'</small>'
         +'<button id="v271FixShop">🛒 상점에서 자금 채우기</button>';
     }
     if(lack<=cfg.goal*0.6&&S.boostD!==S.day){
-      h+='<button id="v271FixBoost" style="margin-top:6px;background:linear-gradient(#6a46e8,#3a1fa0);box-shadow:0 3px 0 #25136b">📈 매출 2배면 '+v271Usd(Math.round(dayRev*2))+' → 바로 뚫려요 · ₩2,500 <small style="font-weight:800;opacity:.9">(테스트 결제)</small></button>';
+      h+='<button id="v271FixBoost" style="margin-top:6px">📈 매출 2배 부스터 · ₩2,500 <small style="font-weight:800;opacity:.75">(테스트 결제)</small></button>';
     }
     h+='</div>';
     return h;
@@ -10538,18 +10597,12 @@ function v271FixHTML(){
 function v271FixMount(){
   try{
     if($('v271Fix')) return;
-    var cta=$('resCta'); var mb2=$('mbox'); if(!cta||!mb2) return;
+    var cta=$('resCta'); var mb2=$('mbox'); if(!mb2) return;
     var h=v271FixHTML(); if(!h) return;
-    /* 결과창은 길어서 아래에 넣으면 스크롤해야 보인다 — 제목·별 바로 아래(첫 화면)에 넣는다 */
-    var star=mb2.querySelector('.dres'), h2=mb2.querySelector('h2');
-    if(star) star.insertAdjacentHTML('afterend',h);
-    else if(h2) h2.insertAdjacentHTML('afterend',h);
-    else cta.insertAdjacentHTML('beforebegin',h);
-    /* v2.72: 결과창은 열린 뒤에 여러 블록(3부문·RSU 스트립·압축 정리)이 자리를 옮긴다.
-       카드가 별점 바로 아래에서 밀리면 제자리로 다시 붙인다 → '최상단 핵심 자리' 고정 */
-    var v272Pin=function(){ try{ var el=$('v271Fix'), st=mb2.querySelector('.dres');
-      if(!el||!st||!st.parentNode) return; if(el.previousElementSibling!==st) st.parentNode.insertBefore(el,st.nextSibling); }catch(e){} };
-    v272Pin(); setTimeout(v272Pin,420); setTimeout(v272Pin,1200);
+    /* v3.02: 유료·업그레이드 유도는 보조로 내린다 — 무료 [다시 도전]이 첫 화면의 메인이고,
+       이 카드는 스크롤 본문 맨 끝에 조용히 둔다(v2.72의 '최상단 고정'은 폐기). */
+    var body2=mb2.querySelector('.v3Body')||mb2;
+    body2.insertAdjacentHTML('beforeend',h);
     var b1=$('v271FixBuy');
     if(b1) b1.onclick=function(e){ e.stopPropagation(); var nb=v271NextBuy(); if(!nb||money<nb.c) return;
       money-=nb.c; S.up[nb.u.k]=(S.up[nb.u.k]||0)+1; V271.fixBuy++;
@@ -11774,11 +11827,11 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   const collected=Math.floor(dayColl), other=moneySnap-(dayCash0+collected-dayOrd-Math.min(wages+rent,dayCash0+collected-dayOrd+0)+bonus+npsB+r1b+brInc+leadNet), rc=(l,v,c)=>'<div><span>'+l+'</span><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>';
   const receipt='<details class="rcp"><summary>🧾 정산 영수증 보기</summary>'+rc('시작 현금','$'+dayCash0)+rc('오늘 매출 (목표 판정 기준)','$'+dayRev)+v291RecRows(rc,v291Rec)+rc('└ 회수한 현금','+$'+collected,'#2faa45')+rc('└ 계산대에 남은 현금','$'+Math.floor(cashVal)+' (다음 영업에 그대로 남아요)')+rc('발주비','-$'+dayOrd,'#e8342a')+rc('직원 급여','-$'+wages,'#e8342a')+(rent?rc('임대료','-$'+rent,'#e8342a'):'')+(brInc?rc('지점 자동 매출 합계','+$'+brInc,'#2faa45'):'')+v291BranchRows(rc)+(bonus?rc('클리어 보너스','+$'+bonus,'#2faa45'):bonusFull?rc('클리어 보너스','이미 받음'):'')+(npsB?rc('입소문 보너스','+$'+npsB,'#2faa45'):'')+(r1b?rc('지역 1위 보너스','+$'+r1b,'#2faa45'):'')+(leadBonus?rc('승진 축하금','+$'+leadBonus,'#2faa45'):'')+(leadFine?rc('본사 벌금 (경고장)','-$'+leadFine,'#e8342a'):'')+rc('내 리더십 평가',leadScore+'점 ('+(dLead>0?'+':'')+dLead+') · '+myRankName())+(Math.abs(other)>=1?rc('그 외 (업그레이드·채용·확장·미션 등)',(other>0?'+$':'-$')+Math.abs(other)):'')+rc('<b>종료 현금</b>','<b>$'+moneySnap+'</b>')+'<small>별 조건: ★ 목표·평점·민원 통과 / ★★ 매출 130% / ★★★ '+lvStar3(S.day).t+'<br>평점은 오늘 응대한 손님 기준이고, 화면 위 "누적"은 최근 14명 평균이에요<br>리더십 평가는 매출·평점·민원·흑자를 모두 반영해요 (85점 승진 / 25점 미만 경고장)</small></details>';
   openModal('<h2>'+(clear?'DAY '+(S.day+1)+' 클리어!':'DAY '+(S.day+1)+' 실패…')+'</h2>'+
-    (clear?'':'<div style="text-align:left;background:#fff4e2;border:1px solid #f0c884;border-radius:12px;padding:8px 11px;margin:2px 0 8px;font:900 12.5px/1.45 var(--b);color:#7a4a00">💡 '+(function(){ try{ return v291Coach(okRev,okRate,okComp,cfg); }catch(e){ return ''; } })()+'</div>')+'<div class="dres">'+[1,2,3].map(k=>'<i class="'+(k<=stars?'on':'')+'">★</i>').join('')+'</div>'+
+    (clear?'':'<div class="v302rt" id="v302rt"><button id="dRetry">다시 도전 (무료)</button></div>'+'<div style="text-align:left;background:#fff4e2;border:1px solid #f0c884;border-radius:12px;padding:8px 11px;margin:2px 0 8px;font:900 12.5px/1.45 var(--b);color:#7a4a00">💡 '+(function(){ try{ return v291Coach(okRev,okRate,okComp,cfg); }catch(e){ return ''; } })()+'</div>')+'<div class="dres">'+[1,2,3].map(k=>'<i class="'+(k<=stars?'on':'')+'">★</i>').join('')+'</div>'+
     '<div class="dstat '+(okRev?'ok':'no')+'"><span>매출 $'+dayRev+' / 목표 $'+cfg.goal+'</span><b>'+(okRev?'달성':'부족')+'</b></div>'+
     '<div class="dstat '+(okRate?'ok':'no')+'"><span>오늘 서비스 평점 ★'+r.toFixed(1)+' / 최소 ★'+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</span><b>'+(okRate?'통과':'미달')+'</b></div>'+
     (nps!=null?'<div class="dstat '+(nps>=50?'ok':nps<0?'no':'')+'"><span>NPS '+(nps>0?'+':'')+nps+' <small style="font-weight:700;color:#8a7a6a">'+npsMsg+'</small></span><b>'+(npsB?'+$'+npsB:nps>=50?'최고':nps>=0?'보통':'위험')+'</b></div>':'')+crewLines.join('')+'<div class="dstat '+(dLead>0?'ok':dLead<0?'no':'')+'"><span>'+leadLine+'</span><b>'+(promotion?'승진 🎉':penalty?'경고 ⚠️':dLead>0?'▲ '+dLead:dLead<0?'▼ '+dLead:'유지')+'</b></div>'+'<div class="dstat '+(rk1<=rk0?'ok':'no')+'"><span>'+STS[RG]+' 랭킹 '+(rk1!==rk0?rk0+'위 → ':'')+rk1+'위</span><b>'+(rk1<rk0?'▲ '+(rk0-rk1):rk1===1?'1위!':'유지')+'</b></div>'+(r1b?'<div class="dstat ok"><span>지역 1위 달성 보너스</span><b>+$'+r1b+'</b></div>':'')+(merciful?'<div class="dstat ok"><span>🩹 재기 지원 ('+fsNext+'연속 실패)</span><b>벌금 감면 · 경고 유예 · 직원 만족도 보호<br>다음 영업 매출 +12% · 인내심 +15%</b></div>':'')+'<div class="dstat '+(okComp?'ok':'no')+'"><span>민원 '+dayComp+'건 / 3건</span><b>'+(dayComp>=3?'영업 정지':dayComp>=2?'위험':dayComp>=1?'주의':'양호')+'</b></div>'+(wages?'<div class="dstat"><span>직원 급여 ('+(S.crew.length+(typeof V287!=='undefined'?V287.staffCount():0))+'명)</span><b style="color:#e8342a">-$'+wages+'</b></div>':'')+(rent?'<div class="dstat"><span>'+STS[STG]+' 매장 임대료</span><b style="color:#e8342a">-$'+rent+'</b></div>':'')+(brInc?'<div class="dstat ok"><span>지점 자동 매출 합계</span><b>+$'+brInc+'</b></div>':'')+
-    v278ResHTML()+mktResultHTML(mkR)+rsuResultHTML(rsuR)+lpResultHTML(lpRes)+mgrEvalHTML(mgEv)+'<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+lvStarHint(cfg)+'</p>':'</p>')+'<div class="rescta" id="resCta"><button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 · 별 더 받기</button></div>':'<div class="rescta" id="resCta"><button id="dRetry">다시 도전 (무료)</button><button class="gray" id="dUp">업그레이드 하러 가기</button></div>'+
+    v278ResHTML()+mktResultHTML(mkR)+rsuResultHTML(rsuR)+lpResultHTML(lpRes)+mgrEvalHTML(mgEv)+'<div id="dirAI">'+dirAIShell()+'</div>'+receipt+(clear?'<p>'+(bonus?'보너스 <b>$'+bonus+'</b> 획득! ':'보너스는 이미 받았어요(별이 늘면 차액 지급). ')+(stars<3?'다음 별: '+lvStarHint(cfg)+'</p>':'</p>')+'<div class="rescta" id="resCta"><button id="dNext">DAY '+(S.day+2)+' 준비하기</button><button class="gray" id="dRetry">다시 도전 · 별 더 받기</button></div>':'<div class="rescta v302sub" id="resCta"><button class="gray" id="dUp">업그레이드 하러 가기</button></div>'+
     '<p style="font-size:11.5px;color:#8a7a6a;margin:5px 0 0">'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p>'));
   lvCompactResult(); inboxPaint(); try{ v286ResultInject(clear); }catch(e){} $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
   try{ dirAIAsk(dirData(clear)); }catch(e){ console.warn('dirAI',e); } try{ mgrEvalAsk(mgEv); }catch(e){} try{ poachSchedule(rsuR); }catch(e){} try{ mktScoutSchedule(mkR); }catch(e){}
@@ -11916,13 +11969,15 @@ function truckTick(dt){
   }
   if(typeof truckDraw3==='function'){ try{ truckDraw3(); }catch(e){} }
 }
+try{ if(window.LD) LD.set(94,'마지막 정리'); }catch(e){}
 window.__camReady=1; camMeasureUI(); camPose(); intO(); intApplyAll();
 /* v2.5: 새 버전 자동 반영 — 영업 중·상담 중에는 미루고, 영업이 끝나면 다시 확인 */
 window.__updBusy=function(){ try{ return dayState==='run'||!!quizOpen; }catch(e){ return false; } };
 window.__updPend=function(){ try{ toast('🔄 새 버전이 준비됐어요 · 영업이 끝나면 자동으로 업데이트돼요',4.5); }catch(e){} };
 
 cam.position.copy(CAM_OFF);
-sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v3.01';
+sTxt($('stn'),STI[STG]+' '+TS.name); $('stn').style.cursor='pointer'; $('stn').onclick=()=>{ if(!quizOpen&&!$('modal').classList.contains('on')){ snd('ui',0.4); openWorld(); } }; document.title='메가 테크 슈퍼스토어 타이쿤 v3.02';
+try{ if(window.LD) LD.done(); }catch(e){}
 bootOK(); $('load').classList.add('done'); setTimeout(()=>$('load').remove(),500);
 /* ---- roadmap screen (shared) ---- */
 function roadThumb(key){ try{ const oz=cam.zoom, op=cam.position.clone(), oq=cam.quaternion.clone(); if(!(typeof titleOn!=='undefined'&&titleOn)){ const tg=op.clone().sub(CAM_OFF); tg.set(0,0,-1.2); cam.position.copy(tg).add(CAM_OFF); cam.lookAt(tg); cam.zoom=0.58; cam.updateProjectionMatrix(); }
@@ -11953,6 +12008,8 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
   if(skip){ titleOn=false; titleK=0; beginPlay(); }
   else { document.body.classList.add('title'); const ds=STGD[STG]||[0]; try{ $('tProg').style.display='none'; }catch(e){} $('tProg').innerHTML='<i>'+STI[STG]+'</i><div><b>'+TS.name+'</b><small>'+(S.seen?'STAGE '+(STG+1)+' · DAY '+(S.day+1):'새 매장을 열어보세요!')+'</small></div>'+(S.seen?'<em>★ '+S.dayStars.reduce((a,b)=>a+(b||0),0)+'</em>':''); $('tStart').querySelector('.tx').textContent=S.seen?'이어서 영업':'영업 시작'; try{ window.__v300Title&&window.__v300Title(); }catch(e){} { const _tsv=$('tSave'); if(_tsv&&S.seen){ _tsv.innerHTML='<span style="opacity:.9">🏙️ '+TS.name+'</span><span style="opacity:.65">DAY '+(S.day+1)+(S.dayStars&&S.dayStars.length?' · ★'+S.dayStars.reduce((a,b)=>a+(b||0),0):'')+'</span><span style="opacity:.55">'+saveAgo()+'</span><span style="opacity:.7">›</span>';
       _tsv.setAttribute('role','button'); _tsv.setAttribute('aria-label','로드맵 · 다른 매장 보기'); _tsv.style.cursor='pointer'; } } $('title').style.display='flex';
+    /* v3.02: 저장 기록이 없는 신규 유저는 [영업 시작]만 메인으로 두고, 보조 메뉴는 ⚙️ 설정 안으로 접는다 */
+    try{ var _v302new=!S.seen; $('title').classList.toggle('v302new',_v302new); var _v302g=$('tGear'); if(_v302g) _v302g.style.display=_v302new?'inline-flex':'none'; }catch(e){}
     /* v2.95: '이어서 영업'은 로드맵 화면을 한 번 더 거치지 않고 곧바로 현재 매장으로 들어간다(P2-5).
        로드맵은 바로 위 지점 카드(#tProg)를 눌러 연다. */
     $('tStart').onclick=()=>{ initAudio(); snd('level_up',0.5,1.2); titleOn=false; const _t1=$('title'); if(_t1) _t1.classList.add('out');
@@ -11969,7 +12026,14 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
     $('tInst').onclick=()=>{ if(dprompt){ dprompt.prompt(); return; } const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
       sheet('<h3>📲 홈 화면에 앱으로 추가</h3>'+(onApp?'':'<div>먼저 아래 주소를 '+(ios?'사파리':'크롬')+'에서 열어 주세요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>')+'<ol>'+(ios?'<li>사파리 아래쪽 <b>공유 버튼</b>(네모에 화살표)을 눌러요</li><li><b>홈 화면에 추가</b>를 눌러요</li><li>오른쪽 위 <b>추가</b>를 누르면 끝!</li>':'<li>크롬 오른쪽 위 <b>⋮ 메뉴</b>를 눌러요</li><li><b>홈 화면에 추가</b>(앱 설치)를 눌러요</li><li><b>설치</b>를 누르면 끝!</li>')+'</ol><small>아이콘을 누르면 주소창 없이 전체 화면으로 열려요</small>'); const c=$('tsC'); if(c) c.onclick=copy; };
     $('tShare').onclick=()=>{ const d={title:'테크 스토어 타이쿤',text:'테크 스토어 타이쿤 같이 해볼래? 수리하고, 상담하고, 매장을 키우는 게임이야',url:APPURL}; if(navigator.share){ navigator.share(d).catch(()=>{}); return; }
-      sheet('<h3>🔗 친구에게 공유</h3><div>아래 주소를 보내면 바로 플레이할 수 있어요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>'); $('tsC').onclick=copy; }; } }
+      sheet('<h3>🔗 친구에게 공유</h3><div>아래 주소를 보내면 바로 플레이할 수 있어요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>'); $('tsC').onclick=copy; };
+    /* v3.02: 신규 유저용 ⚙️ 설정 — 이어하기·홈 화면 추가·공유를 이 안으로 모은다 */
+    { const _g=$('tGear'); if(_g) _g.onclick=(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); try{ initAudio(); snd('ui',0.4); }catch(_){}
+        sheet('<h3>⚙️ 설정</h3><div>다른 기기에서 이어하거나, 앱처럼 쓰고 싶을 때 여기를 눌러 주세요.</div>'
+          +'<button id="tgLoad">📂 다른 기기에서 이어하기</button><button id="tgInst">📲 홈 화면에 추가</button><button id="tgShare">🔗 친구에게 공유</button>');
+        const _a=$('tgLoad'); if(_a) _a.onclick=()=>{ $('tSheet').classList.remove('on'); setTimeout(()=>{ try{ $('tLoad').click(); }catch(_){}} ,90); };
+        const _b=$('tgInst'); if(_b) _b.onclick=()=>{ try{ $('tInst').click(); }catch(_){} };
+        const _c=$('tgShare'); if(_c) _c.onclick=()=>{ try{ $('tShare').click(); }catch(_){} }; }; } } }
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else { offResume(); v282Resume('vis'); } });
 addEventListener('pageshow',function(e){ try{ if(dayState==='run') v282Resume('pageshow'); }catch(_){} });
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},set dayT(v){dayT=v},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
