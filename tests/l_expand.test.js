@@ -6,7 +6,8 @@ module.exports={name:'매장 확장 · 체험존 · 업그레이드 · 정산함
   const r=await T.ev(()=>({own:!!(window.__H.S.exp&&window.__H.S.exp[0]),money:window.__T.money,mul:window.__T.mktSpawnMul()}));
   assert(r.own,'확장을 샀는데 저장이 안 됐어요'); assert(r.money===5000-c,'확장 비용이 안 빠졌어요 ('+r.money+')');
   assert(Math.abs(r.mul/m0-1.2)<0.01,'확장 뒤 손님 배수가 1.2배가 아니에요 ('+m0+' → '+r.mul+')');
-  await L.W(3500); assert(await T.ev(()=>!!document.getElementById('dayGo')),'확장 뒤 영업 준비 화면으로 돌아오지 않아요');
+  /* v2.99: 확장 뒤 게임은 startDayModal()=출근 허브로 돌아온다(준비창이 아님) → 둘 다 정상으로 본다 */
+  await L.W(3500); assert(await T.ev(()=>{ const g=document.getElementById('dayGo'), h=document.getElementById('v262Go'); return !!g||!!(h&&h.offsetParent); }),'확장 뒤 영업 준비 화면으로 돌아오지 않아요');
   if(mode==='3d'){ await T.startDay(); await L.W(500);
     const x=await T.ev(()=>{ const T=window.__T, xy=T.proj(9.9,-4.1); T.tapGo(xy[0],xy[1]); return 1; }); await L.W(9000);
     const p=await T.ev(()=>{ const p=window.__T.player.pos; return [p.x,p.z]; });

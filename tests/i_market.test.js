@@ -2,17 +2,23 @@ module.exports={name:'경쟁 시장 · 판매 전략 · 매니저 업무 · 인�
   const crew=[{role:'runner',name:'하준',spd:1,acc:0.9,wage:20,lv:2,sat:80},{role:'tech',name:'서준',spd:1,acc:0.9,wage:20,lv:2,sat:80},{role:'mgr',name:'한유나',spd:1,acc:0.9,wage:30,lv:3,sat:80}];
   const T=await L.open(browser,mode,{state:{day:8,curStage:2,crew,up:{spd:0,cap:3,chk:0,price:0},sysSeen:{1:1,2:1}}});
   await T.ev(()=>{ window.__H.S.mkt={mom:{},share:1,evD:-1,ev:null,w:0,l:0,lastIn:-9}; }); await T.toPreDay();
-  await T.ev(()=>{ const M=window.__T.mkt(); M.evD=window.__H.S.day; M.ev={n:window.__T.mktRivals()[0].n,t:'대규모 할인전'}; document.getElementById('modal').classList.remove('on'); window.__T.startDayModal(); }); await L.W(700);
-  let t=await T.modalText(); assert(/⚔️ .* 대규모 할인전/.test(t),'영업 시작 창에 경쟁사 행사가 없어요'); assert(/오늘의 전략/.test(t),'오늘의 전략 선택이 없어요');
+  await T.ev(()=>{ const M=window.__T.mkt(); M.evD=window.__H.S.day; M.ev={n:window.__T.mktRivals()[0].n,t:'대규모 할인전'}; document.getElementById('modal').classList.remove('on'); window.__H.v262.start(0); }); await L.W(900);   /* v2.99: 준비창은 출근 허브의 [오늘 정보·전략] 뒤에 있다 — v262BeginDay(false)로 바로 연다 */
+  /* v2.99: 이모지(⚔️)는 innerText에서 빠지는 환경이 있어 문구로 확인한다. */
+  let t=await T.modalText(); assert(/대규모 할인전/.test(t),'영업 시작 창에 경쟁사 행사가 없어요'); assert(/오늘의 전략/.test(t),'오늘의 전략 선택이 없어요');
   const m0=await T.ev(()=>window.__T.mktSpawnMul()); await T.ev(()=>document.querySelector('#mbox [data-pm="sale"]').click()); await L.W(600);
   const m1=await T.ev(()=>window.__T.mktSpawnMul()); assert(await T.ev(()=>window.__H.S.promo==='sale'),'메가 세일이 선택되지 않아요'); assert(m1>m0*1.3,'메가 세일이 행사 피해를 상쇄하지 않아요 ('+m0.toFixed(2)+'→'+m1.toFixed(2)+')');
+  /* 전략을 고르면 게임이 startDayModal()=출근 허브로 되돌아간다(현재 사양) → 준비창을 다시 연다 */
+  assert(await T.toPreDay(),'전략을 고른 뒤 영업 준비창으로 돌아오지 않아요');
   await T.ev(()=>document.querySelector('#mbox [data-mf="market"]').click()); await L.W(600); assert(await T.ev(()=>window.__H.S.mgrFocus==='market'),'매니저 업무가 바뀌지 않아요');
+  assert(await T.toPreDay(),'매니저 업무를 고른 뒤 영업 준비창으로 돌아오지 않아요');
   assert(await T.ev(()=>!!document.getElementById('dayGo')),'전략을 바꾼 뒤 영업 시작 버튼이 사라졌어요');
-  await T.click('dayGo'); await L.W(800); await T.ev(()=>{ window.__TS=4; }); await L.W(6000); await T.ev(()=>{ window.__TS=1; });
+  await T.click('dayGo'); await L.W(1200);
+  assert(await T.ev(()=>window.__T.st==='run'),'영업이 시작되지 않아요'); await T.ev(()=>{ window.__TS=4; }); await L.W(6000); await T.ev(()=>{ window.__TS=1; });
   assert(await T.ev(()=>{ const s=window.__T.staff.find(x=>x.kind==='mgr'); const e=s&&s.el.querySelector('.mjx'); return !!(e&&e.textContent); }),'매니저 머리 위에 업무 아이콘이 없어요');
   const main=await T.ev(()=>window.__T.mktRivals()[0].n), mom0=await T.ev(n=>(window.__T.mkt().mom[n]||1),main);
   await T.endDay(3.0,0); const txt=await T.ev(()=>document.getElementById('mbox').textContent);
-  assert(/⚔️ vs /.test(txt),'결과창에 경쟁 결과가 없어요'); assert(await T.ev(()=>[...document.querySelectorAll('#mbox > .dstat')].some(d=>/⚔️ vs/.test(d.textContent))),'경쟁 결과가 첫 화면에 없어요');
+  assert(/vs /.test(txt),'결과창에 경쟁 결과가 없어요'); /* v2.99: 결과창은 v2.95부터 상세 줄을 접기(details)로 모은다 — 경쟁 결과 줄이 접힌 안에 있는 것은 사양. */
+  assert(await T.ev(()=>[...document.querySelectorAll('#mbox .dstat')].some(d=>/\bvs /.test(d.textContent))),'결과창에 경쟁 결과 줄이 없어요');
   const mom1=await T.ev(n=>(window.__T.mkt().mom[n]||1),main); assert(mom1<mom0,'이겼는데 경쟁사 기세가 안 떨어져요 ('+mom0+'→'+mom1+')');
   assert(await T.ev(()=>window.__T.mkt().share>1.05),'이겼는데 점유율이 2배(경쟁사 대응)로 오르지 않아요');
   await L.W(4500); await T.ev(()=>['inNote','poachNote','leadNote','scoutNote'].forEach(id=>{ const e=document.getElementById(id); if(e) e.classList.remove('on'); })); /* 결과 직후 게임이 스스로 띄우는 제안 창을 기다렸다 닫는다 */

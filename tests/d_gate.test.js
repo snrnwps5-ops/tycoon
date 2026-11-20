@@ -1,4 +1,6 @@
-module.exports={name:'별 게이트 · 다시 도전', async run({browser,mode,assert}){ const L=require('./lib'); const T=await L.open(browser,mode,{state:{day:3,dayStars:[1,1,1],curStage:0}});
+module.exports={name:'별 게이트 · 다시 도전', async run({browser,mode,assert}){ const L=require('./lib'); /* v2.99: v2.85부터 다음 지점은 '별 조건 + 그 지점의 모든 층 완공'을 모두 만족해야 열린다.
+     여기서는 별 게이트·다시 도전만 검사하므로 대구(0)의 두 층을 완공 상태로 넣어 둔다. */
+  const T=await L.open(browser,mode,{state:{day:3,dayStars:[1,1,1],curStage:0,v285:{br:{0:{f:[{d:1},{d:1}]}}}}});
   await T.startDay(); await T.endDay(1.0,1); await T.click('dNext'); await L.W(900);
   const g=await T.modalText(); assert(/별이 \d+개 더 필요해요/.test(g),'별 게이트 창이 안 떠요: '+g.slice(0,60));
   await T.ev(()=>document.querySelector('[data-rp="0"]').click()); await L.W(900);
