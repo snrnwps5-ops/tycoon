@@ -15367,6 +15367,26 @@ var V287=(function(){
     try{ rail(); }catch(e){}
     try{ dress(); }catch(e){}
   }
+  /* v3.07: 엘리베이터 앞에 서면 층 이동 패널(2층·3층…)이 뜬다. 위치는 elevator()가 놓는 (0.55, -9.9) 앞 */
+  var ELV={el:null,key:''};
+  function elvTick(){
+    try{
+      if(typeof player==='undefined'||!player||!player.pos) return;
+      var n=nF(), md=document.getElementById('modal'), busy=(md&&md.classList.contains('on'))||(typeof quizOpen!=='undefined'&&quizOpen);
+      var near=Math.abs(player.pos.x-0.55)<2.3&&player.pos.z<-7.4&&player.pos.z>-10.4;
+      if(n<2||busy||!near){ if(ELV.el){ ELV.el.style.display='none'; } return; }
+      if(!ELV.el){
+        var st=document.createElement('style'); st.textContent='#v307elv{position:fixed;left:50%;top:calc(190px + env(safe-area-inset-top));transform:translateX(-50%);z-index:7;display:none;gap:6px;align-items:center;padding:8px 10px;border-radius:16px;background:rgba(255,252,244,.97);border:2px solid #e8ba80;box-shadow:0 6px 18px rgba(60,40,10,.25);font:800 12px var(--b);color:#6a4a20}#v307elv button{min-width:48px;height:42px;border-radius:12px;border:1.5px solid #e8ba80;background:#fff;color:#6a4a20;font:900 15px var(--d);cursor:pointer}#v307elv button.cur{background:linear-gradient(160deg,#7bea62,#2fa36a);border-color:#2f9a63;color:#fff}#v307elv button.lock{opacity:.4}';
+        document.head.appendChild(st);
+        var el=document.createElement('div'); el.id='v307elv'; document.body.appendChild(el); ELV.el=el;
+        el.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('button[data-f]'); if(!b) return; e.stopPropagation(); try{ setFloor(+b.getAttribute('data-f')); ELV.key=''; }catch(_){} });
+      }
+      var c=cur(), key=n+':'+c+':'+(function(){ var k=''; for(var i=0;i<n;i++) k+=open(i)?1:0; return k; })();
+      if(key!==ELV.key){ ELV.key=key; var h='<span>🛗</span>'; for(var i=0;i<n;i++){ h+='<button data-f="'+i+'" class="'+(i===c?'cur':(open(i)?'':'lock'))+'">'+(i+1)+'F</button>'; } ELV.el.innerHTML=h; }
+      ELV.el.style.display='flex';
+    }catch(e){}
+  }
+  try{ setInterval(elvTick,300); }catch(e){}
   try{ setTimeout(init,900); }catch(e){}
   try{ setTimeout(init,3200); }catch(e){}
   try{ setInterval(function(){ try{ rail(); }catch(e){} },800); }catch(e){}
