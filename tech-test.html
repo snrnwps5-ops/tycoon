@@ -5126,7 +5126,7 @@ function lvStarNeed(i){ return (STGD[i]||[]).length+2; }
 function lvTotalStars(){ let n=0; for(let i=0;i<(S.dayStars||[]).length;i++) n+=S.dayStars[i]||0; return n; }
 function lvAdvance(){ S.day++; dayState='pre'; save();
   if(STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]);
-    setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; }
+    window.__v312moving=1; setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} /* v3.12: 새 지점으로 실제로 옮긴다 — 예전엔 새로고침만 해서 옛 지점에 남은 채 새 지점 목표($1,910 등)로 영업했다 */ setTimeout(()=>{ try{ if(!switchBranch(STAGE_OF(S.day))) location.reload(); }catch(e){ location.reload(); } },4200); },1400); return; }
   setTimeout(startDayModal,300); }
 function lvGated(){ const st=STAGE_OF(S.day), ds=STGD[st]||[]; return S.day===ds[ds.length-1]&&(S.dayStars[S.day]||0)>0&&S.day+1<DAYS.length; }   /* 매장 마지막 날을 이미 깼는가 */
 function lvGateOrStart(){ if(lvGated()){ const st=STAGE_OF(S.day); if(lvStageStars(st)<lvStarNeed(st)) lvOpenGate(st); else if(typeof V285!=='undefined'&&!V285.branchDone(st)){ dayState='pre'; save(); setTimeout(function(){ try{ V285.openBranch(st); }catch(e){} },260); } else lvAdvance(); } else startDayModal(); }
@@ -5866,6 +5866,20 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     if(extra) extra.before(h2); else dl.appendChild(h2); h2.after(tech);
   }catch(e){} },300);
 }catch(e){ console.warn('v312 rep',e); } })();
+/* v3.12: 안전망 — 영업 전(pre)인데 아무 창도 없으면(준비창·허브를 닫았거나 다른 창에서 돌아온 경우) 진행할 버튼이 없어 멈추던 문제.
+   1.5초 이상 그 상태면 하단 위에 [▶ 영업 준비] 버튼을 띄운다. 누르면 준비창을 다시 연다. */
+(function(){ try{
+  const st=document.createElement('style'); st.textContent='#v312start{position:fixed;left:50%;transform:translateX(-50%);z-index:8;display:none;min-height:52px;padding:0 28px;border:0;border-radius:18px;background:linear-gradient(#7bea62,#2fa36a);color:#fff;font:900 17px var(--b);box-shadow:0 5px 0 #1d7a2a,0 10px 20px rgba(0,0,0,.25);white-space:nowrap;animation:v312sp 1.2s ease-in-out infinite}@keyframes v312sp{50%{scale:1.05}}'; document.head.appendChild(st);
+  const b=document.createElement('button'); b.id='v312start'; b.type='button'; b.textContent='▶ 영업 준비'; document.body.appendChild(b);
+  b.addEventListener('click',function(e){ e.stopPropagation(); b.style.display='none'; try{ initAudio(); snd('ui',0.4); }catch(_){} try{ startDayModal(); }catch(err){ try{ v262HubOpen(true); }catch(_){} } });
+  let idle=0;
+  setInterval(function(){ try{
+    const md=document.getElementById('modal'), busy=(md&&md.classList.contains('on'))||document.getElementById('v294pull')||document.body.classList.contains('title')||document.body.classList.contains('rep')||document.body.classList.contains('biz')||(typeof quizOpen!=='undefined'&&quizOpen)||(typeof REP!=='undefined'&&REP.open)||document.querySelector('#world.on,#v262hub.on,.v262hub.on');
+    if(typeof dayState==='undefined'||dayState!=='pre'||busy||window.__v312moving){ idle=0; b.style.display='none'; return; }
+    idle+=500; if(idle<1500) return;
+    const bb=document.getElementById('bbar'); const r=bb&&bb.getBoundingClientRect(); b.style.top=(((r&&r.top>100)?r.top:innerHeight-90)-66)+'px'; b.style.display='block';
+  }catch(e){} },500);
+}catch(e){} })();
 /* v3.09: DAY 2~3은 핵심 버튼만 — 첫날(ftue) 숨김을 이틀 더 이어 간다. 상점·랭킹·꾸미기·카메라·저장·부스터·지점 이동·본사 챌린지는 DAY 4부터.
    층 건설(🏗️)·업그레이드·직원·미션·재고·수리실은 그대로 둔다. 새 저장 필드 S.v309o(열림 배너 1회)만 추가 — 없으면 기본값. */
 function v309Early(){ try{ return S.day>=1 && S.day<=2 && !ftueOn(); }catch(e){ return false; } }
@@ -11009,7 +11023,7 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
     '<p style="font-size:11.5px;color:#8a7a6a;margin:5px 0 0">'+(!okComp?'잘못된 안내·기다리다 떠난 손님은 민원 0.5건, 기기 파손은 1건이에요.':!okRate?'상담을 정확하게, 빠르게 해야 평점이 올라요.':'업그레이드로 속도와 들 수 있는 양을 늘려보세요.')+'</p>'));
   lvCompactResult(); try{ v308Strip(clear); }catch(e){} inboxPaint(); try{ v286ResultInject(clear); }catch(e){} $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
   try{ dirAIAsk(dirData(clear)); }catch(e){ console.warn('dirAI',e); } try{ mgrEvalAsk(mgEv); }catch(e){} try{ poachSchedule(rsuR); }catch(e){} try{ mktScoutSchedule(mkR); }catch(e){}
-  const go=next=>{ $('modal').classList.remove('on'); if(lvGo(next)) return; if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} setTimeout(()=>location.reload(),4200); },1400); return; } setTimeout(startDayModal,300); };
+  const go=next=>{ $('modal').classList.remove('on'); if(lvGo(next)) return; if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); window.__v312moving=1; setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} /* v3.12: 새 지점으로 실제로 옮긴다 — 예전엔 새로고침만 해서 옛 지점에 남은 채 새 지점 목표($1,910 등)로 영업했다 */ setTimeout(()=>{ try{ if(!switchBranch(STAGE_OF(S.day))) location.reload(); }catch(e){ location.reload(); } },4200); },1400); return; } setTimeout(startDayModal,300); };
   if($('dNext')) $('dNext').onclick=()=>go(true); if($('dRetry')) $('dRetry').onclick=()=>go(false); if($('dUp')) $('dUp').onclick=()=>{ dayState='pre'; save(); window.__rts=1; openUp(); }; save();
   /* v2.26: 승진/경고 발령 공문은 결과창 위에 따로 띄운다(결과창·닫기 흐름을 건드리지 않게) */
   if(promotion) inboxAdd({k:'lead',label:'🎉 '+MYRANKN[promotion.to]+' 승진 발령 · +$'+promotion.bonus,open:()=>leadNote('up',promotion)}); else if(penalty) inboxAdd({k:'lead',label:'⚠️ 본사 경고장 · -$'+penalty.fine,open:()=>leadNote('warn',penalty)});
@@ -13159,6 +13173,7 @@ try{ window.__H=window.__H||{}; window.__H.v285={
   eq:function(slot,r){ try{ V285.addGear(slot,r|0,1); return V285.equip(slot,r|0); }catch(e){ return String(e); } },
   gdset:function(srvN,gd){ try{ if(srvN!=null) S.stats.srv=srvN; if(gd!=null) S.gd=gd; return {gd:S.gd|0,money:money}; }catch(e){ return String(e); } },
   repdbg:function(){ try{ return {scene:!!REP.scene,built:REP.built,open:REP.open,vp:REP.vp,err:REP.err}; }catch(e){ return String(e); } },
+  buildAll:function(st){ try{ var b=V285.br(st==null?STG:st); var n=V285.nFloors(st==null?STG:st); for(var i=0;i<n;i++){ b.f[i]=b.f[i]||{}; b.f[i].d=1; b.f[i].t1=0; } V285.saveAll&&V285.saveAll(); try{ save(); }catch(e){} return n; }catch(e){ return String(e); } },
   juice:function(x,z,p){ try{ v310Juice(x,z,p); return 1; }catch(e){ return String(e); } },
   capdbg:function(){ try{ var ch=player.ch, hp=null; ch.inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); var cap=(ch._v285cap&&ch._v285cap.children[0])||(ch._v285g&&ch._v285g.children[0]); if(!hp||!cap) return null; var a=new THREE.Vector3(), b=new THREE.Vector3(); hp.getWorldPosition(a); cap.getWorldPosition(b); return [+(b.x-a.x).toFixed(3),+(b.y-a.y).toFixed(3),+(b.z-a.z).toFixed(3)]; }catch(e){ return String(e); } },
   open:function(st){ V285.openBranch(st); return 1; }, box:function(k){ V285.openBoxes(k); return 1; },
@@ -15028,7 +15043,7 @@ try{ if(QAMODE) qaBoot(); }catch(e){ try{ console.warn('qa boot',e); }catch(_){}
       var banner=document.createElement('div'); banner.className='v3Res';
       banner.innerHTML='<div class="v3Banner '+(clear?'ok':'no')+'"><span class="bs">'+(clear?S3.ok:S3.no)+'</span>'+
         '<span class="bt"><b>'+(clear?'영업 성공!':'영업 실패…')+'</b><small>DAY '+((S.day|0)+1)+' · '+
-        (clear?'목표를 채웠어요. 오늘도 수고했어요!':(okComp?'목표에 조금 못 미쳤어요':'민원 3건으로 영업이 정지됐어요'))+'</small></span></div>'+
+        (clear?'목표를 채웠어요. 오늘도 수고했어요!':(!okComp?'민원 3건으로 영업이 정지됐어요':((typeof dayRev==='number'&&dayRev>=dayCfg(S.day).goal)?'매출은 넘겼지만 평점이 최소 기준보다 낮아요':'목표에 조금 못 미쳤어요')))+'</small></span></div>'+
         '<div class="v3Board">'+
         '<div class="b '+(okRev?'ok':'no')+'"><small>매출</small><b>$'+nf(rev)+'</b><em>목표 $'+nf(goal)+'</em></div>'+
         '<div class="b rate '+(okRate?'ok':'no')+'"><small>평점</small><b><i class="st on">★</i><u>'+rat.toFixed(1)+'</u></b><em>최소 '+min.toFixed(1)+'</em></div>'+
