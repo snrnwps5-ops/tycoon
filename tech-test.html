@@ -2577,7 +2577,7 @@ function rqAdd(o){ o=o||{};
   RQ.push(j); if(RQ.length>8) RQ.shift();
   /* v2.79: 접수됐다는 사실을 상단 수리실 버튼에서 바로 확인할 수 있게 한다 */
   const _n=RQ.filter(x=>x.st==='wait').length;
-  try{ qToast((o.c?'🔧 수리실로 안내했어요 (매장 밖)':'🔧 수리실 대기열에 접수됨')+' (총 '+_n+'건 · 🔧 수리실 표지에서 수리)'+(o.pat>=80?'\n예약 접수 · 부품부터 준비할게요':''),3.0); }catch(e){}
+  try{ qToast((o.c?'🔧 수리실로 안내했어요 (매장 밖)':'🔧 수리실 대기열에 접수됨')+' (총 '+_n+'건 · 위 🔧 수리실 버튼에서 수리)'+(o.pat>=80?'\n예약 접수 · 부품부터 준비할게요':''),3.0); }catch(e){}
   try{ if(o.silent!==1){ repBadge(); v279LabPing(_n); } }catch(e){}
   try{ rlabSignPaint(true); }catch(e){}
   return j; }
@@ -2588,7 +2588,7 @@ function v291AfterIntake(j){
     var t=rTreat(j.diag.fix);
     var prac=j.prac?'<div class="evc" style="margin:6px 0 2px"><b>실습 · 증상이 분명해요</b><small>"'+j.diag.q+'" → '+t.n+'</small></div>':'';
     var who=j.mine?'🙋 나 · 직접 진단':((j.owner||'수리 기사')+(j.auto?' · 자동 진행':' · 배정 대기'));
-    var next=j.mine?(j.diagOK?'부품 확인 → 수리 착수':'진단 → 부품 → 수리 착수'):'기사가 진단·수리를 진행해요 (진행은 매장 안 🔧 수리실 표지)';
+    var next=j.mine?(j.diagOK?'부품 확인 → 수리 착수':'진단 → 부품 → 수리 착수'):'기사가 진단·수리를 진행해요 (진행은 위 [🔧 수리실])';
     openModal('<h2>🔧 접수 완료 · 접수 '+j.id+'</h2>'+prac+
       '<div class="dstat"><span>기기 · 담당</span><b>'+rDev(j)+' · '+who+'</b></div>'+
       '<div class="dstat"><span>다음 할 일</span><b>'+next+'</b></div>'+
@@ -2884,6 +2884,25 @@ function repBuild(){ if(REP.built) return; REP.built=true; try{ if(typeof floorP
   const cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100); REP.cam=cam;
   REP.vp=null;
   try{ v265RepGfx(); }catch(e){}
+  /* v3.12: 수리실 리디자인 — 어두운 슬레이트 작업실 → 밝고 따뜻한 서비스 센터(크림 벽·우드 바닥·민트 매트·공구 보드·화분·조명) */
+  try{
+    sc.background=new THREE.Color('#f2e6cf');
+    const RMAP={'#1d2733':'#d8c3a0','#243040':'#e4d2b2','#222c38':'#ecd6b2','#2a6b4a':'#3fae8a','#2f6b4a':'#3fae8a','#3d4a5c':'#c9a477','#5b6a7e':'#b58c5c','#6b7480':'#9aa5b2','#8a939f':'#b9c2cc','#4a5666':'#8fb8c8','#39434f':'#5b6877','#2a3144':'#3a4a5e'};
+    sc.traverse(function(o){ if(!o.isMesh||!o.material||!o.material.color) return; const h='#'+o.material.color.getHexString(); if(RMAP[h]) o.material.color.set(RMAP[h]); });
+    sc.traverse(function(o){ if(o.isHemisphereLight){ o.intensity=0.5; o.color.set('#fff6e6'); o.groundColor.set('#d8c3a0'); } });
+    sc.traverse(function(o){ if(o.isMesh&&o.material&&o.material.isMeshStandardMaterial&&o.material.map&&o.geometry&&o.geometry.parameters&&o.geometry.parameters.width===11){ try{ const t=herringTex(); t.repeat.set(5,4); o.material.map=t; o.material.color.set('#ffffff'); o.material.needsUpdate=true; }catch(_){} } });
+    /* 공구 보드 */
+    const pb=canvasTex(function(g,w,h){ g.fillStyle='#f7e3c0'; g.fillRect(0,0,w,h); g.fillStyle='rgba(140,100,50,.25)'; for(let x=16;x<w;x+=28) for(let y=16;y<h;y+=28){ g.beginPath(); g.arc(x,y,3,0,7); g.fill(); }
+      const T=[['#e84a5f',40,40,26,90],['#2f6fd8',100,30,18,110],['#ffb020',150,50,40,40],['#3fae8a',220,30,22,100],['#8b5cf6',280,45,36,60],['#e84a5f',340,35,16,95],['#2f6fd8',380,60,44,30]];
+      T.forEach(function(q){ g.fillStyle=q[0]; g.beginPath(); g.roundRect?g.roundRect(q[1],q[2],q[3],q[4],8):g.rect(q[1],q[2],q[3],q[4]); g.fill(); g.fillStyle='rgba(255,255,255,.35)'; g.fillRect(q[1]+3,q[2]+3,4,q[4]-6); }); },448,160);
+    const pm=new THREE.Mesh(new THREE.PlaneGeometry(2.8,1.0),new THREE.MeshBasicMaterial({map:pb})); pm.position.set(-2.6,2.1,-3.88); sc.add(pm);
+    bx(2.9,1.08,0.05,'#b58c5c',-2.6,2.1,-3.92);
+    /* 천장 조명 웅덩이 + 따뜻한 보조광 */
+    const wl=new THREE.PointLight(0xffe2b0,0.55,12); wl.position.set(0.2,3.2,-1.0); sc.add(wl);
+    /* 바닥 러그 · 화분 추가 */
+    bx(3.0,0.02,1.4,'#3fae8a',0.2,0.03,-0.6); bx(2.8,0.021,1.2,'#bfe8d6',0.2,0.035,-0.6);
+    [[-4.6,0.8],[4.7,-1.2]].forEach(function(q){ cl(0.24,0.4,'#f4efe6',q[0],0.2,q[1]); const lf=new THREE.Mesh(gget('s0.42',()=>new THREE.SphereGeometry(0.42,12,10)),M('#56b85a')); lf.position.set(q[0],0.7,q[1]); sc.add(lf); });
+  }catch(e){ console.warn('rep redesign',e); }
 }catch(e){ console.warn('repBuild',e); REP.scene=null; } }
 function repRender(dt){ try{ if(!REP.scene) return; const W=VW||innerWidth, H=VH||innerHeight, a=W/H, vp=REP.vp||{top:H*0.2,bot:H*0.55}, avH=Math.max(150,vp.bot-vp.top), vh=Math.max(10.8/a,8.9*H/avH);
   const c=REP.cam; c.left=-vh*a/2; c.right=vh*a/2; c.top=vh/2; c.bottom=-vh/2;
@@ -2906,18 +2925,18 @@ function repOpen(){
       /* v2.88: 테크 서비스 센터 작업대 — 딥 슬레이트 헤더 · 워크벤치 카드 · 정갈한 계기 */
       '#repUI{position:fixed;left:0;right:0;top:0;bottom:0;z-index:30;pointer-events:none;display:flex;flex-direction:column}'+
       '#repUI .rph{pointer-events:auto;margin:calc(env(safe-area-inset-top) + 8px) 10px 0;display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:18px;'+
-        'background:linear-gradient(180deg,#16242f,#0e1a23);border:1px solid rgba(120,200,190,.22);box-shadow:0 8px 22px rgba(4,12,18,.32)}'+
+        'background:linear-gradient(180deg,#2bb3a0,#17857a);border:2px solid #fff;box-shadow:0 4px 0 #0f5f58,0 8px 18px rgba(10,60,55,.25)}'+
       '#repUI .rpbk{all:unset;flex:none;box-sizing:border-box;width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;'+
         'background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);color:#dceaf0}'+
       '#repUI .rpbk svg{width:19px;height:19px}'+
       '#repUI .rptl{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}'+
       '#repUI .rptl b{display:flex;align-items:center;gap:7px;font:800 16px var(--d);color:#fff;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+
-      '#repUI .rptl b .hb{display:inline-flex;width:17px;height:17px;color:#5fd6c2}'+
+      '#repUI .rptl b .hb{display:inline-flex;width:17px;height:17px;color:#fff2b0}'+
       '#repUI .rptl b .hb svg{width:100%;height:100%}'+
-      '#repUI .rptl small{display:block;font:600 10.5px/1.35 var(--b);color:#9fc0c8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+
-      '#repUI .rptl small.rpz{color:#f0c979}'+
+      '#repUI .rptl small{display:block;font:700 10.5px/1.35 var(--b);color:#e2fff8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+
+      '#repUI .rptl small.rpz{color:#fff2b0}'+
       '#repUI .rpn{flex:none;min-width:44px;height:44px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;'+
-        'background:rgba(95,214,194,.14);border:1px solid rgba(95,214,194,.34);color:#bff2e8}'+
+        'background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);color:#fff}'+
       '#repUI .rpn b{font:800 17px/1 var(--d);color:#eafff9}#repUI .rpn span{font:700 9px var(--b);margin-top:2px;letter-spacing:.2px}'+
       '#repUI .rpsum{pointer-events:none;margin:8px 10px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}'+
       '#repUI .rpsum div{background:rgba(255,252,246,.95);border:1px solid rgba(226,208,180,.9);border-radius:12px;padding:6px 4px 7px;text-align:center;box-shadow:0 2px 6px rgba(40,30,14,.10)}'+
@@ -4879,7 +4898,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
       else if(s.state==='go'){ const c=s.job; if(!custs.includes(c)||c.st==='leave'){ s.state='idle'; s.job=null; } else if(walkTo(s,dt,SP)){ s.state='work'; s.t=0; s.face=Math.atan2(c.pos.x-s.pos.x,c.pos.z-s.pos.z); c.st=c.st==='mgrwait'?'mgrwait':'consult'; } }
       else if(s.state==='work'){ const c=s.job; s.t+=dt; if(Math.random()<dt*3) sparkle(c.pos.x,1.8,c.pos.z,ROLES[s.kind].c); if(!custs.includes(c)||c.st==='leave'){ s.state='idle'; s.job=null; }
         else if(s.t>2.2/s.crew.spd){ const ok=Math.random()<ACC; s.state='idle'; s.job=null; c.claim=null;
-          if(s.kind==='greet'){ GSPOT.occ=null; if(ok){ const _gj=rqAdd({mdl:c.mdl,pro:c.pro,data:c.data,pat:70,c:c}); S.stats.ok++; c.happy=1; toast('🔧 수리실로 안내했어요 — 매장 안 🔧 수리실 표지에서 진단·진행',2.4); try{ sparkle(c.pos.x,1.5,c.pos.z,'#ffd98a'); }catch(_){}
+          if(s.kind==='greet'){ GSPOT.occ=null; if(ok){ const _gj=rqAdd({mdl:c.mdl,pro:c.pro,data:c.data,pat:70,c:c}); S.stats.ok++; c.happy=1; toast('🔧 수리실로 안내했어요 — 매장 안 위 🔧 수리실 버튼에서 진단·진행',2.4); try{ sparkle(c.pos.x,1.5,c.pos.z,'#ffd98a'); }catch(_){}
               rLabSend(c,_gj); } else { c.quiet=1; custLeave(c,true,0); } }
           else if(s.kind==='mgr'){ MGRS.day.esc++; s.crew.dj=(s.crew.dj||0)+1; c.quiet=1; c.happy=1; if(c.spType==='esc') spServed(c); floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'매니저님 덕분에 풀렸어요','say'); custLeave(c,true,10); }
           else { if(c.type==='sw'){ if(ok){ S.stats.ok++; custLeave(c,true,30); } else { c.quiet=1; floatText(new THREE.Vector3(c.pos.x,2.4,c.pos.z),'음… 잘 모르겠네요','say'); custLeave(c,true,0); } }
@@ -5712,7 +5731,7 @@ var GD=(function(){
   var L=[
     {t:'손님 3명 응대하기', p:function(){ return [srv(),3]; }, r:{m:50}, h:'손님을 톡 누르면 걸어가서 응대해요'},
     {t:'첫 영업 마치기', p:function(){ return [Math.min(1,S.day),1]; }, r:{m:100}, h:'시간이 끝나면 영업이 마감돼요'},
-    {t:'수리 손님 1대 고치기', p:function(){ return [Math.min(1,(S.stats&&S.stats.fix)||0),1]; }, r:{m:120}, go:function(){ try{ window.__v312labOpen&&window.__v312labOpen(); }catch(e){} }, h:'매장 안 🔧 수리실 표지를 눌러 고쳐요'},
+    {t:'수리 손님 1대 고치기', p:function(){ return [Math.min(1,(S.stats&&S.stats.fix)||0),1]; }, r:{m:120}, go:function(){ try{ window.__v312labOpen&&window.__v312labOpen(); }catch(e){} }, h:'위 [🔧 수리실]를 눌러 고쳐요'},
     {t:'업그레이드 1번 하기', p:function(){ return [Math.min(1,upSum()),1]; }, r:{m:80}, go:goUp, h:'[업그레이드]에서 속도·가격을 올려요'},
     {t:'무료 상자 열기', p:function(){ var v=V5(); return [Math.min(1,(v&&v.box&&v.box.n)||0),1]; }, r:{g:5}, go:goBox, h:'상자에서 조각·장비가 나와요'},
     {t:'1층 체험존 착공하기', p:function(){ var f=fl(0,0); return [(f==='build'||f==='done')?1:0,1]; }, r:{g:5}, go:goBr, h:'층을 지으면 손님과 매출이 늘어요'},
@@ -5754,7 +5773,7 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
   const X=[
     {why:'손님 머리 위 말풍선을 보고, 손님을 톡 누르면 사장님이 걸어가 응대해요.',cust:1},
     {why:'영업 시간이 끝나면 결과창이 떠요. 목표 매출을 넘기면 클리어!',term:'★ 별: 매출을 많이 낼수록 1~3개. 다음 지점을 여는 열쇠예요.'},
-    {why:'수리 손님을 접수하면 매장 안 수리실로 가요. 🔧 표지를 누르거나 수리실 앞에 서면 들어갈 수 있어요.',term:'🔧 수리 기사가 있으면 수리실에서 자동으로 고쳐요. 사장님이 직접 고치면 팁 +15%!',tgt:'v312lab'},
+    {why:'입구에서 수리 손님을 접수하면 수리실로 들어가요. 위 [🔧 수리실]을 눌러 진단하고 고쳐요.',term:'🔧 수리 기사가 있으면 자동으로 고쳐요. 사장님이 직접 고치면 팁 +15%!',tgt:'labChip',inner:''},
     {why:'번 돈으로 매장을 키워요. 이동 속도·가격이 오르면 매출이 쑥 늘어요.',tgt:'upBtn',inner:'[data-up]'},
     {why:'상자는 2시간마다 무료! 조각과 장비가 나와요.',term:'🧩 조각: 직원을 승진시키는 재료예요.',tgt:'gemPill',inner:'[data-box="free"]:not([disabled])'},
     {why:'층을 지으면 손님이 늘고 매출이 올라요. 공사는 시간이 걸리니 먼저 걸어 두세요.',term:'🏗️ 층 완공: 다음 지점을 여는 두 번째 열쇠예요.',tgt:'v285brBtn',inner:'[data-start]'},
@@ -5805,38 +5824,19 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     ring(rg);
   }catch(e){} },250);
 }catch(e){ console.warn('v312 guide',e); } })();
-/* v3.12: 수리실 통합 — ① 상단 [수리실] 버튼 대신 매장 안 수리실 위 '🔧 대기 N' 표지 + 수리실 앞에 서면 [수리실 들어가기]
-   ② 직원 관리는 [매장 직원] / [수리실 직원] 두 묶음으로 */
+/* v3.12: 직원 관리를 [매장 직원] / [수리실 직원] 두 묶음으로 (수리실은 상단 🔧 버튼으로 가는 별도 공간) */
 (function(){ try{
-  const st=document.createElement('style'); st.textContent=
-    'body #labChip{display:none!important}'+
-    '#v312lab{position:fixed;z-index:4;transform:translate(-50%,-100%);display:none;align-items:center;gap:5px;padding:4px 10px 4px 6px;border-radius:999px;background:#1e6f6a;border:2px solid #fff;color:#fff;font:900 12px var(--b);box-shadow:0 3px 0 #0f4a46,0 4px 10px rgba(0,0,0,.25);cursor:pointer;white-space:nowrap}#v312lab i{font-style:normal;width:20px;height:20px;border-radius:50%;background:#fff;color:#1e6f6a;display:flex;align-items:center;justify-content:center;font-size:12px}#v312lab.hot{background:#e8582a;box-shadow:0 3px 0 #a33a14;animation:v312lh 1s ease-in-out infinite}@keyframes v312lh{50%{scale:1.08}}'+
-    '#v312go{position:fixed;left:50%;transform:translateX(-50%);z-index:7;display:none;min-height:46px;white-space:nowrap;padding:0 22px;border:0;border-radius:16px;background:linear-gradient(#5fd3c4,#1e8f86);color:#fff;font:900 15px var(--b);box-shadow:0 4px 0 #0f5f58,0 8px 16px rgba(0,0,0,.2)}'+
-    '.v312rh{margin:10px 2px 2px;font:900 12.5px var(--b);color:#6a4a20;display:flex;align-items:center;gap:6px}.v312rh::after{content:"";flex:1;height:1px;background:#e6d4b4}';
-  document.head.appendChild(st);
-  const tag=document.createElement('div'); tag.id='v312lab'; tag.setAttribute('role','button'); tag.setAttribute('aria-label','수리실 열기'); document.body.appendChild(tag);
-  const go=document.createElement('button'); go.id='v312go'; go.type='button'; go.textContent='🔧 수리실 들어가기'; document.body.appendChild(go);
-  const open=function(e){ if(e) e.stopPropagation(); try{ initAudio(); snd('ui',0.4); repOpen(); }catch(_){} };
-  tag.addEventListener('click',open); go.addEventListener('click',open);
-  window.__v312labOpen=open;
-  let lk='';
-  setInterval(function(){ try{
-    const on=S.unl&&S.unl.includes('repair')&&(typeof REP==='undefined'||!REP.open), md=document.getElementById('modal'), busy=(md&&md.classList.contains('on'))||document.body.classList.contains('title')||(typeof quizOpen!=='undefined'&&quizOpen)||(typeof V287!=='undefined'&&V287.cur&&V287.cur()>0);
-    if(!on||busy){ tag.style.display='none'; go.style.display='none'; return; }
-    const q=(typeof RQ!=='undefined'?RQ.filter(function(j){ return j.st==='wait'; }).length:0);
-    const p=ftueScr(RLAB.x,2.7,RLAB.z);
-    if(p&&p[1]>120&&p[1]<innerHeight-90&&p[0]>20&&p[0]<innerWidth-20){ tag.style.left=p[0]+'px'; tag.style.top=p[1]+'px'; tag.style.display='flex'; } else tag.style.display='none';
-    const k=q+''; if(k!==lk){ lk=k; tag.innerHTML='<i>🔧</i>'+(q?'수리 대기 '+q:'수리실'); tag.classList.toggle('hot',q>0); }
-    const d=Math.hypot(player.pos.x-RLAB.x,player.pos.z-RLAB.z);
-    if(d<2.8){ const bb=document.getElementById('bbar'); const r=bb&&bb.getBoundingClientRect(); let _b=((r&&r.top)||(innerHeight-90))-58; try{ const ts=document.getElementById('toast'), tr=ts.getBoundingClientRect(); if(getComputedStyle(ts).display!=='none'&&+getComputedStyle(ts).opacity>0.3&&tr.height>6) _b=Math.min(_b,tr.top-54); }catch(_){} go.style.top=_b+'px'; go.textContent=q?'🔧 수리실 들어가기 · 대기 '+q:'🔧 수리실 들어가기'; go.style.display='block'; } else go.style.display='none';
-  }catch(e){} },250);
+  const st=document.createElement('style'); st.textContent='.v312rh{margin:10px 2px 2px;font:900 12.5px var(--b);color:#6a4a20;display:flex;align-items:center;gap:6px}.v312rh::after{content:"";flex:1;height:1px;background:#e6d4b4}'; document.head.appendChild(st);
+  try{ const st2=document.createElement('style'); st2.textContent='#repUI #v269RepCard{background:linear-gradient(180deg,#fff7e2,#ffe9b8)!important;border:2px solid #f0c25a!important;box-shadow:0 3px 0 #d6a03a!important;color:#5a3a10!important}#repUI #v269RepCard *{color:#5a3a10!important}#repUI #v269RepCard .ic{color:#e08a00!important}#repUI #v269RepCard button,#repUI #v269RepCardB{color:#fff!important}#repUI #v269RepCardB *{color:#fff!important}#repUI .rps{background:linear-gradient(#fffaf0,#f6ecda)!important}#repUI #v262RepAI.v312e{display:none!important}'; document.head.appendChild(st2);
+    setInterval(function(){ try{ const ai=document.getElementById('v262RepAI'); if(ai){ const t=ai.innerText.replace(/\s+/g,''); ai.classList.toggle('v312e',t.length<20||/^.{0,6}브리핑시뮬레이터$/.test(t)); } }catch(_){} },500); }catch(_){}
+  window.__v312labOpen=function(){ try{ initAudio(); snd('ui',0.4); repOpen(); }catch(_){} };
   /* 직원 관리: 매장 / 수리실 묶음 */
   setInterval(function(){ try{
     const dl=document.querySelector('#modal.on #mbox .dlist'); if(!dl||dl.querySelector('.v312rh')) return;
     const rows=[...dl.children].filter(function(e){ return e.classList.contains('crow'); }); if(rows.length<3) return;
     const tech=rows.find(function(e){ return /수리 기사/.test(e.textContent.slice(0,20)); }); if(!tech) return;
     const h1=document.createElement('div'); h1.className='v312rh'; h1.textContent='🏬 매장 직원 · 판매·상담·재고';
-    const h2=document.createElement('div'); h2.className='v312rh'; h2.textContent='🔧 수리실 직원 · 수리실에서 자동으로 고쳐요';
+    const h2=document.createElement('div'); h2.className='v312rh'; h2.textContent='🔧 수리실 직원 · 상단 수리실에서 자동으로 고쳐요';
     dl.prepend(h1); const extra=rows.find(function(e){ return /추가 직원/.test(e.textContent.slice(0,20)); });
     if(extra) extra.before(h2); else dl.appendChild(h2); h2.after(tech);
   }catch(e){} },300);
@@ -5855,7 +5855,7 @@ function v299FixWait(){ try{ return custs.some(function(c){ return !c.fl&&c.type
 function v299Day2Hint(){ try{
   var rq=(typeof RQ!=='undefined'&&Array.isArray(RQ))?RQ:[];
   var wait=rq.filter(function(j){ return j.st==='wait'; }).length, doing=rq.filter(function(j){ return j.st!=='wait'; }).length;
-  if(wait) return '🔧 접수 '+wait+'건 — 매장 안 🔧 수리실 표지를 눌러 고쳐요';
+  if(wait) return '🔧 접수 '+wait+'건 — 위 [🔧 수리실]을 눌러 고쳐요';
   if(doing) return '🔧 수리 진행 중 — 작업대에서 마무리하면 별점·수익이 쌓여요';
   if(v299FixWait()) return '🔧 수리 손님 — 옆에서 진단하고 접수해야 별점·수익이 쌓여요';
   return '🔧 수리 손님은 진단·접수해야 별점·수익이 쌓여요';
@@ -13133,6 +13133,7 @@ try{ window.__H=window.__H||{}; window.__H.v285={
   gem:function(n){ V285.gems(n||50,'QA'); return V285.state().gem; },
   eq:function(slot,r){ try{ V285.addGear(slot,r|0,1); return V285.equip(slot,r|0); }catch(e){ return String(e); } },
   gdset:function(srvN,gd){ try{ if(srvN!=null) S.stats.srv=srvN; if(gd!=null) S.gd=gd; return {gd:S.gd|0,money:money}; }catch(e){ return String(e); } },
+  repdbg:function(){ try{ return {scene:!!REP.scene,built:REP.built,open:REP.open,vp:REP.vp,err:REP.err}; }catch(e){ return String(e); } },
   juice:function(x,z,p){ try{ v310Juice(x,z,p); return 1; }catch(e){ return String(e); } },
   capdbg:function(){ try{ var ch=player.ch, hp=null; ch.inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); var cap=(ch._v285cap&&ch._v285cap.children[0])||(ch._v285g&&ch._v285g.children[0]); if(!hp||!cap) return null; var a=new THREE.Vector3(), b=new THREE.Vector3(); hp.getWorldPosition(a); cap.getWorldPosition(b); return [+(b.x-a.x).toFixed(3),+(b.y-a.y).toFixed(3),+(b.z-a.z).toFixed(3)]; }catch(e){ return String(e); } },
   open:function(st){ V285.openBranch(st); return 1; }, box:function(k){ V285.openBoxes(k); return 1; },
