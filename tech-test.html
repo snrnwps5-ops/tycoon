@@ -4039,7 +4039,7 @@ function lbObstacles(){
   const W=VW||innerWidth, H=VH||innerHeight, now=performance.now();
   if(now-LBOB.t<150 && LBOB.W===W && LBOB.H===H) return LBOB.list;
   LBOB.t=now; LBOB.W=W; LBOB.H=H;
-  const ids=['hud','sub','subR','shopBtn','camctl','v275ch','dayBar','stockAl','combo','v287fl'];   /* v2.83: 상단 계기판·칩 줄도 직원 이름표가 피한다 */   /* v2.82: 토스트는 하단으로 옮겨 '천장'이 아니라 '바닥'으로 다룬다 */
+  const ids=['hud','sub','subR','shopBtn','camctl','v275ch','dayBar','stockAl','combo','v287fl','v311g'];   /* v2.83: 상단 계기판·칩 줄도 직원 이름표가 피한다 */   /* v2.82: 토스트는 하단으로 옮겨 '천장'이 아니라 '바닥'으로 다룬다 */
   const out=[];
   for(let i=0;i<ids.length;i++){
     const e=document.getElementById(ids[i]); if(!e) continue;
@@ -4054,7 +4054,13 @@ function lbObstacles(){
 function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWidth,H=VH||innerHeight; el._sx=(v3.x+1)/2*W; el._sy=(1-v3.y)/2*H; el._oy=0; el._d=d||0;
   /* v2.60: 말풍선이 화면 좌우 밖으로 나가지 않게 안쪽으로 붙인다(폭은 CSS max-width가 먼저 줄인다) */
   const _hw=Math.min((el._w||120)/2+4,W/2); el._sx=Math.max(_hw,Math.min(W-_hw,el._sx)); LBV.push(el); }
-function lbFlush(){ if(!LBV.length) return;
+/* v3.11: 손님이 많을 때 말풍선이 화면을 덮지 않게 — 사장님과 가까운(급한 손님 우선) 4명만 전체 말풍선, 나머지는 얼굴 아이콘만 */
+function lbDeclutter(){ try{ const MAX=(VW||innerWidth)<420?4:6; const L=LBV.slice().sort((a,b)=>((a.classList.contains('need')?-3:0)+a._d)-((b.classList.contains('need')?-3:0)+b._d));
+  L.forEach(function(el,i){ const want=i>=MAX, has=el.classList.contains('mini');
+    if(want&&!has){ el._fw=el._w; el._fh=el._h; el.classList.add('mini'); el._w=34; el._h=34; }
+    else if(!want&&has){ el.classList.remove('mini'); el._w=el._fw||el._w; el._h=el._fh||el._h; } }); }catch(e){} }
+try{ const st=document.createElement('style'); st.textContent='.lb:not(.mini){max-width:min(62vw,230px)!important}.lb.mini{font-size:0!important;padding:3px!important;border-radius:50%!important;max-width:none!important;opacity:.92}.lb.mini>*:not(.fc){display:none!important}.lb.mini .fc{margin:0!important}'; document.head.appendChild(st); }catch(e){}
+function lbFlush(){ if(!LBV.length) return; lbDeclutter();
   /* v2.78: 말풍선 배치를 '위로만 쌓기'로 바꿨다.
      - 예전: 겹치면 아래 말풍선을 더 아래로 밀어( _oy<0 ) 화면 밖·하단 버튼 바 뒤로 사라졌다.
      - 지금: 아래쪽 말풍선을 기준으로 위로만 밀고, 최저선(LBBOT)보다 내려가지 않는다.
@@ -5684,6 +5690,59 @@ setInterval(function(){ try{
   if(!mv.length) return;
   p.querySelector(':scope > .v294odds').after(d); mv.forEach(function(e){ d.appendChild(e); });
 }catch(e){} },250);
+/* v3.11: 메인 가이드 — 화면 위 '지금 할 일' 한 줄. 항상 1개만, 끝나면 보상 받고 다음 단계.
+   탭하면 해당 화면으로 바로 이동. 저장 필드 S.gd(단계 번호)만 추가 — 없으면 0부터. */
+var GD=(function(){
+  function V5(){ try{ return V285.state(); }catch(e){ return null; } }
+  function fl(st,i){ try{ return V285.floorState(st,i); }catch(e){ return 'lock'; } }
+  function upSum(){ var t=0; try{ for(var k in S.up) t+=(+S.up[k]||0); }catch(e){} return t; }
+  function crewN(){ try{ return (S.crew||[]).length; }catch(e){ return 0; } }
+  function srv(){ return (S.stats&&S.stats.srv)||0; }
+  function star3(){ try{ return (S.dayStars||[]).some(function(x){ return x>=3; }); }catch(e){ return false; } }
+  function goUp(){ try{ openUp(); }catch(e){} }
+  function goCrew(){ try{ openCrew(); }catch(e){} }
+  function goBox(){ try{ V285.openBoxes(); }catch(e){} }
+  function goBr(){ try{ V285.openBranch((typeof STG==='number')?STG:0); }catch(e){} }
+  function goInv(){ try{ document.getElementById('invBtn').click(); }catch(e){} }
+  var L=[
+    {t:'손님 3명 응대하기', p:function(){ return [srv(),3]; }, r:{m:50}, h:'손님을 톡 누르면 걸어가서 응대해요'},
+    {t:'첫 영업 마치기', p:function(){ return [Math.min(1,S.day),1]; }, r:{m:100}, h:'시간이 끝나면 영업이 마감돼요'},
+    {t:'업그레이드 1번 하기', p:function(){ return [Math.min(1,upSum()),1]; }, r:{m:80}, go:goUp, h:'[업그레이드]에서 속도·가격을 올려요'},
+    {t:'무료 상자 열기', p:function(){ var v=V5(); return [Math.min(1,(v&&v.box&&v.box.n)||0),1]; }, r:{g:5}, go:goBox, h:'상자에서 조각·장비가 나와요'},
+    {t:'1층 체험존 착공하기', p:function(){ var f=fl(0,0); return [(f==='build'||f==='done')?1:0,1]; }, r:{g:5}, go:goBr, h:'층을 지으면 손님과 매출이 늘어요'},
+    {t:'직원 1명 더 고용하기', p:function(){ return [Math.min(1,Math.max(0,crewN()-1)),1]; }, r:{m:150}, go:goCrew, h:'직원이 손님 응대를 도와줘요'},
+    {t:'★3으로 영업 클리어', p:function(){ return [star3()?1:0,1]; }, r:{m:200}, h:'목표 매출 130%를 넘기면 ★3'},
+    {t:'재고 발주하기', p:function(){ if((S.dock||[]).length) S.gdOrd=1; return [S.gdOrd?1:0,1]; }, r:{m:80}, go:goInv, h:'[재고]에서 부족한 품목을 발주해요'},
+    {t:'손님 30명 응대하기', p:function(){ return [srv(),30]; }, r:{m:300}, h:'손님을 많이 받을수록 레벨이 올라요'},
+    {t:'대구 2층 완공하기', p:function(){ return [fl(0,1)==='done'?1:0,1]; }, r:{g:10}, go:goBr, h:'2층이 열리면 엘리베이터로 오가요'},
+    {t:'다음 지점(부산) 열기', p:function(){ return [Math.min(1,S.curStage||0),1]; }, r:{g:20}, h:'별과 층 완공을 채우면 열려요'}
+  ];
+  function cur(){ var i=S.gd|0; if(i<L.length) return {i:i,s:L[i]};
+    var n=100*Math.pow(2,i-L.length); return {i:i,s:{t:'손님 '+n+'명 응대하기',p:function(){ return [srv(),n]; },r:{m:Math.round(200+n*3)},h:'꾸준히 응대하면 보상이 커져요'}}; }
+  return {L:L,cur:cur};
+})();
+try{ const st=document.createElement('style'); st.textContent='#v311g{position:fixed;left:50%;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:7px;max-width:min(86vw,330px);padding:6px 12px 6px 8px;border-radius:999px;background:rgba(255,251,240,.97);border:2px solid #f0c25a;box-shadow:0 3px 0 #d6a03a,0 6px 14px rgba(60,40,10,.18);font:900 12.5px var(--b);color:#5a3a10;cursor:pointer;white-space:nowrap}#v311g i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;background:#ffb020;color:#fff;display:flex;align-items:center;justify-content:center;font:900 11px var(--b)}#v311g span{overflow:hidden;text-overflow:ellipsis}#v311g b{flex:none;color:#2f9a63}#v311g.done{background:linear-gradient(#8cf06c,#2fa36a);border-color:#1d7a2a;box-shadow:0 3px 0 #1d6a2a;color:#fff;animation:v311gp .9s ease-in-out infinite}#v311g.done b{color:#fff}#v311g.done i{background:#fff;color:#2fa36a}@keyframes v311gp{50%{scale:1.05}}body.title #v311g,body.ftue #v311g{display:none!important}'; document.head.appendChild(st);
+  const el=document.createElement('div'); el.id='v311g'; el.setAttribute('role','button'); document.body.appendChild(el);
+  let last='';
+  el.addEventListener('click',function(e){ e.stopPropagation(); try{ initAudio(); }catch(_){}
+    const c=GD.cur(), p=c.s.p();
+    if(p[0]>=p[1]){ const r=c.s.r||{}; if(r.m){ money+=r.m; } if(r.g){ try{ V285.gems(r.g,'가이드'); }catch(_){} }
+      S.gd=(S.gd|0)+1; save(); last='';
+      try{ snd('level_up',0.5,1.15); haptic([8,20,8]); bigBanner('✅ '+c.s.t,'보상 '+(r.m?'+$'+r.m:'')+(r.g?' 💎+'+r.g:'')); }catch(_){}
+      return; }
+    try{ snd('ui',0.4); }catch(_){}
+    if(c.s.go&&!document.getElementById('modal').classList.contains('on')) c.s.go(); else { try{ toast('💡 '+c.s.h,2.6); }catch(_){} } });
+  setInterval(function(){ try{
+    const m=document.getElementById('modal'), busy=(m&&m.classList.contains('on'))||document.getElementById('v294pull')||document.body.classList.contains('title')||(typeof quizOpen!=='undefined'&&quizOpen);
+    if(busy){ el.style.display='none'; return; }
+    const db=document.getElementById('dayBar'); let top=150; if(db){ const r=db.getBoundingClientRect(); if(r.height>4&&getComputedStyle(db).display!=='none') top=r.bottom+6; }
+    el.style.top=top+'px'; el.style.display='flex';
+    const c=GD.cur(), p=c.s.p(), ok=p[0]>=p[1];
+    const k=c.i+':'+Math.min(p[0],p[1])+':'+ok; if(k===last) return; last=k;
+    el.classList.toggle('done',ok);
+    el.innerHTML='<i>'+(ok?'✓':(c.i+1))+'</i><span>'+(ok?'완료! 보상 받기 · ':'')+c.s.t+'</span><b>'+(ok?(c.s.r.m?'+$'+c.s.r.m:'💎'+c.s.r.g):(p[1]>1?Math.min(p[0],p[1])+'/'+p[1]:'→'))+'</b>';
+  }catch(e){} },400);
+}catch(e){}
 /* v3.09: DAY 2~3은 핵심 버튼만 — 첫날(ftue) 숨김을 이틀 더 이어 간다. 상점·랭킹·꾸미기·카메라·저장·부스터·지점 이동·본사 챌린지는 DAY 4부터.
    층 건설(🏗️)·업그레이드·직원·미션·재고·수리실은 그대로 둔다. 새 저장 필드 S.v309o(열림 배너 1회)만 추가 — 없으면 기본값. */
 function v309Early(){ try{ return S.day>=1 && S.day<=2 && !ftueOn(); }catch(e){ return false; } }
@@ -12975,6 +13034,7 @@ try{ window.__H=window.__H||{}; window.__H.v285={
   all:function(){ var o=[]; for(var i=0;i<6;i++) o.push({stage:i,floors:V285.nFloors(i),done:V285.floorsDone(i),pct:V285.pct(i),complete:V285.branchDone(i)}); return o; },
   gem:function(n){ V285.gems(n||50,'QA'); return V285.state().gem; },
   eq:function(slot,r){ try{ V285.addGear(slot,r|0,1); return V285.equip(slot,r|0); }catch(e){ return String(e); } },
+  gdset:function(srvN,gd){ try{ if(srvN!=null) S.stats.srv=srvN; if(gd!=null) S.gd=gd; return {gd:S.gd|0,money:money}; }catch(e){ return String(e); } },
   juice:function(x,z,p){ try{ v310Juice(x,z,p); return 1; }catch(e){ return String(e); } },
   capdbg:function(){ try{ var ch=player.ch, hp=null; ch.inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); var cap=(ch._v285cap&&ch._v285cap.children[0])||(ch._v285g&&ch._v285g.children[0]); if(!hp||!cap) return null; var a=new THREE.Vector3(), b=new THREE.Vector3(); hp.getWorldPosition(a); cap.getWorldPosition(b); return [+(b.x-a.x).toFixed(3),+(b.y-a.y).toFixed(3),+(b.z-a.z).toFixed(3)]; }catch(e){ return String(e); } },
   open:function(st){ V285.openBranch(st); return 1; }, box:function(k){ V285.openBoxes(k); return 1; },
