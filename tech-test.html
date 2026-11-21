@@ -12706,7 +12706,7 @@ var V285=(function(){
       if(ch._v285g){ try{ inner.remove(ch._v285g); }catch(e){} ch._v285g=null; }
       var g=new THREE.Group(); inner.add(g); ch._v285g=g;
       /* v2.86: 모자는 머리 위로, 조끼는 몸통 밖으로, 가방은 어깨 옆으로 — 탑다운에서도 착용이 뚜렷이 보이게 */
-      var hh=1.54; try{ var hp=null; inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); if(hp){ var vv=new THREE.Vector3(); hp.getWorldPosition(vv); inner.worldToLocal(vv); hh=vv.y+0.4; } }catch(e){}
+      var hh=1.54; try{ var hp=null; inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); if(hp){ var vv=new THREE.Vector3(); hp.getWorldPosition(vv); inner.worldToLocal(vv); hh=vv.y+0.3; /* v3.08: 머리뼈에 붙은 헤어 볼륨(포니·번 등) 꼭대기를 재서 그 위에 씌운다 — 고정 높이로는 긴 머리에 모자가 파묻혔다 */ try{ var bb=new THREE.Box3().setFromObject(hp); if(isFinite(bb.max.y)){ var tp=new THREE.Vector3(vv.x,0,0); tp.copy(hp.getWorldPosition(new THREE.Vector3())); tp.y=bb.max.y; inner.worldToLocal(tp); hh=Math.max(hh,tp.y-0.1); } }catch(_){} } }catch(e){}
       var eq=V.eq;
       function gm(col,extra){ var o={color:col,shininess:60}; if(extra) for(var k in extra) o[k]=extra[k]; return new THREE.MeshPhongMaterial(o); }
       if(eq.cap>=0){
@@ -12880,6 +12880,7 @@ try{ window.__H=window.__H||{}; window.__H.v285={
     return o; },
   all:function(){ var o=[]; for(var i=0;i<6;i++) o.push({stage:i,floors:V285.nFloors(i),done:V285.floorsDone(i),pct:V285.pct(i),complete:V285.branchDone(i)}); return o; },
   gem:function(n){ V285.gems(n||50,'QA'); return V285.state().gem; },
+  eq:function(slot,r){ try{ V285.addGear(slot,r|0,1); return V285.equip(slot,r|0); }catch(e){ return String(e); } },
   open:function(st){ V285.openBranch(st); return 1; }, box:function(k){ V285.openBoxes(k); return 1; },
   gear:function(){ V285.openGear(); return 1; }, hq:function(){ V285.openHq(); return 1; }, bag:function(){ V285.openBag(); return 1; },
   sx:{charge:function(d,r){ sxBoxCharge(d,r); }, open:function(r){ sxBoxOpen(r); }, flip:function(i,h){ sxCardFlip(i,h); }, level:function(){ sfxLevel(); }, wrong:function(){ sfxWrong(); }, bgm:function(){ bgmT=0; bgmTick(0.01); }, ready:function(){ return !!SXC; }},
