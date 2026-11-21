@@ -37,7 +37,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v3.10';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v3.11';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v3.10</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v3.11</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
@@ -1270,6 +1270,19 @@ body.title #v285boost,body.rep #v285boost,body.biz #v285boost{display:none!impor
 #v294pull .bw canvas{height:250px;display:block;width:calc(100% + 90px);max-width:none;margin-left:-45px;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 52%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 52%,#000 62%,transparent 100%)}
 #v294pull .gbg{position:absolute;left:50%;top:30%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;opacity:0;pointer-events:none;background:radial-gradient(circle,var(--gc,rgba(255,200,80,.7)),rgba(0,0,0,0) 62%);animation:v305bg 1.8s var(--gd,1s) ease-out forwards}
 @keyframes v305bg{0%{opacity:0;transform:scale(.4)}25%{opacity:.85;transform:scale(1)}100%{opacity:.28;transform:scale(1.15)}}
+#v294pull .bw.v311{height:206px}
+#v294pull .bw.v311 .box.bxs2{width:176px;height:211px;font-size:0;background-image:url(boxes2.png);background-size:300% 100%;background-repeat:no-repeat;filter:drop-shadow(0 14px 20px rgba(0,0,0,.55));animation:v311drop .45s cubic-bezier(.2,1.5,.4,1) both,v311shake .62s .38s ease-in forwards,v311pop .55s var(--t) cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes v311drop{0%{transform:translateY(-220px) scale(.7);opacity:0}60%{opacity:1}100%{transform:translateY(0) scale(1)}}
+@keyframes v311shake{0%{transform:rotate(0)}15%{transform:rotate(-4deg) scale(1.02)}30%{transform:rotate(5deg) scale(1.04)}45%{transform:rotate(-7deg) scale(1.06)}60%{transform:rotate(8deg) scale(1.08)}75%{transform:rotate(-9deg) scale(1.1)}90%{transform:rotate(6deg) scale(1.12,1.06)}100%{transform:rotate(0) scale(1.15,.92)}}
+@keyframes v311pop{0%{transform:scale(1.15,.92)}35%{transform:scale(1.35) translateY(-8px)}100%{transform:scale(.62) translateY(-46px)}}
+#v294pull .bw.v311 .sun{position:absolute;left:50%;top:50%;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;opacity:0;background:repeating-conic-gradient(from 0deg,var(--gc) 0 9deg,transparent 9deg 22deg);-webkit-mask-image:radial-gradient(circle,#000 8%,transparent 66%);mask-image:radial-gradient(circle,#000 8%,transparent 66%);animation:v311sunIn .5s var(--t) ease-out forwards,v311spin 7s var(--t) linear infinite}
+@keyframes v311sunIn{to{opacity:.75}}@keyframes v311spin{from{rotate:0deg}to{rotate:360deg}}
+#v294pull .bw.v311 .pt{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:radial-gradient(circle,#fff,var(--gc) 60%);opacity:0;animation:v311pt .9s var(--t) cubic-bezier(.1,.8,.3,1) forwards}
+#v294pull .bw.v311 .pt:nth-child(3n){width:7px;height:14px;border-radius:3px;background:#fff6b0}
+@keyframes v311pt{0%{opacity:1;transform:translate(0,0) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.4)}}
+#v294pull .bw.v311 .fl{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;animation:v311fl .45s var(--t) ease-out forwards}
+@keyframes v311fl{0%{opacity:.85}100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){#v294pull .bw.v311 *{animation-duration:.01s!important}}
 #v294pull .cards{position:relative;margin-top:8px;display:flex;flex-direction:column;gap:7px}
 #v294pull .cd{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:14px;background:rgba(255,252,244,.97);border:2px solid #8a8f9c;box-shadow:0 4px 0 rgba(0,0,0,.28);text-align:left;opacity:0;transform:translateY(16px) scale(.86);animation:v294cd .38s cubic-bezier(.2,1.5,.4,1) forwards}
 @keyframes v294cd{to{opacity:1;transform:translateY(0) scale(1)}}
@@ -1848,7 +1861,7 @@ body{font-family:var(--b);letter-spacing:-.15px}
 <div id="camctl"><button id="camFull" title="전체 보기" aria-label="전체 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.2"/><path d="M15.2 15.2L21 21"/></svg><b>전체</b></button><button id="camBase" class="on" title="기본 시점" aria-label="기본 시점"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.6"/><circle cx="12" cy="12" r="3.1"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기" aria-label="인테리어 꾸미기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 12V8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5V12"/><path d="M3 12.5h18a1.5 1.5 0 0 1 1.5 1.5v3.5A1.5 1.5 0 0 1 21 19H3a1.5 1.5 0 0 1-1.5-1.5V14A1.5 1.5 0 0 1 3 12.5z"/><path d="M5.5 19v2M18.5 19v2"/></svg><b>꾸미기</b></button><button id="v285brBtn" title="지점 완공" aria-label="지점 완공"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V6h12"/><path d="M6 6L3 3M18 6v4"/><path d="M15 10h6v2a3 3 0 0 1-6 0z"/><path d="M18 6l3-1"/></svg><b id="brTxt">0/2F</b><i></i></button></div>
 <div id="intp"><div class="ihd"><b>인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i><span class="v3si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg></span><span class="v3st"><span class="tx">영업 시작</span><em id="tStartBadge"></em></span></button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>다른 기기에서 이어하기</button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><button id="tGear" style="display:none"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg></span>설정</button><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v3.10</div></div><div id="load"><div class="ldTop"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div></div><div class="ldMid"><div id="ldStage"><div id="ldBarWrap"><div id="ldBar"><i></i><b id="ldSpark"></b></div><div id="ldCart"><svg viewBox="0 0 32 24" width="34" height="26" aria-hidden="true"><path d="M2 3h4l3.2 12.2A2 2 0 0 0 11.1 17h12.3a2 2 0 0 0 1.9-1.4L28 7H8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12.5" cy="20.4" r="2.1" fill="#ffd23f"/><circle cx="23" cy="20.4" r="2.1" fill="#ffd23f"/><rect x="13" y="4.6" width="8.6" height="7.4" rx="1.4" fill="#7bea62"/><path d="M15.6 4.6v7.4M19.2 4.6v7.4" stroke="#2faa45" stroke-width="1.1" opacity=".55"/></svg></div><div id="ldDoor"><svg viewBox="0 0 28 34" width="28" height="34" aria-hidden="true"><rect class="gl" x="1" y="2" width="26" height="30" rx="4" fill="#ffe98a" opacity=".9"/><rect class="dl" x="2" y="3" width="12" height="28" rx="3" fill="#5ad1ff"/><rect class="dr" x="14" y="3" width="12" height="28" rx="3" fill="#2f7df0"/><circle cx="11.5" cy="17" r="1.4" fill="#0b1d5e"/><circle cx="16.5" cy="17" r="1.4" fill="#0b1d5e"/></svg></div></div><div id="ldPct"></div><div class="s" id="lds">게임 파일을 내려받는 중…</div><div id="ldTipCard"><b>TIP</b><div id="ldTip"></div></div></div></div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i><span class="v3si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg></span><span class="v3st"><span class="tx">영업 시작</span><em id="tStartBadge"></em></span></button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>다른 기기에서 이어하기</button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><button id="tGear" style="display:none"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg></span>설정</button><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v3.11</div></div><div id="load"><div class="ldTop"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div></div><div class="ldMid"><div id="ldStage"><div id="ldBarWrap"><div id="ldBar"><i></i><b id="ldSpark"></b></div><div id="ldCart"><svg viewBox="0 0 32 24" width="34" height="26" aria-hidden="true"><path d="M2 3h4l3.2 12.2A2 2 0 0 0 11.1 17h12.3a2 2 0 0 0 1.9-1.4L28 7H8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12.5" cy="20.4" r="2.1" fill="#ffd23f"/><circle cx="23" cy="20.4" r="2.1" fill="#ffd23f"/><rect x="13" y="4.6" width="8.6" height="7.4" rx="1.4" fill="#7bea62"/><path d="M15.6 4.6v7.4M19.2 4.6v7.4" stroke="#2faa45" stroke-width="1.1" opacity=".55"/></svg></div><div id="ldDoor"><svg viewBox="0 0 28 34" width="28" height="34" aria-hidden="true"><rect class="gl" x="1" y="2" width="26" height="30" rx="4" fill="#ffe98a" opacity=".9"/><rect class="dl" x="2" y="3" width="12" height="28" rx="3" fill="#5ad1ff"/><rect class="dr" x="14" y="3" width="12" height="28" rx="3" fill="#2f7df0"/><circle cx="11.5" cy="17" r="1.4" fill="#0b1d5e"/><circle cx="16.5" cy="17" r="1.4" fill="#0b1d5e"/></svg></div></div><div id="ldPct"></div><div class="s" id="lds">게임 파일을 내려받는 중…</div><div id="ldTipCard"><b>TIP</b><div id="ldTip"></div></div></div></div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
@@ -1936,7 +1949,7 @@ const QAMODE=(function(){ try{ return new URLSearchParams(location.search).get('
 const SK=QAMODE?('qa-'+SAVE):SAVE;
 if(QAMODE){ try{
   /* QA 세이브는 판이 올라가면 한 번 비운다(옛 스키마가 새 화면을 깨지 않게) — qa- 접두어만 지운다 */
-  var QAV='v3.10', _qk=[];
+  var QAV='v3.11', _qk=[];
   try{ for(var _qi=0;_qi<localStorage.length;_qi++){ var _qn=localStorage.key(_qi); if(_qn&&_qn.indexOf('qa-')===0&&_qn!=='qa-epoch') _qk.push(_qn); } }catch(e){ _qk=[]; }
   if(localStorage.getItem('qa-epoch')!==QAV){ for(var _qj=0;_qj<_qk.length;_qj++){ try{ localStorage.removeItem(_qk[_qj]); }catch(e){} } try{ localStorage.setItem('qa-epoch',QAV); }catch(e){} }
   /* 콘솔 오류 카운터 — 부팅 도중에 난 오류까지 세도록 가장 먼저 건다 */
@@ -13835,8 +13848,7 @@ var V285=(function(){
   var V294TIM=null, V294CB=null, V294SKIP=null;
   function v294Card(r,delay){
     var ic='', nm='', sub='', col='#8a8f9c', tag='';
-    if(r.t==='sh'){ ic='🧩'; nm=(V294PN[r.k]||'')+' 승급 조각'; sub='+'+r.n+'장 · 승진에 사용'; col=V294PC[r.k]||'#2f6fd8'; tag='승급'; }
-    else if(r.t==='hq'){ ic='🏢'; nm=deptName(r.k)+' 연구 조각'; sub='+'+r.n+'장 · 본사 혜택에 사용'; col='#c8892c'; tag='연구'; }
+    if(r.t==='sh'||r.t==='hq'){ ic='🧩'; nm='조각 +'+r.n; sub='승진·본사 연구에 사용'; col='#2f6fd8'; tag='조각'; }   /* v3.11: 조각 1종 */
     else { var G=GEAR[r.k]||{n:'장비',ic:'👕',d:''}; ic=G.ic; nm=G.n+' · '+RN[r.r]; sub=(G.d||'')+' +'+(G.fx?G.fx[r.r]:0)+'%'; col=RC[r.r]||'#8a8f9c'; tag=RN[r.r]; }
     return '<div class="cd" style="border-color:'+col+';animation-delay:'+delay.toFixed(2)+'s">'+
       '<div class="ci" style="background:'+col+'22;color:'+col+'">'+ic+'</div>'+
@@ -13989,11 +14001,11 @@ var V285=(function(){
       var old=document.getElementById('v294pull'); if(old){ try{ bxvStop(); old.parentNode.removeChild(old); }catch(e){} }
       var B=BOX[kind]||BOX.free;
       var rr=0; rewards.forEach(function(r){ if(r.t==='gear'&&r.r>rr) rr=r.r; });
-      var d3=bxvOK(), X=d3?(0.35+(rr>=2?0.25:0)):0;   /* 3D일 때는 기대감 구간을 조금 늘린다 */
+      var d3=false, X=0.3+(rr>=2?0.25:0);   /* v3.11: 3D 박스 대신 새 상자 그림(boxes2.png)으로 — 떨어짐·흔들림·빛 폭발·회전 광선 */
       var el=document.createElement('div'); el.id='v294pull'; el.setAttribute('role','dialog'); el.setAttribute('aria-label',B.n+' 개봉 결과');
       el.innerHTML='<div class="dim"></div>'+(d3?'<div class="gbg"></div>':'')+'<div class="st">'+
         '<div class="ttl">'+B.ic+' '+B.n+' 개봉</div>'+
-        '<div class="bw"><div class="ray" style="animation-delay:'+(0.95+X).toFixed(2)+'s"></div><div class="box">'+B.ic+'</div></div>'+
+        '<div class="bw v311" style="--t:'+(0.95+X).toFixed(2)+'s;--gc:#'+(BXVG[rr]||0xffd23f).toString(16).padStart(6,'0')+'"><div class="sun"></div><div class="ray" style="animation-delay:'+(0.95+X).toFixed(2)+'s"></div><div class="box bxs2" style="background-position:'+({free:'0',prem:'50%',leg:'100%'}[kind]||'0')+' 0"></div>'+(function(){ var h=''; for(var i=0;i<14;i++){ var a=i/14*Math.PI*2+Math.random()*0.3, d=90+Math.random()*70; h+='<i class="pt" style="--dx:'+Math.round(Math.cos(a)*d)+'px;--dy:'+Math.round(Math.sin(a)*d)+'px"></i>'; } return h; })()+'<div class="fl"></div></div>'+
         '<div class="cards">'+rewards.map(function(r,i){ return v294Card(r,1.3+X+i*0.22); }).join('')+'</div>'+
         '<div class="skip">화면을 탭하면 바로 결과로</div></div>';
       document.body.appendChild(el);
@@ -14019,11 +14031,11 @@ var V285=(function(){
      · 장비: 착용/해제/합성을 가방 안에서 바로 */
   function bagHTML(){
     var sh=V.sh||{}, h='<div class="v285p v294bag"><h2>🎒 가방</h2>';
-    var tot=0; ['sales','biz','repair','mgr'].forEach(function(k){ tot+=(sh[k]||0); });
-    var hqt=0; DEPT.forEach(function(d){ hqt+=hqShGet(d.k); });
+    var tot=sh.all||0;   /* v3.11: 조각 1종 */
+    var hqt=0;
     var gtot=0; GK.forEach(function(k){ (V.gear[k]||[]).forEach(function(n){ gtot+=(+n||0); }); });
     h+='<p class="vnote">상자·미션에서 나온 승급 조각과 본사 연구 조각, 사장님 장비를 한곳에서 확인하고 바로 써요 · <b>보유 💎 '+fmt(V.gem)+'</b></p>';
-    h+='<div class="v294sum"><span>🧩 승급<b>'+tot+'</b></span><span>🏢 연구<b>'+hqt+'</b></span><span>👕 장비<b>'+gtot+'</b></span></div>';
+    h+='<div class="v294sum"><span>🧩 조각<b>'+tot+'</b></span><span>👕 장비<b>'+gtot+'</b></span></div>';
     /* ① 포지션별 승급 조각 */
     h+='<div class="vsec"><b>🧩 포지션 승급 조각</b></div>';
     ['sales','biz','repair','mgr'].forEach(function(k){
@@ -14902,10 +14914,10 @@ var V287=(function(){
       cyl(0.05,0.05,0.03,'#ffb020',0.86,1.28,0.29,EG,12).rotation.x=Math.PI/2;
       cyl(0.05,0.05,0.03,'#5aa8ff',0.86,1.06,0.29,EG,12).rotation.x=Math.PI/2;
       var t=lbl((fl+1)+'F','#16324f','#ffe9a8',256,128,96);
-      if(t) meshPlane(t,0.5,0.25,0,2.2,0.245,0,EG);
+      if(t) meshPlane(t,0.5,0.25,0,2.2,0.262,0,EG);   /* v3.11: 뒤판 앞면(0.245)과 같은 깊이라 폰에서 숫자가 깜빡였다(z-fighting) */
       box(0.58,0.32,0.05,'#0f2036',0,2.2,0.22,EG);
       var s2=lbl('ELEVATOR','#16324f','#9fd8ff',256,64,30);
-      if(s2) meshPlane(s2,0.6,0.15,0,1.98,0.245,0,EG);
+      if(s2) meshPlane(s2,0.6,0.15,0,1.98,0.285,0,EG);   /* v3.11: 문(앞면 0.27)보다 앞으로 */
       ob2(-0.22,1.32,-10.16,-9.64);
     }catch(e){}
   }
