@@ -12216,9 +12216,102 @@ var V285=(function(){
       '<div class="cx"><b>'+nm+'</b><small>'+sub+'</small></div>'+
       '<em style="background:'+col+'">'+tag+'</em></div>';
   }
+
+  /* ==================== v3.05: 3D 상자 개봉 ====================
+     결과 카드·타이밍·건너뛰기는 v2.94 그대로 두고, 이모지 상자 자리에 three.js 상자를 그린다.
+     [gfx] 단계 2 이상, 모션 줄이기, 2D 빌드, WebGL 실패 시에는 기존 이모지 연출을 그대로 쓴다. */
+  var BXV=null;
+  var BXVP={free:{a:0xb06a2c,b:0x6b3a14,t:0xe9b13a},prem:{a:0x5f84c8,b:0x2c4a86,t:0xe3ecff},leg:{a:0xdcaa2e,b:0x8c5a10,t:0xfff0a8}};
+  var BXVG=[0xffe2a0,0x6ab8ff,0xb88bff,0xffc94a];
+  function bxvOK(){ try{ if(typeof THREE==='undefined'||typeof GFXOK==='undefined'||!GFXOK) return false; if(GFX.lv>=2) return false;
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false; return true; }catch(e){ return false; } }
+  function bxvTex(kind){ var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d'), g=x.createRadialGradient(32,32,0,32,32,32);
+    if(kind==='spark'){ g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.25,'rgba(255,255,255,.85)'); g.addColorStop(1,'rgba(255,255,255,0)'); }
+    else if(kind==='shadow'){ g.addColorStop(0,'rgba(0,0,0,.55)'); g.addColorStop(1,'rgba(0,0,0,0)'); }
+    else { g.addColorStop(0,'rgba(255,255,255,.95)'); g.addColorStop(.35,'rgba(255,255,255,.4)'); g.addColorStop(1,'rgba(255,255,255,0)'); }
+    x.fillStyle=g; x.fillRect(0,0,64,64); var t=new THREE.CanvasTexture(c); return t; }
+  function bxvStop(){
+    var B=BXV; BXV=null; if(!B) return;
+    try{ cancelAnimationFrame(B.raf); }catch(e){}
+    try{ B.scene.traverse(function(o){ if(o.geometry) o.geometry.dispose(); if(o.material){ if(o.material.map) o.material.map.dispose(); o.material.dispose(); } }); }catch(e){}
+    try{ B.r.dispose(); if(B.r.forceContextLoss) B.r.forceContextLoss(); }catch(e){}
+  }
+  function bxvEase(k){ k=Math.max(0,Math.min(1,k)); var c1=2.2,c3=c1+1; return 1+c3*Math.pow(k-1,3)+c1*Math.pow(k-1,2); }
+  /* el: #v294pull, kind: free/prem/leg, rr: 이번 보상 중 가장 높은 장비 등급(0~3), burstAt: 열리는 시각(초) */
+  function bxvAttach(el,kind,rr,burstAt){
+    var host=el.querySelector('.bw'), old=el.querySelector('.bw .box'); if(!host) return false;
+    var cv=document.createElement('canvas'); host.classList.add('b3'); host.appendChild(cv);
+    var w=host.clientWidth||300, h=196, r=null;
+    try{ r=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:GFX.lv===0,powerPreference:'low-power'}); }catch(e){ try{ host.removeChild(cv); host.classList.remove('b3'); }catch(_){} return false; }
+    var dpr=window.devicePixelRatio||1; r.setPixelRatio(Math.min(dpr,GFX.lv===0?2:1.5)); r.setSize(w,h,false); r.outputEncoding=THREE.sRGBEncoding; r.setClearColor(0x000000,0);
+    var scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(32,w/h,.1,40); cam.position.set(0,2.5,6.6); cam.lookAt(0,.7,0);
+    var P=BXVP[kind]||BXVP.free, G=BXVG[Math.max(0,Math.min(3,rr))]||BXVG[0];
+    scene.add(new THREE.AmbientLight(0xffffff,.42));
+    var dl=new THREE.DirectionalLight(0xfff2dc,.85); dl.position.set(2.5,5,4); scene.add(dl);
+    var rim=new THREE.PointLight(G,.9,12); rim.position.set(-3,2.5,-2); scene.add(rim);
+    var inl=new THREE.PointLight(G,0,6); inl.position.set(0,1.25,0); scene.add(inl);
+    function lc(h){ return new THREE.Color(h).convertSRGBToLinear(); }   /* outputEncoding=sRGB 이므로 색을 선형으로 넣는다 */
+    var mWood=new THREE.MeshStandardMaterial({color:lc(P.a),roughness:.6,metalness:.1}),
+        mTrim=new THREE.MeshStandardMaterial({color:lc(P.t),roughness:.3,metalness:.8}), mIn=new THREE.MeshBasicMaterial({color:lc(G)});
+    var chest=new THREE.Group(); scene.add(chest);
+    function bx(gw,gh,gd,m,x,y,z,par){ var o=new THREE.Mesh(new THREE.BoxGeometry(gw,gh,gd),m); o.position.set(x,y,z); (par||chest).add(o); return o; }
+    bx(2,1.1,1.3,mWood,0,.55,0);
+    bx(2.06,.14,1.36,mTrim,0,.07,0); bx(2.06,.12,1.36,mTrim,0,1.04,0);
+    bx(.16,1.12,1.36,mTrim,-.62,.56,0); bx(.16,1.12,1.36,mTrim,.62,.56,0);
+    bx(1.84,.05,1.14,mIn,0,1.07,0);
+    var hinge=new THREE.Group(); hinge.position.set(0,1.1,-.65); chest.add(hinge);
+    var lid=new THREE.Mesh(new THREE.CylinderGeometry(.65,.65,2,20,1,false,0,Math.PI),mWood); lid.rotation.z=Math.PI/2; lid.position.set(0,0,.65); hinge.add(lid);
+    bx(.16,.7,1.34,mTrim,-.62,.0,.65,hinge).visible=false;
+    [-.62,.62].forEach(function(xx){ var b=new THREE.Mesh(new THREE.CylinderGeometry(.67,.67,.16,20,1,true,0,Math.PI),mTrim); b.rotation.z=Math.PI/2; b.position.set(xx,0,.65); hinge.add(b); });
+    var lock=bx(.3,.34,.1,mTrim,0,.98,.68); var gem=new THREE.Mesh(new THREE.SphereGeometry(.07,10,8),mIn); gem.position.set(0,.98,.75); chest.add(gem);
+    var sh=new THREE.Mesh(new THREE.PlaneGeometry(4.2,2.6),new THREE.MeshBasicMaterial({map:bxvTex('shadow'),transparent:true,depthWrite:false})); sh.rotation.x=-Math.PI/2; sh.position.y=.005; scene.add(sh);
+    var halo=new THREE.Sprite(new THREE.SpriteMaterial({map:bxvTex('glow'),color:G,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false})); halo.position.set(0,1.3,0); halo.scale.set(1,1,1); scene.add(halo);
+    var beam=new THREE.Mesh(new THREE.PlaneGeometry(1.7,2.6),new THREE.MeshBasicMaterial({map:bxvTex('glow'),color:G,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide})); beam.position.set(0,2.3,0); scene.add(beam);
+    var beam2=beam.clone(); beam2.rotation.y=Math.PI/2; scene.add(beam2);
+    var N=Math.round(46+rr*22), pg=new THREE.BufferGeometry(), pos=new Float32Array(N*3), vel=new Float32Array(N*3);
+    for(var i=0;i<N;i++){ var a=Math.random()*6.283, sp=1.2+Math.random()*2.6; vel[i*3]=Math.cos(a)*sp*.55; vel[i*3+1]=2.4+Math.random()*3.4; vel[i*3+2]=Math.sin(a)*sp*.4; pos[i*3]=0; pos[i*3+1]=1.15; pos[i*3+2]=0; }
+    pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    var pm=new THREE.PointsMaterial({map:bxvTex('spark'),color:G,size:.26+rr*.03,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+    var pts=new THREE.Points(pg,pm); scene.add(pts);
+    var t0=performance.now(), opened=false, last=t0;
+    var B={r:r,scene:scene,raf:0}; BXV=B;
+    function frame(now){
+      if(BXV!==B) return;
+      if(!document.body.contains(cv)){ bxvStop(); return; }
+      B.raf=requestAnimationFrame(frame);
+      var t=(now-t0)/1000, dt=Math.min(.05,(now-last)/1000); last=now;
+      if(t<burstAt){
+        var k=t/burstAt, amp=Math.pow(k,1.6);
+        chest.rotation.z=Math.sin(t*34)*.045*amp; chest.rotation.x=Math.cos(t*29)*.02*amp; chest.position.y=Math.abs(Math.sin(t*17))*.07*amp;
+        inl.intensity=amp*1.6; gem.scale.setScalar(1+amp*1.2+Math.sin(t*30)*.2*amp);
+        cam.position.z=6.6-amp*.5;
+      } else {
+        if(!opened){ opened=true; }
+        var u=t-burstAt;
+        chest.rotation.set(0,0,0); chest.position.y=0;
+        hinge.rotation.x=-1.95*bxvEase(u/.42);
+        var spike=Math.max(0,1-u/.9);
+        inl.intensity=1.8+spike*(3+rr*1.4);
+        halo.material.opacity=Math.min(1,u/.15)*(.55+spike*.45); var hs=3+rr*.6+spike*2.2; halo.scale.set(hs,hs,1);
+        beam.material.opacity=beam2.material.opacity=Math.min(.85,u/.3)*(.55+.2*Math.sin(u*4)); var bs=1+Math.min(1,u/.5)*(.3+rr*.15); beam.scale.set(bs,1+rr*.12,1); beam2.scale.copy(beam.scale);
+        beam.rotation.y=u*.4; beam2.rotation.y=u*.4+Math.PI/2;
+        cam.position.z=u<.22?6.1-(.9*Math.min(1,u/.22)):5.2+Math.min(1,(u-.22)/.9)*.9;
+        gem.scale.setScalar(1);
+        pm.opacity=Math.max(0,1-u/2.2);
+        var pa=pg.attributes.position.array;
+        for(var j=0;j<N;j++){ vel[j*3+1]-=5.2*dt; pa[j*3]+=vel[j*3]*dt; pa[j*3+1]+=vel[j*3+1]*dt; pa[j*3+2]+=vel[j*3+2]*dt; if(pa[j*3+1]<.2){ pa[j*3+1]=.2; vel[j*3+1]*=-.25; } }
+        pg.attributes.position.needsUpdate=true;
+      }
+      cam.lookAt(0,.8,0); r.render(scene,cam);
+    }
+    B.raf=requestAnimationFrame(frame);
+    if(old&&old.parentNode) old.parentNode.removeChild(old);
+    return true;
+  }
   function pullEnd(instant){
     var el=null; try{ el=document.getElementById('v294pull'); }catch(e){}
     if(!el) return;
+    try{ bxvStop(); }catch(e){}
     if(V294TIM){ V294TIM.forEach(function(t){ clearTimeout(t); }); V294TIM=null; }
     if(V294SKIP){ try{ document.removeEventListener('pointerdown',V294SKIP,true); document.removeEventListener('click',V294SKIP,true); }catch(_){} V294SKIP=null; }
     var cb=V294CB; V294CB=null;
@@ -12228,25 +12321,27 @@ var V285=(function(){
   function pullShow(rewards,kind){
     try{
       if(!rewards||!rewards.length) return;
-      var old=document.getElementById('v294pull'); if(old){ try{ old.parentNode.removeChild(old); }catch(e){} }
+      var old=document.getElementById('v294pull'); if(old){ try{ bxvStop(); old.parentNode.removeChild(old); }catch(e){} }
       var B=BOX[kind]||BOX.free;
+      var rr=0; rewards.forEach(function(r){ if(r.t==='gear'&&r.r>rr) rr=r.r; });
+      var d3=bxvOK(), X=d3?(0.35+(rr>=2?0.25:0)):0;   /* 3D일 때는 기대감 구간을 조금 늘린다 */
       var el=document.createElement('div'); el.id='v294pull'; el.setAttribute('role','dialog'); el.setAttribute('aria-label',B.n+' 개봉 결과');
       el.innerHTML='<div class="dim"></div><div class="st">'+
         '<div class="ttl">'+B.ic+' '+B.n+' 개봉</div>'+
-        '<div class="bw"><div class="ray"></div><div class="box">'+B.ic+'</div></div>'+
-        '<div class="cards">'+rewards.map(function(r,i){ return v294Card(r,1.3+i*0.22); }).join('')+'</div>'+
+        '<div class="bw"><div class="ray" style="animation-delay:'+(0.95+X).toFixed(2)+'s"></div><div class="box">'+B.ic+'</div></div>'+
+        '<div class="cards">'+rewards.map(function(r,i){ return v294Card(r,1.3+X+i*0.22); }).join('')+'</div>'+
         '<div class="skip">화면을 탭하면 바로 결과로</div></div>';
       document.body.appendChild(el);
+      if(d3){ try{ if(!bxvAttach(el,kind,rr,0.95+X)) X=0; }catch(e){ try{ bxvStop(); }catch(_){} X=0; } }
       try{ snd('ui',0.5,0.9); }catch(e){}
       V294TIM=[];
-      V294TIM.push(setTimeout(function(){ try{ snd('level_up',0.5,1.15); haptic([8,16,8]); }catch(e){} },1020));
-      rewards.forEach(function(r,i){ V294TIM.push(setTimeout(function(){ try{ snd('coin',0.32,1+i*0.04); haptic(8); }catch(e){} },1300+i*220)); });
+      V294TIM.push(setTimeout(function(){ try{ snd('level_up',0.5,1.15); haptic(rr>=2?[10,20,10,20,30]:[8,16,8]); }catch(e){} },1020+X*1000));
+      rewards.forEach(function(r,i){ V294TIM.push(setTimeout(function(){ try{ snd('coin',0.32,1+i*0.04); haptic(8); }catch(e){} },1300+X*1000+i*220)); });
       V294CB=null;
-      /* v2.94: 게임 입력 탭 핸들러가 캡처 단계에서 전파를 끊는 2D 모드에서도 건너뛰기가 먹도록 문서 캡처에 건다 */
       V294SKIP=function(e){ try{ if(!document.getElementById('v294pull')) return; e.preventDefault(); e.stopPropagation(); }catch(_){} pullEnd(1); };
       document.addEventListener('pointerdown',V294SKIP,true);
       document.addEventListener('click',V294SKIP,true);
-      V294TIM.push(setTimeout(function(){ pullEnd(); },1500+rewards.length*220+1100));
+      V294TIM.push(setTimeout(function(){ pullEnd(); },1500+X*1000+rewards.length*220+1100));
     }catch(e){}
   }
 
