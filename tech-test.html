@@ -4039,7 +4039,7 @@ function lbObstacles(){
   const W=VW||innerWidth, H=VH||innerHeight, now=performance.now();
   if(now-LBOB.t<150 && LBOB.W===W && LBOB.H===H) return LBOB.list;
   LBOB.t=now; LBOB.W=W; LBOB.H=H;
-  const ids=['hud','sub','subR','shopBtn','camctl','v275ch','dayBar','stockAl','combo','v287fl','v311g'];   /* v2.83: 상단 계기판·칩 줄도 직원 이름표가 피한다 */   /* v2.82: 토스트는 하단으로 옮겨 '천장'이 아니라 '바닥'으로 다룬다 */
+  const ids=['hud','sub','subR','shopBtn','camctl','v275ch','dayBar','stockAl','combo','v287fl','v311g','v312card'];   /* v2.83: 상단 계기판·칩 줄도 직원 이름표가 피한다 */   /* v2.82: 토스트는 하단으로 옮겨 '천장'이 아니라 '바닥'으로 다룬다 */
   const out=[];
   for(let i=0;i<ids.length;i++){
     const e=document.getElementById(ids[i]); if(!e) continue;
@@ -5733,7 +5733,7 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     try{ snd('ui',0.4); }catch(_){}
     if(c.s.go&&!document.getElementById('modal').classList.contains('on')) c.s.go(); else { try{ toast('💡 '+c.s.h,2.6); }catch(_){} } });
   setInterval(function(){ try{
-    const m=document.getElementById('modal'), busy=(m&&m.classList.contains('on'))||document.getElementById('v294pull')||document.body.classList.contains('title')||(typeof quizOpen!=='undefined'&&quizOpen);
+    const m=document.getElementById('modal'), _bg=document.getElementById('big'), busy=(_bg&&getComputedStyle(_bg).display!=='none'&&+getComputedStyle(_bg).opacity>0.15)||(m&&m.classList.contains('on'))||document.getElementById('v294pull')||document.body.classList.contains('title')||(typeof quizOpen!=='undefined'&&quizOpen);
     if(busy){ el.style.display='none'; return; }
     const db=document.getElementById('dayBar'); let top=150; if(db){ const r=db.getBoundingClientRect(); if(r.height>4&&getComputedStyle(db).display!=='none') top=r.bottom+6; }
     el.style.top=top+'px'; el.style.display='flex';
@@ -5743,6 +5743,61 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     el.innerHTML='<i>'+(ok?'✓':(c.i+1))+'</i><span>'+(ok?'완료! 보상 받기 · ':'')+c.s.t+'</span><b>'+(ok?(c.s.r.m?'+$'+c.s.r.m:'💎'+c.s.r.g):(p[1]>1?Math.min(p[0],p[1])+'/'+p[1]:'→'))+'</b>';
   }catch(e){} },400);
 }catch(e){}
+/* v3.12: 가이드 튜토리얼 강화 — ① 새 목표 소개 카드(왜 하는지·용어 한 줄) ② 눌러야 할 버튼 위 손가락 ③ 열린 창 안에서 누를 버튼 반짝임 ④ 손님 응대 단계는 기다리는 손님 위 화살표 ⑤ 진행도 'n/11' 표시 */
+(function(){ try{
+  const X=[
+    {why:'손님 머리 위 말풍선을 보고, 손님을 톡 누르면 사장님이 걸어가 응대해요.',cust:1},
+    {why:'영업 시간이 끝나면 결과창이 떠요. 목표 매출을 넘기면 클리어!',term:'★ 별: 매출을 많이 낼수록 1~3개. 다음 지점을 여는 열쇠예요.'},
+    {why:'번 돈으로 매장을 키워요. 이동 속도·가격이 오르면 매출이 쑥 늘어요.',tgt:'upBtn',inner:'[data-up]'},
+    {why:'상자는 2시간마다 무료! 조각과 장비가 나와요.',term:'🧩 조각: 직원을 승진시키는 재료예요.',tgt:'gemPill',inner:'[data-box="free"]:not([disabled])'},
+    {why:'층을 지으면 손님이 늘고 매출이 올라요. 공사는 시간이 걸리니 먼저 걸어 두세요.',term:'🏗️ 층 완공: 다음 지점을 여는 두 번째 열쇠예요.',tgt:'v285brBtn',inner:'[data-start]'},
+    {why:'직원이 손님 응대·재고를 대신해 줘요. 혼자 바쁠 때 큰 도움!',tgt:'crewBtn',inner:'[data-hire]:not([disabled])'},
+    {why:'목표 매출의 130%를 넘기면 ★3. 손님을 빨리, 정확하게 응대해 보세요.'},
+    {why:'선반이 비면 손님이 그냥 떠나요. 미리 발주하면 트럭이 박스를 가져와요.',tgt:'invBtn',inner:'[data-o]'},
+    {why:'응대할수록 매장 레벨이 오르고 단골이 생겨요.',cust:1},
+    {why:'2층까지 지으면 대구점 완공! 엘리베이터 앞에 서면 층을 오갈 수 있어요.',tgt:'v285brBtn',inner:'[data-start]'},
+    {why:'별과 층 완공을 채우면 부산 센텀점이 열려요. 더 큰 매장, 더 많은 손님!'}
+  ];
+  GD.L.forEach(function(s,i){ if(X[i]) Object.assign(s,X[i]); });
+  const st=document.createElement('style'); st.textContent=
+    '#v312hand{position:fixed;z-index:8;pointer-events:none;font-size:34px;line-height:1;display:none;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));animation:v312b .7s ease-in-out infinite}@keyframes v312b{50%{translate:0 -10px}}'+
+    '.v312ring{outline:3px solid #ffd23f!important;outline-offset:2px;box-shadow:0 0 0 6px rgba(255,210,63,.35)!important;animation:v312r 1s ease-in-out infinite!important}@keyframes v312r{50%{outline-color:#fff3b0;box-shadow:0 0 0 10px rgba(255,210,63,.15)}}'+
+    '#v312card{position:fixed;left:50%;transform:translateX(-50%);z-index:9;width:min(88vw,330px);padding:10px 12px 11px;border-radius:16px;background:#fffaf0;border:2px solid #f0c25a;box-shadow:0 8px 22px rgba(40,25,5,.28);font:800 12.5px/1.45 var(--b);color:#4a3418;display:none;animation:v312in .35s cubic-bezier(.2,1.4,.4,1)}@keyframes v312in{from{opacity:0;translate:0 -12px}}'+
+    '#v312card h5{margin:0 0 3px;font:900 11px var(--b);color:#c07a10;letter-spacing:.3px}#v312card b{display:block;font:900 14.5px var(--b);color:#2a1a08;margin-bottom:3px}#v312card .tm{margin-top:6px;padding:5px 8px;border-radius:10px;background:#fff1cc;font:800 11.5px/1.4 var(--b);color:#6a4a10}#v312card .ok{margin-top:8px;display:flex;gap:6px}#v312card .ok button{flex:1;min-height:36px;border:0;border-radius:11px;font:900 13px var(--b);color:#fff;background:linear-gradient(#ffc43a,#f09a10);box-shadow:0 3px 0 #b86a00}#v312card .ok button.gy{background:#e8ddc8;color:#6a5030;box-shadow:0 3px 0 #c9b896}'+
+    '#v311g small{flex:none;font:900 9.5px var(--b);color:#b08040;margin-left:-2px}#v311g.done small{color:#e8ffe0}';
+  document.head.appendChild(st);
+  const hand=document.createElement('div'); hand.id='v312hand'; hand.textContent='👇'; document.body.appendChild(hand);
+  const card=document.createElement('div'); card.id='v312card'; document.body.appendChild(card);
+  let ringEl=null, cardT=0;
+  function ring(el){ if(ringEl===el) return; if(ringEl) ringEl.classList.remove('v312ring'); ringEl=el; if(el) el.classList.add('v312ring'); }
+  function showCard(c){ const s=c.s;
+    card.innerHTML='<h5>새 목표 · '+(c.i+1)+'/'+GD.L.length+'</h5><b>'+s.t+'</b>'+(s.why||s.h||'')+(s.term?'<div class="tm">'+s.term+'</div>':'')+
+      '<div class="ok">'+(s.go?'<button type="button" data-g="go">바로 하기</button><button type="button" class="gy" data-g="x">나중에</button>':'<button type="button" data-g="x">알겠어요</button>')+'</div>';
+    const g=document.getElementById('v311g'); const r=g&&g.getBoundingClientRect(); card.style.top=((r&&r.bottom)||190)+8+'px'; card.style.display='block'; card._i=c.i; cardT=performance.now(); }
+  card.addEventListener('click',function(e){ const b=e.target.closest('[data-g]'); if(!b) return; e.stopPropagation(); card.style.display='none'; try{ snd('ui',0.4); }catch(_){}
+    if(b.getAttribute('data-g')==='go'){ const c=GD.cur(); if(c.s.go) c.s.go(); } });
+  setInterval(function(){ try{
+    const g=document.getElementById('v311g'); const gOn=g&&g.style.display!=='none';
+    const md=document.getElementById('modal'), mOn=md&&md.classList.contains('on');
+    const c=GD.cur(), s=c.s, p=s.p(), ok=p[0]>=p[1], tut=c.i<GD.L.length;
+    /* 진행도 */
+    if(gOn&&tut&&!g.querySelector('small')){ const sm=document.createElement('small'); sm.textContent=(c.i+1)+'/'+GD.L.length; g.appendChild(sm); }
+    /* 소개 카드: 새 단계로 바뀌면 한 번 */
+    if(gOn&&!ok&&tut&&(S.gdIntro==null||S.gdIntro<c.i)&&!mOn&&card.style.display==='none'){ S.gdIntro=c.i; try{ save(); }catch(_){} showCard(c); }
+    if(card.style.display!=='none'&&(mOn||card._i!==c.i||performance.now()-cardT>9000)) card.style.display='none';
+    /* 손가락·반짝임 */
+    hand.style.display='none'; let rg=null;
+    if(!ok&&tut){
+      if(mOn&&s.inner){ const t=[...document.querySelectorAll('#mbox '+s.inner)].find(function(e){ const r=e.getBoundingClientRect(); return r.width>10&&r.height>10&&r.top<innerHeight-20; }); if(t) rg=t; }
+      else if(!mOn&&gOn&&s.tgt&&card.style.display==='none'){ const t=document.getElementById(s.tgt); if(t){ const r=t.getBoundingClientRect(), cs=getComputedStyle(t);
+          if(r.width>8&&cs.visibility!=='hidden'&&cs.display!=='none'){ rg=t; hand.style.left=(r.left+r.width/2-17)+'px'; const below=r.top<innerHeight*0.4; hand.textContent=below?'👆':'👇'; hand.style.top=(below?r.bottom+4:r.top-40)+'px'; hand.style.display='block'; } } }
+      else if(!mOn&&gOn&&s.cust&&card.style.display==='none'&&typeof custs!=='undefined'){
+        let best=null,bd=1e9; custs.forEach(function(cc){ if(cc.st!=='wait'&&cc.st!=='want') return; const d=Math.hypot(cc.pos.x-player.pos.x,cc.pos.z-player.pos.z); if(d<bd&&d>1.6){ bd=d; best=cc; } });
+        if(best){ const q=ftueScr(best.pos.x,3.0,best.pos.z); if(q){ hand.textContent='👇'; hand.style.left=(q[0]-17)+'px'; hand.style.top=(q[1]-46)+'px'; hand.style.display='block'; } } }
+    }
+    ring(rg);
+  }catch(e){} },250);
+}catch(e){ console.warn('v312 guide',e); } })();
 /* v3.09: DAY 2~3은 핵심 버튼만 — 첫날(ftue) 숨김을 이틀 더 이어 간다. 상점·랭킹·꾸미기·카메라·저장·부스터·지점 이동·본사 챌린지는 DAY 4부터.
    층 건설(🏗️)·업그레이드·직원·미션·재고·수리실은 그대로 둔다. 새 저장 필드 S.v309o(열림 배너 1회)만 추가 — 없으면 기본값. */
 function v309Early(){ try{ return S.day>=1 && S.day<=2 && !ftueOn(); }catch(e){ return false; } }
