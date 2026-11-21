@@ -10750,6 +10750,8 @@ function v308Strip(clear){ try{
     let at=top; const rt0=body.querySelector(':scope > #v302rt'); if(rt0){ at=rt0; const tp=rt0.nextElementSibling; if(tp&&!tp.id&&!tp.className) at=tp; }
     ['v308rs','.lpng:not(#mgrEvalBox)','.v269Res','#v269Res'].forEach(q=>{ const e=q[0]==='.'||q[0]==='#'?body.querySelector(':scope > '+q):document.getElementById(q); if(e&&e.parentElement===body){ at.after(e); at=e; } });
     const fold=['.v262Strip','#v262Strip','.v275chRes','#v275chRes'].map(q=>body.querySelector(':scope > '+q)).filter((e,i,arr)=>e&&arr.indexOf(e)===i);
+    /* v3.10: DAY 1~3 결과창에서는 '팀장 승진(리더십)' 같은 후반 목표 줄을 숨긴다 — 첫날 용어 과부하 */
+    try{ if((S.day|0)<=3){ body.querySelectorAll('.lpng .lpg').forEach(function(g){ if(/승진|리더십/.test(g.textContent)) g.style.display='none'; }); } }catch(_){}
     /* v3.10 C: 보너스 한 줄은 위로, AI 총평·매니저 평가는 '리포트' 접기로 */
     const bn=document.getElementById('v264Res'); if(bn&&mb.contains(bn)){ at.after(bn); at=bn; }
     const rp=[body.querySelector(':scope > #dirAI'),document.getElementById('mgrEvalBox')].filter(e=>e&&!e.closest('#v308rep'));
