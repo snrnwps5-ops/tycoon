@@ -6991,6 +6991,38 @@ function v310Quick(){ try{
 }catch(e){} }
 try{ const _oo=openOpt; openOpt=function(){ const r=_oo.apply(this,arguments); v310Quick(); return r; }; }catch(e){}
 try{ const _om=openMs; openMs=function(){ const r=_om.apply(this,arguments); try{ const mb=$('mbox'); if(mb&&!mb.querySelector('#v310rk')){ const b=document.createElement('button'); b.id='v310rk'; b.type='button'; b.textContent='🏆 지역 랭킹 보기'; b.style.cssText='margin:6px 0;background:linear-gradient(#6aa8ff,#3a72d8);box-shadow:0 3px 0 #2a52a0'; b.onclick=function(e){ e.stopPropagation(); snd('ui',0.4); openRank(); }; (mb.querySelector('.v3Body')||mb).prepend(b); } }catch(_){} return r; }; }catch(e){}
+/* v3.10 B: 직원 관리 3탭 — [직원] 층 탭·채용 카드·AI 면접 / [성장] 승급 조각·직급·T.O. / [팀] 만족도·회식.
+   openCrew가 다시 그려도 주기적으로 탭을 다시 붙이고 마지막 탭을 기억한다(화면만 나눔, 데이터·기능 그대로). */
+var V311TAB='staff';
+try{ const st=document.createElement('style'); st.textContent='.v311tabs{display:flex;gap:6px;margin:0 0 8px;position:sticky;top:0;z-index:3;background:inherit;padding:2px 0}.v311tabs button{flex:1;min-height:40px!important;margin:0!important;width:auto!important;border-radius:12px!important;font:900 14px var(--b)!important;background:#efe4cf!important;color:#7a5a30!important;box-shadow:0 2px 0 #d9c7a5!important;border:0!important}.v311tabs button.on{background:linear-gradient(#7bea62,#2fa36a)!important;color:#fff!important;box-shadow:0 3px 0 #1d7a2a!important}.v311off{display:none!important}'; document.head.appendChild(st); }catch(e){}
+function v311Apply(body){
+  const K=V311TAB, kids=[...body.children].filter(e=>!e.classList.contains('v311tabs'));
+  kids.forEach(function(e){ let g='staff';
+    if(e.id==='v286Shards'||e.classList.contains('v286shn')||e.classList.contains('leadbar')) g='grow';
+    else if(e.classList.contains('dstat')||e.tagName==='P') g='team';
+    e.classList.toggle('v311off',g!==K); });
+  body.querySelectorAll('.v311tabs button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-t')===K); });
+}
+setInterval(function(){ try{
+  const mb=document.getElementById('mbox'); if(!mb||!document.getElementById('modal').classList.contains('on')) return;
+  const body=mb.querySelector('.v3Body')||mb; if(!body.querySelector(':scope > .dlist')||!body.querySelector(':scope > .leadbar')) return;
+  if(!body.querySelector(':scope > .v311tabs')){
+    const t=document.createElement('div'); t.className='v311tabs';
+    t.innerHTML='<button type="button" data-t="staff">직원</button><button type="button" data-t="grow">성장</button><button type="button" data-t="team">팀</button>';
+    body.prepend(t);
+    t.addEventListener('click',function(e){ const b=e.target.closest('[data-t]'); if(!b) return; e.stopPropagation(); V311TAB=b.getAttribute('data-t'); try{ snd('ui',0.35); }catch(_){} v311Apply(body); body.scrollTop=0; });
+  }
+  v311Apply(body);
+}catch(e){} },250);
+/* v3.10 B: 상자 화면 — 상자 카드 3개 + 확률(그대로 펼침)이 먼저, 조각 보유·조각 교환은 '🧩 조각 보유 · 교환' 접기 안으로. 확률 수치·표기는 그대로. */
+setInterval(function(){ try{
+  const p=document.querySelector('#mbox .v285p'); if(!p||!p.querySelector(':scope > .vboxes')||!p.querySelector(':scope > .v294odds')) return;
+  if(p.querySelector(':scope > details.v312')) return;
+  const d=document.createElement('details'); d.className='v312 vMore'; d.innerHTML='<summary>🧩 조각 보유 · 교환</summary>';
+  const mv=[p.querySelector(':scope > .vshsum'),p.querySelector(':scope > .vsec'),p.querySelector(':scope > .v286card')].filter(Boolean);
+  if(!mv.length) return;
+  p.querySelector(':scope > .v294odds').after(d); mv.forEach(function(e){ d.appendChild(e); });
+}catch(e){} },250);
 /* v3.09: DAY 2~3은 핵심 버튼만 — 첫날(ftue) 숨김을 이틀 더 이어 간다. 상점·랭킹·꾸미기·카메라·저장·부스터·지점 이동·본사 챌린지는 DAY 4부터.
    층 건설(🏗️)·업그레이드·직원·미션·재고·수리실은 그대로 둔다. 새 저장 필드 S.v309o(열림 배너 1회)만 추가 — 없으면 기본값. */
 function v309Early(){ try{ return S.day>=1 && S.day<=2 && !ftueOn(); }catch(e){ return false; } }
