@@ -30,7 +30,7 @@ try{(function(){
   try{ localStorage.setItem(K,EP); }catch(e){}
   try{ window.__v272Reset={ver:EP,removed:removed}; }catch(e){}
 })();}catch(e){}</script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v3.03';
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><script>try{(function(){var V='v3.04';
 function showUpd(t){try{ if(!document.body){ setTimeout(function(){showUpd(t);},250); return; }
 if(document.getElementById('__updBar')) return;
 var el=document.createElement('div'); el.id='__updBar'; el.setAttribute('role','button');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-<title>메가 테크 슈퍼스토어 타이쿤 v3.03</title>
+<title>메가 테크 슈퍼스토어 타이쿤 v3.04</title>
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
@@ -599,8 +599,8 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
 #v275Tr{margin:9px 0 2px;padding:10px 11px;border-radius:14px;text-align:left;color:#fff;
   background:linear-gradient(160deg,#233049,#131a28);border:1px solid rgba(233,207,143,.35);
   box-shadow:0 4px 12px rgba(15,22,34,.22)}
-#v275Tr b{display:block;font:900 12.5px var(--b);color:#f2ddb0}
-#v275Tr b small{font-weight:900;color:#e9cf8f}
+#v275Tr>b{display:block;font:900 12.5px var(--b);color:#f2ddb0}
+#v275Tr>b small{font-weight:900;color:#e9cf8f}
 #v275Tr .ch{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
 #v275Tr .ch span{font:800 10px var(--b);color:#f6e7c2;background:rgba(255,255,255,.10);
   border:1px solid rgba(233,207,143,.28);border-radius:8px;padding:3px 7px}
@@ -1744,6 +1744,74 @@ body{font-family:var(--b);letter-spacing:-.15px}
 #title .tsh button:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.32)}
 
 </style>
+<style id="v304ui">
+/* =====================================================================
+   v3.04 — 아이콘 정렬 · 그리드 고아 카드 · 카드 간격 통일 · 헤더 흐림 방어 · 로딩 바
+   ===================================================================== */
+/* ① 아이콘: span으로 바꾼 .v29i가 주변 span 규칙(칩 배경·테두리·글꼴)에 먹히지 않게 리셋 */
+.v29i{display:inline-block!important;background:none!important;border:0!important;border-radius:0!important;
+  padding:0!important;box-shadow:none!important;width:1.04em!important;height:1.04em!important;vertical-align:-.15em!important;
+  margin:0 .10em!important;flex:none!important;color:inherit;font-size:inherit!important;line-height:1!important}
+.v29i svg{width:100%;height:100%;display:block}
+/* ② 2열 그리드에서 혼자 남는 마지막 카드는 전체 폭으로 */
+#modal #mbox .v3Body .vGrid3>*:last-child:nth-child(odd),
+#modal .hubGrid>*:last-child:nth-child(odd){grid-column:1/-1}
+/* ③ 카드 세로 간격 10px 통일 — 카드끼리 10px, 구역 제목은 위 12px·아래 5px */
+#modal #mbox .v3Body>*{margin-top:0!important;margin-bottom:0!important}
+#modal #mbox .v3Body>*+*{margin-top:10px!important}
+#modal #mbox .v3Body>.vSec+*,#modal #mbox .v3Body>.hubSec+*{margin-top:5px!important}
+#modal #mbox .v3Body>.vSec,#modal #mbox .v3Body>.hubSec{margin-top:12px!important}
+#modal #mbox .v3Body .hubGrid,#modal #mbox .v3Body .vGrid3{row-gap:10px!important}
+#modal #mbox .v3Body .vGrid3 .hubPrep{margin-top:0!important}
+#modal #mbox .v3Body .hubGrid .hubPrep{min-height:44px!important;margin-top:0!important}
+.v275tl{gap:10px}
+#modal #mbox .v3Body .vtabs{gap:5px!important}
+#modal #mbox .v3Body .vtabs button{font:900 11.5px/1.2 var(--b)!important;padding:9px 2px!important;min-height:44px!important;letter-spacing:-.2px!important;text-shadow:none!important}
+#modal #mbox .v3Body .vtabs .v29i{font-size:12px!important}
+#modal #mbox .v3Body .vboxc button{font:900 11px/1.2 var(--b)!important;padding:8px 2px!important;min-height:44px!important;letter-spacing:-.2px!important;text-shadow:none!important}
+#modal #mbox .v3Body .vboxc b{display:block;font:900 11.5px/1.25 var(--b)!important;color:#3c2b18!important;margin-top:2px}
+#modal #mbox .v3Body .vboxc b .bi{display:inline-block!important;font-size:15px!important;line-height:1!important;vertical-align:-1px;margin-right:2px}
+/* ④ 허브 헤더 흐림 방어 — #modal의 backdrop-filter가 자식 텍스트까지 번지지 않게 뒤 레이어로 분리 */
+#modal{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#modal:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:rgba(24,18,10,.42);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#modal>.box{position:relative;z-index:1}
+#modal>#mX{z-index:21}
+#modal #mbox .v3Head{transform:translateZ(0);-webkit-backface-visibility:hidden;isolation:isolate;
+  -webkit-mask-image:none!important;mask-image:none!important;filter:none!important}
+/* ⑥ 로딩 대기 바 — 항상 보이는 띠 + 대비 강화, 로고와 바 사이 간격 축소 */
+/* 대기(불확정) 상태: 비율을 속이지 않는 '움직이는 사선 띠' — 어느 순간에도 바가 비어 보이지 않는다 */
+#ldBar:not(.prog) i{width:100%!important;
+  background-image:repeating-linear-gradient(115deg,#ffd23f 0 9px,#ffe98a 9px 15px,#7bea62 15px 24px);
+  background-size:44px 100%;opacity:.85;animation:ldstripe .9s linear infinite}
+@keyframes ldstripe{from{background-position:0 0}to{background-position:44px 0}}
+#ldBar:not(.prog){box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),0 0 12px rgba(255,210,63,.28)}
+#ldBar.prog i{min-width:12px}
+#load .ldMid{flex:0 0 auto!important;justify-content:flex-start!important;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 6vh)!important}
+#ldStage{margin-top:clamp(10px,3.2vh,26px)}
+</style>
+<script>
+/* v3.04: 상담 숙련 안내(.mastB)가 v3.00 헤더 리본 안으로 들어가 잘리던 문제 —
+   헤더에서는 빼내 본문 맨 위 한 줄로 옮긴다. */
+(function(){ try{
+  var mb=null;
+  function fix(){
+    try{
+      mb=mb||document.getElementById('mbox'); if(!mb) return;
+      var b=mb.querySelector('.v3Head .mastB'); if(!b) return;
+      var body=mb.querySelector('.v3Body'); if(!body) return;
+      b.style.cssText='font:800 10.5px/1.35 var(--b);color:#7a4a00;margin:0;text-align:center';
+      body.insertBefore(b, body.firstChild);
+    }catch(_){}
+  }
+  function boot(){
+    var m=document.getElementById('mbox'); if(!m) return;
+    try{ new MutationObserver(fix).observe(m,{childList:true,subtree:true}); }catch(_){}
+    fix();
+  }
+  if(document.readyState!=='loading') boot(); else document.addEventListener('DOMContentLoaded',boot);
+}catch(e){} })();
+</script>
 </head>
 <body>
 <canvas id="c"></canvas><div id="vig" style="position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 55%,rgba(20,24,40,.28) 100%)"></div>
@@ -1766,15 +1834,16 @@ body{font-family:var(--b);letter-spacing:-.15px}
 <div id="camctl"><button id="camFull" title="전체 보기" aria-label="전체 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.2"/><path d="M15.2 15.2L21 21"/></svg><b>전체</b></button><button id="camBase" class="on" title="기본 시점" aria-label="기본 시점"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.6"/><circle cx="12" cy="12" r="3.1"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg><b>기본</b></button><button id="intBtn" title="인테리어 꾸미기" aria-label="인테리어 꾸미기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 12V8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5V12"/><path d="M3 12.5h18a1.5 1.5 0 0 1 1.5 1.5v3.5A1.5 1.5 0 0 1 21 19H3a1.5 1.5 0 0 1-1.5-1.5V14A1.5 1.5 0 0 1 3 12.5z"/><path d="M5.5 19v2M18.5 19v2"/></svg><b>꾸미기</b></button><button id="v285brBtn" title="지점 완공" aria-label="지점 완공"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V6h12"/><path d="M6 6L3 3M18 6v4"/><path d="M15 10h6v2a3 3 0 0 1-6 0z"/><path d="M18 6l3-1"/></svg><b id="brTxt">0/2F</b><i></i></button></div>
 <div id="intp"><div class="ihd"><b>인테리어 상점</b><span id="intB"></span><button id="intX">✕</button></div><div class="itb" id="intTabs"></div><div class="il" id="intList"></div><div class="if" id="intFoot"></div></div>
 <div id="modal"><div class="box" id="mbox"></div><button id="mX">✕</button></div>
-<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i><span class="v3si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg></span><span class="v3st"><span class="tx">영업 시작</span><em id="tStartBadge"></em></span></button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>다른 기기에서 이어하기</button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><button id="tGear" style="display:none"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg></span>설정</button><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v3.03</div></div><div id="load"><div class="ldTop"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div></div><div class="ldMid"><div id="ldStage"><div id="ldBarWrap"><div id="ldBar"><i></i><b id="ldSpark"></b></div><div id="ldCart"><svg viewBox="0 0 32 24" width="34" height="26" aria-hidden="true"><path d="M2 3h4l3.2 12.2A2 2 0 0 0 11.1 17h12.3a2 2 0 0 0 1.9-1.4L28 7H8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12.5" cy="20.4" r="2.1" fill="#ffd23f"/><circle cx="23" cy="20.4" r="2.1" fill="#ffd23f"/><rect x="13" y="4.6" width="8.6" height="7.4" rx="1.4" fill="#7bea62"/><path d="M15.6 4.6v7.4M19.2 4.6v7.4" stroke="#2faa45" stroke-width="1.1" opacity=".55"/></svg></div><div id="ldDoor"><svg viewBox="0 0 28 34" width="28" height="34" aria-hidden="true"><rect class="gl" x="1" y="2" width="26" height="30" rx="4" fill="#ffe98a" opacity=".9"/><rect class="dl" x="2" y="3" width="12" height="28" rx="3" fill="#5ad1ff"/><rect class="dr" x="14" y="3" width="12" height="28" rx="3" fill="#2f7df0"/><circle cx="11.5" cy="17" r="1.4" fill="#0b1d5e"/><circle cx="16.5" cy="17" r="1.4" fill="#0b1d5e"/></svg></div></div><div id="ldPct"></div><div class="s" id="lds">게임 파일을 내려받는 중…</div><div id="ldTipCard"><b>TIP</b><div id="ldTip"></div></div></div></div></div>
+<div id="title" style="display:none"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div><div class="sp"></div><div id="tProg"></div><button id="tStart"><i></i><span class="v3si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg></span><span class="v3st"><span class="tx">영업 시작</span><em id="tStartBadge"></em></span></button><button id="tLoad"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>다른 기기에서 이어하기</button><div class="tsh"><button id="tInst"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 18.6h3"/></svg></span>홈 화면에 추가</button><button id="tShare"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.8l7.2-3.9M8.4 13.2l7.2 3.9"/></svg></span>친구에게 공유</button></div><button id="tGear" style="display:none"><span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg></span>설정</button><div id="tSheet"></div><div class="tsv" id="tSave"></div><div class="tv">v3.04</div></div><div id="load"><div class="ldTop"><div class="tl"><span class="tb">MEGA TECH</span><h1>슈퍼스토어</h1><div class="ty">TYCOON</div></div></div><div class="ldMid"><div id="ldStage"><div id="ldBarWrap"><div id="ldBar"><i></i><b id="ldSpark"></b></div><div id="ldCart"><svg viewBox="0 0 32 24" width="34" height="26" aria-hidden="true"><path d="M2 3h4l3.2 12.2A2 2 0 0 0 11.1 17h12.3a2 2 0 0 0 1.9-1.4L28 7H8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12.5" cy="20.4" r="2.1" fill="#ffd23f"/><circle cx="23" cy="20.4" r="2.1" fill="#ffd23f"/><rect x="13" y="4.6" width="8.6" height="7.4" rx="1.4" fill="#7bea62"/><path d="M15.6 4.6v7.4M19.2 4.6v7.4" stroke="#2faa45" stroke-width="1.1" opacity=".55"/></svg></div><div id="ldDoor"><svg viewBox="0 0 28 34" width="28" height="34" aria-hidden="true"><rect class="gl" x="1" y="2" width="26" height="30" rx="4" fill="#ffe98a" opacity=".9"/><rect class="dl" x="2" y="3" width="12" height="28" rx="3" fill="#5ad1ff"/><rect class="dr" x="14" y="3" width="12" height="28" rx="3" fill="#2f7df0"/><circle cx="11.5" cy="17" r="1.4" fill="#0b1d5e"/><circle cx="16.5" cy="17" r="1.4" fill="#0b1d5e"/></svg></div></div><div id="ldPct"></div><div class="s" id="lds">게임 파일을 내려받는 중…</div><div id="ldTipCard"><b>TIP</b><div id="ldTip"></div></div></div></div></div>
 <script>
 /* boot guard: shows a clear error + retry instead of an endless loading screen */
 (function(){ var done=false, failed=false;
   var MSG={webgl:['3D 그래픽(WebGL)을 사용할 수 없어요','이 브라우저나 기기에서 WebGL이 꺼져 있거나 지원되지 않아요.<br>• 브라우저 설정에서 하드웨어 가속을 켜 주세요<br>• 다른 브라우저(Safari, Chrome 최신 버전)로 열어 보세요<br>• 원격·가상 브라우저에서는 실행되지 않을 수 있어요'],
     lib:['게임 엔진 파일을 불러오지 못했어요','네트워크가 불안정하거나 광고 차단·보안 프로그램이 스크립트(cdnjs, jsdelivr)를 막았을 수 있어요.<br>• 연결 상태를 확인하고 다시 시도해 주세요'],
-    asset:['게임 데이터(그림·모델)를 불러오지 못했어요','assets.js 파일(약 8MB) 다운로드가 실패했어요.<br>• 연결 상태를 확인하고 다시 시도해 주세요'],
+    asset:['게임 데이터(그림·모델)를 불러오지 못했어요','게임 데이터 다운로드가 끝나지 않았어요.<br>• 연결 상태를 확인하고 다시 시도해 주세요'],
     timeout:['불러오는 시간이 너무 오래 걸려요','네트워크가 느리거나 중간에 끊겼어요. 3D 그래픽 문제는 아니에요.<br>• Wi-Fi 상태를 확인하고 다시 시도해 주세요'],
-    init:['게임을 시작하는 중 오류가 났어요','예상하지 못한 오류예요. 다시 시도해도 반복되면 아래 내용을 알려 주세요.']};
+    init:['게임을 시작하는 중 오류가 났어요','예상하지 못한 오류예요. 다시 시도해도 반복되면 고객센터에 알려 주세요.']};
+  /* v3.04: 개발자용 상세(파일명·오류 문자열)는 ?test=1·file:// 에서만 보여 준다 */
   window.bootFail=function(kind,detail){ if(done||failed) return; failed=true; var m=MSG[kind]||MSG.init, el=document.getElementById('load')||document.getElementById('loading');
     if(!el){ el=document.createElement('div'); document.body.appendChild(el); } var d=detail?String(detail&&detail.message||detail).slice(0,160):'';
     el.id='bootErr'; el.className=''; el.setAttribute('style','position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;overflow:hidden;background:radial-gradient(circle at 50% 16%,#16429c 0%,#0b1d5e 44%,#050a24 100%)');el.innerHTML='';
@@ -1783,9 +1852,9 @@ body{font-family:var(--b);letter-spacing:-.15px}
     card.innerHTML='<div style="display:inline-block;font:900 11px var(--b,inherit);letter-spacing:4px;color:#06122a;background:linear-gradient(90deg,#5ad1ff,#b9f3ff);border-radius:18px;padding:3px 9px 3px 13px">MEGA TECH</div>'+
       '<div style="font-family:var(--d,inherit);font-size:24px;margin-top:8px;text-shadow:0 3px 0 #1c3f9a">슈퍼스토어 <span style="color:#8fe3ff;font-size:16px">TYCOON</span></div>'+
       '<div style="font-size:40px;line-height:1;margin:16px 0 6px">⚠️</div>'+
-      '<div style="font-size:17px;font-weight:900;margin:2px 0 8px">'+m[0]+'</div>'+
-      '<div style="font-size:12.5px;font-weight:700;line-height:1.7;color:#cfe0ff;text-align:left">'+m[1]+'</div>'+
-      (d?'<div style="margin-top:10px;font:10.5px monospace;color:#8fa6d8;text-align:left;word-break:break-all">['+kind+'] '+d.replace(/</g,'&lt;')+'</div>':'')+
+      '<div style="font-size:18px;font-weight:900;line-height:1.35;margin:2px 0 8px;word-break:keep-all;overflow-wrap:normal">'+m[0]+'</div>'+
+      '<div style="font-size:12.5px;font-weight:700;line-height:1.7;color:#cfe0ff;text-align:left;word-break:keep-all;overflow-wrap:break-word">'+m[1]+'</div>'+
+      ((d&&(/[?&]test=1/.test(location.search)||location.protocol==='file:'))?'<div style="margin-top:10px;font:10.5px monospace;color:#8fa6d8;text-align:left;word-break:break-all">['+kind+'] '+d.replace(/</g,'&lt;')+'</div>':'')+
       '<button id="beRetry" style="margin-top:16px;width:100%;height:54px;border:0;border-radius:16px;background:linear-gradient(#6fdcff,#2f7df0);box-shadow:0 5px 0 #1a3f96;color:#fff;font-size:18px;font-weight:900">다시 시도</button>'+
       '<div style="margin-top:10px;font:700 11px var(--b,inherit);color:#9fb6e6">계속 안 되면 Wi-Fi를 바꾸거나 브라우저를 새로 열어 주세요</div>';
     el.appendChild(card);
@@ -1853,7 +1922,7 @@ const QAMODE=(function(){ try{ return new URLSearchParams(location.search).get('
 const SK=QAMODE?('qa-'+SAVE):SAVE;
 if(QAMODE){ try{
   /* QA 세이브는 판이 올라가면 한 번 비운다(옛 스키마가 새 화면을 깨지 않게) — qa- 접두어만 지운다 */
-  var QAV='v3.03', _qk=[];
+  var QAV='v3.04', _qk=[];
   try{ for(var _qi=0;_qi<localStorage.length;_qi++){ var _qn=localStorage.key(_qi); if(_qn&&_qn.indexOf('qa-')===0&&_qn!=='qa-epoch') _qk.push(_qn); } }catch(e){ _qk=[]; }
   if(localStorage.getItem('qa-epoch')!==QAV){ for(var _qj=0;_qj<_qk.length;_qj++){ try{ localStorage.removeItem(_qk[_qj]); }catch(e){} } try{ localStorage.setItem('qa-epoch',QAV); }catch(e){} }
   /* 콘솔 오류 카운터 — 부팅 도중에 난 오류까지 세도록 가장 먼저 건다 */
@@ -3118,16 +3187,17 @@ const shuffle=a=>{ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floo
 
 /* ---- v2.3: 설명 원하는 손님(📖) 전용 2문항 풀 ---- */
 const DETQ=[
- {q:'배터리를 오래 쓰려면 어떻게 관리해야 하나요?',a:['충전은 20~80% 사이에서 하고 더운 곳은 피하세요','매일 0%까지 쓰고 밤새 꽂아 두세요','고속 충전을 하루에도 여러 번 해 주세요'],why:'리튬 배터리는 20~80% 구간에서 쓰고 열을 피할 때 수명이 가장 오래 갑니다'},
- {q:'액정이 깨졌는데 보호필름을 붙이면 괜찮을까요?',a:['파편·터치 불량 위험이 커서 바로 액정을 교체하세요','필름을 붙이면 유리가 다시 붙어서 괜찮아요','필름을 붙이면 방수 기능도 함께 살아나요'],why:'깨진 유리는 필름으로 고정되지 않고 파편과 터치 불량 위험이 커서 액정 교체가 먼저입니다'},
- {q:'사진과 연락처는 어떻게 백업하는 게 좋나요?',a:['클라우드 백업을 켜고 복원까지 한 번 확인하세요','가끔 컴퓨터에 옮겨 두면 충분해요','기기를 바꿀 때만 백업하면 돼요'],why:'백업은 켜 두는 것만으로는 부족하고 실제 복원까지 확인해야 자료가 지켜집니다'},
- {q:'수리 맡기기 전에 꼭 확인할 게 있을까요?',a:['데이터 백업과 잠금 해제 여부를 확인하세요','아무것도 필요 없이 기기만 맡기면 돼요','충전기만 함께 맡기면 충분해요'],why:'수리 중 데이터가 유실될 수 있어 백업 확인이 먼저이고, 잠금 해제가 안 되면 수리 자체가 막힙니다'},
- {q:'폰이 자꾸 뜨거워지는데 어떤 점을 알려줘야 하나요?',a:['언제부터인지, 충전 중인지, 어떤 앱을 쓸 때인지 알려주세요','기기 색깔이 바뀌었는지 알려줘야 해요','무게가 얼마나 나가는지 알려줘야 해요'],why:'발열은 사용 패턴과 충전 상태로 원인을 좁히기 때문에 그 정보가 진단의 출발점입니다'},
- {q:'중고로 팔기 전에는 무엇을 해야 하나요?',a:['데이터 삭제와 계정 잠금 해제까지 마치세요','초기화만 하면 새 주인이 바로 쓸 수 있어요','케이스만 새로 끼우면 준비가 끝나요'],why:'초기화만 하면 활성화 잠금이 남아 새 주인이 쓸 수 없으므로 계정 해제까지 해야 합니다'},
- {q:'보증 수리를 받으려면 무엇을 챙겨야 하나요?',a:['구매 영수증과 침수·파손 여부를 확인해 오세요','보증서만 있으면 나머지는 필요 없어요','기기만 가져오면 바로 무상으로 돼요'],why:'보증은 구매 시점과 사용 상태를 함께 보기 때문에 영수증과 손상 여부가 판정 근거가 됩니다'},
- {q:'물에 빠뜨렸는데 지금 어떻게 해야 하나요?',a:['전원을 끄고 충전하지 않은 채로 점검을 받으세요','바로 충전해서 정상인지 확인해 보세요','드라이기로 틈새까지 말려 두세요'],why:'침수 기기는 전원을 넣는 순간 손상이 커져서, 전원을 끄고 충전하지 않은 상태로 점검받는 것이 먼저입니다'},
- {q:'충전이 안 되는데 케이블 문제인지 어떻게 알죠?',a:['다른 케이블과 충전기로 바꿔 보고 접수하세요','충전구를 침이나 핀으로 닦아 보세요','배터리를 새로 사면 대부분 해결돼요'],why:'충전 문제는 케이블·어댑터·충전구 순서로 하나씩 바꿔 보면 원인을 좁힐 수 있어요'},
- {q:'앱 구독이 자동 결제돼서 취소하고 싶어요',a:['구독 관리 화면에서 직접 해지하고 결제 내역을 확인하세요','앱을 지우면 다음 결제는 자동으로 멈춰요','기기를 초기화하면 결제도 함께 취소돼요'],why:'구독은 앱 삭제나 초기화로 멈추지 않고 구독 관리 화면에서 해지해야 결제가 끝납니다'}];
+ /* v3.04: 보기 어미를 '~세요' 명령형으로 통일하고, 문항 안 보기 길이 차이를 3자 이내로 맞춰 정답 길이 티를 없앴다 */
+ {q:'배터리를 오래 쓰려면 어떻게 관리해야 하나요?',a:['20~80%에서 충전하고 열을 피하세요','매일 0%까지 쓰고 밤새 꽂아 두세요','고속 충전을 하루에도 여러 번 하세요'],why:'리튬 배터리는 20~80% 구간에서 쓰고 열을 피할 때 수명이 가장 오래 갑니다'},
+ {q:'액정이 깨졌는데 보호필름을 붙이면 괜찮을까요?',a:['파편·터치 불량 위험이 커서 교체하세요','필름만 붙이면 당장은 괜찮다고 하세요','필름을 붙이면 방수도 살아난다고 하세요'],why:'깨진 유리는 필름으로 고정되지 않고 파편과 터치 불량 위험이 커서 액정 교체가 먼저입니다'},
+ {q:'사진과 연락처는 어떻게 백업하는 게 좋나요?',a:['클라우드 백업을 켜고 복원까지 확인하세요','가끔 컴퓨터로 옮겨 두면 충분하다고 하세요','기기를 바꿀 때만 백업하면 된다고 하세요'],why:'백업은 켜 두는 것만으로는 부족하고 실제 복원까지 확인해야 자료가 지켜집니다'},
+ {q:'수리 맡기기 전에 꼭 확인할 게 있을까요?',a:['데이터 백업과 잠금 해제를 확인하세요','기기만 맡기면 알아서 처리된다고 하세요','충전기만 함께 맡기면 충분하다고 하세요'],why:'수리 중 데이터가 유실될 수 있어 백업 확인이 먼저이고, 잠금 해제가 안 되면 수리 자체가 막힙니다'},
+ {q:'폰이 자꾸 뜨거워지는데 어떤 점을 알려줘야 하나요?',a:['언제부터인지와 충전·사용 앱을 알려주세요','기기 색깔이 변했는지 먼저 알려주세요','무게가 얼마나 나가는지 먼저 알려주세요'],why:'발열은 사용 패턴과 충전 상태로 원인을 좁히기 때문에 그 정보가 진단의 출발점입니다'},
+ {q:'중고로 팔기 전에는 무엇을 해야 하나요?',a:['데이터 삭제와 계정 잠금 해제를 마치세요','초기화만 하면 새 주인이 바로 쓴다고 하세요','케이스만 새로 끼우면 준비가 끝난다고 하세요'],why:'초기화만 하면 활성화 잠금이 남아 새 주인이 쓸 수 없으므로 계정 해제까지 해야 합니다'},
+ {q:'보증 수리를 받으려면 무엇을 챙겨야 하나요?',a:['구매 영수증과 침수·파손 여부를 챙기세요','보증서만 있으면 나머지는 필요 없다고 하세요','기기만 가져오면 무상 수리 된다고 하세요'],why:'보증은 구매 시점과 사용 상태를 함께 보기 때문에 영수증과 손상 여부가 판정 근거가 됩니다'},
+ {q:'물에 빠뜨렸는데 지금 어떻게 해야 하나요?',a:['전원을 끄고 충전 없이 점검을 받으세요','바로 충전해서 정상인지 확인하라고 하세요','드라이기로 틈새까지 말려 두라고 하세요'],why:'침수 기기는 전원을 넣는 순간 손상이 커져서, 전원을 끄고 충전하지 않은 상태로 점검받는 것이 먼저입니다'},
+ {q:'충전이 안 되는데 케이블 문제인지 어떻게 알죠?',a:['다른 케이블과 충전기로 바꿔 보세요','충전구를 침이나 핀으로 닦아 보세요','배터리를 새로 사면 해결된다고 하세요'],why:'충전 문제는 케이블·어댑터·충전구 순서로 하나씩 바꿔 보면 원인을 좁힐 수 있어요'},
+ {q:'앱 구독이 자동 결제돼서 취소하고 싶어요',a:['구독 관리 화면에서 직접 해지하고 확인하세요','앱을 지우면 다음 결제가 멈춘다고 하세요','기기를 초기화하면 결제도 취소된다고 하세요'],why:'구독은 앱 삭제나 초기화로 멈추지 않고 구독 관리 화면에서 해지해야 결제가 끝납니다'}];
 /* ---- unlock pads ---- */
 const PADS=[
   {id:'table2',x:4.25,z:2.5,price:150,ic:'table',t:'체험 테이블 2',req:null},
@@ -3244,7 +3314,10 @@ function truckDraw3(){
    반환값: 0 = 받침 없음, 8 = ㄹ 받침, 그 외 = 받침 있음, -1 = 판단 불가 */
 var V303_JN=[21,8,0,16,0,0,1,8,8,0];   /* 0영(ㅇ) 1일(ㄹ) 2이(-) 3삼(ㅁ) 4사(-) 5오(-) 6육(ㄱ) 7칠(ㄹ) 8팔(ㄹ) 9구(-) */
 var V303_JA={A:0,B:0,C:0,D:0,E:0,F:0,G:0,H:0,I:0,J:0,K:0,L:8,M:16,N:4,O:0,P:0,Q:0,R:8,S:20,T:0,U:0,V:0,W:0,X:20,Y:0,Z:0};
-function _jong(w){ var s=String(w==null?'':w).replace(/[\s,)\]}>'"'”’·….!?]+$/,''); if(!s) return -1; var ch=s.charAt(s.length-1), c=ch.charCodeAt(0);
+function _jong(w){ var s=String(w==null?'':w).replace(/[\s,)\]}>'"'”’·….!?]+$/,''); if(!s) return -1;
+  /* v3.04: '$40'은 '사십 달러'로 읽으므로 받침 없음으로 본다($ 뒤 숫자) */
+  if(/\$[\d,.]+$/.test(s)) return -1;
+  var ch=s.charAt(s.length-1), c=ch.charCodeAt(0);
   if(c>=0xAC00&&c<=0xD7A3) return (c-0xAC00)%28;
   if(ch>='0'&&ch<='9') return V303_JN[+ch];
   var u=ch.toUpperCase(); if(u>='A'&&u<='Z') return V303_JA[u];
@@ -6565,7 +6638,7 @@ function mgrEvalHTML(E){ try{
 function lvCompactResult(){ try{ const mb=$('mbox'); if(!mb||mb.querySelector('.lpdet')) return; /* mbox는 창끼리 재사용되므로 표시는 내용 안에서 찾는다 */
   if(!document.getElementById('lpdet-css')){ const st=document.createElement('style'); st.id='lpdet-css'; st.textContent='details.lpdet{background:#fff;border-radius:12px;padding:6px 10px;margin:6px 0;text-align:left}details.lpdet>summary{font:900 13px var(--b);color:#2f6fd8;cursor:pointer;padding:4px 0}details.lpdet .lpng{padding:0;background:none}'; document.head.appendChild(st); }
   const kids=[...mb.children]; const txt=el=>((el.querySelector&&el.querySelector('span'))||el).textContent.trim();
-  const isKey=el=>el.classList&&el.classList.contains('dstat')&&/^매출 \$|서비스 평점|^민원 |퇴사|RSU 지급|^⚔️ vs/.test(txt(el));
+  const isKey=el=>el.classList&&el.classList.contains('dstat')&&/^매출 \$|서비스 평점|^민원 |퇴사|주식 보상 지급|RSU 지급|^⚔️ vs/.test(txt(el));
   const keyRows=kids.filter(isKey), otherRows=kids.filter(el=>el.classList&&el.classList.contains('dstat')&&!isKey(el));
   const lp=mb.querySelector('.lpbox'), st=lp&&lp.querySelector('.lpst'), ch=lp&&lp.querySelector('.lpch'), ng=lp&&lp.querySelector('.lpng');
   const mg=document.getElementById('mgrEvalBox'), dir=document.getElementById('dirAI'), rcp=mb.querySelector(':scope > .rcp'), ps=kids.filter(el=>el.tagName==='P'), btns=kids.filter(el=>el.tagName==='BUTTON'), cta=mb.querySelector('#resCta');
@@ -6645,7 +6718,7 @@ function poachLose(c,why){ const i=S.crew.indexOf(c); if(i>=0) S.crew.splice(i,1
 function poachAct(k){ try{ const O=POACH_CUR; POACH_CUR=null; const el=document.getElementById('poachNote'); if(el) el.classList.remove('on'); if(!O) return; const c=O.c; if(S.crew.indexOf(c)<0) return;
     if(k==='go'){ const v=(c.wage||20)*5; money+=v; poachLose(c,'이적 보상 +$'+v); save(); return; }
     if(k==='wage'){ if(Math.random()<O.pW){ c.wage=O.keepW; c.sat=Math.min(100,(c.sat==null?70:c.sat)+5); bigBanner('💼 '+c.name+' 잔류','일급 $'+O.keepW+' · 만족도 +5'); } else poachLose(c,'급여 제안을 거절했어요'); save(); return; }
-    if(k==='rsu'){ if(Math.random()<O.pR){ c.rsu=(c.rsu||0)+O.addSh; c.vest=(c.rsuT||0)+15; c.rsuP=c.rsuP||rsuStock().p; c.sat=Math.min(100,(c.sat==null?70:c.sat)+5); bigBanner('📈 '+c.name+' 잔류','주식 보상 '+O.addSh+'주 · 15영업일 뒤 지급'); } else poachLose(c,'RSU 제안을 거절했어요'); save(); return; }
+    if(k==='rsu'){ if(Math.random()<O.pR){ c.rsu=(c.rsu||0)+O.addSh; c.vest=(c.rsuT||0)+15; c.rsuP=c.rsuP||rsuStock().p; c.sat=Math.min(100,(c.sat==null?70:c.sat)+5); bigBanner('📈 '+c.name+' 잔류','주식 보상 '+O.addSh+'주 · 15영업일 뒤 지급'); } else poachLose(c,'주식 보상 제안을 거절했어요'); save(); return; }
   }catch(e){ console.warn('poachAct',e); } }
 /* ================= v2.41: 경쟁 시장 · 본사 AI 인재 영입 · 판매 전략 · 매니저 업무 지시 =================
    경쟁사: 지역 랭킹의 상위 2곳이 '주요 경쟁사'. 매일 그 지역 목표 × 체급(k) × 기세(mom) 만큼 매출을 낸다.
@@ -7415,8 +7488,8 @@ function v291NextBranchHTML(){
       '<div style="display:flex;justify-content:space-between;font:900 12.5px var(--b);color:'+(okF?'#1a7a56':'#7a5a10')+';margin-top:7px"><span>🏗️ 완공 '+fd+' / '+fn+'층</span><b>'+(okF?'충족':'층 '+(fn-fd)+'개 남음')+'</b></div>'+
       bar(fd,fn,'#3fbf9d')+
       '<div class="hubGrid" style="margin-top:9px">'+
-        '<button data-v291="floor" class="hubPrep" style="all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:9px 6px;border-radius:12px;background:linear-gradient(#5fdcc0,#12a08a);box-shadow:0 3px 0 #0a7a68;color:#fff;font:900 12.5px var(--b);cursor:pointer">'+(okF?'✅ 층 완공 완료':'🏗️ 층 완공하러 가기')+'</button>'+
-        '<button data-v291="star" class="hubPrep" style="all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:9px 6px;border-radius:12px;background:linear-gradient(#ffcf4d,#f0a51a);box-shadow:0 3px 0 #b87a00;color:#3a2200;font:900 12.5px var(--b);cursor:pointer">'+(okS?'⭐ 별 조건 완료':'⭐ 별 더 받기 (다시 도전)')+'</button>'+
+        '<button data-v291="floor" class="hubPrep" style="all:unset;box-sizing:border-box;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:3px 4px;padding:9px 6px;border-radius:12px;line-height:1.25;text-align:center;background:linear-gradient(#5fdcc0,#12a08a);box-shadow:0 3px 0 #0a7a68;color:#fff;font:900 12.5px var(--b);cursor:pointer">'+(okF?'✅ 층 완공 완료':'🏗️ 층 완공하러 가기')+'</button>'+
+        '<button data-v291="star" class="hubPrep" style="all:unset;box-sizing:border-box;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:3px 4px;padding:9px 6px;border-radius:12px;line-height:1.25;text-align:center;background:linear-gradient(#ffcf4d,#f0a51a);box-shadow:0 3px 0 #b87a00;color:#3a2200;font:900 12.5px var(--b);cursor:pointer">'+(okS?'⭐ 별 조건 완료':'⭐ 별 더 받기 (다시 도전)')+'</button>'+
       '</div></div>';
     return h;
   }catch(e){ return ''; }
@@ -8220,11 +8293,11 @@ function v264GoalLine(){
   try{
     var o=v264S();
     if((o.sh||0)>0.05){ var nx=3-(o.vt||0);
-      if(nx<=1) return '⚠️ 내일 베스팅 · 실패하면 $'+Math.round((o.sh||0)*v264Share()*0.35).toLocaleString()+' 소각 위험';
+      if(nx<=1) return '⚠️ 내일 지급 · 실패하면 $'+Math.round((o.sh||0)*v264Share()*0.35).toLocaleString()+' 소각 위험';
       return '지급까지 D-'+nx+' · '+v264Sh(o.sh)+' → 현금 + 보유 보상'; }
   }catch(e){}
   try{ var cfg=dayCfg(S.day||0); return '★★★까지 '+lvStarHint(cfg); }catch(e){}
-  return '영업을 마치면 RSU가 쌓여요';
+  return '영업을 마치면 주식 보상이 쌓여요';
 }
 /* ---------------- 허브 카드 ---------------- */
 function v264CardHTML(){
@@ -8236,14 +8309,14 @@ function v264CardHTML(){
      '<b style="margin-left:auto;font:900 16px var(--b);color:#fff">$'+Kp.toFixed(1)+'</b>'+
      '<em style="font:900 11px var(--b);font-style:normal;padding:2px 6px;border-radius:8px;background:'+(Math.abs(chg)<0.05?'rgba(255,255,255,.12)':up?'rgba(110,231,135,.2)':'rgba(255,110,110,.2)')+';color:'+(Math.abs(chg)<0.05?'#c3d2e8':up?'#8ff0a4':'#ffb0b0')+'">'+(Math.abs(chg)<0.05?'— 0%':(up?'▲ +':'▼ ')+Math.abs(chg)+'%')+'</em></div>';
   h+='<div style="display:flex;gap:6px;margin-top:7px">'+
-     '<div style="flex:1;min-width:0;background:rgba(255,255,255,.09);border-radius:11px;padding:6px 8px"><small style="display:block;font:800 9.5px var(--b);color:#9fb2cc">미베스팅 RSU</small><b id="v264Rsu" style="font:900 13px var(--b);color:#fff">'+v264Sh(o.sh)+' · $'+Math.round(pool).toLocaleString()+'</b></div>'+
-     '<div style="flex:none;width:78px;background:rgba(255,255,255,.09);border-radius:11px;padding:6px 8px"><small style="display:block;font:800 9.5px var(--b);color:#9fb2cc">다음 베스팅</small><b id="v264Next" style="font:900 13px var(--b);color:#ffd23f">D-'+next+'</b></div></div>';
+     '<div style="flex:1;min-width:0;background:rgba(255,255,255,.09);border-radius:11px;padding:6px 8px"><small style="display:block;font:800 9.5px var(--b);color:#9fb2cc">지급 대기 주식</small><b id="v264Rsu" style="font:900 13px var(--b);color:#fff">'+v264Sh(o.sh)+' · $'+Math.round(pool).toLocaleString()+'</b></div>'+
+     '<div style="flex:none;width:78px;background:rgba(255,255,255,.09);border-radius:11px;padding:6px 8px"><small style="display:block;font:800 9.5px var(--b);color:#9fb2cc">다음 지급</small><b id="v264Next" style="font:900 13px var(--b);color:#ffd23f">D-'+next+'</b></div></div>';
   h+='<div style="display:flex;gap:6px;margin-top:6px">'+
      '<button data-v264="idle" id="v264VB" style="flex:1;min-width:0;border:0;border-radius:11px;padding:7px 6px;font:900 11px var(--b);color:#123a1c;background:linear-gradient(#bdf7c2,#7ee08a);box-shadow:0 3px 0 #3f9a4d;opacity:'+((o.vault||0)>=1?'1':'.45')+'">🌙 방치 수익<br><b id="v264Vault" style="font-size:13px">$'+v264F(o.vault)+'</b></button>'+
      '<button data-v264="div" id="v264DB" style="flex:1;min-width:0;border:0;border-radius:11px;padding:7px 6px;font:900 11px var(--b);color:#3a2a00;background:linear-gradient(#ffe49a,#ffc23f);box-shadow:0 3px 0 #b8801a;opacity:'+((o.divV||0)>=1?'1':'.45')+'">🏦 보유 보상<br><b id="v264Div" style="font-size:13px">$'+v264F(o.divV)+'</b></button></div>';
   h+='<div id="v264Rate" style="margin-top:6px;font:800 10.5px var(--b);color:#9fb2cc">+$'+v264F(v264Rate())+'/초 <span style="opacity:.7">· $'+Math.round(v264Rate()*3600).toLocaleString()+'/시간</span>'+(v264DivH()>0?' <span style="color:#8ff0a4">· 배당 $'+v264F(v264DivH())+'/시간</span>':'')+'</div>';
   if((o.gd==null||o.gd<0)&&(o.sh||0)<0.05) h+='<div style="margin-top:5px;font:800 10px/1.35 var(--b);color:#ffd23f">💡 영업을 클리어하면 주식 보상이 쌓이고, 3영업일마다 현금 + 보유 보상으로 바뀌어요</div>';
-  if(risk) h+='<div style="margin-top:6px;padding:5px 8px;border-radius:9px;background:rgba(255,90,90,.18);font:900 10.5px/1.35 var(--b);color:#ffb8b8">⚠️ 다음 영업에서 실패하면 미베스팅 $'+Math.round(pool*0.35).toLocaleString()+' 소각 위험</div>';
+  if(risk) h+='<div style="margin-top:6px;padding:5px 8px;border-radius:9px;background:rgba(255,90,90,.18);font:900 10.5px/1.35 var(--b);color:#ffb8b8">⚠️ 다음 영업에서 실패하면 지급 대기 $'+Math.round(pool*0.35).toLocaleString()+' 소각 위험</div>';
   h+='<div style="margin-top:6px;font:800 10.5px/1.35 var(--b);color:#cfe0ff">🎯 '+hesc(v264GoalLine())+'</div>';
   h+='<button data-v264="up" style="display:block;width:100%;margin-top:7px;border:0;border-radius:11px;padding:8px;font:900 12px var(--b);color:#fff;background:linear-gradient(#5a6cff,#3443c8);box-shadow:0 3px 0 #1e2a8a">🚀 방치 성장 · 배당 강화 <span style="font-weight:800;font-size:10px;opacity:.85">Lv.'+((o.inv.eng||0)+(o.inv.div||0)+(o.inv.off||0))+'</span></button>';
   h+='</div>';
@@ -9195,7 +9268,7 @@ function v266PresModal(){
      +'<div class="dstat"><span>영구 매출 배율</span><b>+'+Math.round(I.permBefore.rev*100)+'% → +'+Math.round(I.permAfter.rev*100)+'%</b></div>'
      +'<div class="dstat"><span>시작 자금</span><b>$'+I.startBefore+' → $'+I.startAfter+'</b></div>'
      +'<div class="dstat"><span>방치 수익 보너스</span><b>+'+Math.round(I.permBefore.off*100)+'% → +'+Math.round(I.permAfter.off*100)+'%</b></div>'
-     +'<div style="margin:7px 0 0;padding:8px 10px;border-radius:11px;background:#fff0f0;border:1px solid #f0b4b4;font:800 11px var(--b);color:#8a2a2a;text-align:left">↺ 초기화 · 지점·일차(DAY 1부터) · 현금 · 직원 · 재고·진열 · 업그레이드 · 자동화 · 체험존 · RSU·방치 투자 · 법인 계약</div>'
+     +'<div style="margin:7px 0 0;padding:8px 10px;border-radius:11px;background:#fff0f0;border:1px solid #f0b4b4;font:800 11px var(--b);color:#8a2a2a;text-align:left">↺ 초기화 · 지점·일차(DAY 1부터) · 현금 · 직원 · 재고·진열 · 업그레이드 · 자동화 · 체험존 · 주식 보상·방치 투자 · 법인 계약</div>'
      +'<div style="margin:6px 0 0;padding:8px 10px;border-radius:11px;background:#eefaf0;border:1px solid #a8dfb4;font:800 11px var(--b);color:#1d5a2a;text-align:left">✔ 유지 · 평판 포인트·영구 보너스 · 도감·업적 · 최고 기록 · 누적 통계 · 설정 · 구매한 상품(VIP 패스·자동 수금 등)</div>'
      +'<button id="v266PresYes" style="margin-top:8px;background:linear-gradient(#ff8a6a,#e8342a);box-shadow:0 4px 0 #8a0f1f">재창업 확정</button>'
      +'<button class="gray" id="v266PresNo" style="background:linear-gradient(#d8dde6,#aab4c4);box-shadow:0 4px 0 #7a8494;font-size:14px">취소</button>'
@@ -10836,7 +10909,7 @@ function v274RegHTML(){
 function v274RegModal(){
   try{
     var R=v274Reg(), n=R.list.length, buf=Math.round(v274RegBuff()*100);
-    var h='<h2>👑 단골 명단 '+n+'/'+V274_REG_MAX+'</h2><p style="margin-top:-4px;font-size:12px">5★로 응대한 손님이 이름을 남깁니다. DAY 3부터 하루 한 번 다시 찾아오고, 올 때마다 <b>팁 1.8배 · 인내심 1.4배</b>, 실망해도 민원이 없어요.<br><b>재방문 '+(R.v||0)+'번 · 영구 판매가 +'+buf+'%</b> (3번 방문마다 +1%, 최대 +10%)</p><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:7px">';
+    var h='<h2>👑 단골 명단 '+n+'/'+V274_REG_MAX+'</h2><p style="margin-top:-4px;font-size:12px">5★로 응대한 손님이 이름을 남깁니다. DAY 3부터 하루 한 번 다시 찾아오고, 올 때마다 <b>팁 1.8배 · 인내심 1.4배</b>, 실망해도 민원이 없어요.<br><b>재방문 '+(R.v||0)+'번 · 영구 판매가 +'+buf+'%</b> (3번 방문마다 +1%, 최대 +10%)</p><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">';
     for(var i=0;i<V274_REG_MAX;i++){
       var r=R.list[i];
       var face=r?faceI(r.f,34,'fm'):'<span style="width:34px;height:34px;border-radius:50%;background:#e2dbd0;display:inline-block"></span>';
@@ -10851,7 +10924,7 @@ function v274Style(){
     if(document.getElementById('v274css')) return;
     var st=document.createElement('style'); st.id='v274css';
     st.textContent='#v274Reg{margin:9px 0 2px;padding:9px 11px 10px;border-radius:14px;background:linear-gradient(#fff6e2,#ffe9b8);border:1px solid #e8c877;text-align:left}'
-     +'#v274Reg b{display:block;font:900 12px var(--b);color:#6a4a00}#v274Reg b small{font-weight:900;color:#a06800}'
+     +'#v274Reg>b{display:block;font:900 12px var(--b);color:#6a4a00}#v274Reg>b small{font-weight:900;color:#a06800}'
      +'#v274Reg>small{display:block;margin-top:5px;font:800 11px/1.45 var(--b);color:#7a5a18;word-break:keep-all}'
      +'#v274Reg .ch{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}'
      +'#v274Reg .ch span{font:900 10.5px var(--b);color:#6a4a00;background:#fff;border:1px solid #efd9a8;border-radius:9px;padding:3px 7px}'
@@ -11847,7 +11920,7 @@ function v291Coach(okRev,okRate,okComp,cfg){
       if(avg<5||lack>=avg*40) return '목표까지 $'+lack+' 부족했어요. 재고·수리 담당처럼 손님이 막히는 곳을 먼저 정비해 보세요';
       return '목표까지 $'+lack+' 부족했어요. 손님 1명당 평균 $'+avg+' · '+Math.ceil(lack/avg)+'명만 더 응대하면 클리어예요';
     }
-    if(!okRate) return '평점 ★'+(typeof dayRating==='function'?(dayRating()||0).toFixed(1):'—')+'이 최소 기준에 못 미쳤어요. 정답을 고르고 "기다리다 떠난" 손님을 줄이면 올라가요';
+    if(!okRate){ var _rt=(typeof dayRating==='function'?(dayRating()||0).toFixed(1):'—'); return '평점 ★'+_rt+(_rt==='—'?'이':josaT(_rt,'이/가'))+' 최소 기준에 못 미쳤어요. 정답을 고르고 "기다리다 떠난" 손님을 줄이면 올라가요'; }
     return '아슬아슬했어요. 재고와 수리 담당을 영업 전에 정해 두면 안정돼요';
   }catch(e){ return ''; }
 }
@@ -12092,7 +12165,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
     const copy=()=>{ try{ navigator.clipboard.writeText(APPURL).then(()=>{ const b=$('tsC'); if(b) b.textContent='복사했어요!'; }).catch(()=>{}); }catch(e){} };
     if(standalone) $('tInst').style.display='none';
     $('tInst').onclick=()=>{ if(dprompt){ dprompt.prompt(); return; } const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
-      sheet('<h3>📲 홈 화면에 앱으로 추가</h3>'+(onApp?'':'<div>먼저 아래 주소를 '+(ios?'사파리':'크롬')+'에서 열어 주세요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>')+'<ol>'+(ios?'<li>사파리 아래쪽 <b>공유 버튼</b>(네모에 화살표)을 눌러요</li><li><b>홈 화면에 추가</b>를 눌러요</li><li>오른쪽 위 <b>추가</b>를 누르면 끝!</li>':'<li>크롬 오른쪽 위 <b>⋮ 메뉴</b>를 눌러요</li><li><b>홈 화면에 추가</b>(앱 설치)를 눌러요</li><li><b>설치</b>를 누르면 끝!</li>')+'</ol><small>아이콘을 누르면 주소창 없이 전체 화면으로 열려요</small>'); const c=$('tsC'); if(c) c.onclick=copy; };
+      sheet('<h3>📲 홈 화면에 앱으로 추가</h3>'+(onApp?'':'<div>먼저 아래 주소를 '+(ios?'브라우저':'크롬')+'에서 열어 주세요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>')+'<ol>'+(ios?'<li>브라우저 아래쪽 <b>공유 버튼</b>(네모에 화살표)을 눌러요</li><li><b>홈 화면에 추가</b>를 눌러요</li><li>오른쪽 위 <b>추가</b>를 누르면 끝!</li>':'<li>크롬 오른쪽 위 <b>⋮ 메뉴</b>를 눌러요</li><li><b>홈 화면에 추가</b>(앱 설치)를 눌러요</li><li><b>설치</b>를 누르면 끝!</li>')+'</ol><small>아이콘을 누르면 주소창 없이 전체 화면으로 열려요</small>'); const c=$('tsC'); if(c) c.onclick=copy; };
     $('tShare').onclick=()=>{ const d={title:'테크 스토어 타이쿤',text:'테크 스토어 타이쿤 같이 해볼래? 수리하고, 상담하고, 매장을 키우는 게임이야',url:APPURL}; if(navigator.share){ navigator.share(d).catch(()=>{}); return; }
       sheet('<h3>🔗 친구에게 공유</h3><div>아래 주소를 보내면 바로 플레이할 수 있어요</div><span class="u">'+APPURL+'</span><button id="tsC">주소 복사</button>'); $('tsC').onclick=copy; };
     /* v3.02: 신규 유저용 ⚙️ 설정 — 이어하기·홈 화면 추가·공유를 이 안으로 모은다 */
@@ -12184,7 +12257,7 @@ function kkServe(k,c){
       custLeave(c,true,Math.max(1,Math.round((c.vip?V267_KDEF.kcheckin.pay:22)*K)));
     } else if(k==='kreturn'){
       if(c.type==='ret'){ custLeave(c,true,Math.max(1,Math.round(V267_KDEF.kreturn.pay*K))); }
-      else { c.quiet=1; custLeave(c,true,0); }                /* 컴플레인은 '접수'만 — 민원으로 키우지 않는다 */
+      else { c.quiet=1; custLeave(c,true,0); }                /* 진상 손님은 '민원 접수'만 — 컴플레인 수치로 키우지 않는다 */
     } else return false;
     got=Math.max(0,Math.round(cashVal-c0));
     if(got>0){ cashVal=Math.max(0,cashVal-got); money+=got; rebuildCash(); }  /* 키오스크는 카드 결제 → 바로 지갑 */
@@ -13453,7 +13526,7 @@ var V285=(function(){
     if(kind==='free') extra=ready?'지금 무료!':'다음 무료 '+hhmmss(freeIn());
     else extra=ready?('보유 '+fmt(V.gem)):('💎 '+B.cost+' 필요');   /* v2.94: 좁은 카드에서 아이콘 때문에 줄이 쪼개지지 않게 */
     var pit=kind==='leg'?Math.round((V.box.pity%10)/10*100):0;
-    return '<div class="vboxc '+kind+'"><div class="bi">'+B.ic+'</div><b>'+B.n+'</b><small>'+B.d+'</small>'+
+    return '<div class="vboxc '+kind+'"><b><span class="bi">'+B.ic+'</span>'+B.n+'</b><small>'+B.d+'</small>'+
       (kind==='leg'?'<div class="pity"><s style="width:'+pit+'%"></s></div><em>천장 '+(V.box.pity%10)+'/10</em>':'')+
       '<button data-box="'+kind+'" '+(ready?'':'disabled')+'>'+(kind==='free'?(ready?'무료 개봉':'대기 중'):('💎 '+B.cost+' 개봉'))+'</button><u>'+extra+'</u>'+(kind==='free'?'':'<i class="vask2">확인 후 차감</i>')+'</div>';
   }
@@ -15193,7 +15266,7 @@ var V289=(function(){
   };
   var KEYS=Object.keys(MAP).sort(function(a,b){ return b.length-a.length; });
   function ico(n){ var p=I29[n]; if(!p) return '';
-    return '<b class="v29i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg></b>'; }
+    return '<span class="v29i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg></span>'; }
   function svgify(html){
     if(typeof html!=='string'||!html) return html;
     var out=html;
