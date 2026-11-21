@@ -9715,7 +9715,7 @@ function v266HubHTML(){
     var L=V262.last;
     h+='<div class="hubYest">어제 평가 · 쇼핑 '+(L.shop?L.shop.g:'-')+' · 수리실 '+(L.rep?L.rep.g:'-')+' · 비즈니스 '+(L.biz?L.biz.g:'-')+'</div>';
   }
-  h+='<div class="hubFoot"><div class="hubFootLbl">DAY '+day+' · 목표 '+v266Usd(goal)+' · 최소 ★'+min.toFixed(1)+'</div><button class="hubCta" id="v262Go">영업 시작</button></div>';
+  h+='<div class="hubFoot"><div class="hubFootLbl">DAY '+day+' · 목표 '+v266Usd(goal)+' · 최소 평점 '+min.toFixed(1)+'</div><button class="hubCta" id="v262Go">영업 시작</button></div>';
   return h;
 }
 v262HubHTML=v266HubHTML;
