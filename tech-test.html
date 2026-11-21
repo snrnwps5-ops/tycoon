@@ -12262,7 +12262,7 @@ var V285=(function(){
     if(kind==='free') extra=ready?'지금 무료!':'다음 무료 '+hhmmss(freeIn());
     else extra=ready?('보유 '+fmt(V.gem)):('💎 '+B.cost+' 필요');   /* v2.94: 좁은 카드에서 아이콘 때문에 줄이 쪼개지지 않게 */
     var pit=kind==='leg'?Math.round((V.box.pity%10)/10*100):0;
-    return '<div class="vboxc '+kind+'"><b><span class="bi">'+B.ic+'</span>'+B.n+'</b><small>'+B.d+'</small>'+
+    return '<div class="vboxc '+kind+'"><b><span class="bi bxs" style="background-position:'+({free:'0%',prem:'50%',leg:'100%'}[kind])+' 0"></span>'+B.n+'</b><small>'+B.d+'</small>'+
       (kind==='leg'?'<div class="pity"><s style="width:'+pit+'%"></s></div><em>천장 '+(V.box.pity%10)+'/10</em>':'')+
       '<button data-box="'+kind+'" '+(ready?'':'disabled')+'>'+(kind==='free'?(ready?'무료 개봉':'대기 중'):('💎 '+B.cost+' 개봉'))+'</button><u>'+extra+'</u>'+(kind==='free'?'':'<i class="vask2">확인 후 차감</i>')+'</div>';
   }

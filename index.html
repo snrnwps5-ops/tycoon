@@ -1098,6 +1098,7 @@ body.title #v285boost,body.rep #v285boost,body.biz #v285boost{display:none!impor
 .v285p .vfl.build .fn{background:linear-gradient(160deg,#ffd76a,#e8930a)}
 .v285p .vfl.lock .fn{background:linear-gradient(160deg,#cfd6e0,#98a2b0)}
 /* v3.05: v3.00의 '#modal #mbox button{width:100%}'가 층 카드의 건설 버튼을 250px로 늘려 본문(.tx)이 0px로 찌그러지던 것 — 버튼은 자기 크기로 */
+#modal #mbox .v285p .bi.bxs{display:inline-block;width:40px;height:40px;vertical-align:middle;margin-right:4px;background-image:url(boxes.png);background-size:300% 100%;background-repeat:no-repeat;font-size:0}
 #modal #mbox .v285p .vfl>button{width:auto;flex:none;margin:0;min-height:0;padding:9px 13px;font-size:13px;border-radius:12px}
 .v285p .vfl .tx{flex:1;min-width:0}
 .v285p .vfl .tx b{display:block;font:900 12.5px var(--b);color:#3c2b18;line-height:1.25}
@@ -13640,7 +13641,7 @@ var V285=(function(){
     if(kind==='free') extra=ready?'지금 무료!':'다음 무료 '+hhmmss(freeIn());
     else extra=ready?('보유 '+fmt(V.gem)):('💎 '+B.cost+' 필요');   /* v2.94: 좁은 카드에서 아이콘 때문에 줄이 쪼개지지 않게 */
     var pit=kind==='leg'?Math.round((V.box.pity%10)/10*100):0;
-    return '<div class="vboxc '+kind+'"><b><span class="bi">'+B.ic+'</span>'+B.n+'</b><small>'+B.d+'</small>'+
+    return '<div class="vboxc '+kind+'"><b><span class="bi bxs" style="background-position:'+({free:'0%',prem:'50%',leg:'100%'}[kind])+' 0"></span>'+B.n+'</b><small>'+B.d+'</small>'+
       (kind==='leg'?'<div class="pity"><s style="width:'+pit+'%"></s></div><em>천장 '+(V.box.pity%10)+'/10</em>':'')+
       '<button data-box="'+kind+'" '+(ready?'':'disabled')+'>'+(kind==='free'?(ready?'무료 개봉':'대기 중'):('💎 '+B.cost+' 개봉'))+'</button><u>'+extra+'</u>'+(kind==='free'?'':'<i class="vask2">확인 후 차감</i>')+'</div>';
   }
