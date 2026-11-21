@@ -2281,18 +2281,77 @@ function applyVol(){ if(!AC) return; const o=optO(); try{
     if(sfxG) sfxG.gain.setTargetAtTime(o.sfx?o.sfxVol:0,AC.currentTime,0.02); }catch(e){} }
 function setOpt(k,v){ const o=optO(); o[k]=v; applyVol(); try{ save(); }catch(e){} return o; }
 function initAudio(){ if(AC) return; try{ AC=new (window.AudioContext||window.webkitAudioContext)();
-  bgmG=AC.createGain(); sfxG=AC.createGain(); bgmG.connect(AC.destination); sfxG.connect(AC.destination); applyVol();
+  bgmG=AC.createGain(); sfxG=AC.createGain(); bgmG.connect(AC.destination); sfxG.connect(AC.destination); applyVol(); try{ sxInit(); }catch(_){}
   ['coin','confirm','level_up','ui','land'].forEach(k=>{ const d=AB['s:'+k]; if(d) AC.decodeAudioData(b64(d)).then(b=>SB[k]=b).catch(()=>{}); }); }catch(e){} }
 function tone(f,d,v,type,when,bus){ if(!AC) return; const t=AC.currentTime+(when||0), o=AC.createOscillator(), g=AC.createGain(); o.type=type||'sine'; o.frequency.value=f; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(v||0.2,t+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+d); o.connect(g); g.connect(bus||sfxG||AC.destination); o.start(t); o.stop(t+d+0.05); }
+
+/* ==================== v3.05: 소리 품질 ====================
+   · 마스터에 컴프레서(겹쳐도 찢어지지 않게)와 짧은 리버브(공간감)를 단다. 사용하는 곳은 sx* 함수뿐이라 기존 snd/tone은 그대로다.
+   · 상자 개봉(충전 라이저→개봉→카드 뒤집기)과 BGM을 부드러운 음색으로 다시 짰다. */
+let SXC=null, SXS=null, SXNB=null;
+function sxInit(){ if(!AC||SXC) return; try{
+  const cp=AC.createDynamicsCompressor(); cp.threshold.value=-16; cp.knee.value=14; cp.ratio.value=4; cp.attack.value=0.004; cp.release.value=0.2;
+  bgmG.disconnect(); sfxG.disconnect(); bgmG.connect(cp); sfxG.connect(cp); cp.connect(AC.destination); SXC=cp;
+  const len=Math.floor(AC.sampleRate*1.2), imp=AC.createBuffer(2,len,AC.sampleRate);
+  for(let c=0;c<2;c++){ const d=imp.getChannelData(c); for(let i=0;i<len;i++){ d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6); } }
+  const cv=AC.createConvolver(); cv.buffer=imp; const rg=AC.createGain(); rg.gain.value=0.3; cv.connect(rg); rg.connect(cp);
+  SXS=AC.createGain(); SXS.gain.value=1; SXS.connect(cv);
+  const nl=AC.sampleRate, nb=AC.createBuffer(1,nl,AC.sampleRate), nd=nb.getChannelData(0); for(let i=0;i<nl;i++) nd[i]=Math.random()*2-1; SXNB=nb;
+}catch(e){ SXC=null; } }
+/* 목소리 하나: o={a:어택, lp:저역통과 시작, lp2:끝, sl:끝 음높이, det:디튠, wet:리버브 양, bus} */
+function sxV(f,d,v,type,when,o){ if(!AC) return; o=o||{}; const t=AC.currentTime+(when||0), os=AC.createOscillator(), g=AC.createGain();
+  os.type=type||'sine'; os.frequency.setValueAtTime(f,t); if(o.sl) os.frequency.exponentialRampToValueAtTime(Math.max(20,o.sl),t+d); if(o.det) os.detune.value=o.det;
+  const a=o.a||0.008; g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(v,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  if(o.lp){ const fl=AC.createBiquadFilter(); fl.type='lowpass'; fl.Q.value=0.8; fl.frequency.setValueAtTime(o.lp,t); if(o.lp2) fl.frequency.exponentialRampToValueAtTime(o.lp2,t+d); os.connect(fl); fl.connect(g); } else os.connect(g);
+  g.connect(o.bus||sfxG||AC.destination); if(o.wet&&SXS){ const w=AC.createGain(); w.gain.value=o.wet; g.connect(w); w.connect(SXS); }
+  os.start(t); os.stop(t+d+0.05); }
+/* 잡음 한 번: o={type:'bandpass'|'highpass'|'lowpass', f, f2(끝 주파수), q, a, wet, bus} */
+function sxN(d,v,when,o){ if(!AC||!SXNB) return; o=o||{}; const t=AC.currentTime+(when||0), s=AC.createBufferSource(), g=AC.createGain(), fl=AC.createBiquadFilter();
+  s.buffer=SXNB; s.loop=true; fl.type=o.type||'bandpass'; fl.Q.value=o.q||1; fl.frequency.setValueAtTime(o.f||1200,t); if(o.f2) fl.frequency.exponentialRampToValueAtTime(Math.max(30,o.f2),t+d);
+  const a=o.a||0.01; g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(v,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  s.connect(fl); fl.connect(g); g.connect(o.bus||sfxG||AC.destination); if(o.wet&&SXS){ const w=AC.createGain(); w.gain.value=o.wet; g.connect(w); w.connect(SXS); }
+  s.start(t); s.stop(t+d+0.05); }
+function sxHz(base,semi){ return base*Math.pow(2,semi/12); }
+/* 상자: 충전(라이저) — 열리기 dur초 전부터 점점 높아지고 세진다 */
+function sxBoxCharge(dur,rr){ if(!sfxOn()||!SXC) return; dur=dur||1;
+  sxV(110,dur,0.10,'sawtooth',0,{a:dur*0.7,lp:260,lp2:1800,sl:330,wet:0.2});
+  sxV(220,dur,0.07,'sine',0,{a:dur*0.8,sl:880,wet:0.25});
+  sxN(dur,0.07,0,{type:'bandpass',f:500,f2:5200,q:1.6,a:dur*0.85,wet:0.3});
+  for(let i=0;i<5;i++){ sxV(180+i*30,0.09,0.05,'triangle',i*dur*0.17,{lp:900,a:0.004}); }   /* 상자 덜컹 */
+  if(rr>=2) sxV(55,dur,0.14,'sine',0,{a:dur*0.9,sl:70}); }
+/* 상자: 개봉 순간 — 등급이 높을수록 화려하다 */
+function sxBoxOpen(rr){ if(!sfxOn()||!SXC) return; rr=rr|0; const R=261.6;
+  sxN(0.55,0.16,0,{type:'highpass',f:900,f2:6000,q:0.7,a:0.02,wet:0.3});                      /* 쉬익 */
+  sxV(95,0.28,0.2,'triangle',0,{sl:42,lp:400});                                                /* 쿵 */
+  sxV(300,0.32,0.07,'sawtooth',0,{lp:700,lp2:200,sl:210,a:0.03});                              /* 뚜껑 삐걱 */
+  const chord=rr>=3?[0,4,7,12,16]:rr>=2?[0,4,7,12]:rr>=1?[0,4,7]:[0,7];
+  chord.forEach((n,i)=>{ const f=sxHz(R*2,n); sxV(f,1.1+rr*0.35,0.085,'sine',0.04+i*(rr>=2?0.07:0.03),{wet:0.5,a:0.006}); sxV(f*2,0.7+rr*0.2,0.028,'triangle',0.05+i*0.05,{wet:0.6}); });
+  for(let i=0;i<4+rr*3;i++){ sxV(sxHz(R*4,[0,4,7,12,16,19][i%6]),0.2,0.04,'sine',0.12+i*0.055,{wet:0.7,a:0.003}); }   /* 반짝 */
+  if(rr>=2){ [0,4,7,12].forEach((n,i)=>sxV(sxHz(R,n),0.5,0.07,'triangle',0.1+i*0.07,{lp:2400,wet:0.4})); }
+  if(rr>=3){ sxV(55,1.2,0.26,'sine',0,{sl:38}); sxV(sxHz(R*4,12),1.8,0.05,'sine',0.35,{wet:0.8,a:0.2}); [0,4,7,12,16].forEach((n,i)=>sxV(sxHz(R*2,n),1.6,0.04,'sine',0.5+i*0.03,{wet:0.7,a:0.12})); } }
+/* 상자: 카드 한 장 뒤집힘 */
+function sxCardFlip(i,hi){ if(!sfxOn()||!SXC) return; const f=sxHz(784,[0,2,4,7,9,12][Math.min(5,i|0)]);
+  sxN(0.05,0.09,0,{type:'highpass',f:3000,q:0.6}); sxV(f,0.22,0.1,'triangle',0.01,{wet:0.35,lp:3600}); sxV(f*2,0.16,0.04,'sine',0.012,{wet:0.45});
+  if(hi){ sxV(f*1.5,0.5,0.06,'sine',0.06,{wet:0.7}); } }
 function bell(){ tone(1568,0.9,0.18); tone(2093,0.7,0.08,'sine',0.02); }
 let bgmOn=true, bgmT=0, bgmStep=0; const BGM=[[0,4,7,11],[5,9,12,16],[2,5,9,12],[7,11,14,17]]; const MELS=[[0,4,7,4],[0,5,9,5],[2,5,9,5],[0,7,11,7]]; const BASE=261.6;
 /* 칩튠 루프: 4개 코드 진행 × 8스텝, 앞 4분음마다 멜로디 한 음. 탭이 숨겨지면 즉시 멈춤 */
 function bgmTick(dt){ if(!AC||bgmHold||document.hidden||!optO().bgm) return; bgmT-=dt; if(bgmT>0) return; bgmT=0.26;
   const ci=Math.floor(bgmStep/8)%4, ch=BGM[ci], k=bgmStep%8; const n=ch[[0,1,2,3,2,1,2,3][k]];
-  tone(BASE*Math.pow(2,n/12),0.34,0.075,'triangle',0,bgmG);
-  if(k===0) tone(BASE/2*Math.pow(2,ch[0]/12),1.0,0.09,'sine',0,bgmG);
-  if(k===4) tone(BASE/2*Math.pow(2,ch[2]/12),0.8,0.06,'sine',0,bgmG);
-  if(k%2===0) tone(BASE*2*Math.pow(2,MELS[ci][k/2]/12),0.16,0.05,'square',0.12,bgmG);
+  if(!SXC){ /* 컴프레서 체인이 없으면 예전 칩튠 그대로 */
+    tone(BASE*Math.pow(2,n/12),0.34,0.075,'triangle',0,bgmG);
+    if(k===0) tone(BASE/2*Math.pow(2,ch[0]/12),1.0,0.09,'sine',0,bgmG);
+    if(k===4) tone(BASE/2*Math.pow(2,ch[2]/12),0.8,0.06,'sine',0,bgmG);
+    if(k%2===0) tone(BASE*2*Math.pow(2,MELS[ci][k/2]/12),0.16,0.05,'square',0.12,bgmG);
+    bgmStep++; return; }
+  /* v3.05: 패드(코드) + 베이스 + 플럭 멜로디 + 살짝 퍼커션. 음정 진행은 예전과 같다 */
+  if(k===0){ ch.slice(0,3).forEach((c,j)=>{ sxV(BASE*Math.pow(2,c/12),2.1,0.030,'triangle',0,{a:0.35,lp:1100,det:j*5-5,bus:bgmG,wet:0.35}); sxV(BASE*Math.pow(2,c/12),2.1,0.020,'sine',0,{a:0.4,det:6,bus:bgmG,wet:0.3}); });
+    sxV(BASE/4*Math.pow(2,ch[0]/12),0.95,0.11,'sine',0,{a:0.015,bus:bgmG}); }
+  if(k===4) sxV(BASE/4*Math.pow(2,ch[2]/12),0.7,0.08,'sine',0,{a:0.015,bus:bgmG});
+  sxV(BASE*Math.pow(2,n/12),0.3,0.06,'triangle',0,{a:0.004,lp:2600,lp2:700,bus:bgmG,wet:0.25});
+  if(k%2===0) sxV(BASE*2*Math.pow(2,MELS[ci][k/2]/12),0.24,0.04,'sine',0.12,{a:0.004,bus:bgmG,wet:0.4});
+  if(k%4===0) sxV(130,0.16,0.07,'sine',0,{sl:48,bus:bgmG});                                     /* 부드러운 킥 */
+  if(k%2===1) sxN(0.05,0.022,0.02,{type:'highpass',f:7000,q:0.5,a:0.002,bus:bgmG});             /* 하이햇 */
   bgmStep++; }
 function snd(k,v,r){ if(!AC||!SB[k]) return; const s=AC.createBufferSource(), g=AC.createGain(); s.buffer=SB[k]; s.playbackRate.value=r||1; g.gain.value=v||0.5; s.connect(g); g.connect(sfxG||AC.destination); s.start(); }
 /* ---- v2.2: 효과음 6종 (S.opt.sfx 가 꺼져 있으면 재생하지 않음) ---- */
@@ -2300,9 +2359,9 @@ function sfxOn(){ const o=optO(); return !!AC && o.sfx && o.sfxVol>0; }
 let _cashT=0, _stepT=0;
 function sfxCash(){ if(!sfxOn()) return; const n=performance.now(); if(n-_cashT<240){ tone(1046,0.035,0.05,'square'); return; } _cashT=n; tone(1046.5,0.09,0.13,'triangle'); tone(1568,0.13,0.11,'triangle',0.075); tone(2093,0.1,0.05,'sine',0.15); }
 function sfxStep(i){ if(!sfxOn()) return; const b=784*Math.pow(2,((i||0)%5)*2/12); tone(b,0.045,0.15,'square'); tone(b*2,0.03,0.05,'sine',0.012); }
-function sfxWrong(){ if(!sfxOn()) return; tone(185,0.3,0.16,'sawtooth'); tone(139,0.34,0.12,'square',0.05); }
+function sfxWrong(){ if(!sfxOn()) return; if(SXC){ sxV(196,0.28,0.12,'triangle',0,{sl:150,lp:900}); sxV(147,0.34,0.1,'triangle',0.07,{sl:110,lp:700,wet:0.2}); return; } tone(185,0.3,0.16,'sawtooth'); tone(139,0.34,0.12,'square',0.05); }
 function sfxFever(){ if(!sfxOn()) return; [523,659,784,1046].forEach((f,i)=>tone(f,0.16,0.11,'square',i*0.055)); tone(1318,0.34,0.07,'triangle',0.24); }
-function sfxLevel(){ if(!sfxOn()) return; [523,659,784,1046].forEach((f,i)=>tone(f,0.5,0.085,'triangle',i*0.03)); tone(1568,0.7,0.05,'sine',0.08); }
+function sfxLevel(){ if(!sfxOn()) return; if(SXC){ [523,659,784,1046].forEach((f,i)=>{ sxV(f,0.7,0.07,'sine',i*0.05,{wet:0.45}); sxV(f*2,0.45,0.022,'triangle',i*0.05,{wet:0.5}); }); sxV(1568,0.9,0.04,'sine',0.2,{wet:0.7}); return; } [523,659,784,1046].forEach((f,i)=>tone(f,0.5,0.085,'triangle',i*0.03)); tone(1568,0.7,0.05,'sine',0.08); }
 function sfxWarn(){ if(!sfxOn()) return; tone(880,0.08,0.11,'square'); tone(660,0.1,0.1,'square',0.1); }
 /* ---- v2.2: 진동 — 미지원(iOS Safari)이면 타깃에 반짝임 ---- */
 function haptic(pat,tgt){ const o=optO(); if(!o.vib) return 'off';
@@ -13743,10 +13802,10 @@ var V285=(function(){
       if(d3){ try{ var gb=el.querySelector('.gbg'); if(gb){ gb.style.setProperty('--gc','#'+BXVG[rr].toString(16).padStart(6,'0')+'cc'); gb.style.setProperty('--gd',(0.95+X).toFixed(2)+'s'); }
         var ics=rewards.map(function(r){ return r.t==='sh'?'🧩':r.t==='hq'?'🏢':((GEAR[r.k]||{}).ic||'👕'); });
         if(!bxvAttach(el,kind,rr,0.95+X,ics)) X=0; }catch(e){ try{ bxvStop(); }catch(_){} X=0; } }
-      try{ snd('ui',0.5,0.9); }catch(e){}
+      try{ if(SXC&&sfxOn()) sxBoxCharge(0.95+X,rr); else snd('ui',0.5,0.9); }catch(e){}
       V294TIM=[];
-      V294TIM.push(setTimeout(function(){ try{ snd('level_up',0.5,1.15); haptic(rr>=2?[10,20,10,20,30]:[8,16,8]); }catch(e){} },1020+X*1000));
-      rewards.forEach(function(r,i){ V294TIM.push(setTimeout(function(){ try{ snd('coin',0.32,1+i*0.04); haptic(8); }catch(e){} },1300+X*1000+i*220)); });
+      V294TIM.push(setTimeout(function(){ try{ if(SXC&&sfxOn()) sxBoxOpen(rr); snd('level_up',SXC?0.28:0.5,1.15); haptic(rr>=2?[10,20,10,20,30]:[8,16,8]); }catch(e){} },1020+X*1000));
+      rewards.forEach(function(r,i){ V294TIM.push(setTimeout(function(){ try{ if(SXC&&sfxOn()) sxCardFlip(i,i===rewards.length-1&&rr>=2); snd('coin',SXC?0.16:0.32,1+i*0.04); haptic(8); }catch(e){} },1300+X*1000+i*220)); });
       V294CB=null;
       V294SKIP=function(e){ try{ if(!document.getElementById('v294pull')) return; e.preventDefault(); e.stopPropagation(); }catch(_){} pullEnd(1); };
       document.addEventListener('pointerdown',V294SKIP,true);
@@ -14151,6 +14210,7 @@ try{ window.__H=window.__H||{}; window.__H.v285={
   gem:function(n){ V285.gems(n||50,'QA'); return V285.state().gem; },
   open:function(st){ V285.openBranch(st); return 1; }, box:function(k){ V285.openBoxes(k); return 1; },
   gear:function(){ V285.openGear(); return 1; }, hq:function(){ V285.openHq(); return 1; }, bag:function(){ V285.openBag(); return 1; },
+  sx:{charge:function(d,r){ sxBoxCharge(d,r); }, open:function(r){ sxBoxOpen(r); }, flip:function(i,h){ sxCardFlip(i,h); }, level:function(){ sfxLevel(); }, wrong:function(){ sfxWrong(); }, bgm:function(){ bgmT=0; bgmTick(0.01); }, ready:function(){ return !!SXC; }},
   pull:function(kind,n){ try{ var r=V285.openBox(kind||'prem'); V285.pullShow(r.rewards,kind||'prem'); return r; }catch(e){ return {err:String(e&&e.message)}; } },
   start:function(i){ return V285.startFloor(STG,i); }, skip:function(i){ return V285.skipFloor(STG,i); },
   roll:function(k){ return V285.openBox(k); },
