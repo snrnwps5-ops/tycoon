@@ -2336,6 +2336,11 @@ function sxCardFlip(i,hi){ if(!sfxOn()||!SXC) return; const f=sxHz(784,[0,2,4,7,
 function bell(){ tone(1568,0.9,0.18); tone(2093,0.7,0.08,'sine',0.02); }
 let bgmOn=true, bgmT=0, bgmStep=0; const BGM=[[0,4,7,11],[5,9,12,16],[2,5,9,12],[7,11,14,17]]; const MELS=[[0,4,7,4],[0,5,9,5],[2,5,9,5],[0,7,11,7]]; const BASE=261.6;
 /* 칩튠 루프: 4개 코드 진행 × 8스텝, 앞 4분음마다 멜로디 한 음. 탭이 숨겨지면 즉시 멈춤 */
+/* v3.06: BGM 코드·멜로디(C장조, 기준음 C4=0). t=코드 음, r=베이스 근음, 멜로디는 마디당 4음 */
+const SXP=[{t:[0,4,7],r:0},{t:[7,11,14],r:-5},{t:[9,12,16],r:-3},{t:[5,9,12],r:-7},{t:[0,4,7],r:0},{t:[7,11,14],r:-5},{t:[5,9,12],r:-7},{t:[7,11,14],r:-5},
+ {t:[9,12,16],r:-3},{t:[5,9,12],r:-7},{t:[0,4,7],r:0},{t:[7,11,14],r:-5},{t:[9,12,16],r:-3},{t:[4,7,11],r:-8},{t:[5,9,12],r:-7},{t:[7,11,14],r:-5}];
+const SXM=[[12,16,19,16],[14,19,23,19],[16,19,24,19],[17,21,24,21],[19,16,12,16],[19,14,11,14],[17,21,17,12],[14,19,23,26],
+ [16,21,24,21],[17,21,24,17],[19,24,19,16],[14,19,14,11],[21,24,21,16],[19,23,19,16],[17,21,17,14],[14,16,19,14]];
 function bgmTick(dt){ if(!AC||bgmHold||document.hidden||!optO().bgm) return; bgmT-=dt; if(bgmT>0) return; bgmT=0.26;
   const ci=Math.floor(bgmStep/8)%4, ch=BGM[ci], k=bgmStep%8; const n=ch[[0,1,2,3,2,1,2,3][k]];
   if(!SXC){ /* 컴프레서 체인이 없으면 예전 칩튠 그대로 */
@@ -2344,14 +2349,16 @@ function bgmTick(dt){ if(!AC||bgmHold||document.hidden||!optO().bgm) return; bgm
     if(k===4) tone(BASE/2*Math.pow(2,ch[2]/12),0.8,0.06,'sine',0,bgmG);
     if(k%2===0) tone(BASE*2*Math.pow(2,MELS[ci][k/2]/12),0.16,0.05,'square',0.12,bgmG);
     bgmStep++; return; }
-  /* v3.05: 패드(코드) + 베이스 + 플럭 멜로디 + 살짝 퍼커션. 음정 진행은 예전과 같다 */
-  if(k===0){ ch.slice(0,3).forEach((c,j)=>{ sxV(BASE*Math.pow(2,c/12),2.1,0.030,'triangle',0,{a:0.35,lp:1100,det:j*5-5,bus:bgmG,wet:0.35}); sxV(BASE*Math.pow(2,c/12),2.1,0.020,'sine',0,{a:0.4,det:6,bus:bgmG,wet:0.3}); });
-    sxV(BASE/4*Math.pow(2,ch[0]/12),0.95,0.11,'sine',0,{a:0.015,bus:bgmG}); }
-  if(k===4) sxV(BASE/4*Math.pow(2,ch[2]/12),0.7,0.08,'sine',0,{a:0.015,bus:bgmG});
-  sxV(BASE*Math.pow(2,n/12),0.3,0.06,'triangle',0,{a:0.004,lp:2600,lp2:700,bus:bgmG,wet:0.25});
-  if(k%2===0) sxV(BASE*2*Math.pow(2,MELS[ci][k/2]/12),0.24,0.04,'sine',0.12,{a:0.004,bus:bgmG,wet:0.4});
-  if(k%4===0) sxV(130,0.16,0.07,'sine',0,{sl:48,bus:bgmG});                                     /* 부드러운 킥 */
-  if(k%2===1) sxN(0.05,0.022,0.02,{type:'highpass',f:7000,q:0.5,a:0.002,bus:bgmG});             /* 하이햇 */
+  /* v3.06: 16마디 두 섹션(A·B) 루프. 패드 + 베이스 + 마림바풍 멜로디 + 아르페지오 + (B에서) 킥/스네어 */
+  const bar=Math.floor(bgmStep/8)%16, sec=bar>=8?1:0, c=SXP[bar], mel=SXM[bar];
+  if(k===0){ c.t.forEach((n,j)=>{ sxV(BASE*Math.pow(2,n/12),2.2,0.026,'triangle',0,{a:0.4,lp:1000,det:j*6-6,bus:bgmG,wet:0.35}); sxV(BASE*Math.pow(2,n/12),2.2,0.016,'sine',0,{a:0.45,det:7,bus:bgmG,wet:0.3}); }); }
+  if(k===0||k===4||(sec&&k===6)) sxV(BASE/4*Math.pow(2,c.r/12),k===0?0.9:0.6,k===0?0.12:0.085,'sine',0,{a:0.012,bus:bgmG});
+  if(k%2===0){ const f=BASE*Math.pow(2,mel[k/2]/12);
+    sxV(f,0.34,0.055,'sine',0,{a:0.004,bus:bgmG,wet:0.3}); sxV(f*4,0.07,0.016,'sine',0,{a:0.002,bus:bgmG}); sxV(f*2,0.2,0.02,'triangle',0,{a:0.003,lp:3200,bus:bgmG,wet:0.3}); }
+  else { const f=BASE*2*Math.pow(2,c.t[(k>>1)%3]/12); sxV(f,0.2,0.022,'sine',0.012,{a:0.004,bus:bgmG,wet:0.5}); }
+  if(sec){ if(k%4===0) sxV(130,0.16,0.08,'sine',0,{sl:46,bus:bgmG}); if(k===4) sxN(0.11,0.03,0,{type:'bandpass',f:1900,q:0.8,a:0.002,bus:bgmG,wet:0.2}); }
+  else if(k===0) sxV(120,0.14,0.05,'sine',0,{sl:48,bus:bgmG});
+  if(k%2===1) sxN(0.05,sec?0.022:0.014,0.02,{type:'highpass',f:7000,q:0.5,a:0.002,bus:bgmG});
   bgmStep++; }
 function snd(k,v,r){ if(!AC||!SB[k]) return; const s=AC.createBufferSource(), g=AC.createGain(); s.buffer=SB[k]; s.playbackRate.value=r||1; g.gain.value=v||0.5; s.connect(g); g.connect(sfxG||AC.destination); s.start(); }
 /* ---- v2.2: 효과음 6종 (S.opt.sfx 가 꺼져 있으면 재생하지 않음) ---- */
