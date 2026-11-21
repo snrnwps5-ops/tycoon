@@ -5330,7 +5330,7 @@ function scoutApprove(c){
     money+=SCOUT_BONUS;
     scoutClose(); snd('coin',0.55,1.2); try{ haptic([10,25,10]); }catch(e){}
     bigBanner('🏛️ 본사 영전 승인!','+$'+SCOUT_BONUS+' · '+c.name+' 프로 → '+dept);
-    setTimeout(function(){ toast('빈자리 발생 · [직원] → [🎙️ AI 면접 채용실]에서 바로 채용할 수 있어요',4); },900);
+    setTimeout(function(){ toast('빈자리 발생 · [직원]에서 채용해요',4); },900);
     if($('modal')&&$('modal').classList.contains('on')&&document.getElementById('ivOpen')) openCrew();
     save();
   }catch(e){ console.warn('scoutApprove',e); scoutClose(); }
@@ -6969,6 +6969,28 @@ try{ const st=document.createElement('style'); st.textContent='body.ftue #bbar,b
   document.head.appendChild(st);
   const a=document.createElement('div'); a.id='ftArrow'; a.innerHTML='<i>👇</i>'; document.body.appendChild(a);
   const h=document.createElement('div'); h.id='ftHint'; document.body.appendChild(h); }catch(e){}
+/* v3.10: 화면 단순화 — 상단 지점·소리·타이틀·저장, 오른쪽 카메라·꾸미기, 하단 랭킹 버튼을 숨기고
+   설정창 맨 위 '바로가기'로 옮긴다(원래 버튼을 그대로 눌러 주므로 기능·저장은 그대로). 층 버튼은 2층이 열린 뒤에만. */
+try{ const st=document.createElement('style'); st.textContent='body #branchBtn,body #mute,body #back,body #saveChip,body #camctl,body #intBtn,body #mapBtn{display:none!important}body.v310one #v287fl{display:none!important}'+
+  '.v310q{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 10px}.v310q button{min-height:52px!important;padding:6px 2px!important;border-radius:12px!important;border:1.5px solid #ecd9b8!important;background:#fffaf0!important;color:#5a4020!important;font:900 12px/1.25 var(--b)!important;box-shadow:0 2px 0 #e6d2ad!important;width:auto!important;margin:0!important}.v310q button i{display:block;font-style:normal;font-size:19px;line-height:1.1}'+
+  'details.vMore{margin:8px 0 4px;background:rgba(255,255,255,.55);border-radius:14px;padding:4px 10px}details.vMore>summary{font:900 13px var(--b);color:#7a5a30;padding:8px 2px;cursor:pointer;list-style:none}details.vMore>summary::after{content:" ▾";color:#b08a50}details.vMore[open]>summary::after{content:" ▴"}';
+  document.head.appendChild(st);
+  setInterval(function(){ try{ let one=true; if(typeof V287!=='undefined'&&V287.nF&&V287.nF()>1&&V287.open&&V287.open(1)) one=false; document.body.classList.toggle('v310one',one); }catch(e){} },700);
+}catch(e){}
+/* 허브의 보조 카드(명예의 전당·성장 현황·재창업·주간 줄·해금 예고·백업 알림)는 늦게 끼어들어 오므로 주기적으로 접기 안으로 옮긴다 */
+setInterval(function(){ try{ const mb=document.getElementById('mbox'); if(!mb) return; const d=mb.querySelector('details.vMore'); if(!d) return; const sm=d.querySelector('summary');
+  ['#v275Tr','#v271Grow','.vCard.gold','#v269Strip','#v269Unl','#v270Bak'].forEach(function(q){ const e=mb.querySelector(q); if(e&&!d.contains(e)) sm.after(e); }); }catch(e){} },300);
+function v310Quick(){ try{
+  const mb=$('mbox'); if(!mb||mb.querySelector('.v310q')) return;
+  const Q=[['branchBtn','🏢','지점 이동'],['mapBtn','🏆','랭킹'],['intBtn','🎨','꾸미기'],['saveChip','💾','저장·이어하기'],['camFull','📷','카메라 전체/기본'],['back','🏠','타이틀']];
+  const box=document.createElement('div'); box.className='v310q';
+  box.innerHTML=Q.map(q=>'<button type="button" data-v310="'+q[0]+'"><i>'+q[1]+'</i>'+q[2]+'</button>').join('');
+  (mb.querySelector('.v3Body')||mb).prepend(box);
+  box.addEventListener('click',function(e){ const b=e.target.closest('[data-v310]'); if(!b) return; e.stopPropagation(); const id=b.getAttribute('data-v310');
+    $('modal').classList.remove('on'); setTimeout(function(){ try{ const t=document.getElementById(id); if(t) t.click(); }catch(_){} },60); });
+}catch(e){} }
+try{ const _oo=openOpt; openOpt=function(){ const r=_oo.apply(this,arguments); v310Quick(); return r; }; }catch(e){}
+try{ const _om=openMs; openMs=function(){ const r=_om.apply(this,arguments); try{ const mb=$('mbox'); if(mb&&!mb.querySelector('#v310rk')){ const b=document.createElement('button'); b.id='v310rk'; b.type='button'; b.textContent='🏆 지역 랭킹 보기'; b.style.cssText='margin:6px 0;background:linear-gradient(#6aa8ff,#3a72d8);box-shadow:0 3px 0 #2a52a0'; b.onclick=function(e){ e.stopPropagation(); snd('ui',0.4); openRank(); }; (mb.querySelector('.v3Body')||mb).prepend(b); } }catch(_){} return r; }; }catch(e){}
 /* v3.09: DAY 2~3은 핵심 버튼만 — 첫날(ftue) 숨김을 이틀 더 이어 간다. 상점·랭킹·꾸미기·카메라·저장·부스터·지점 이동·본사 챌린지는 DAY 4부터.
    층 건설(🏗️)·업그레이드·직원·미션·재고·수리실은 그대로 둔다. 새 저장 필드 S.v309o(열림 배너 1회)만 추가 — 없으면 기본값. */
 function v309Early(){ try{ return S.day>=1 && S.day<=2 && !ftueOn(); }catch(e){ return false; } }
@@ -9861,9 +9883,11 @@ function v266HubHTML(){
     +'</div>';
   if(typeof dayEv!=='undefined'&&dayEv&&EVT[dayEv]) h+='<div class="vNote">'+hesc(EVT[dayEv][0])+'<br>'+hesc(EVT[dayEv][1])+'</div>';
   h+=v266PrestigeCardHTML();
+  /* v3.10: 허브 단순화 — 목표·다음 지점·[영업 시작]만 보이고 지점·매니저·영업 준비는 접는다 */
+  h+=v291NextBranchHTML();
+  h+='<details class="vMore"><summary>지점 · 매니저 · 영업 준비</summary>';
   h+='<div class="vSec"><b>지점</b><small>다른 지점에서 시작할 수 있어요</small><em>'+v262BranchOrder().filter(function(i){ return v262OpenStage(i); }).length+' / '+STN.length+'</em></div>';
   h+='<div class="hubGrid">'+v262BranchOrder().map(v262BranchHTML).join('')+'</div>';
-  h+=v291NextBranchHTML();
   h+='<div class="vSec"><b>매니저</b><small>어제 평가 · 오늘 실적</small></div>';
   h+=v262SlotHTML('shop','🏬',M.shop?M.shop.name:'매니저 미배치',
     M.shop?('만족 '+Math.round(v262Num(M.shop.sat,70))+' · 리더십 '+Math.round(v262Num(M.shop.mscore,50))+'점'):'직원 관리에서 매니저를 채용하세요','관리','crew',!!M.shop);
@@ -9888,6 +9912,7 @@ function v266HubHTML(){
     var L=V262.last;
     h+='<div class="hubYest">어제 평가 · 쇼핑 '+(L.shop?L.shop.g:'-')+' · 수리실 '+(L.rep?L.rep.g:'-')+' · 비즈니스 '+(L.biz?L.biz.g:'-')+'</div>';
   }
+  h+='</details>';
   h+='<div class="hubFoot"><div class="hubFootLbl">DAY '+day+' · 목표 '+v266Usd(goal)+' · 최소 평점 '+min.toFixed(1)+'</div><button class="hubCta" id="v262Go">영업 시작</button></div>';
   return h;
 }
@@ -11918,7 +11943,7 @@ function startDayModal(){ if(!FTSKIP&&(S.att||{}).d!==today()&&!(typeof v291Hold
   openModal('<h2>'+STI[STG]+' '+TS.name+' · DAY '+(S.day+1)+'</h2><p style="margin-top:-4px"><b>STAGE '+(STG+1)+' '+STK[STG]+' · '+cfg.title+'</b><br>'+cfg.tip+'</p>'+(SEASON?'<div class="evc" style="background:linear-gradient(#2a2a2a,#111);border-color:#ffd23f"><b style="color:#ffd23f">'+(SEASON==='bf'?'🖤 블랙프라이데이 주간':'🎄 크리스마스 시즌')+'</b><small style="color:#eee">'+(SEASON==='bf'?'11월 한정 · 손님이 10% 더 와요':'12월 한정 · 매장에 눈이 내려요')+'</small></div>':'')+(dayEv?'<div class="evc"><b>오늘의 이벤트 · '+EVT[dayEv][0]+'</b><small>'+EVT[dayEv][1]+'</small></div>':'')+v278PreHTML()+'<div class="dstat"><span>목표 매출</span><b>$'+cfg.goal+'</b></div><div class="dstat"><span>최소 평점</span><b>★ '+(cfg.min+(dayEv==='review'?0.2:0)).toFixed(1)+'</b></div><div class="dstat"><span>영업 시간</span><b>'+Math.floor(cfg.dur/60)+'분 '+(cfg.dur%60)+'초</b></div>'+'<div class="dstat"><span>내 직급 · 리더십</span><b>'+myRankName()+' · '+Math.round(S.myScore||0)+'점'+(S.myWarn?' · 경고 '+S.myWarn+'회':'')+'</b></div>'+'<div class="dstat"><span>마지막 저장</span><b>'+saveAgo()+'</b></div>'+(RENT[STG]?'<div class="dstat"><span>임대료 (영업 종료 시)</span><b>-$'+RENT[STG]+'</b></div>':'')+'<div class="dstat no"><span>민원 3건이면</span><b>영업 정지(실패)</b></div>'+lvPreHTML()+'<button id="dayGo">영업 시작!</button>'+mktStratHTML()+lvPreBtn()+'<div style="display:flex;gap:8px"><button class="gray" id="dCrew" style="background:linear-gradient(#b07aff,#7a4ad6);box-shadow:0 4px 0 #4a2a9a">직원 관리</button><button class="gray" id="dUpg">업그레이드</button><button id="dMap" style="width:64px;flex:none;background:linear-gradient(#5aa8ff,#2f6fd8);box-shadow:0 4px 0 #1c3f9a">🗺️</button></div>');
   $('dCrew').onclick=()=>{ window.__rts=1; openCrew(); }; lvPreBind();
   $('dUpg').onclick=()=>{ window.__rts=1; openUp(); }; $('dMap').onclick=()=>{ window.__rts=1; snd('ui',0.4); openWorld(); };
-  $('dayGo').onclick=()=>{ if(dayState==='run'){ V265.guard.begin++; return; } /* v2.65: 영업 중에 시작 버튼이 또 눌려 하루 기록이 초기화되는 것 방지 */ $('modal').classList.remove('on'); initAudio(); useResetDay(); try{ dfix.rev=0; dfix.n=0; dfix.log=[]; }catch(e){} try{ var _v291=v291S(); if(_v291) _v291.lowWarn={}; }catch(e){} dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 재고가 모자라면 ① 하단 [재고]에서 발주 ② 입고 구역 박스를 집어 ③ 그 품목 선반에 내려놓기',6),2600); } spawnT=0.3; v295DayBanner(S.day+1,cfg.title,cfg.tip); lpDayStart(); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(6.9,0,-3.2); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(2.6,0,-6.6); focusT=1.6; popIn(SUPG); } try{ v275DayBegin(); }catch(e){} try{ v278DayBegin(); }catch(e){} }; }
+  $('dayGo').onclick=()=>{ if(dayState==='run'){ V265.guard.begin++; return; } /* v2.65: 영업 중에 시작 버튼이 또 눌려 하루 기록이 초기화되는 것 방지 */ $('modal').classList.remove('on'); initAudio(); useResetDay(); try{ dfix.rev=0; dfix.n=0; dfix.log=[]; }catch(e){} try{ var _v291=v291S(); if(_v291) _v291.lowWarn={}; }catch(e){} dayState='run'; dayT=cfg.dur; dayRev=0; dayComp=0; dayCompTypes={}; dayRevs=[]; dayNps=[]; dayWalk=0; clsDone=false; taaPlan(); hubDayStart(); S.mid=1; dayCash0=Math.floor(money); dayFloor0=cashVal; dayOrd=0; dayColl=0; if(S.day>=1&&!S.tipInv){ S.tipInv=1; setTimeout(()=>toast('📦 재고 부족? [재고]에서 발주 → 박스를 선반으로',4),2600); } spawnT=0.3; v295DayBanner(S.day+1,cfg.title,cfg.tip); lpDayStart(); snd('level_up',0.4,1.2); if(cfg.open==='repair'){ focusP.set(6.9,0,-3.2); focusT=1.6; popIn(REPG); } if(cfg.open==='support'){ focusP.set(2.6,0,-6.6); focusT=1.6; popIn(SUPG); } try{ v275DayBegin(); }catch(e){} try{ v278DayBegin(); }catch(e){} }; }
 function endDay(fail){ if(dayState!=='run') return; dayState='end'; try{ if(typeof REP!=='undefined'&&REP.open) repClose(); }catch(e){} GSPOT.occ=null; dayEndT=1.2;
   try{ RLAB.seats.concat(RLAB.queue).forEach(function(x){ x.occ=null; }); RQ.forEach(function(j){ if(j.c){ j.c.labJ=null; j.c=null; } }); REP.work=null; REP.sel=null; rlabSignPaint(true); }catch(e){} S.lastFail=fail?'comp':null; custs.forEach(c=>{ if(c.st!=='leave'){ c.quiet=1; c.el.style.display='none'; if(c.spot){ c.spot.occ=null; c.spot=null; } c.st='leave'; c.wp=[new THREE.Vector3(c.pos.x,0,Math.max(c.pos.z,2.0)),new THREE.Vector3(0,0,4.6),new THREE.Vector3(0,0,8),new THREE.Vector3(14,0,11.2)]; } }); if(quizOpen) closeQuiz(); bigBanner(fail?'영업 정지!':'영업 종료!',fail?'민원 3건이 쌓였어요':'오늘 결과를 확인해요'); }
 /* =============================================================
