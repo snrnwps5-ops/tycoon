@@ -2359,6 +2359,8 @@ function spawnCust(){ if(dayState!=='run') return; try{ if(typeof V287!=='undefi
     LK?{tint:LK.tint,hair:LK.hair,acc:LK.acc,accC:LK.accC,accC2:LK.accC2,look:LK.look}
       :{tint:Math.random()<0.6?pick1(SHIRTS):null,hs:pick1(['fringe','bob','swept','bun','pony','buzz','long']),iris:pick1(['#4a3a2a','#3a2a4a','#2a4a3a','#5a3a2a'])});
   const c={ch,type,spot:sp,pos:new THREE.Vector3(Math.random()<0.5?14:-14,0,11.2),wp:[new THREE.Vector3(0,0,8),new THREE.Vector3(0,0,4.6),new THREE.Vector3(sp.x,0,sp.z)],st:'enter',pat:40,patMax:40,face:0,el:document.createElement('div'),want:null,q:null,happy:0};
+  /* v3.07: 손님 일부는 엘리베이터에서 내려온다(2층 이상이 있는 지점) — 위치만 바꾼다 */
+  try{ if(typeof V287!=='undefined'&&V287.nF&&V287.nF()>1&&Math.random()<0.25){ c.pos.set(0.55+(Math.random()-0.5)*0.4,0,-8.5); c.wp=[new THREE.Vector3(0.55,0,-6.4),new THREE.Vector3(sp.x,0,sp.z)]; } }catch(e){}
   sp.occ=c; if(LK&&LK.look) c.lookId=LK.look.id; if(type==='pick') c.want=(typeof v278Want==='function')?v278Want():'pwl'[Math.floor(Math.random()*3)];   /* v2.78: 인기 품목 손님 */ if(type==='fix'){ c.walkin=1; c.pat=c.patMax=30; } if(type==='sw') c.q=(STG>=2&&Math.random()<0.4)?pickQ(ERRQ):(cfg.policy&&Math.random()<0.4)?pickQ(SWQ2):pickQ(SWQ);
   if(cfg.tough&&Math.random()<cfg.tough){ c.tough=1; c.pat=c.patMax=22; }
   if(cfg.flight&&!c.tough&&Math.random()<cfg.flight){ c.flight=1; c.pat=c.patMax=24; } if(cfg.vip&&!c.tough&&!c.flight&&type!=='esc'&&Math.random()<cfg.vip){ c.vip=1; c.pat=c.patMax=34; }
@@ -12673,12 +12675,12 @@ var V285=(function(){
       if(ch._v285g){ try{ inner.remove(ch._v285g); }catch(e){} ch._v285g=null; }
       var g=new THREE.Group(); inner.add(g); ch._v285g=g;
       /* v2.86: 모자는 머리 위로, 조끼는 몸통 밖으로, 가방은 어깨 옆으로 — 탑다운에서도 착용이 뚜렷이 보이게 */
-      var hh=1.54; try{ var hp=null; inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); if(hp){ var vv=new THREE.Vector3(); hp.getWorldPosition(vv); inner.worldToLocal(vv); hh=vv.y+0.3; } }catch(e){}
+      var hh=1.54; try{ var hp=null; inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); if(hp){ var vv=new THREE.Vector3(); hp.getWorldPosition(vv); inner.worldToLocal(vv); hh=vv.y+0.4; } }catch(e){}
       var eq=V.eq;
       function gm(col,extra){ var o={color:col,shininess:60}; if(extra) for(var k in extra) o[k]=extra[k]; return new THREE.MeshPhongMaterial(o); }
       if(eq.cap>=0){
         var cc=['#b9bec8','#5aa8ff','#b07aff','#ffb020'][eq.cap];
-        var brim=new THREE.Mesh(new THREE.CylinderGeometry(0.34,0.34,0.06,24),gm(cc)); brim.position.set(0,hh+0.02,0); g.add(brim);
+        var brim=new THREE.Mesh(new THREE.CylinderGeometry(0.36,0.36,0.06,24),gm(cc)); brim.position.set(0,hh+0.02,0); g.add(brim);
         var crown=new THREE.Mesh(new THREE.CylinderGeometry(0.21,0.27,0.26,18),gm(cc)); crown.position.set(0,hh+0.17,0); g.add(crown);
         var band=new THREE.Mesh(new THREE.CylinderGeometry(0.275,0.275,0.06,18),gm('#2b3340')); band.position.set(0,hh+0.07,0); g.add(band);
         var gem=new THREE.Mesh(new THREE.SphereGeometry(0.06,10,8),gm('#fff6c8',{emissive:'#ffcf4d',emissiveIntensity:0.7})); gem.position.set(0,hh+0.17,0.27); g.add(gem);
@@ -13998,12 +14000,12 @@ var V287=(function(){
     try{ dress(); }catch(e){}
   }
   /* v3.07: 엘리베이터 앞에 서면 층 이동 패널(2층·3층…)이 뜬다. 위치는 elevator()가 놓는 (0.55, -9.9) 앞 */
-  var ELV={el:null,key:''};
+  var ELV={el:null,key:'',on:false};
   function elvTick(){
     try{
       if(typeof player==='undefined'||!player||!player.pos) return;
       var n=nF(), md=document.getElementById('modal'), busy=(md&&md.classList.contains('on'))||(typeof quizOpen!=='undefined'&&quizOpen);
-      var near=Math.abs(player.pos.x-0.55)<2.3&&player.pos.z<-7.4&&player.pos.z>-10.4;
+      var R=ELV.on?3.4:2.3, near=Math.abs(player.pos.x-0.55)<R&&player.pos.z<(ELV.on?-6.4:-7.4)&&player.pos.z>-10.4; ELV.on=near;
       if(n<2||busy||!near){ if(ELV.el){ ELV.el.style.display='none'; } return; }
       if(!ELV.el){
         var st=document.createElement('style'); st.textContent='#v307elv{position:fixed;left:50%;top:calc(190px + env(safe-area-inset-top));transform:translateX(-50%);z-index:7;display:none;gap:6px;align-items:center;padding:8px 10px;border-radius:16px;background:rgba(255,252,244,.97);border:2px solid #e8ba80;box-shadow:0 6px 18px rgba(60,40,10,.25);font:800 12px var(--b);color:#6a4a20}#v307elv button{min-width:48px;height:42px;border-radius:12px;border:1.5px solid #e8ba80;background:#fff;color:#6a4a20;font:900 15px var(--d);cursor:pointer}#v307elv button.cur{background:linear-gradient(160deg,#7bea62,#2fa36a);border-color:#2f9a63;color:#fff}#v307elv button.lock{opacity:.4}';
@@ -14012,7 +14014,7 @@ var V287=(function(){
         el.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('button[data-f]'); if(!b) return; e.stopPropagation(); try{ setFloor(+b.getAttribute('data-f')); ELV.key=''; }catch(_){} });
       }
       var c=cur(), key=n+':'+c+':'+(function(){ var k=''; for(var i=0;i<n;i++) k+=open(i)?1:0; return k; })();
-      if(key!==ELV.key){ ELV.key=key; var h='<span>🛗</span>'; for(var i=0;i<n;i++){ h+='<button data-f="'+i+'" class="'+(i===c?'cur':(open(i)?'':'lock'))+'">'+(i+1)+'F</button>'; } ELV.el.innerHTML=h; }
+      if(key!==ELV.key){ ELV.key=key; var h='<span>엘리베이터</span>'; for(var i=0;i<n;i++){ h+='<button data-f="'+i+'" class="'+(i===c?'cur':(open(i)?'':'lock'))+'">'+(i+1)+'F</button>'; } ELV.el.innerHTML=h; }
       ELV.el.style.display='flex';
     }catch(e){}
   }
