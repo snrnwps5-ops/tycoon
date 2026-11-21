@@ -5374,9 +5374,9 @@ function lvCompactResult(){ try{ const mb=$('mbox'); if(!mb||mb.querySelector('.
   const mg=document.getElementById('mgrEvalBox'), dir=document.getElementById('dirAI'), rcp=mb.querySelector(':scope > .rcp'), ps=kids.filter(el=>el.tagName==='P'), btns=kids.filter(el=>el.tagName==='BUTTON'), cta=mb.querySelector('#resCta');
   let at=mb.querySelector('.dres'); if(!at) return; const put=el=>{ if(!el) return; at.after(el); at=el; };
   /* v2.60: 첫 화면에 핵심 수치 → AI 총평 → [다시 도전/업그레이드] 버튼이 오도록 순서를 바꾼다 */
-  keyRows.forEach(put); if(dir) put(dir); ps.forEach(put); if(cta) put(cta); else btns.forEach(put); if(st) put(st); if(ch) put(ch);
+  keyRows.forEach(put); if(ng) put(ng); if(dir) put(dir); ps.forEach(put); if(cta) put(cta); else btns.forEach(put); if(st) put(st); if(ch) put(ch);
   const det=(title,els)=>{ els=els.filter(Boolean); if(!els.length) return null; const d=document.createElement('details'); d.className='lpdet'; const s=document.createElement('summary'); s.textContent=title; d.appendChild(s); els.forEach(e=>d.appendChild(e)); return d; };
-  put(det('📋 오늘 상세 결과 · 다음 목표',otherRows.concat(ng?[ng]:[])));
+  put(det('📋 오늘 상세 결과',otherRows));
   if(mg) put(mg.classList.contains('lpst')?mg:det('🏢👔 본사·매니저 평가',[mg]));
   if(rcp) put(rcp);
   if(lp&&!lp.children.length) lp.remove();
@@ -11726,7 +11726,7 @@ var V285=(function(){
   var BR=[
     {k:'대구',name:'대구 동성로점',short:'대구',head:'소형 · 동네 슈퍼스토어',floors:[
       {n:'1층 스마트 체험존',sec:15,req:[]},
-      {n:'2층 수리·상담 코너',sec:45,req:[{k:'rate',need:4.0,txt:'평점 ★4.0 이상'}]}
+      {n:'2층 수리·상담 코너',sec:120,req:[{k:'rate',need:4.0,txt:'평점 ★4.0 이상'}]}
     ]},
     {k:'부산',name:'부산 센텀점',short:'부산',head:'몰 메가플라자',floors:[
       {n:'1층 모바일·웨어러블 존',sec:120,req:[{k:'prev',need:1,txt:'대구 동성로점 완공'}]},
@@ -11892,7 +11892,7 @@ var V285=(function(){
   }
   function gemSkip(st,i){
     var r=remain(st,i); if(!r) return 0;
-    return Math.max(4,Math.min(400,Math.ceil(r/1000/300)));   /* v2.86: 최소 4💎 — 층 완공 보상 3💎보다 비싸게(즉시완료 차익 제거) */
+    return Math.max(4,Math.min(400,Math.ceil(r/1000/180)));   /* v2.86: 최소 4💎 — 층 완공 보상 3💎보다 비싸게(즉시완료 차익 제거) */
   }
   function startFloor(st,i){
     var b=br(st), f=b.f[i]; if(!f) return {ok:0,why:'없는 층'};
@@ -11904,6 +11904,7 @@ var V285=(function(){
     var c=floorCost(st,i); if(money<c) return {ok:0,why:'자금이 부족해요 ($'+fmt(c)+' 필요)'};
     money-=c; f.t1=D()+floorSec(st,i)*buildMul()*1000; saveAll();
     try{ snd('ui',0.5,1.1); haptic(15); toast('🏗️ '+BR[st].floors[i].n+' 착공 · '+hhmmss(remain(st,i)),2.8); }catch(e){}
+    try{ if(!localStorage.getItem('gskipHint')){ localStorage.setItem('gskipHint','1'); setTimeout(function(){ try{ toast('💡 모은 💎로 즉시완료할 수 있어요 (공사 중 💎 버튼)',3.4,true); }catch(e){} },3000); } }catch(e){}
     return {ok:1,cost:c,remain:remain(st,i)};
   }
   function skipFloor(st,i){
