@@ -5620,7 +5620,7 @@ try{ const st=document.createElement('style'); st.textContent='body.ftue #bbar,b
   const h=document.createElement('div'); h.id='ftHint'; document.body.appendChild(h); }catch(e){}
 /* v3.10: 화면 단순화 — 상단 지점·소리·타이틀·저장, 오른쪽 카메라·꾸미기, 하단 랭킹 버튼을 숨기고
    설정창 맨 위 '바로가기'로 옮긴다(원래 버튼을 그대로 눌러 주므로 기능·저장은 그대로). 층 버튼은 2층이 열린 뒤에만. */
-try{ const st=document.createElement('style'); st.textContent='body #branchBtn,body #mute,body #back,body #saveChip,body #camctl,body #intBtn,body #mapBtn{display:none!important}body.v310one #v287fl{display:none!important}'+
+try{ const st=document.createElement('style'); st.textContent='body #branchBtn,body #mute,body #back,body #saveChip,body #camctl,body #intBtn,body #mapBtn,body #v275ch{display:none!important}body.v310one #v287fl{display:none!important}'+
   '.v310q{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 10px}.v310q button{min-height:52px!important;padding:6px 2px!important;border-radius:12px!important;border:1.5px solid #ecd9b8!important;background:#fffaf0!important;color:#5a4020!important;font:900 12px/1.25 var(--b)!important;box-shadow:0 2px 0 #e6d2ad!important;width:auto!important;margin:0!important}.v310q button i{display:block;font-style:normal;font-size:19px;line-height:1.1}'+
   'details.vMore{margin:8px 0 4px;background:rgba(255,255,255,.55);border-radius:14px;padding:4px 10px}details.vMore>summary{font:900 13px var(--b);color:#7a5a30;padding:8px 2px;cursor:pointer;list-style:none}details.vMore>summary::after{content:" ▾";color:#b08a50}details.vMore[open]>summary::after{content:" ▴"}';
   document.head.appendChild(st);
@@ -6963,7 +6963,7 @@ function v264Settle(clear,stars,cfg,p0in){
   var revR=(typeof dayRev==='number'?dayRev:0)/goal;
   var rt=4; try{ rt=dayRating(); }catch(e){}
   var comp=(typeof dayComp==='number'?dayComp:0);
-  var compFail=(S.lastFail==='comp')||comp>=3;
+  var compFail=(!clear&&S.lastFail==='comp')||comp>=3;   /* v3.10: 클리어한 날 지난 실패 기록(lastFail)으로 위약금이 붙던 문제 */
   var minRate=Math.max(0,((cfg&&cfg.min)||3.2));
   /* 1) 주가 마감 조정 — 원본 변동 위에 RSU 리스크를 한 번 더 얹는다 */
   var p1=p0;
@@ -6989,9 +6989,11 @@ function v264Settle(clear,stars,cfg,p0in){
       if(bv>0){ val+=bv; rs.push('법인 계약 '+((b.won||0)||1)+'건'); }
     }catch(e){}
     var sh=Math.max(0.1,Math.round(val/(p1/10)*10)/10);
-    o.sh=(o.sh||0)+sh;
-    R.grant=sh; R.grantVal=Math.round(sh*(p1/10)); R.reasons=rs;
+    /* v3.10 C: 주식 대신 '클리어 보너스' 현금으로 바로 지급(주가·베스팅·소각 없음) */
+    R.grant=sh; R.grantVal=Math.round(sh*(p1/10)); R.reasons=rs; money+=R.grantVal; R.cashNow=R.grantVal;
   }
+  /* v3.10 C: 예전 세이브에 남은 주식은 한 번에 현금으로 */
+  if((o.sh||0)>0.01){ var _c=Math.round(o.sh*(p1/10)); money+=_c; R.cashNow=(R.cashNow||0)+_c; o.sh=0; }
   /* 3) 리스크 — 미베스팅 소각 + 위약금 */
   var bp=0, why=[], st0=(S.failStreak||0);
   if(!clear){
@@ -7033,6 +7035,10 @@ function v264Settle(clear,stars,cfg,p0in){
 }
 /* ---------------- 결과창 블록 ---------------- */
 function v264ResultHTML(R){
+  /* v3.10 C: 주식 블록 대신 보너스 한 줄 */
+  try{ if(!R) return ''; var t=(R.cashNow?'<div class="dstat ok"><span>🎁 클리어 보너스'+(R.reasons&&R.reasons.length?' · '+R.reasons.slice(0,2).join(' · '):'')+'</span><b>+$'+R.cashNow.toLocaleString()+'</b></div>':'')+(R.fine?'<div class="dstat no"><span>영업정지 위약금</span><b>-$'+R.fine+'</b></div>':''); return t; }catch(e){ return ''; }
+}
+function v264ResultHTML_old(R){
   if(!R) return '';
   var o=v264S();
   if(R.done){
@@ -10743,10 +10749,14 @@ function v308Strip(clear){ try{
   const v308Order=()=>{ try{ const body=mb.querySelector('.v3Body'), top=body&&body.querySelector(':scope > .v3Res'); if(!top) return;
     let at=top; const rt0=body.querySelector(':scope > #v302rt'); if(rt0){ at=rt0; const tp=rt0.nextElementSibling; if(tp&&!tp.id&&!tp.className) at=tp; }
     ['v308rs','.lpng:not(#mgrEvalBox)','.v269Res','#v269Res'].forEach(q=>{ const e=q[0]==='.'||q[0]==='#'?body.querySelector(':scope > '+q):document.getElementById(q); if(e&&e.parentElement===body){ at.after(e); at=e; } });
-    const fold=['.v262Strip','#v262Strip','.v264Res','#v264Res','.v275chRes','#v275chRes'].map(q=>body.querySelector(':scope > '+q)).filter((e,i,arr)=>e&&arr.indexOf(e)===i);
-    if(fold.length&&!document.getElementById('v308fold')){ const d=document.createElement('details'); d.id='v308fold'; d.className='lpdet'; const sm=document.createElement('summary'); sm.textContent='📊 오늘 성적·주식 보상 자세히'; d.appendChild(sm); fold.forEach(e=>d.appendChild(e)); at.after(d); }
+    const fold=['.v262Strip','#v262Strip','.v275chRes','#v275chRes'].map(q=>body.querySelector(':scope > '+q)).filter((e,i,arr)=>e&&arr.indexOf(e)===i);
+    /* v3.10 C: 보너스 한 줄은 위로, AI 총평·매니저 평가는 '리포트' 접기로 */
+    const bn=document.getElementById('v264Res'); if(bn&&mb.contains(bn)){ at.after(bn); at=bn; }
+    const rp=[body.querySelector(':scope > #dirAI'),document.getElementById('mgrEvalBox')].filter(e=>e&&!e.closest('#v308rep'));
+    if(rp.length){ let d2=document.getElementById('v308rep'); if(!d2){ d2=document.createElement('details'); d2.id='v308rep'; d2.className='lpdet'; const s2=document.createElement('summary'); s2.textContent='📝 본사·매니저 리포트'; d2.appendChild(s2); } rp.forEach(e=>{ const host=e.closest('details.lpdet'); d2.appendChild(e); if(host&&host!==d2&&host.children.length<=1) host.remove(); }); body.appendChild(d2); }
+    if(fold.length&&!document.getElementById('v308fold')){ const d=document.createElement('details'); d.id='v308fold'; d.className='lpdet'; const sm=document.createElement('summary'); sm.textContent='📊 오늘 부문별 성적'; d.appendChild(sm); fold.forEach(e=>d.appendChild(e)); at.after(d); }
   }catch(e){} };
-  v308Order(); setTimeout(v308Order,400);
+  v308Order(); setTimeout(v308Order,400); setTimeout(v308Order,1200); setTimeout(v308Order,2600);
   /* 아깝게 실패: 매출 목표 85% 이상인데 못 넘었으면 버튼에 남은 금액 */
   if(!clear){ const g=dayCfg(S.day).goal, lack=Math.ceil(g-dayRev), rt=$('dRetry');
     if(rt&&lack>0&&dayRev>=g*0.85) rt.textContent='다시 도전 · $'+lack.toLocaleString()+'만 더!'; }
@@ -11883,6 +11893,7 @@ var V285=(function(){
   var V291XCH={from:null};
   var V291POSN={sales:'세일즈',biz:'비즈니스',repair:'수리',mgr:'매니저'};
   function v291XchHTML(){
+    return ''; /* v3.10 C: 조각이 1종이 되어 교환 불필요 */
     try{
       var sh=V.sh||{}, h='<div class="vsec"><b>🧩 조각 교환</b></div><div class="v286card" style="text-align:left">';
       h+='<div style="font:800 11.5px/1.5 var(--b);color:#6a5a3a;margin:0 0 6px">중복 조각은 그대로 쌓여요 — 같은 직무 <b>2장</b>을 다른 직무 <b>1장</b>으로 바꿀 수 있어요</div>';
@@ -11943,8 +11954,11 @@ var V285=(function(){
     try{ var _cur=(typeof STG==='number'?STG:0); for(var _s=0;_s<_cur;_s++){ var _b=v.br[_s]; if(!_b) continue; if(!Array.isArray(_b.f)) _b.f=[]; for(var _j=0;_j<BR[_s].floors.length;_j++){ if(!_b.f[_j]||typeof _b.f[_j]!=='object') _b.f[_j]={}; _b.f[_j].d=1; _b.f[_j].t1=0; } } }catch(e){}
     v.sh=(v.sh&&typeof v.sh==='object')?v.sh:{};
     ['sales','biz','repair','mgr'].forEach(function(k){ v.sh[k]=n0(v.sh[k]); });
+    /* v3.10 C: 조각 1종 — 직무별·본사 연구 조각을 한 통(sh.all)으로 합친다(한 번만 옮김, 없으면 0) */
+    v.sh.all=n0(v.sh.all); if(!v.shM){ ['sales','biz','repair','mgr'].forEach(function(k){ v.sh.all+=n0(v.sh[k]); v.sh[k]=0; }); v.shM=1; v.shMq=1; }
     v.hqsh=(v.hqsh&&typeof v.hqsh==='object')?v.hqsh:{};
     DEPT.forEach(function(d){ v.hqsh[d.k]=n0(v.hqsh[d.k]); });
+    if(v.shMq){ DEPT.forEach(function(d){ v.sh.all+=n0(v.hqsh[d.k]); v.hqsh[d.k]=0; }); v.shMq=0; }
     v.hq=(v.hq&&typeof v.hq==='object')?v.hq:{};
     DEPT.forEach(function(d){ var h=v.hq[d.k]; if(!h||typeof h!=='object') h={}; h.lv=Math.max(0,Math.min(5,n0(h.lv))); h.who=h.who||''; v.hq[d.k]=h; });
     v.gear=(v.gear&&typeof v.gear==='object')?v.gear:{};
@@ -12109,15 +12123,15 @@ var V285=(function(){
     if(n>0&&why){ try{ toast('💎 +'+Math.round(n)+' · '+why,2.2); }catch(e){} }
     saveAll();
   }
-  function shGet(k){ return V.sh[k]||0; }
+  function shGet(k){ return V.sh.all||0; }
   function hasShard(k,n){ return shGet(k)>=n; }
   function shCost(rank){ return SHC[Math.max(1,Math.min(3,rank))]||1; }
   function spendShard(k,rank){
     var n=shCost(rank); if(shGet(k)<n) return 0;
-    V.sh[k]-=n; saveAll(); return n;
+    V.sh.all-=n; saveAll(); return n;
   }
-  function hqShGet(k){ return V.hqsh[k]||0; }
-  function addShard(kind,key,n){ if(kind==='hq') V.hqsh[key]=n0(V.hqsh[key])+n; else V.sh[key]=n0(V.sh[key])+n; }
+  function hqShGet(k){ return V.sh.all||0; }
+  function addShard(kind,key,n){ V.sh.all=n0(V.sh.all)+n; }
 
   /* ---------- 장비 ---------- */
   function addGear(slot,r,n){ if(!GEAR[slot]) return; r=Math.max(0,Math.min(3,r)); V.gear[slot][r]=Math.min(99,n0(V.gear[slot][r])+n); }
@@ -12195,7 +12209,7 @@ var V285=(function(){
     if(h.lv>=5) return {ok:0,why:'최고 단계예요'};
     var c=HQC[h.lv]||9;
     if(hqShGet(dept)<c) return {ok:0,why:'연구 조각 '+c+'개 필요 (보유 '+hqShGet(dept)+')'};
-    V.hqsh[dept]-=c; h.lv++; saveAll();
+    V.sh.all-=c; h.lv++; saveAll();
     try{ snd('level_up',0.5,1.3); haptic(20); toast('🏢 '+deptName(dept)+' Lv.'+h.lv+' 달성!',2.6); }catch(e){}
     return {ok:1,lv:h.lv};
   }
@@ -12337,7 +12351,7 @@ var V285=(function(){
     var rewards=null, opened=0;
     if(kind){ var r=openBox(kind); if(r.ok){ rewards=r.rewards; opened=1; } else { try{ toast(r.why,2.4); }catch(e){} } }
     var h='<div class="v285p v286box'+(opened?' v286pop':'')+'"><h2>🎁 상자</h2><p class="vnote">직원 승급 조각 · 본사 연구 조각 · 사장님 장비가 나와요 · <b>보유 💎 '+fmt(V.gem)+'</b></p>';
-    h+='<div class="vshsum">🧩 세일즈 '+shGet('sales')+' · 비즈니스 '+shGet('biz')+' · 수리 '+shGet('repair')+' · 매니저 '+shGet('mgr')+'</div>';
+    h+='<div class="vshsum">🧩 조각 <b>'+shGet()+'</b>장 · 직원 승급과 본사 연구에 같이 써요</div>';
     h+='<div class="vboxes">'+boxCardHTML('free')+boxCardHTML('prem')+boxCardHTML('leg')+'</div>';
     /* v2.94: 카드 3칸에 눌려 한 글자씩 쪼개지던 확률 문구를 카드 아래 한 블록으로 모았다 */
     h+='<div class="v294odds">'+['free','prem','leg'].map(function(k){ var o=V291ODDS[k]; return o?('<div><b>'+BOX[k].n+'</b> '+o.t+'<br><i>'+o.sh+'</i></div>'):''; }).join('')+'</div>';
@@ -13003,12 +13017,9 @@ function v286ResultInject(clear){
 function v286ShardBar(){
   try{
     var v=V285.state(), sh=v.sh||{};
-    var rows=[['sales','🛒 세일즈'],['biz','🏢 비즈니스'],['repair','🔧 수리'],['mgr','👔 매니저']];
-    return '<div id="v286Shards" class="v286sh">'+rows.map(function(r){
-      var n=sh[r[0]]||0;
-      return '<span class="s'+(n>0?' on':'')+'">🧩 '+r[1]+' <b>'+n+'</b></span>';
-    }).join('')+'</div>'+
-      '<div class="v286shn">🧩 상자에서 나온 승급 조각으로 주임 → 대리 → 리드까지 승진해요 · 승진 요구 <b>1 / 1 / 2</b>장</div>';
+    var n=sh.all||0;
+    return '<div id="v286Shards" class="v286sh"><span class="s'+(n>0?' on':'')+'">🧩 조각 <b>'+n+'</b>장</span></div>'+
+      '<div class="v286shn">🧩 상자에서 나온 조각으로 승진해요 · 주임 1 · 대리 1 · 리드 2장</div>';
   }catch(e){ return ''; }
 }
 function v286TutMount(){
