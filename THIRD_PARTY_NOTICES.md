@@ -46,3 +46,7 @@ AI 생성 이미지 유의점
 2. 효과음 5종의 출처
 3. AI 이미지: 생성 도구(피클 GPT)의 정확한 이름·계정 종류·약관 캡처
 4. Google Play 제출 시 AI 생성 콘텐츠 정책과 확률형 아이템 확률 공개 요건 재확인(정책은 수시로 바뀜)
+
+## Jua 폰트 (fonts/jua.woff2)
+- 출처: Woowahan Brothers "Jua" (npm @fontsource/jua), 게임에 쓰는 글자만 남긴 서브셋
+- 라이선스: SIL Open Font License 1.1 — 전문은 fonts/Jua-OFL.txt
