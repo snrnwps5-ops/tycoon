@@ -1861,6 +1861,11 @@ body{font-family:var(--b);letter-spacing:-.15px}
 #ldCart{width:40px!important;height:40px!important;top:-10px!important;background:url(gi.png) 33.333% 66.667%/400% 400% no-repeat;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))!important}
 #ldCart>*{display:none!important}
 #ldDoor{display:none!important}
+/* v3.12: 상단 HUD 아이콘도 같은 그림으로 — 돈(동전)·보석·별 */
+#cashPill>svg.ic{display:none!important}#cashPill::before{content:"";flex:none;width:26px;height:26px;background:url(gi.png) 33.333% 0/400% 400% no-repeat;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
+#gemPill .ci{display:none!important}#gemPill::before{content:"";flex:none;width:24px;height:24px;background:url(gi.png) 0 0/400% 400% no-repeat}
+#v262Go,#tStart{letter-spacing:.5px}
+#modal #mbox #v262Go.hubCta,#modal #mbox #dayGo{background:linear-gradient(#ffe36b,#ffb020 60%,#f39a0a)!important;box-shadow:inset 0 3px 0 rgba(255,255,255,.7),0 6px 0 #b86400,0 12px 22px rgba(180,100,0,.35)!important;color:#fff!important;text-shadow:0 2px 0 #a85a00!important;border:3px solid #fff!important}
 #load .ldMid{flex:1 1 auto!important;justify-content:flex-end!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 7vh)!important}
 #load .s{display:inline-block;background:rgba(255,255,255,.8);border-radius:999px;padding:3px 12px;margin-top:10px!important}
 #tGear,#tOpt,#title #tSet,#title .tset{background:rgba(255,255,255,.75)!important;color:#2a2a6a!important;border:1.5px solid #fff!important}
