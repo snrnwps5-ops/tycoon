@@ -2650,6 +2650,7 @@ function repFail(j,kind,byAuto){
   if(kind==='auto'&&!byAuto) kind='auto';
   j.st='out'; j.failKind=kind;
   try{ v291Log(j,kind,0); }catch(e){}
+  try{ const _L=dfix&&dfix.log; if(kind==='diag'&&_L&&_L.length) _L[_L.length-1].ans=rTreat(j.diag.fix).n; }catch(e){}
   try{ if((j.prac||j.mine)&&typeof repBadge==='function') repBadge(); }catch(e){}
   const T={diag:'✘ 진단이 틀렸어요 — 수리 실패 · 손님이 실망했어요',part:'📦 부품을 못 채워 수리 실패 — 손님이 돌아갔어요',time:'⌛ 수리 제한시간 초과 — 손님이 돌아갔어요',auto:'👨‍🔧 서준이 오진했어요 · 무상 재수리로 돌려보냈어요'};
   try{ toast(T[kind]||T.diag,2.6); }catch(e){}
@@ -3025,7 +3026,7 @@ function repText(){ try{ const u=$('repUI'); if(!u) return;
   const pt=u.querySelector('#repPat'); if(pt){ const j=REP.sel!=null?w.find(x=>x.id===REP.sel):null; if(j) pt.textContent=rFmt(Math.max(0,j.ph==='fix'?j.rt:j.pat)); }
 }catch(e){} }
 function repHudLine(){ try{ const cfg=dayCfg(S.day), left=Math.max(0,Math.floor(dayT));
-  return dayState==='run'? '⏱ '+Math.floor(left/60)+':'+String(left%60).padStart(2,'0')+' 남음 · 민원 '+dayComp+'/3 · 매출 $'+dayRev+'/$'+cfg.goal
+  return dayState==='run'? '⏱ '+Math.floor(left/60)+':'+String(left%60).padStart(2,'0')+' · 매출 $'+dayRev+'/$'+cfg.goal+(dayComp>0?' · 민원 '+dayComp+'/3':'')
     : '영업 중이 아니에요 · 수리실은 접수된 건만 처리해요'; }catch(e){ return ''; } }
 function repSig(){ try{ const w=RQ.filter(j=>j.st==='wait');
   return w.map(j=>j.id+':'+(j.auto?1:0)+':'+(j.needPart?1:0)+':'+(j.ph||'')+':'+(j.diagOK?1:0)+':'+(j.st||'')).join('|')+'#'+(REP.sel||'')+'#'+(REP.work||'')+'#'+dfix.n+'#'+(hasCrew('tech')?1:0)+'#'+['s','b','c'].map(t=>partAvail(t)).join(','); }catch(e){ return ''; } }
@@ -3064,14 +3065,9 @@ function repPaint(full){
   const fixing=wait.filter(j=>j.ph==='fix').length;
   const parts=wait.filter(j=>j.diagOK&&j.ph!=='fix').length;
   const head='<div class="rph"><button class="rpbk" data-r="close" aria-label="매장으로 돌아가기">'+rpI('back')+'</button>'+
-    '<div class="rptl"><b><span class="hb">'+rpI('wrench')+'</span>수리실</b><small id="repSub">'+repSubLine()+'</small><small class="rpz" id="repHud">'+repHudLine()+'</small></div>'+
+    '<div class="rptl"><b><span class="hb">'+rpI('wrench')+'</span>수리실</b><small class="rpz" id="repHud">'+repHudLine()+'</small></div>'+
     '<div class="rpn"><b>'+wait.length+'</b><span>접수</span></div></div>';
-  const sum='<div class="rpsum">'+
-    '<div><span>접수 대기</span><b>'+(wait.length-fixing-parts)+'</b></div>'+
-    '<div><span>부품·착수</span><b>'+parts+'</b></div>'+
-    '<div><span>수리 중</span><b>'+fixing+'</b></div>'+
-    '<div><span>오늘 완료</span><b>'+dfix.n+'</b></div>'+
-    '</div>';
+  const sum='';   /* v3.13: 4칸 요약 삭제 — 목록 제목 한 줄로 합침 */
   let body='';
   const _sel=REP.sel!=null?wait.find(x=>x.id===REP.sel):null;
   if(_sel){
@@ -3082,11 +3078,11 @@ function repPaint(full){
       '<div class="rpc sel s-'+(j.ph==='fix'?'fix':(j.diagOK?'diag':'wait'))+'">'+
       '<div class="rpch"><i class="rpdv">'+rpI(rpDevIcon(j))+'</i><div class="rpn2"><b>'+rDev(j)+'</b><small>'+(j.c?'수리실 테이블':'예약 접수')+(j.data?' · 사진·데이터 중요':'')+'</small></div><em class="rpst '+stt[1]+'">'+stt[0]+'</em></div>'+
       '<div class="rpd"><span>증상</span><b>"'+j.diag.q+'"</b></div>'+
-      '<div class="rpd"><span>담당</span><b>'+(j.mine?'🙋 나 · 직접 진단':(j.auto?((j.owner||'수리 기사')+' · 자동 진행'):'미배정 · 진단 대기'))+'</b></div>'+
+      (j.mine?'':'<div class="rpd"><span>담당</span><b>'+(j.auto?((j.owner||'수리 기사')+' · 자동 진행'):'미배정 · 진단 대기')+'</b></div>')+
       '<div class="rpgauge"><div class="gv" id="repPat">'+rFmt(left)+'</div><div class="gl"><small>'+(j.ph==='fix'?'남은 수리 시간':'접수 대기 제한시간')+'</small>'+
         '<div class="rpp tick" data-jid="'+j.id+'"><i style="width:'+pc.toFixed(0)+'%;background:'+(j.ph==='fix'?'linear-gradient(90deg,#5aa8ff,#2f6fd8)':'linear-gradient(90deg,#7bd2bd,#2f9e84)')+'"></i></div></div></div>'+
       (j.needPart?'<div class="rpd warn"><span>부품</span><b>'+(IT[t.part]?IT[t.part].n:'부품')+' 재고 없음 · 발주 필요</b></div>':'')+
-      '<div class="rpd"><span>처치</span><b>'+(j.diagOK?rTreat(j.diag.fix).n:'진단 전')+'</b></div>'+
+      (j.diagOK?'<div class="rpd"><span>처치</span><b>'+rTreat(j.diag.fix).n+'</b></div>':'')+
       (j.diagOK
         ? (j.needPart?'<div class="rpb"><button class="rpo" data-r="order" data-i="'+(t.part||'b')+'">'+rpI('box')+' '+(IT[t.part]?IT[t.part].n:'부품')+' +2 · $'+(t.part?COST[t.part]*4:0)+'</button></div>':'')+
           '<div class="rpb"><button class="rpg2" data-r="back">'+rpI('back')+' 목록</button><button data-r="start" data-i="'+j.id+'">'+rpI('tool')+' 수리 착수</button></div>'
@@ -3099,7 +3095,7 @@ function repPaint(full){
     if(!wait.length){
       body+='<div class="rpempty"><div class="ic">'+rpI('check')+'</div><b>접수된 수리가 없어요</b><small>매장 입구 안내대에서 수리 문의 손님을 <b>접수</b>하면 여기 작업대로 들어와요.<br>접수 후에는 <b>진단 → 부품 → 착수</b> 순서로 진행해요.</small></div>';
     } else {
-      body+='<div class="rpsec">작업 대기 '+wait.length+'건</div>';
+      body+='<div class="rpsec">작업 대기 '+wait.length+'건 · 오늘 완료 '+dfix.n+'건</div>';
       body+=wait.map(function(j){
         const fix=(j.ph==='fix'), stt=rpSt(j);
         const total=Math.max(1,fix?j.rt0:j.patMax), left=Math.max(0,fix?j.rt:j.pat);
@@ -3113,7 +3109,7 @@ function repPaint(full){
         return '<div class="rpc s-'+(fix?'fix':(j.diagOK?(j.needPart?'part':'diag'):'wait'))+'">'+
           '<div class="rpch"><i class="rpdv">'+rpI(rpDevIcon(j))+'</i><div class="rpn2"><b>'+rDev(j)+'</b><small>접수 '+j.id+' · "'+j.diag.q+'"</small></div><em class="rpst '+stt[1]+'">'+stt[0]+'</em></div>'+
           '<div class="rpd"><span>담당</span><b>'+(j.mine?'🙋 나 · 직접 진단':(j.auto?((j.owner||'수리 기사')+' · 자동 진행'):'미배정 · 진단 대기'))+'</b></div>'+
-          '<div class="rpd"><span>접수 '+j.id+'</span><b data-jcd="'+j.id+'">'+cd+'</b></div>'+
+          '<div class="rpd"><span>남은 시간</span><b data-jcd="'+j.id+'">'+cd+'</b></div>'+
           '<div class="rpp" data-jid="'+j.id+'"><i style="width:'+pc.toFixed(0)+'%;background:'+(fix?(pc>55?'linear-gradient(90deg,#7bd2bd,#2f9e84)':'linear-gradient(90deg,#5aa8ff,#2f6fd8)'):(pc>50?'linear-gradient(90deg,#a8dccb,#2f9e84)':pc>20?'linear-gradient(90deg,#f6d68a,#e0a83a)':'linear-gradient(90deg,#f3a89e,#d9534f)'))+'"></i></div>'+
           '<div class="rpb">'+btns+'</div></div>';
       }).join('');
@@ -3133,6 +3129,7 @@ function repPaint(full){
   try{ v288StripEmoji(u); }catch(e){}
   if(!full||!_nav){ const l=u.querySelector('.rps'); if(l) l.scrollTop=sc; }
   try{ const hb=(u.querySelector('.rpsum')||u.querySelector('.rph')).getBoundingClientRect(), sb=u.querySelector('.rps').getBoundingClientRect(); REP.vp={top:hb.bottom,bot:sb.top}; }catch(_){}
+  try{ u.classList.toggle('busy',wait.length>0); u.classList.toggle('few',wait.length<2); const sh=u.querySelector('.rps'), rc=document.getElementById('v269RepCard'); if(sh&&rc&&rc.parentElement!==sh) sh.prepend(rc); }catch(_){}
   REP.sig=repSig();
 }
 /* v2.91: 당일 수리 이력 — 완료·오진·부품 미확보·시간 초과를 실제 원인과 함께 남긴다 */
@@ -3145,7 +3142,7 @@ function v291LogHTML(){
     var COL={done:'#1a7a56',diag:'#b3392f',part:'#a85a14',time:'#b3392f',auto:'#66787d'};
     h+='<div class="rpc">'+L.slice(-6).reverse().map(function(e){
       var nm=V291CAUSE[e.kind]||e.kind;
-      return '<div class="rpd" style="grid-template-columns:auto minmax(0,1fr)"><span style="color:'+(COL[e.kind]||'#7c8f92')+'">'+(IC[e.kind]||'·')+' 접수 '+e.id+'</span><b style="color:'+(COL[e.kind]||'#25383e')+'" title="'+nm+'">'+e.dev+' · '+nm+(e.kind==='done'&&e.pay?' +$'+e.pay:'')+'</b></div>';
+      return '<div class="rpd" style="grid-template-columns:auto minmax(0,1fr)"><span style="color:'+(COL[e.kind]||'#7c8f92')+'">'+(IC[e.kind]||'·')+' 접수 '+e.id+'</span><b style="color:'+(COL[e.kind]||'#25383e')+'" title="'+nm+'">'+e.dev+' · '+nm+(e.kind==='done'&&e.pay?' +$'+e.pay:'')+(e.ans?'<br><small style="color:#7a5a30;font-weight:700">정답: '+e.ans+'</small>':'')+'</b></div>';
     }).join('')+'</div>';
     return h;
   }catch(e){ return ''; }
@@ -3174,7 +3171,7 @@ function repAct(k,i,el){
     if(money<cst){ try{ toast('💰 $'+(cst-money)+' 더 필요해요',2); }catch(_){} return; }
     money-=cst; S.inv[t]=(S.inv[t]||0)+n; try{ snd('coin',0.45); toast('📦 '+IT[t].n+' +'+n+' 입고',2); save(); }catch(_){}
     repPaint(true); return; }
-  if(k==='diag'){ REP.sel=+i; repPaint(true); return; }
+  if(k==='diag'){ const _j=wait.find(x=>x.id===+i); if(_j&&!_j.diagOK&&_j.auto){ _j.auto=0; _j.ap=0; _j.mine=1; _j.owner=''; try{ toast('🙋 직접 진단해요 — 이 건은 직원이 손대지 않아요',2.2); }catch(_){} } else if(_j&&!_j.diagOK){ _j.mine=1; } REP.sel=+i; repPaint(true); try{ const l=$('repUI').querySelector('.rps'); if(l) l.scrollTop=0; }catch(_){} return; }
   if(k==='auto'){ const j=wait.find(x=>x.id===+i); if(j){ j.auto=1; j.ap=0; try{ toast('👨‍🔧 서준에게 맡겼어요 — 진단과 수리를 알아서 진행해요',2.4); }catch(_){} } repPaint(true); return; }
   if(k==='back'){ REP.sel=null; repPaint(true); return; }
   /* v2.81: 진단 완료 → 착수 / 직접 수리(집중) / 손 떼기 */
@@ -5854,7 +5851,7 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     '#repUI #v269RepCard{margin:0 0 8px!important;padding:9px 11px!important;display:flex!important;align-items:center;gap:8px;position:static!important}'+
     '#repUI #v269RepCard *{color:#3a2a18!important}#repUI #v269RepCard .ic{color:#17857a!important}#repUI #v269RepCardB,#repUI #v269RepCardB *{color:#fff!important}'+
     '#repUI #v262RepAI{display:flex!important;flex-direction:column!important;gap:2px;padding:9px 12px!important;border-left:5px solid #2bb3a0!important;text-align:left}#repUI #v262RepAI h4{margin:0!important;color:#17857a!important}#repUI #v262RepAI h4 *{color:#17857a!important}#repUI #v262RepAI em{background:#e3f6f2!important;color:#17857a!important}'+
-    '#repUI #v262RepAI .v62t{display:block!important;white-space:normal!important;font:700 12px/1.45 var(--b)!important;color:#4a3a28!important}#repUI #v262RepAI.v312e{display:none!important}'+
+    '#repUI #v262RepAI .v62t{display:block!important;white-space:normal!important;font:700 12px/1.45 var(--b)!important;color:#4a3a28!important}#repUI #v262RepAI.v312e{display:none!important}#repUI #v262RepAI{display:none!important}#repUI.few #v269RepCard{display:none!important}#repUI.busy .rps{max-height:76%!important}#repUI.busy .v312bg{background:linear-gradient(180deg,rgba(251,244,230,0) 12%,#fbf4e6 28%),url(repair_room.jpg) center 22%/100% auto no-repeat,#fbf4e6}'+
     '#repUI .rpsum{margin:0 0 10px!important;pointer-events:none}#repUI .rpsum div{background:#fff!important;border:1.5px solid #eadcc0!important;box-shadow:0 2px 0 #eadcc0!important}#repUI .rpsum b{color:#17857a!important}';
     document.head.appendChild(st);
     setInterval(function(){ try{ const u=document.getElementById('repUI'); if(!u) return;
