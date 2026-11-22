@@ -5590,12 +5590,13 @@ function ftLift(el){
 try{ const st=document.createElement('style'); st.textContent='.ft.sale{font-size:28px;color:#ffe14d;-webkit-text-stroke:2px #8a5a00;text-shadow:0 3px 0 #8a5a00;animation:v310pop .38s cubic-bezier(.2,1.6,.4,1)}@keyframes v310pop{0%{scale:.4}60%{scale:1.25}100%{scale:1}}.v310c{position:fixed;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6b0,#ffd23f 45%,#d89a00);box-shadow:0 0 0 2px #b07800 inset,0 2px 4px rgba(0,0,0,.3);z-index:30;pointer-events:none}#cashPill.v310b{animation:v310bump .3s ease-out}@keyframes v310bump{0%{scale:1}40%{scale:1.18}100%{scale:1}}'; document.head.appendChild(st); }catch(e){}
 function v310Juice(x,z,pay){ try{
   if(typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(performance.now()-(window.__v310jt||0)<900) return; window.__v310jt=performance.now();   /* v3.12: 직원 자동 판매가 몰릴 때 코인·칩 튐이 쉬지 않던 것 — 0.9초에 한 번만 */
   const from=ftueScr(x,2.0,z), cp=document.getElementById('cashPill'); if(!from||!cp) return;
   const r=cp.getBoundingClientRect(), tx=r.left+22, ty=r.top+r.height/2, n=Math.max(5,Math.min(10,Math.round(4+Math.log10(Math.max(10,pay))*2)));
   for(let i=0;i<n;i++){ const c=document.createElement('i'); c.className='v310c'; document.body.appendChild(c);
     const a=Math.random()*Math.PI*2, d=26+Math.random()*30, mx=from[0]+Math.cos(a)*d, my=from[1]+Math.sin(a)*d-24;
     const an=c.animate([{transform:'translate('+from[0]+'px,'+from[1]+'px) scale(.6)'},{transform:'translate('+mx+'px,'+my+'px) scale(1.1)',offset:.35},{transform:'translate('+tx+'px,'+ty+'px) scale(.7)'}],{duration:620+i*45,easing:'cubic-bezier(.5,0,.6,1)'});
-    an.onfinish=function(){ c.remove(); if(i===n-1){ cp.classList.remove('v310b'); void cp.offsetWidth; cp.classList.add('v310b'); try{ snd('coin',0.22,1.25+Math.random()*0.1); }catch(_){} } }; }
+    an.onfinish=function(){ c.remove(); if(i===n-1&&performance.now()-(window.__v310bt||0)>1400){ window.__v310bt=performance.now(); cp.classList.remove('v310b'); void cp.offsetWidth; cp.classList.add('v310b'); try{ snd('coin',0.22,1.25+Math.random()*0.1); }catch(_){} } }; }
   try{ haptic(pay>=200?[8,20,8]:10); }catch(_){}
 }catch(e){} }
 function floatText(p,txt,cls){ const el=document.createElement('div'); el.className='ft'+(cls?' '+cls:''); el.textContent=txt; $('labels').appendChild(el);
@@ -6371,7 +6372,8 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   const gd=guide(); if(gd&&Math.hypot(player.pos.x-gd[0],player.pos.z-gd[1])>1.0){ arrow.visible=gring.visible=true; arrow.position.set(gd[0],2.2+Math.abs(Math.sin(time*4))*0.4,gd[1]); arrow.rotation.y+=dt*3; gring.position.set(gd[0],FLOOR_Y.gring,gd[1]); gring.scale.setScalar(1+Math.sin(time*5)*0.12); } else arrow.visible=gring.visible=false;
   hintT-=dt; if(hintT<=0){ const show=S.lvl<4&&gd&&performance.now()>HINTB; sCss($('hint'),'opacity',show?'1':'0'); if(show) sTxt($('hint'),gd[2]); }
   /* v2.61: HUD 수리실 버튼 배지 (접수 대기 건수) */ try{ repBadge(); }catch(e){}
-  shownMoney+=(money-shownMoney)*Math.min(1,dt*10); if(Math.abs(money-shownMoney)<1) shownMoney=money; mnyPaint(Math.floor(shownMoney)); sTxt($('lv'),S.lvl); sCss($('xp'),'width',Math.min(100,Math.round(S.xp/(6+S.lvl*4)*1000)/10)+'%');
+  /* v3.12: 시작할 때 0부터 세어 올라가며 글자 크기가 계속 바뀌던 '돈 깜빡임' — 큰 차이는 바로 맞추고, 작은 차이만 굴린다 */
+  if(Math.abs(money-shownMoney)>Math.max(60,Math.abs(money)*0.25)) shownMoney=money; else shownMoney+=(money-shownMoney)*Math.min(1,dt*10); if(Math.abs(money-shownMoney)<1) shownMoney=money; mnyPaint(Math.floor(shownMoney)); sTxt($('lv'),S.lvl); sCss($('xp'),'width',Math.min(100,Math.round(S.xp/(6+S.lvl*4)*1000)/10)+'%');
   sTxt($('rate'),(dayState==='run'||dayState==='end'?'오늘 ★ '+dayRating().toFixed(1):'누적 ★ '+rating().toFixed(1))); { const nv=npsOf(dayNps); const rm=$('rooms'); sTxt(rm,'만족도 '+(nv==null?'—':(nv>0?'+':'')+nv)); sCss(rm,'background',nv==null?'transparent':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'); } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
@@ -6442,7 +6444,7 @@ const SHOP=[
 const spI=(k,s)=>{ s=s||48; return '<i class="sp" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></i>'; };
 function openShop(){ const ad=(S.adD===S.day?S.adN||0:0); let h='<h2 style="margin-bottom:2px">🛒 상점</h2><p style="font-size:11px;margin:0 0 6px;color:#9a6a3a">테스트 결제예요 · 실제 돈이 나가지 않아요</p><div class="shl">';
   h+='<div class="shi ad">'+spI(6)+'<div><b>광고 보고 $100 받기</b><small>하루 3번 · 오늘 '+ad+'/3</small></div><button data-ad="1" '+(ad>=3?'disabled':'')+'>무료</button></div>';
-  h+='<div class="shi ad"><i>🎒</i><div><b>🎒 가방</b><small>조각 · 본사 연구 조각 · 사장님 장비</small></div><button data-bag="1">열기</button></div>';
+  h+='<div class="shi ad"><i>🎒</i><div><b>🎒 가방</b><small>조각 · 사장님 장비</small></div><button data-bag="1">열기</button></div>';
   SHOP.filter(x=>x.show()).forEach(x=>{ h+='<div class="shi'+(x.hot?' hot':'')+'">'+(x.tag?'<em>'+x.tag+'</em>':'')+spI(x.sp)+'<div><b>'+x.n+'</b><small>'+x.d+'</small></div><button data-buy="'+x.id+'">'+(x.old?'<s>'+x.old+'</s>':'')+x.p+'</button></div>'; });
   h+='</div><button id="shSave" class="gray" style="background:linear-gradient(#b8c2d0,#8a96a8)">💾 다른 기기로 이어하기 (코드·링크)</button><button id="mOk" class="gray">닫기</button>'; openModal(h);
   $('shSave').onclick=()=>{ openSave(); };
@@ -7322,6 +7324,24 @@ try{ const st=document.createElement('style'); const I=(c,r)=>'background:url(ui
   '#labChip .v312ic{display:inline-block;width:20px;height:20px;flex:none;'+I(0,2)+'}.v312sh{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.2em;'+I(1,2)+'}'+
   '#v285brBtn>svg{display:none!important}#v285brBtn::before{content:"";display:block;width:30px;height:30px;margin:0 auto;'+I(2,2)+'}';
   document.head.appendChild(st); }catch(e){}
+/* v3.12: 이모지 → 게임 그림 아이콘(gi.png 4×4, ChatGPT). 창(svgify)·토스트·HUD·말풍선 글자 속 이모지를 같은 화풍 그림으로 바꾼다 */
+var GI={'💎':[0,0],'💜':[0,0],'🪙':[1,0],'💵':[2,0],'💰':[2,0],'💲':[2,0],'⭐':[3,0],'🌟':[3,0],'🎁':[0,1],'🧩':[1,1],'👕':[2,1],'🔧':[3,1],'🛠️':[3,1],'🛠':[3,1],
+  '🏗️':[0,2],'🏗':[0,2],'📦':[1,2],'🏢':[2,2],'🏬':[2,2],'🏪':[2,2],'📅':[3,2],'📆':[3,2],'🗓️':[3,2],'🔥':[0,3],'⚡️':[1,3],'⚡':[1,3],'👑':[2,3],'🏆':[3,3]};
+var GIK=Object.keys(GI).sort(function(a,b){ return b.length-a.length; });
+var GIRE=new RegExp('('+GIK.map(function(k){ return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }).join('|')+')\\uFE0F?','g');
+function giSpan(k){ var p=GI[k]||GI[k.replace(/️/g,'')]; return '<i class="gi" style="background-position:'+(p[0]*100/3).toFixed(3)+'% '+(p[1]*100/3).toFixed(3)+'%"></i>'; }
+try{ const st=document.createElement('style'); st.textContent='.gi{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.24em;margin:0 .06em;background-image:url(gi.png);background-size:400% 400%;background-repeat:no-repeat;font-style:normal;flex:none}'; document.head.appendChild(st); }catch(e){}
+(function(){ try{
+  const SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,CANVAS:1,svg:1,SVG:1,TITLE:1};
+  function fixText(t){ try{ const v=t.nodeValue; if(!v||v.length>600) return; GIRE.lastIndex=0; if(!GIRE.test(v)) return; const p=t.parentNode; if(!p||SKIP[p.nodeName]||(p.closest&&p.closest('svg,[contenteditable],option,select,title'))) return;
+      GIRE.lastIndex=0; const span=document.createElement('span'); span.innerHTML=v.replace(/[&<>]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }).replace(GIRE,function(m,k){ return giSpan(k); });
+      const f=document.createDocumentFragment(); while(span.firstChild) f.appendChild(span.firstChild); p.replaceChild(f,t); }catch(e){} }
+  function walk(n){ if(!n) return; if(n.nodeType===3){ fixText(n); return; } if(n.nodeType!==1||SKIP[n.nodeName]) return; const w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT); const L=[]; while(w.nextNode()) L.push(w.currentNode); L.forEach(fixText); }
+  let Q=new Set(), on=false;
+  function flush(){ on=false; const A=[...Q]; Q.clear(); A.forEach(walk); }
+  new MutationObserver(function(ms){ for(const m of ms){ if(m.type==='characterData') Q.add(m.target); else m.addedNodes.forEach(function(x){ Q.add(x); }); } if(!on){ on=true; requestAnimationFrame(flush); } }).observe(document.body,{subtree:true,childList:true,characterData:true});
+  setTimeout(function(){ walk(document.body); },300);
+}catch(e){} })();
 /* v3.09: DAY 2~3은 핵심 버튼만 — 첫날(ftue) 숨김을 이틀 더 이어 간다. 상점·랭킹·꾸미기·카메라·저장·부스터·지점 이동·본사 챌린지는 DAY 4부터.
    층 건설(🏗️)·업그레이드·직원·미션·재고·수리실은 그대로 둔다. 새 저장 필드 S.v309o(열림 배너 1회)만 추가 — 없으면 기본값. */
 function v309Early(){ try{ return S.day>=1 && S.day<=2 && !ftueOn(); }catch(e){ return false; } }
@@ -10381,7 +10401,7 @@ function v266ShopPaint(){
         '<button data-buy="'+hero.id+'" style="margin-top:11px">'+(isWeek?'번들 받기':'구매하기')+'</button></div>';
     }
     /* v2.94: 🎒 가방 진입점 — 상점 대표 상품 바로 아래 */
-    h+='<div class="shi ad v294shopbag"><i>🎒</i><div><b>가방</b><small>조각 · 본사 연구 조각 · 사장님 장비 · 조각 교환</small></div><button data-bag="1">열기</button></div>';
+    h+='<div class="shi ad v294shopbag"><i>🎒</i><div><b>가방</b><small>조각 · 사장님 장비</small></div><button data-bag="1">열기</button></div>';
     var week=rest.filter(function(x){ return x.id==='weekbundle'; });
     var boost=rest.filter(function(x){ return x.id==='boost'; });
     var cash=rest.filter(function(x){ return /^cash/.test(x.id); });
@@ -15908,7 +15928,8 @@ var V289=(function(){
     '↩️':'back','↩':'back','🏗️':'crane','🏗':'crane','🎄':'tree','✨':'sparkle','✦':'sparkle'
   };
   var KEYS=Object.keys(MAP).sort(function(a,b){ return b.length-a.length; });
-  function ico(n){ var p=I29[n]; if(!p) return '';
+  var GIN={gem:'💎',cash:'💵',star:'⭐',gift:'🎁',shard:'🧩',shirt:'👕',wrench:'🔧',crane:'🏗️',box:'📦',building:'🏢',fire:'🔥',crown:'👑',trophy:'🏆'};
+  function ico(n){ try{ if(GIN[n]&&typeof giSpan==='function') return giSpan(GIN[n]); }catch(e){} var p=I29[n]; if(!p) return '';
     return '<span class="v29i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg></span>'; }
   function svgify(html){
     if(typeof html!=='string'||!html) return html;
