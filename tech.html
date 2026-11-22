@@ -4221,7 +4221,7 @@ function rLabCustomerTick(c,dt){
   c.face=angLerp(c.face,c.labSlot?c.labSlot.face:Math.PI,Math.min(1,dt*6));
 }
 /* ---- 수리실 3D 작업실 ---- */
-function repBuild(){ if(REP.built) return; REP.built=true; try{ if(typeof floorPlane!=='function') return;
+function repBuild(){ if(REP.built) return; REP.built=true; /* v3.12: 수리실 3D 작업실은 일러스트로 대체 — 처음 열 때 장면·텍스처·캐릭터를 만들고 셰이더를 컴파일하느라 생기던 끊김 제거 */ if(window.__REP3D!==1) return; try{ if(typeof floorPlane!=='function') return;
   const sc=new THREE.Scene(); sc.background=new THREE.Color('#16202c'); REP.scene=sc;
   sc.add(new THREE.HemisphereLight(0xdfeeff,0x2a3540,0.32)); const dl=new THREE.DirectionalLight(0xfff0d2,0.96); dl.position.set(6,12,9); dl.castShadow=false; sc.add(dl);
   const rim2=new THREE.DirectionalLight(0x9fd8ff,0.36); rim2.position.set(-7,6,-6); sc.add(rim2);
@@ -6379,7 +6379,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   saveT+=dt; if(saveT>4){ saveT=0; S.cash=cashVal; save(); }
   try{ V287.frame(dt); }catch(e){}
   try{ V295RINGT+=dt; if(!V295RING||V295RINGT>2){ V295RINGT=0; v295RingMake(); } }catch(e){}
-  if(!window.__NR){ if(typeof BIZ!=='undefined'&&BIZ.open&&BIZ.scene) bizRender(dt); else if(typeof REP!=='undefined'&&REP.open&&REP.scene) repRender(dt); else renderer.render(scene,cam); } requestAnimationFrame(step); }
+  if(!window.__NR){ if(typeof BIZ!=='undefined'&&BIZ.open&&BIZ.scene) bizRender(dt); else if(typeof REP!=='undefined'&&REP.open){ if(REP.scene) repRender(dt); /* v3.12: 수리실은 일러스트 배경 — 뒤의 매장 3D는 그리지 않는다 */ } else renderer.render(scene,cam); } requestAnimationFrame(step); }
 function dayRating(){ return Math.min(5,(dayRevs.length?dayRevs.reduce((a,b)=>a+b,0)/dayRevs.length:4)+intBonus()+opBonus()); }
 /* ---- combo & fever ---- */
 let combo=0, comboT=0, feverT=0;
@@ -7275,6 +7275,7 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
       if(rc&&rc.parentElement!==sh) sh.prepend(rc);
       const ai=document.getElementById('v262RepAI'); if(ai){ const t=((ai.querySelector('.v62t')||{}).textContent||'').trim(); ai.classList.toggle('v312e',t.length<4); }
     }catch(_){} },250); }catch(_){}
+  try{ setTimeout(function(){ try{ const im=new Image(); im.src='repair_room.jpg'; window.__v312pre=im; }catch(_){} },2500); }catch(_){}
   window.__v312labOpen=function(){ try{ initAudio(); snd('ui',0.4); repOpen(); }catch(_){} };
   /* 직원 관리: 매장 / 수리실 묶음 */
   setInterval(function(){ try{
