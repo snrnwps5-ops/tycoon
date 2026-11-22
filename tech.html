@@ -1839,6 +1839,32 @@ body{font-family:var(--b);letter-spacing:-.15px}
   if(document.readyState!=='loading') boot(); else document.addEventListener('DOMContentLoaded',boot);
 }catch(e){} })();
 </script>
+<style id="v312art">
+/* v3.12: 로딩·타이틀 리디자인 — ChatGPT 배경(title_bg.jpg: 하늘·떠 있는 매장 섬·직원·스쿠터), 밝은 로고, 금색 영업 시작, 둥근 진행바 */
+#title{background:linear-gradient(180deg,rgba(30,60,160,.18) 0%,rgba(30,60,160,0) 30%,rgba(255,255,255,0) 72%,rgba(140,110,220,.35) 100%),url(title_bg.jpg) center 62%/cover no-repeat #7fb3ff!important}
+#load{background:linear-gradient(180deg,rgba(30,60,160,.18),rgba(255,255,255,0) 40%,rgba(140,110,220,.45)),url(title_bg.jpg) center 62%/cover no-repeat #7fb3ff!important}
+#load:before,#load:after{display:none!important}
+#title .tb,#load .ldTop .tb{background:linear-gradient(90deg,#ffd23f,#ffb020)!important;color:#5a2a00!important;box-shadow:0 3px 0 #c07800}
+#title h1,#load .ldTop h1{color:#fff!important;-webkit-text-stroke:2px #2a3a9a;paint-order:stroke fill;text-shadow:0 5px 0 #2a3a9a,0 10px 20px rgba(20,30,90,.35)!important}
+#title .ty,#load .ldTop .ty{color:#fff!important;text-shadow:0 2px 0 #2a3a9a,0 0 10px rgba(40,60,160,.6)}
+#title .tv{color:rgba(40,40,90,.6)!important}
+#tStart{background:linear-gradient(#ffe36b,#ffb020 60%,#f39a0a)!important;box-shadow:inset 0 3px 0 rgba(255,255,255,.7),0 7px 0 #b86400,0 16px 30px rgba(180,100,0,.45)!important;color:#fff!important;text-shadow:0 2px 0 #a85a00!important;border:3px solid #fff!important}
+#tLoad,#tProg,#title .tsv{background:rgba(255,255,255,.72)!important;color:#2a2a6a!important;border:1.5px solid #fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#tProg::after{color:#6a6aa0!important}
+#title .tsh button{background:rgba(255,255,255,.6)!important;color:#2a2a6a!important}
+#ldBar{height:18px!important;border-radius:12px!important;background:rgba(255,255,255,.75)!important;box-shadow:0 0 0 3px #fff,0 4px 10px rgba(40,40,120,.25)!important}
+#ldBar i{background:linear-gradient(90deg,#ffd23f,#ffb020 50%,#7bea62)!important;border-radius:12px!important}
+#ldPct{color:#fff!important;-webkit-text-stroke:1.5px #2a3a9a;paint-order:stroke fill;text-shadow:0 3px 0 #2a3a9a!important}
+#load .s{color:#2a2a6a!important;font-weight:900!important}
+#ldTipCard{background:rgba(255,255,255,.8)!important;border:1.5px solid #fff!important}
+#load #ldTip{color:#2a2a5a!important}
+#ldCart{width:40px!important;height:40px!important;top:-10px!important;background:url(gi.png) 33.333% 66.667%/400% 400% no-repeat;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))!important}
+#ldCart>*{display:none!important}
+#ldDoor{display:none!important}
+#load .ldMid{flex:1 1 auto!important;justify-content:flex-end!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 7vh)!important}
+#load .s{display:inline-block;background:rgba(255,255,255,.8);border-radius:999px;padding:3px 12px;margin-top:10px!important}
+#tGear,#tOpt,#title #tSet,#title .tset{background:rgba(255,255,255,.75)!important;color:#2a2a6a!important;border:1.5px solid #fff!important}
+</style>
 </head>
 <body>
 <canvas id="c"></canvas><div id="vig" style="position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 55%,rgba(20,24,40,.28) 100%)"></div>
