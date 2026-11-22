@@ -258,7 +258,7 @@ u.fc,u.fm{display:inline-block;text-decoration:none;border-radius:50%;background
 .plad{display:inline-block;max-width:100%;box-sizing:border-box;margin-top:3px;padding:2px 7px;border-radius:8px;background:#eef2f8;font:800 10.5px/1.35 var(--b);color:#4a5568}
 /* ---- v2.82: 상단 중앙 대청소 — 진행 바 아래 '슬림 레일'(한 줄 24px) + 알림 1줄 ---- */
 .pld{display:block;max-width:100%;box-sizing:border-box;margin:3px 0 0;padding:2px 7px;border-radius:8px;background:#fff4d8;border:1px solid #f0d79a;font:800 10.5px/1.35 var(--b);color:#8a5a10;text-align:left}
-#hud2{position:fixed;left:10px;right:10px;top:126px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none}
+#hud2{position:fixed;left:62px;right:62px;top:126px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none}
 #hud2>.h2row{display:flex;align-items:center;justify-content:center;gap:5px;max-width:100%;width:100%}
 #rushC,#stockAl,#v275ch,#combo{position:relative!important;left:auto!important;right:auto!important;top:auto!important;transform:none!important;margin:0!important;min-width:0!important;max-width:100%!important;box-sizing:border-box;pointer-events:none;align-items:center}
 #combo{display:none;height:24px;padding:0 9px!important;border-radius:12px!important;background:linear-gradient(155deg,#2e2410,#12100a)!important;border:1px solid rgba(236,201,138,.45)!important;box-shadow:0 2px 8px rgba(4,8,16,.3)!important;color:#ffe6b8!important;text-align:center}
@@ -5352,21 +5352,23 @@ function bigBanner(t,sub){
     /* v2.83: 알약 안쪽 여백(32px)만큼 빼고 줄인다 — 넘치면 18px 까지만 축소 */
     var mx=(VW||innerWidth)-40; if(w>mx&&w>0) B.style.fontSize=Math.max(17,Math.floor(27*mx/w))+'px';
   }catch(_){}
-  S2.textContent=sub||''; S2.style.display=sub?'inline-block':'none'; $('big').classList.add('on'); document.body.classList.add('bigon'); bigT=1.6;
+  S2.textContent=sub||''; S2.style.display=sub?'inline-block':'none'; $('big').classList.add('on'); v312BanSync(); bigT=1.6;
 }
 /* v2.95: DAY 진입 슬림 배너 — 기존 bigBanner('DAY n', title) + ftHint('손님이 곧 들어와요')가
    화면 중앙에 세로로 쌓이던 것을 한 줄 배너로 합치고 2.6초 뒤 스스로 사라진다(P2-3). */
 var V295BAN={t:0,timer:0};
 function v295BannerOn(){ return !!V295BAN.t; }
+/* v3.12: 큰 배너·DAY 배너가 떠 있는 동안 다른 안내(띠·가이드·카드·손가락)를 숨긴다 */
+var V312BST=0; function v312BanSync(){ try{ var on=$('big').classList.contains('on')||$('dayBan').classList.contains('on'); clearTimeout(V312BST); if(on) document.body.classList.add('bigon'); else V312BST=setTimeout(function(){ if(!$('big').classList.contains('on')&&!$('dayBan').classList.contains('on')) document.body.classList.remove('bigon'); },450); }catch(e){} }
 function v295DayBanner(n,title,tip){
   try{
     var el=$('dayBan'), bt=$('dayBanT'), bs=$('dayBanS');
     if(!el||!bt||!bs) return false;
     bt.textContent='DAY '+n;
     bs.textContent=[title,tip].filter(Boolean).join(' · ');
-    el.classList.add('on'); V295BAN.t=2.6;
+    el.classList.add('on'); V295BAN.t=2.6; v312BanSync();
     if(V295BAN.timer) clearTimeout(V295BAN.timer);
-    V295BAN.timer=setTimeout(function(){ V295BAN.t=0; V295BAN.timer=0; try{ el.classList.remove('on'); }catch(e){}
+    V295BAN.timer=setTimeout(function(){ V295BAN.t=0; V295BAN.timer=0; try{ el.classList.remove('on'); v312BanSync(); }catch(e){}
       try{ if(BIGPT){ clearInterval(BIGPT); BIGPT=0; } var q=BIGP; BIGP=null; if(q) bigBanner(q.t,q.sub); }catch(e){} },2600);
     return true;
   }catch(e){ return false; }
@@ -6398,7 +6400,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   for(let k=flyers.length-1;k>=0;k--){ const f=flyers[k]; f.t+=dt; const u=Math.min(1,f.t/f.dur), to=f.toFn(); f.obj.position.lerpVectors(f.from,to,u); f.obj.position.y+=Math.sin(u*Math.PI)*1.0; f.obj.rotation.y+=dt*8; if(u>=1){ scene.remove(f.obj); flyers.splice(k,1); if(f.done) f.done(); } }
   for(let k=parts.length-1;k>=0;k--){ const p=parts[k]; p.t+=dt; p.v.y-=(p.grow?1:8)*dt; p.m.position.addScaledVector(p.v,dt); if(!p.solid&&p.m.material.opacity!==undefined) p.m.material.opacity=Math.min(1,1-p.t); if(p.spin){ p.m.rotation.x+=dt*7; p.m.rotation.z+=dt*5; } else p.m.rotation.y+=dt*5; if(p.t>1){ scene.remove(p.m); parts.splice(k,1); } }
   for(let k=pops.length-1;k>=0;k--){ const q=pops[k]; if(!q.o||!q.o.scale){ pops.splice(k,1); continue; } q.t+=dt; const u=Math.min(1,q.t/0.6); const e=1+Math.sin(u*Math.PI*1.5)*(1-u)*0.35; q.o.scale.y=Math.max(0.01,u*e); if(u>=1){ q.o.scale.y=1; pops.splice(k,1); } }
-  if(bigT>0){ bigT-=dt; if(bigT<=0){ $('big').classList.remove('on'); document.body.classList.remove('bigon'); } }
+  if(bigT>0){ bigT-=dt; if(bigT<=0){ $('big').classList.remove('on'); v312BanSync(); } }
   for(let k=fts.length-1;k>=0;k--){ const f=fts[k]; f.t+=dt; place(f.el,f.p,f.p.y+f.t*1.2+(f.dy||0),f.dx||0); ftLift(f.el); f.el.style.opacity=Math.min(1,2.2-f.t*1.6); if(f.t>1.4){ f.el.remove(); fts.splice(k,1); } }
   // guide + hud
   const gd=guide(); if(gd&&Math.hypot(player.pos.x-gd[0],player.pos.z-gd[1])>1.0){ arrow.visible=gring.visible=true; arrow.position.set(gd[0],2.2+Math.abs(Math.sin(time*4))*0.4,gd[1]); arrow.rotation.y+=dt*3; gring.position.set(gd[0],FLOOR_Y.gring,gd[1]); gring.scale.setScalar(1+Math.sin(time*5)*0.12); } else arrow.visible=gring.visible=false;
@@ -7202,7 +7204,7 @@ var GD=(function(){
     var n=100*Math.pow(2,i-L.length); return {i:i,s:{t:'손님 '+n+'명 응대하기',p:function(){ return [srv(),n]; },r:{m:Math.round(200+n*3)},h:'꾸준히 응대하면 보상이 커져요'}}; }
   return {L:L,cur:cur};
 })();
-try{ const st=document.createElement('style'); st.textContent='#v311g{position:fixed;left:50%;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:7px;max-width:min(86vw,330px);padding:6px 12px 6px 8px;border-radius:999px;background:rgba(255,251,240,.97);border:2px solid #f0c25a;box-shadow:0 3px 0 #d6a03a,0 6px 14px rgba(60,40,10,.18);font:900 12.5px var(--b);color:#5a3a10;cursor:pointer;white-space:nowrap}#v311g i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;background:#ffb020;color:#fff;display:flex;align-items:center;justify-content:center;font:900 11px var(--b)}#v311g span{overflow:hidden;text-overflow:ellipsis}#v311g b{flex:none;color:#2f9a63}#v311g.done{background:linear-gradient(#8cf06c,#2fa36a);border-color:#1d7a2a;box-shadow:0 3px 0 #1d6a2a;color:#fff;animation:v311gp .9s ease-in-out infinite}#v311g.done b{color:#fff}#v311g.done i{background:#fff;color:#2fa36a}@keyframes v311gp{50%{scale:1.05}}body.title #v311g,body.ftue #v311g{display:none!important}body.bigon #ftHint,body.bigon #v311g{visibility:hidden!important}'; document.head.appendChild(st);
+try{ const st=document.createElement('style'); st.textContent='#v311g{position:fixed;left:50%;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:7px;max-width:min(86vw,330px);padding:6px 12px 6px 8px;border-radius:999px;background:rgba(255,251,240,.97);border:2px solid #f0c25a;box-shadow:0 3px 0 #d6a03a,0 6px 14px rgba(60,40,10,.18);font:900 12.5px var(--b);color:#5a3a10;cursor:pointer;white-space:nowrap}#v311g i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;background:#ffb020;color:#fff;display:flex;align-items:center;justify-content:center;font:900 11px var(--b)}#v311g span{overflow:hidden;text-overflow:ellipsis}#v311g b{flex:none;color:#2f9a63}#v311g.done{background:linear-gradient(#8cf06c,#2fa36a);border-color:#1d7a2a;box-shadow:0 3px 0 #1d6a2a;color:#fff;animation:v311gp .9s ease-in-out infinite}#v311g.done b{color:#fff}#v311g.done i{background:#fff;color:#2fa36a}@keyframes v311gp{50%{scale:1.05}}body.title #v311g,body.ftue #v311g{display:none!important}body.bigon #labels,body.bigon #hud2,body.bigon #ftHint,body.bigon #v311g,body.bigon #v312card,body.bigon #v312hand,body.bigon .v312ring{visibility:hidden!important}'; document.head.appendChild(st);
   const el=document.createElement('div'); el.id='v311g'; el.setAttribute('role','button'); document.body.appendChild(el);
   let last='';
   el.addEventListener('click',function(e){ e.stopPropagation(); try{ initAudio(); }catch(_){}
@@ -12735,6 +12737,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else { offResume(); v282Resume('vis'); } });
 addEventListener('pageshow',function(e){ try{ if(dayState==='run') v282Resume('pageshow'); }catch(_){} });
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},set dayT(v){dayT=v},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
+try{ if(window.__T) window.__T.fx={toast:toast,big:bigBanner,dayBan:v295DayBanner,combo:comboHit}; }catch(e){}
 try{
 /* =========================================================================
    v2.67에서 들어온 기능 — ② 키오스크 2종 확장 · ③ 오늘의 미션 다양화
