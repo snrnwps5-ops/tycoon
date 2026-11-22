@@ -1762,7 +1762,7 @@ function haptic(pat,tgt){ const o=optO(); if(!o.vib) return 'off';
     /* v2.86: 사용자 제스처 전 호출은 Chrome 콘솔에 에러로 남는다 — 제스처 뒤에만 진동 */
     try{ var ua=navigator.userActivation; if(ua&&ua.hasBeenActive===false) return 'pre'; }catch(e){}
     try{ navigator.vibrate(pat); return 'vibrate'; }catch(e){ return 'error'; } }
-  const el=(typeof tgt==='string')?$(tgt):(tgt||$('cashPill')); if(el){ try{ el.classList.remove('btn-flash'); void el.offsetWidth; el.classList.add('btn-flash'); clearTimeout(el._fx); el._fx=setTimeout(()=>{ try{ el.classList.remove('btn-flash'); }catch(e){} },400); }catch(e){} return 'flash'; }
+  /* v3.13: 아이폰은 진동 API가 없어 판매마다 돈 칸이 하얗게 번쩍였다(깜빡임 원인) — 돈 칸 대체 번쩍임은 끄고, 다른 대상도 1.5초에 한 번만 */ if(!tgt||tgt==='cashPill') return 'none'; const el=(typeof tgt==='string')?$(tgt):tgt; if(el&&performance.now()-(el._fxT||0)<1500) return 'skip'; if(el){ el._fxT=performance.now(); try{ el.classList.remove('btn-flash'); void el.offsetWidth; el.classList.add('btn-flash'); clearTimeout(el._fx); el._fx=setTimeout(()=>{ try{ el.classList.remove('btn-flash'); }catch(e){} },400); }catch(e){} return 'flash'; }
   return 'none'; }
 function setHidden(h){ bgmHold=!!h; if(!bgmHold) bgmT=0; applyVol(); }
 document.addEventListener('visibilitychange',()=>setHidden(document.hidden));
@@ -4172,7 +4172,7 @@ function ftLift(el){
   }catch(e){}
 }
 /* v3.10: 판매 손맛 — 손님 머리 위에서 코인 6~10개가 돈 칩으로 날아가고, 칩이 튀며 숫자가 커진다(DOM만, 3D 재질 추가 없음) */
-try{ const st=document.createElement('style'); st.textContent='.ft.sale{font-size:28px;color:#ffe14d;-webkit-text-stroke:2px #8a5a00;text-shadow:0 3px 0 #8a5a00;animation:v310pop .38s cubic-bezier(.2,1.6,.4,1)}@keyframes v310pop{0%{scale:.4}60%{scale:1.25}100%{scale:1}}.v310c{position:fixed;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6b0,#ffd23f 45%,#d89a00);box-shadow:0 0 0 2px #b07800 inset,0 2px 4px rgba(0,0,0,.3);z-index:30;pointer-events:none}#cashPill.v310b{animation:v310bump .3s ease-out}@keyframes v310bump{0%{scale:1}40%{scale:1.18}100%{scale:1}}'; document.head.appendChild(st); }catch(e){}
+try{ const st=document.createElement('style'); st.textContent='.ft.sale{font-size:28px;color:#ffe14d;-webkit-text-stroke:2px #8a5a00;text-shadow:0 3px 0 #8a5a00;animation:v310pop .38s cubic-bezier(.2,1.6,.4,1)}@keyframes v310pop{0%{scale:.4}60%{scale:1.25}100%{scale:1}}.v310c{position:fixed;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6b0,#ffd23f 45%,#d89a00);box-shadow:0 0 0 2px #b07800 inset,0 2px 4px rgba(0,0,0,.3);z-index:30;pointer-events:none}#cashPill.v310b{animation:v310bump .3s ease-out}@keyframes v310bump{0%{scale:1}40%{scale:1.06}100%{scale:1}}'; document.head.appendChild(st); }catch(e){}
 function v310Juice(x,z,pay){ try{
   if(typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if(performance.now()-(window.__v310jt||0)<900) return; window.__v310jt=performance.now();   /* v3.12: 직원 자동 판매가 몰릴 때 코인·칩 튐이 쉬지 않던 것 — 0.9초에 한 번만 */
@@ -6167,8 +6167,8 @@ SHOP.splice(3,0,{id:'autopack',sp:4,ic:'🤖',n:'자동화 패키지',d:'자동 
       const pv=$('poVip'); if(pv) pv.onclick=e=>{ e.stopPropagation(); pv.disabled=true; pv.textContent='결제 중…'; setTimeout(()=>{ S.vipPass=1; S.noAds=1; money+=200; try{ save(); updShopBtn(); bigBanner('⭐ VIP 패스!','매출 +25% 영구 적용'); }catch(_){} pv.remove(); },900); };
       const ps=$('poShop'); if(ps) ps.onclick=e=>{ e.stopPropagation(); openShop(); }; }catch(e){} },120); } }catch(e){} return r; }; })();
 /* ===== v2.50: 손맛 — 돈이 늘면 돈 칩이 통통 튀고, 큰 금액은 진동 ===== */
-try{ const st=document.createElement('style'); st.textContent='#cashPill.pop{animation:cpop .28s ease-out}@keyframes cpop{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}'; document.head.appendChild(st);
-  let last=money; setInterval(()=>{ try{ if(money>last){ const d=money-last; const p=$('cashPill'); if(p){ p.classList.remove('pop'); void p.offsetWidth; p.classList.add('pop'); } if(d>=200) haptic(18); } last=money; }catch(_){} },120); }catch(e){}
+try{ const st=document.createElement('style'); st.textContent='#cashPill.pop{animation:cpop .28s ease-out}@keyframes cpop{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}'; document.head.appendChild(st);
+  let last=money; setInterval(()=>{ try{ if(money>last){ const d=money-last; const p=$('cashPill'), _n=performance.now(); if(p&&_n-Math.max(window.__bumpT||0,window.__v310bt||0)>=1500){ window.__bumpT=_n; p.classList.remove('pop'); void p.offsetWidth; p.classList.add('pop'); } if(d>=200) haptic(18); } last=money; }catch(_){} },120); }catch(e){}
 /* ===== v2.51: 7일마다 저장 코드 백업 알림 (영업 준비창 위쪽 작은 줄) ===== */
 (function(){ const _s=startDayModal; startDayModal=function(){ const r=_s.apply(this,arguments);
   try{ const go=$('dayGo'); if(!go||$('bakRow')||S.day<3) return r; const now=Date.now(); if(S.bakAt&&now-S.bakAt<7*864e5) return r;
