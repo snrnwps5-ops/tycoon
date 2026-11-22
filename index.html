@@ -3387,8 +3387,13 @@ const DETQ=[
 const PADS=[
   {id:'table2',x:4.25,z:2.5,price:150,ic:'table',t:'체험 테이블 2',req:null},
   {id:'decor',x:8.0,z:3.4,price:550,ic:'star',t:'매장 꾸미기',req:'table2'},
-  {id:'flag',x:0,z:2.3,price:1200,ic:'star',t:'슈퍼스토어 승격',req:'decor'}
+  {id:'flag',x:0,z:2.3,price:1200,ic:'star',t:'슈퍼스토어 승격',req:'decor'},
+  /* v3.16: GPT 교차 QA '돈을 쓴 결과가 매장에 남게' — 지점마다 새로 사는 영구 시설 3종(바닥 패드 → 설치 → 다음 영업부터 효과) */
+  {id:'f_island',x:-6.0,z:2.5,base:180,ic:'table',t:'폰 체험 아일랜드',req:null,fac:1,fx:'구입·체험 손님 매출 +15%'},
+  {id:'f_kiosk',x:-6.0,z:-4.3,base:320,ic:'staff',t:'셀프 계산 키오스크',req:'f_island',fac:1,fx:'모든 손님 인내심 +20%'},
+  {id:'f_locker',x:-2.0,z:-7.9,base:480,ic:'star',t:'픽업 보관함',req:'f_kiosk',fac:1,fx:'픽업·반품 손님 매출 +15%'}
 ];
+try{ const _K=[1,5.3,19,32,40,48][Math.min(5,STG)]||1; PADS.forEach(p=>{ if(p.fac) p.price=Math.round(p.base*_K/10)*10; }); }catch(e){}
 const ICSVG={
   wrench:(g)=>{ g.strokeStyle='#fff'; g.lineWidth=12; g.lineCap='round'; g.beginPath(); g.moveTo(-20,20); g.lineTo(14,-14); g.stroke(); g.beginPath(); g.arc(18,-18,12,0.6,5.2); g.stroke(); },
   chat:(g)=>{ g.fillStyle='#fff'; g.beginPath(); g.ellipse(0,-4,30,20,0,0,7); g.fill(); g.beginPath(); g.moveTo(-14,10); g.lineTo(-22,26); g.lineTo(0,14); g.fill(); },
@@ -3400,11 +3405,11 @@ function rr(g,x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,
 function drawPad(p){ const g=p.ctx, W=256; g.clearRect(0,0,W,W); rr(g,8,8,W-16,W-16,36); g.fillStyle='rgba(30,30,50,.82)'; g.fill(); g.lineWidth=8; g.strokeStyle='#ffffff'; g.stroke();
   const f=Math.min(1,p.paid/p.price); if(f>0){ g.save(); rr(g,8,8,W-16,W-16,36); g.clip(); g.fillStyle='rgba(70,224,90,.55)'; g.fillRect(8,W-8-(W-16)*f,W-16,(W-16)*f); g.restore(); }
   g.save(); g.translate(W/2,92); g.scale(1.3,1.3); (ICSVG[p.ic]||ICSVG.star)(g); g.restore();
-  g.fillStyle='#fff'; g.font='bold 28px "Noto Sans KR",sans-serif'; g.textAlign='center'; g.fillText(p.t,W/2,170);
+  g.fillStyle='#fff'; g.font='bold '+Math.min(28,Math.floor(220/Math.max(1,p.t.length)))+'px "Noto Sans KR",sans-serif'; g.textAlign='center'; g.fillText(p.t,W/2,170);
   g.fillStyle='#7bea62'; g.font='bold 40px "Pretendard",sans-serif'; g.fillText('$'+Math.max(0,Math.ceil(p.price-p.paid)),W/2,222); p.tex.needsUpdate=true; }
 PADS.forEach(p=>{ p.paid=(S.paid&&S.paid[p.id])||0; const cv=document.createElement('canvas'); cv.width=cv.height=256; p.ctx=cv.getContext('2d'); p.tex=new THREE.CanvasTexture(cv);
   p.m=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5),new THREE.MeshBasicMaterial({map:p.tex,transparent:true,depthWrite:false})); p.m.rotation.x=-Math.PI/2; p.m.position.set(p.x,FLOOR_Y.pad,p.z); p.m.renderOrder=2; scene.add(p.m); drawPad(p); });
-function padVisible(p){ return !S.unl.includes(p.id)&&(!p.req||S.unl.includes(p.req)); }
+function padVisible(p){ if(p.fac&&(S.day<1||(typeof titleOn!=='undefined'&&titleOn))) return false; return !S.unl.includes(p.id)&&(!p.req||S.unl.includes(p.req)); }
 function applyUnlocks(){ const U=id=>S.unl.includes(id);
   REPG.visible=false;   /* v3.12 */
   SHB.g.visible=SHB.on=U('repair'); SHS.g.visible=SHS.on=U('repair'); SHC.g.visible=SHC.on=U('repair')&&STG>=1; SPOTS.filter(s=>s.type==='fix').forEach(s=>s.on=U('repair'));
@@ -3413,7 +3418,17 @@ function applyUnlocks(){ const U=id=>S.unl.includes(id);
   T2.visible=U('table2'); SPOTS.filter(s=>s.type==='buy'&&s.x>2).forEach(s=>s.on=U('table2'));
   if(typeof T2_OB!=='undefined'&&T2_OB) T2_OB.off=!U('table2');
   if(!U('repair')){ OB.forEach(b=>{ if(b.x1===3.95&&b.z1===-4.97) b.off=true; }); } else OB.forEach(b=>{ if(b.x1===3.95&&b.z1===-4.97) b.off=false; });
-  buildDecor(); }
+  buildDecor(); try{ v316Build(); }catch(e){} }
+/* v3.16: 시설 3종 — 설치된 것만 그린다(지점별 S.unl 스냅샷에 같이 저장돼 다시 와도 남아 있다) */
+const V316G={};
+function v316Has(k){ return !!(S.unl&&S.unl.includes('f_'+k)); }
+function v316Build(){
+  const mk=(k,fn)=>{ if(!v316Has(k)){ if(V316G[k]) V316G[k].visible=false; return; } if(V316G[k]){ V316G[k].visible=true; return; } const g=new THREE.Group(); scene.add(g); fn(g); V316G[k]=g; try{ popIn(g); }catch(_){} };
+  mk('island',g=>{ box(1.5,0.82,0.95,'#f4efe6',-6.0,0.41,2.5,g); box(1.56,0.06,1.0,'#2bb3a0',-6.0,0.84,2.5,g); [-0.45,0,0.45].forEach((dx,i)=>{ const p=box(0.22,0.4,0.03,'#1d2433',-6.0+dx,1.06,2.5,g); p.rotation.x=-0.35; box(0.18,0.33,0.01,['#5ad1ff','#ff8ad1','#ffd23f'][i],-6.0+dx,1.07,2.52,g).rotation.x=-0.35; }); box(1.5,0.05,0.05,'#fff2b0',-6.0,0.86,2.98,g); try{ ob(-6.8,-5.2,2.0,3.0); }catch(_){} });
+  mk('kiosk',g=>{ box(0.6,1.3,0.45,'#2f3b4f',-6.0,0.65,-4.3,g); box(0.5,0.62,0.04,'#5ad1ff',-6.0,1.02,-4.07,g); box(0.62,0.08,0.47,'#2bb3a0',-6.0,1.34,-4.3,g); box(0.3,0.05,0.2,'#d8dde6',-6.0,0.62,-4.02,g); try{ ob(-6.35,-5.65,-4.55,-4.05); }catch(_){} });
+  mk('locker',g=>{ box(1.7,1.6,0.5,'#e6dccb',-2.0,0.8,-7.9,g); for(let r=0;r<3;r++) for(let c=0;c<4;c++) box(0.36,0.42,0.03,['#ff8a5a','#5ad1ff','#7bea62','#ffd23f'][(r+c)%4],-2.6+c*0.4,0.35+r*0.48,-7.64,g); box(1.74,0.1,0.54,'#2bb3a0',-2.0,1.64,-7.9,g); try{ ob(-2.9,-1.1,-8.2,-7.6); }catch(_){} });
+}
+function v316PayMul(c){ let m=1; try{ if(v316Has('island')&&(c.type==='buy'||c.type==='tour')) m*=1.15; if(v316Has('locker')&&(c.type==='pick'||c.type==='ret')) m*=1.15; }catch(e){} return m; }
 applyUnlocks();
 try{ if(window.LD) LD.set(74,'직원·손님 준비'); }catch(e){}
 await (window.LD?LD.y():0);
@@ -3861,7 +3876,7 @@ function spawnCust(){ if(dayState!=='run') return; try{ if(typeof V287!=='undefi
   try{ var _vp=V285.patMul(); if(_vp>1.001){ c.patMax=Math.round(c.patMax*_vp); c.pat=c.patMax; } }catch(_){}
   /* v2.78: ⚡ 피크 타임에 몰려온 손님은 조금 더 기다린다 — 피크가 곧 민원 폭발이 되지 않게 */
   try{ if(typeof V278PK!=='undefined'&&V278PK.on){ c.patMax=Math.round(c.patMax*1.2); c.pat=c.patMax; } }catch(_){}
-  c.el.className='lb'; c.el.style.display='none'; $('labels').appendChild(c.el); ch.g.position.copy(c.pos); custs.push(c); addAura(c); }   /* v2.80: 배치 전 빈 말풍선이 (0,0)에 겹쳐 보이지 않게 처음엔 숨긴다 */
+  c.el.className='lb'; c.el.style.display='none'; $('labels').appendChild(c.el); ch.g.position.copy(c.pos); try{ if(v316Has('kiosk')&&c.patMax){ c.patMax=Math.round(c.patMax*1.2); c.pat=c.patMax; } }catch(_){} custs.push(c); addAura(c); }   /* v2.80: 배치 전 빈 말풍선이 (0,0)에 겹쳐 보이지 않게 처음엔 숨긴다 */
 const faceI=(k,s,cl)=>'<u class="'+cl+'" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></u>'; let curFace=null;
 function setLabel(c){ if(c.face==null) c.face=c.influ?7:c.vip?6:(c.type==='esc'||c.tough)?5:c.type==='tour'?3:c.type==='corp'?4:c.type==='fix'?8:(c.fr||(c.fr=1+Math.floor(Math.random()*3)))-1; const txt=(c.gold?'💎 ':'')+((c.want&&c.want===(typeof v278HotT==='function'?v278HotT():''))?'🔥 ':'')+(c.bulk?'🏢 ':'')+(c.reg!=null?(c.regVip?'💎👑 ':'👑 '):'')+(c.influ?'📸 ':c.vip?'👑 ':c.flight?'✈ ':'')+REQ[c.type](c); const sp=(c.spType&&!c.spDone)?SPCM(c):''; const full=sp?'<span class="spl">'+sp+'</span><span class="spq">'+txt+'</span>':txt; if(c._lt!==full){ c._lt=full; c.el.style.left='0px'; c.el.style.transform='translate(-50%,-100%)'; c.el.innerHTML=faceI(c.face,26,'fc')+full+'<i class="pt"><s></s></i>'; c.el.className='lb'+(c.type==='esc'?' need':c.type==='corp'?' tier3':c.type==='tour'?' tier2':c.tough?' need':c.type==='fix'?' tier3':c.type==='sw'?' tier2':'')+(sp?' sp-'+c.spType:''); c.el._w=c.el.offsetWidth||120; c.el._h=c.el.offsetHeight||42; } }
 function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.softLeave||c.escFail) c.quiet=1; if(c.spot){ c.spot.occ=null; c.spot=null; }
@@ -3874,7 +3889,7 @@ function custLeave(c,ok,pay){ c.st='leave'; c.el.style.display='none'; if(c.soft
   if(c.influ&&dayState==='run'&&!c.softLeave){ if(ok&&stars>=4){ S.reviews.push(5,5,5); dayRevs.push(5,5); setTimeout(()=>bigBanner('📸 인플루언서 리뷰 ★5','평점이 올라가요!'),300); } else { S.reviews.push(1,1); dayRevs.push(1); setTimeout(()=>bigBanner('📸 악평이 올라왔어요…','평점이 떨어져요'),300); } } if(!c.softLeave){ S.reviews.push(stars); if(S.reviews.length>14) S.reviews.shift(); }
   if(dayState==='run'){ if(!c.softLeave){ dayRevs.push(stars); dayNps.push(stars>=5?(c.influ?10:9+(Math.random()<0.5?1:0)):stars===4?7+(Math.random()<0.5?1:0):stars*2); if(c.detailOK) dayNps.push(10); } if(!ok&&!c.quiet&&c.reg==null){ sfxWarn(); haptic(25); comboBreak(); const add=c.vip?2:c.major?1:0.5; dayComp+=add; compNote(c.compKind||(c.vip?'VIP 실망':c.major?'기기 파손·중대 실수':c.miss?'오안내·항의':add===1?'오안내':'기다리다 이탈')); floatText(new THREE.Vector3(c.pos.x,3.0,c.pos.z),c.vip?'VIP 민원 +2':add===1?'민원 +1':c.walk?'기다리다 떠났어요 · 민원 +0.5':'민원 +0.5','bad'); shakeT=0.2; if(!S.tipComp){ S.tipComp=1; toast('작은 실수는 민원 0.5, 기기 파손은 1건! 5콤보마다 민원 0.5를 만회해요',4.5); } if(dayComp>=3) endDay(true); } if(c.escFail){ dayComp+=1; compNote('에스컬레이션 실패'); haptic(25); floatText(new THREE.Vector3(c.pos.x,3.1,c.pos.z),'🔥 에스컬레이션 실패 · 민원 +1','bad'); shakeT=0.2; if(dayComp>=3) endDay(true); } }
   if(ok&&c.type==='ret') hubReturnRma(c);
-  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.reg!=null?((c.regVip?2.2:1.8)+v275RegTipAdd()):1)*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*v295ShopMul()*V285.payMul()*(typeof V287!=='undefined'?V287.payMul():1));
+  if(ok&&pay){ const prM=S.promo==='sale'?0.85:S.promo==='vip'?1.25:1; const M=priceMul()*prM*(c.reg!=null?((c.regVip?2.2:1.8)+v275RegTipAdd()):1)*(c.tough?2:1)*(c.flight?1.5:1)*(c.rushOk?1.5:1)*(c.vip?3:1)*(dayEv==='sale'?0.8:1)*(c.influ?2:1)*(dayState==='run'?comboMul():1); pay=Math.round(pay*(STG===5?1.3:1)*(M>1?Math.pow(M,0.6):M)*v295ShopMul()*V285.payMul()*v316PayMul(c)*(typeof V287!=='undefined'?V287.payMul():1));
     /* v2.78: 🔥 인기 품목 +40% · ⚡ 피크 타임 +25% */
     try{ if(c.want&&c.want===v278HotT()&&['pick','buy','tour','ret','corp'].indexOf(c.type)>=0){ pay=Math.round(pay*V278HOTMUL); v278HotSold(c); } }catch(e){}
     try{ if(V278PK.on){ pay=Math.round(pay*V278PKPAY); V278PK.n++; } }catch(e){}
@@ -5640,17 +5655,26 @@ function v315Pick(){
     {k:'combo',t:'콤보 ×4 만들기',n:4,sec:30,ic:'⭐'}
   ];
   var q=L[Math.floor(Math.random()*L.length)];
-  q=Object.assign({},q); q.left=q.sec; q.b0=q.k==='srv'?srv:(q.k==='rev'?dayRev:0); q.rw=Math.max(10,Math.min(Math.round(g*0.03/5)*5,Math.round(g*0.06)-V315.paid)); return q;
+  q=Object.assign({},q); q.b0=q.k==='srv'?srv:(q.k==='rev'?dayRev:0);
+  var cap=Math.round(g*0.06)-V315.paid, nS=Math.max(1,Math.ceil(q.n/2)), unit=q.k==='rev'?'$':'';
+  var lab=function(n){ return q.k==='srv'?('손님 '+n+'명 응대'):(q.k==='rev'?('매출 $'+n+' 올리기'):('콤보 ×'+n+' 만들기')); };
+  q.opts=[{n:nS,sec:q.sec,rw:Math.max(10,Math.min(Math.round(g*0.02/5)*5,cap)),t:lab(nS)},{n:q.n,sec:Math.max(18,q.sec-5),rw:Math.max(10,Math.min(Math.round(g*0.05/5)*5,cap)),t:lab(q.n)}];
+  q.choose=1; q.chT=6; q.left=q.sec; q.rw=q.opts[0].rw; return q;
 }
 function v315Prog(q){ try{ if(q.k==='srv') return ((S.stats&&S.stats.srv)||0)-q.b0; if(q.k==='rev') return dayRev-q.b0; if(q.k==='combo') return Math.max(q.got||0,combo); }catch(e){} return 0; }
 function v315El(){ var e=document.getElementById('v315q'); if(e) return e; var r=document.getElementById('hud2'); if(!r) return null;
-  e=document.createElement('div'); e.id='v315q'; e.innerHTML='<b>⚡ 돌발</b><span></span><em></em><i><s></s></i>'; r.appendChild(e); return e; }
+  e=document.createElement('div'); e.id='v315q'; e.innerHTML='<b>⚡ 돌발</b><span></span><em></em><u class="v316c"><button data-q="0"></button><button data-q="1"></button></u><i><s></s></i>'; r.appendChild(e);
+  e.addEventListener('click',function(ev){ var b=ev.target.closest('[data-q]'); if(!b||!V315.cur||!V315.cur.choose) return; ev.stopPropagation(); v316Choose(+b.dataset.q); });
+  return e; }
+/* v3.16: 돌발 미션을 '선택'으로 — 안전(쉬움·작은 보상) / 도전(어려움·큰 보상), 6초 안에 안 고르면 안전 */
+function v316Choose(i){ try{ var q=V315.cur; if(!q||!q.choose) return; var o=q.opts[i]; q.choose=0; q.n=o.n; q.sec=q.left=o.sec; q.rw=o.rw; q.t=o.t; var el=document.getElementById('v315q'); if(el){ el.classList.remove('ch'); el.querySelector('span').textContent=q.ic+' '+q.t; } try{ snd('ui',0.4,i?1.5:1.2); }catch(_){} }catch(e){} }
 try{ var st315=document.createElement('style'); st315.textContent=
   '#v315q{display:none;align-items:center;gap:6px;position:relative;overflow:hidden;height:26px;padding:0 10px 0 4px;border-radius:999px;background:linear-gradient(180deg,#fff7d6,#ffe08a);border:2px solid #f0a020;box-shadow:0 3px 0 #c97a10;font:900 12px var(--b);color:#6a3a00;white-space:nowrap;animation:v315in .35s cubic-bezier(.2,1.6,.4,1)}'+
   '#v315q b{background:#ff7a1a;color:#fff;border-radius:999px;padding:2px 7px;font:900 11px var(--b)}#v315q em{font-style:normal;color:#c0500a;font-variant-numeric:tabular-nums}'+
   '#v315q i{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(200,120,20,.2)}#v315q i s{display:block;height:100%;width:100%;background:#ff7a1a;transform-origin:left}'+
   '#v315q.ok{background:linear-gradient(180deg,#d9ffd0,#7bea62);border-color:#2fa36a;box-shadow:0 3px 0 #1d7a2a;color:#14501f}#v315q.ok b{background:#2fa36a}'+
   '#v315q.no{opacity:.0;transition:opacity .5s}'+
+  '#v315q .v316c{display:none;text-decoration:none;gap:5px}#v315q.ch{height:auto;padding:5px 8px;flex-wrap:wrap;justify-content:center;max-width:calc(100vw - 30px);pointer-events:auto}#v315q.ch .v316c{display:flex;width:100%}#v315q .v316c button{flex:1;min-height:44px;border:0;border-radius:12px;font:900 11.5px/1.2 var(--b);padding:4px 6px;white-space:normal}#v315q .v316c button[data-q="0"]{background:#fff;color:#2f6a40;box-shadow:0 3px 0 #b8d8a8}#v315q .v316c button[data-q="1"]{background:linear-gradient(#ff9a4a,#f06a1a);color:#fff;box-shadow:0 3px 0 #b84a10}'+
   '@keyframes v315in{0%{scale:.6;opacity:0}100%{scale:1;opacity:1}}'+
   '.ft.v315big{font-size:34px!important;color:#ffef7a!important;-webkit-text-stroke:2.5px #9a5200;text-shadow:0 4px 0 #9a5200,0 0 18px rgba(255,200,60,.9)}'+
   '#rate.v315low{background:#ffe3df!important;color:#c0392b!important;border-color:#e8746a!important;animation:v315lw 1.2s ease-in-out 2}@keyframes v315lw{50%{scale:1.08}}'+
@@ -5660,7 +5684,7 @@ setInterval(function(){ try{
   if(typeof dayState==='undefined') return;
   if(V315.day!==S.day){ V315.day=S.day; V315.cur=null; V315.next=6; V315.ms={}; V315.n=0; V315.paid=0; var e0=document.getElementById('v315q'); if(e0) e0.style.display='none'; }
   if(dayState!=='run'){ return; }
-  var _c312=document.getElementById('v312card'); var busy=(_c312&&getComputedStyle(_c312).display!=='none'&&_c312.getBoundingClientRect().height>10)||document.getElementById('modal').classList.contains('on')||document.body.classList.contains('rep')||document.body.classList.contains('biz')||document.body.classList.contains('title');
+  var _c312=document.getElementById('v312card'), _rc=document.getElementById('rushC'); var busy=(_rc&&getComputedStyle(_rc).display!=='none'&&_rc.getBoundingClientRect().height>4&&!V315.cur)||(_c312&&getComputedStyle(_c312).display!=='none'&&_c312.getBoundingClientRect().height>10)||document.getElementById('modal').classList.contains('on')||document.body.classList.contains('rep')||document.body.classList.contains('biz')||document.body.classList.contains('title');
   var dt=0.25;
   /* 목표 25·50·75% — 한 번씩 */
   var g=v315Goal(), p=dayRev/g;
@@ -5668,8 +5692,9 @@ setInterval(function(){ try{
   if(S.day<1) return;                                  /* 첫날은 기본 흐름만 */
   var q=V315.cur, el=v315El(); if(!el) return;
   if(!q){ if(busy) return; V315.next-=dt; if(V315.next>0||dayT<20) return; /* v3.15b: GPT 교차 QA 반영 — 하루 최대 2회, 영업 진행 35~75% 구간에서만, 보상 목표의 3%(하루 합계 6% 상한) */ if(V315.n>=2) return; try{ var _cf=dayCfg(S.day), _pr=1-dayT/_cf.dur; if(_pr<0.35||_pr>0.75) return; }catch(_){ return; } if(Math.round(v315Goal()*0.06)-V315.paid<10) return; V315.n++;
-    q=V315.cur=v315Pick(); el.className=''; el.style.display='flex'; el.querySelector('span').textContent=q.ic+' '+q.t; try{ snd('ui',0.35,1.3); }catch(_){} }
+    q=V315.cur=v315Pick(); el.className='ch'; el.style.display='flex'; el.querySelector('span').textContent='골라요'; var _bs=el.querySelectorAll('[data-q]'); _bs[0].textContent='🙂 '+q.opts[0].t+' +$'+q.opts[0].rw; _bs[1].textContent='🔥 '+q.opts[1].t+' +$'+q.opts[1].rw; try{ snd('ui',0.35,1.3); }catch(_){} }
   if(q.done) return;
+  if(q.choose){ if(!busy) q.chT-=dt; el.querySelector('em').textContent=Math.max(0,Math.ceil(q.chT))+'초'; if(q.chT<=0) v316Choose(0); else return; q.b0=q.k==='srv'?((S.stats&&S.stats.srv)||0):(q.k==='rev'?dayRev:0); q.got=0; }
   if(q.k==='combo') q.got=Math.max(q.got||0,combo);
   var v=v315Prog(q); if(!busy) q.left-=dt;
   el.querySelector('em').textContent=Math.min(v,q.n)+'/'+q.n+' · '+Math.max(0,Math.ceil(q.left))+'초';
@@ -5695,6 +5720,22 @@ setInterval(function(){ try{
     return true; }
   if(!hookGL()){ var _t=setInterval(function(){ if(hookGL()) clearInterval(_t); },1000); }
 }catch(e){} })();
+/* v3.16: 다음 설치 목표 한 줄 — 지금 살 수 있는 다음 시설 하나만 (GPT: 'HUD엔 다음 목표 하나만') */
+try{ var st316=document.createElement('style'); st316.textContent='#v316n{display:none;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.94);border:1.5px solid #cfe9e2;box-shadow:0 2px 0 #b6d8cf;font:900 11.5px var(--b);color:#1d5a50;white-space:nowrap;position:relative;overflow:hidden}#v316n s{position:absolute;left:0;bottom:0;height:3px;background:#2bb3a0}#v316n.go{background:linear-gradient(#d9ffd0,#9ef08a);border-color:#2fa36a;color:#14501f;animation:v311gp 1s ease-in-out infinite}'; document.head.appendChild(st316); }catch(e){}
+setInterval(function(){ try{
+  var h=document.getElementById('hud2'); if(!h) return; var e=document.getElementById('v316n');
+  if(!e){ e=document.createElement('div'); e.id='v316n'; e.innerHTML='<span></span><s></s>'; h.appendChild(e); }
+  var p=null; for(var i=0;i<PADS.length;i++){ if(PADS[i].fac&&padVisible(PADS[i])){ p=PADS[i]; break; } }
+  var busy=document.getElementById('modal').classList.contains('on')||(V315&&V315.cur);
+  if(!p||busy){ if(e.style.display!=='none') e.style.display='none'; return; }
+  var left=Math.max(0,Math.ceil(p.price-(p.paid||0))), ok=money>=left;
+  var t=ok?('🛒 '+p.t+' 설치 가능! 바닥 표시로 가요'):('🛒 다음 설치 · '+p.t+' $'+Math.floor(money).toLocaleString()+' / $'+left.toLocaleString());
+  var sp=e.querySelector('span'); if(sp.textContent!==t) sp.textContent=t; e.classList.toggle('go',ok);
+  e.querySelector('s').style.width=Math.min(100,money/Math.max(1,left)*100).toFixed(0)+'%'; if(e.style.display!=='flex') e.style.display='flex';
+}catch(_){} },500);
+/* v3.16: '바로 다음 영업' — 화면이 다시 불러와져도 이어서 허브·출석을 넘긴다(20초 안의 요청만) */
+function v316AutoGo(){ try{ var t0=+(sessionStorage.getItem('v316auto')||0); if(!t0||Date.now()-t0>20000) return; var n=0; var iv=setInterval(function(){ try{ n++; if((typeof dayState!=='undefined'&&dayState==='run')||n>40){ clearInterval(iv); sessionStorage.removeItem('v316auto'); return; } if(document.body.classList.contains('title')) return; var g=document.getElementById('attGo')||document.getElementById('v262Go')||document.getElementById('dayGo'); if(g){ g.click(); return; } var s2=document.getElementById('v312start'); if(s2&&s2.style.display==='block') s2.click(); }catch(_){ clearInterval(iv); } },450); }catch(e){} }
+try{ setTimeout(v316AutoGo,1500); }catch(e){}
 /* 큰 매출(하루 목표의 8% 이상) 순간 — 금빛 큰 숫자 + 살짝 흔들림 */
 function v315Big(x,z,pay){ try{ if(dayState!=='run') return; if(pay<v315Goal()*0.08) return; floatText(new THREE.Vector3(x,3.4,z),'대박! +$'+pay,'v315big'); shakeT=Math.max(shakeT,0.18); try{ sparkle(x,2.2,z,'#ffd23f'); }catch(_){} }catch(e){} }
 function v310Juice(x,z,pay){ try{
@@ -12634,12 +12675,15 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   lvCompactResult(); try{ v308Strip(clear); }catch(e){} inboxPaint(); try{ v286ResultInject(clear); }catch(e){} $('modal').classList.add('canClose'); window.__mX=()=>go(clear);
   try{ dirAIAsk(dirData(clear)); }catch(e){ console.warn('dirAI',e); } try{ mgrEvalAsk(mgEv); }catch(e){} try{ poachSchedule(rsuR); }catch(e){} try{ mktScoutSchedule(mkR); }catch(e){}
   const go=next=>{ $('modal').classList.remove('on'); if(lvGo(next)) return; if(next) S.day++; dayState='pre'; save(); if(next&&STAGE_OF(S.day)!==STG){ const nx=STN[STAGE_OF(S.day)]; bigBanner('STAGE '+(STG+1)+' 클리어!',josaRo(nx)+' 이동해요'); confetti(player.pos.x,2.5,player.pos.z); sfxLevel(); haptic([10,30,10]); window.__v312moving=1; setTimeout(()=>{ openWorld(STG+1,STG); const ok=$('mOk'); if(ok) ok.style.display='none'; try{ sessionStorage.setItem('tech-skip','1'); }catch(e){} /* v3.12: 새 지점으로 실제로 옮긴다 — 예전엔 새로고침만 해서 옛 지점에 남은 채 새 지점 목표($1,910 등)로 영업했다 */ setTimeout(()=>{ try{ if(!switchBranch(STAGE_OF(S.day))) location.reload(); }catch(e){ location.reload(); } },4200); },1400); return; } setTimeout(startDayModal,300); };
+  /* v3.16: GPT 교차 QA — 정산 뒤 5초 안에 다음 영업으로: 허브·출석 화면을 자동으로 넘기는 '바로 다음 영업' (다른 창이 뜨면 거기서 멈춤) */
+  try{ if(clear&&$('dNext')&&!$('v316go')){ const qb=document.createElement('button'); qb.id='v316go'; qb.type='button'; qb.textContent='▶ 바로 다음 영업'; qb.style.cssText='width:100%;min-height:48px;margin-top:6px;border:0;border-radius:14px;background:linear-gradient(#7bea62,#2fa36a);color:#fff;font:900 16px var(--b);box-shadow:0 4px 0 #1d7a2a'; $('dNext').after(qb);
+    qb.onclick=function(e){ e.stopPropagation(); try{ sessionStorage.setItem('v316auto',String(Date.now())); }catch(_){} $('dNext').click(); v316AutoGo(); }; } }catch(_){}
   if($('dNext')) $('dNext').onclick=()=>go(true); if($('dRetry')) $('dRetry').onclick=()=>go(false); if($('dUp')) $('dUp').onclick=()=>{ dayState='pre'; save(); window.__rts=1; openUp(); }; save();
   /* v2.26: 승진/경고 발령 공문은 결과창 위에 따로 띄운다(결과창·닫기 흐름을 건드리지 않게) */
   if(promotion) inboxAdd({k:'lead',label:'🎉 '+MYRANKN[promotion.to]+' 승진 발령 · +$'+promotion.bonus,open:()=>leadNote('up',promotion)}); else if(penalty) inboxAdd({k:'lead',label:'⚠️ 본사 경고장 · -$'+penalty.fine,open:()=>leadNote('warn',penalty)});
   /* v2.29: 영업 마감 후 본사 스카우트 전직동의서 — 모든 지점 공통 */ setTimeout(()=>scoutTick(0),1300); }
 function unlock(p){ if(S.unl.includes(p.id)) return; S.unl.push(p.id); p.m.visible=false; snd('level_up',0.55,1.1); sparkle(p.x,0.8,p.z,'#7bea62'); gainXP(3); shakeT=0.3;
-  applyUnlocks(); const FOC={repair:[6.9,-3.2,REPG],support:[2.6,-6.6,SUPG],table2:[4.25,0.2,T2],decor:[0,1,DECOR]}[p.id];
+  applyUnlocks(); if(p.fac){ try{ save(); focusP.set(p.x,0,p.z); focusT=1.6; setTimeout(()=>{ try{ confetti(p.x,2.2,p.z); bigBanner(p.t+' 설치!',p.fx); }catch(_){} },350); }catch(_){} return; } const FOC={repair:[6.9,-3.2,REPG],support:[2.6,-6.6,SUPG],table2:[4.25,0.2,T2],decor:[0,1,DECOR]}[p.id];
   save(); try{ if(FOC){ focusP.set(FOC[0],0,FOC[1]); focusT=1.6; popIn(FOC[2]); setTimeout(()=>{ try{ confetti(FOC[0],2.5,FOC[1]); }catch(e){} },300); } }catch(e){ console.warn('unlock fx',e); }
   const MSG={repair:['🔧 수리실 오픈!','유리문 안 수리실에서 진단·교체·세척을 해요'],support:['💬 상담 데스크 오픈!','소프트웨어·요금제 상담을 맡아요'],table2:['체험 테이블 추가!','구입 상담 손님이 늘어요'],runner:['재고 직원 고용!','픽업 주문을 대신 처리해요'],tech:['수리 기사 고용!','수리 부품을 대신 가져다줘요'],decor:['매장이 예뻐졌어요!','평점이 올라가요'],flag:['슈퍼스토어 승격!','모든 매출 ×1.5']}[p.id];
   if(MSG) setTimeout(()=>bigBanner(MSG[0],MSG[1]),350);
@@ -12835,6 +12879,7 @@ function beginPlay(){ if(HYL){ HYL=0; setTimeout(()=>{ try{ toast('🔗 세이�
 addEventListener('pagehide',offSave); document.addEventListener('visibilitychange',()=>{ if(document.hidden) offSave(); else { offResume(); v282Resume('vis'); } });
 addEventListener('pageshow',function(e){ try{ if(dayState==='run') v282Resume('pageshow'); }catch(_){} });
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__T={get rev(){return dayRev},set rev(v){dayRev=v},set comp(v){dayComp=v},get comp(){return dayComp},set nps(v){dayNps=v},set revs(v){dayRevs=v},get st(){return dayState},set st(v){dayState=v},get dayT(){return dayT},set dayT(v){dayT=v},get combo(){return combo},set combo(v){combo=v},get money(){return money},STG:STG,dayCfg:d=>dayCfg(d),showResult:()=>showResult(),startDayModal:()=>startDayModal(),openCrew:()=>openCrew(),openDaily:()=>openDaily(),openDex:()=>openDex(),scoutPool:()=>scoutPool(),scoutNote:c=>scoutNote(c),lpCard:c=>lpCard(c),lpNext:()=>lpNext(),lvStageStars,lvStarNeed,lvTotalStars,lvWeekStars,walkTo:(o,dt,sp)=>walkTo(o,dt,sp),V3:(x,y,z)=>new THREE.Vector3(x,y,z),get OB(){return OB},get LPC(){return LPC},get MGRS(){return MGRS},get staff(){return staff},get custs(){return custs},rsuStock:()=>rsuStock(),rsuVal:c=>rsuVal(c),poachOpen:o=>poachOpen(o),poachPick:()=>poachPick(),poachChance:c=>poachChance(c),mkt:()=>mkt(),mktRivals:()=>mktRivals(),mktScoutOpen:o=>mktScoutOpen(o),mktSpawnMul:()=>mktSpawnMul(),inbox:()=>INBOX,expBuy:()=>expBuy(),get BIZ(){return BIZ},bizS:()=>bizS(),bizOpen:()=>bizOpen(),bizClose:()=>bizClose(),bizNewDeal:(q,s)=>bizNewDeal(q,s),bizAct:(k,i)=>bizAct(k,i),bizTick:()=>bizTick(),bizHandoff:c=>bizHandoff(c),hrPool:()=>hrPool(),hrApply:a=>hrApply(a),hrRun:()=>hrRun(),openQuiz:c=>openQuiz(c),spawn:()=>spawnCust(),HARDK:()=>HARDK.slice(),baseGoal:d=>baseGoal(d),expCost:()=>expCost(),boxGet:()=>boxGet(),autoBuy:k=>autoBuy(k),autoLv:k=>autoLv(k),get cashVal(){return cashVal},set cashVal(v){cashVal=v},boxCap:()=>boxCap(),boxCollect:()=>boxCollect(),boxOffline:()=>boxOffline(),expUp:()=>expUp(),expPay:()=>expPay(),get EXV(){return EXV},get scene(){return scene},tapGo:(x,y)=>tapGo(x,y),get TAPM(){return TAPM},get player(){return player},get SRC(){return SRC},proj:(x,z)=>{ const v=new THREE.Vector3(x,0,z).project(cam); return [(v.x+1)/2*(VW||innerWidth),(1-v.y)/2*(VH||innerHeight)]; },quizTest:(t,q)=>{ quizOpen=true; openModal('<h2>'+(t||'테스트 상담')+'</h2>'+(q?'<p>'+q+'</p>':'')+quizBtns([{t:'오답',ok:0},{t:'정답',ok:1},{t:'오답2',ok:0}],['#5aa8ff','#2f6fd8','#1c3f9a'])); $('mbox').onclick=e=>{ const b=e.target.closest('[data-qa]'); if(!b) return; window.__qres=(window.__qres||[]).concat([b.textContent]); closeQuiz(); }; }}; }catch(e){}   /* v2.39: 자동 테스트용 훅 (tests/) */
+try{ if(window.__T) window.__T.free=function(r){ r=r||1.1; var out=[]; for(var x=-7.5;x<=7.5;x+=0.5) for(var z=-9;z<=6;z+=0.5){ var ok=OB.every(function(b){ return b.off|| x<b.x1-r||x>b.x2+r||z<b.z1-r||z>b.z2+r; }) && SPOTS.every(function(s){ return Math.hypot(s.x-x,s.z-z)>r+0.4; }) && PADS.every(function(p){ return Math.hypot(p.x-x,p.z-z)>r+0.3; }); if(ok) out.push([x,z]); } return {stg:STG,n:out.length,cells:out}; }; }catch(e){}
 try{ if(window.__T) window.__T.spots=function(){ return SPOTS.map(function(s){ return (s.on?1:0)+(s.occ?2:0)+':'+s.type; }); }; }catch(e){}
 try{ if(window.__T) window.__T.fx={toast:toast,big:bigBanner,dayBan:v295DayBanner,combo:comboHit,v315:V315}; }catch(e){}
 try{
@@ -13230,7 +13275,7 @@ function v267RankModal(){
     v267RankLoad();
   }catch(e){ try{ console.warn('v267RankModal',e); }catch(_){} }
 }
-function v267RankCard(){
+function v267RankCard(){ if(!window.__RANKON) return '';   /* v3.16: GPT 교차 QA — 실제 유저가 생기기 전까지 온라인 주간 랭킹 카드 숨김(지역 랭킹은 유지) */
   try{
     var rev=v267WeekRev();
     return '<div class="vCard" id="v267RankCard"><div class="vHead"><span class="vIco">🏆</span><div class="vHtx"><b>주간 랭킹</b><small>이번 주 매출 '+v266Usd(rev)+' · TOP 50</small></div><span class="vBadge gold">'+v267WeekCode()+'</span></div>'
