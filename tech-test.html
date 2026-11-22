@@ -5739,6 +5739,7 @@ var GD=(function(){
     {t:'★3으로 영업 클리어', p:function(){ return [star3()?1:0,1]; }, r:{m:200}, h:'목표 매출 130%를 넘기면 ★3'},
     {t:'재고 발주하기', p:function(){ if((S.dock||[]).length) S.gdOrd=1; return [S.gdOrd?1:0,1]; }, r:{m:80}, go:goInv, h:'[재고]에서 부족한 품목을 발주해요'},
     {t:'손님 30명 응대하기', p:function(){ return [srv(),30]; }, r:{m:300}, h:'손님을 많이 받을수록 레벨이 올라요'},
+    {t:'조각으로 직원 1명 승진하기', p:function(){ try{ return [(S.crew||[]).some(function(c){ return (c.pos||0)>=1; })?1:0,1]; }catch(e){ return [0,1]; } }, r:{g:10}, go:goCrew, h:'[직원] → [성장]에서 조각으로 주임 승진'},
     {t:'대구 2층 완공하기', p:function(){ return [fl(0,1)==='done'?1:0,1]; }, r:{g:10}, go:goBr, h:'2층이 열리면 엘리베이터로 오가요'},
     {t:'다음 지점(부산) 열기', p:function(){ return [Math.min(1,S.curStage||0),1]; }, r:{g:20}, h:'별과 층 완공을 채우면 열려요'}
   ];
@@ -5781,6 +5782,7 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     {why:'목표 매출의 130%를 넘기면 ★3. 손님을 빨리, 정확하게 응대해 보세요.'},
     {why:'선반이 비면 손님이 그냥 떠나요. 미리 발주하면 트럭이 박스를 가져와요.',tgt:'invBtn',inner:'[data-o]'},
     {why:'응대할수록 매장 레벨이 오르고 단골이 생겨요.',cust:1},
+    {why:'부산 2층은 "주임 이상 직원 1명"이 있어야 지을 수 있어요. 상자에서 나온 조각으로 미리 승진시켜 두세요.',term:'🧩 조각 1장 = 사원→주임 승진. 상자를 열면 조각이 나와요.',tgt:'crewBtn',inner:'.v311tabs [data-t="grow"]'},
     {why:'2층까지 지으면 대구점 완공! 엘리베이터 앞에 서면 층을 오갈 수 있어요.',tgt:'v285brBtn',inner:'[data-start]'},
     {why:'별과 층 완공을 채우면 부산 센텀점이 열려요. 더 큰 매장, 더 많은 손님!'}
   ];
@@ -12091,9 +12093,9 @@ var V285=(function(){
     {k:'본사',name:'메가 테크 글로벌 본사',short:'본사',head:'글로벌 본사 타워',floors:[
       {n:'1층 키노트 아레나',sec:3600,req:[{k:'mgr3',need:1,txt:'수석 매니저 1명'},{k:'stars',need:22,txt:'누적 ★ 22개'}]},
       {n:'2층 R&D 이노베이션 랩',sec:7200,req:[{k:'hq3',need:2,txt:'본사 혜택 2종 Lv.3 이상'}]},
-      {n:'3층 AI 코어 센터',sec:10800,req:[{k:'lead',need:2,txt:'포지션 리드 2명'},{k:'geare',need:2,txt:'에픽 이상 사장님 장비'}]},
+      {n:'3층 AI 코어 센터',sec:10800,req:[{k:'lead',need:2,txt:'포지션 리드 2명'},{k:'geare',need:1,txt:'에픽 이상 장비 1개 착용'}]},
       {n:'4층 글로벌 서플라이 홀',sec:14400,req:[{k:'hqsum',need:8,txt:'본사 혜택 합계 Lv.8'}]},
-      {n:'5층 이그제큐티브 라운지',sec:21600,req:[{k:'rate',need:4.4,txt:'평점 ★4.4 이상'},{k:'gearl',need:3,txt:'전설 사장님 장비'}]},
+      {n:'5층 이그제큐티브 라운지',sec:21600,req:[{k:'rate',need:4.4,txt:'평점 ★4.4 이상'},{k:'gearl',need:1,txt:'전설 장비 1개 착용'}]},
       {n:'6층 글로벌 컨트롤 타워',sec:28800,req:[{k:'stars',need:26,txt:'누적 ★ 26개'},{k:'hqsum',need:10,txt:'본사 혜택 합계 Lv.10'}]}
     ]}
   ];
@@ -12299,8 +12301,8 @@ var V285=(function(){
       case 'hq2': return hqCountLv(2);
       case 'hq3': return hqCountLv(3);
       case 'hqsum': return hqSum();
-      case 'geare': return Math.max(0,maxEqR());
-      case 'gearl': return Math.max(0,maxEqR());
+      case 'geare': return maxEqR()>=2?1:0;   /* v3.12: '등급 번호 3'이 '3개'로 읽히던 문제 — 착용 여부(0/1)로 */
+      case 'gearl': return maxEqR()>=3?1:0;
     }
     return 0;
   }
@@ -12581,6 +12583,10 @@ var V285=(function(){
     if(kind){ var r=openBox(kind); if(r.ok){ rewards=r.rewards; opened=1; } else { try{ toast(r.why,2.4); }catch(e){} } }
     var h='<div class="v285p v286box'+(opened?' v286pop':'')+'"><h2>🎁 상자</h2><p class="vnote">조각 · 사장님 장비가 나와요 · <b>보유 💎 '+fmt(V.gem)+'</b></p>';
     h+='<div class="vshsum">🧩 조각 <b>'+shGet()+'</b>장 · 직원 승급과 본사 연구에 같이 써요</div>';
+    try{ var _st=(typeof STG==='number')?STG:0, _n=nFloors(_st), _fi=-1; var _BK0={posn1:1,lead:1,mgr2:1,mgr3:1,hq2:1,hq3:1,hqsum:1,geare:1,gearl:1}; for(var _i=0;_i<_n;_i++){ if(floorState(_st,_i)!=='done'&&reqList(_st,_i).some(function(c){ return !c.ok&&_BK0[c.k]; })){ _fi=_i; break; } }
+      if(_fi>=0){ var _BOXK={posn1:'조각으로 직원 승진',lead:'조각으로 직원 승진',mgr:'매니저 고용·승진',mgr2:'조각으로 매니저 승진',mgr3:'조각으로 매니저 승진',hq:'본사에 직원 파견',hq2:'조각으로 본사 연구',hq3:'조각으로 본사 연구',hqsum:'조각으로 본사 연구',geare:'장비 합성·착용',gearl:'장비 합성·착용'};
+        var _need=reqList(_st,_fi).filter(function(c){ return !c.ok&&_BOXK[c.k]; });
+        if(_need.length){ h+='<div class="v312need"><b>🏗️ 공사에 필요 · '+BR[_st].floors[_fi].n+'</b>'+_need.map(function(c){ return '<div><span>'+c.txt+'</span><em>'+_BOXK[c.k]+'</em></div>'; }).join('')+'</div>'; } } }catch(_e){}
     h+='<div class="vboxes">'+boxCardHTML('free')+boxCardHTML('prem')+boxCardHTML('leg')+'</div>';
     /* v2.94: 카드 3칸에 눌려 한 글자씩 쪼개지던 확률 문구를 카드 아래 한 블록으로 모았다 */
     h+='<div class="v294odds">'+['free','prem','leg'].map(function(k){ var o=V291ODDS[k]; return o?('<div><b>'+BOX[k].n+'</b> '+o.t+'<br><i>'+o.sh+'</i></div>'):''; }).join('')+'</div>';
@@ -12796,6 +12802,7 @@ var V285=(function(){
      · 조각: 어디서 나오고(상자·미션) 어디에 쓰는지(승진 필요 장수) + [승진] 바로가기 + 2:1 교환
      · 연구 조각: 본사 혜택 Lv 올리는 곳으로 연결
      · 장비: 착용/해제/합성을 가방 안에서 바로 */
+  try{ var _nst=document.createElement('style'); _nst.textContent='.v312need{margin:0 0 8px;padding:8px 10px;border-radius:12px;background:#fff4d6;border:1.5px solid #f0c25a;text-align:left}.v312need b{display:block;font:900 12px var(--b);color:#8a5a00;margin-bottom:3px}.v312need div{display:flex;justify-content:space-between;gap:8px;font:800 11.5px/1.5 var(--b);color:#4a3418}.v312need em{font-style:normal;color:#2f6fd8;white-space:nowrap}'; document.head.appendChild(_nst); }catch(_e){}
   function bagHTML(){
     var sh=V.sh||{}, h='<div class="v285p v294bag"><h2>🎒 가방</h2>';
     var tot=sh.all||0;   /* v3.11: 조각 1종 */
