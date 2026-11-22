@@ -831,7 +831,7 @@ body.biz #v275ch,body.rep #v275ch,body.title #v275ch,body.ftue #v275ch{display:n
   font-variant-numeric:tabular-nums;letter-spacing:-.3px;text-align:right}
 
 /* v2.87: 층 전환 셀렉터 (좌측 레일) */
-#v287fl{position:fixed;left:8px;top:calc(128px + env(safe-area-inset-top));z-index:6;display:flex;flex-direction:column;gap:4px;
+#v287fl{position:fixed;left:8px;top:calc(148px + env(safe-area-inset-top));z-index:6;display:flex;flex-direction:column;gap:4px;
   pointer-events:auto;touch-action:manipulation}
 #v287fl button{position:relative;width:44px;height:44px;border:1.5px solid rgba(232,186,128,.85);border-radius:13px;
   background:linear-gradient(160deg,rgba(255,253,247,.97),rgba(255,240,220,.97));color:#7a5a34;
@@ -5751,7 +5751,7 @@ var GD=(function(){
     var n=100*Math.pow(2,i-L.length); return {i:i,s:{t:'손님 '+n+'명 응대하기',p:function(){ return [srv(),n]; },r:{m:Math.round(200+n*3)},h:'꾸준히 응대하면 보상이 커져요'}}; }
   return {L:L,cur:cur};
 })();
-try{ const st=document.createElement('style'); st.textContent='#v311g{position:fixed;left:50%;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:7px;max-width:min(86vw,330px);padding:6px 12px 6px 8px;border-radius:999px;background:rgba(255,251,240,.97);border:2px solid #f0c25a;box-shadow:0 3px 0 #d6a03a,0 6px 14px rgba(60,40,10,.18);font:900 12.5px var(--b);color:#5a3a10;cursor:pointer;white-space:nowrap}#v311g i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;background:#ffb020;color:#fff;display:flex;align-items:center;justify-content:center;font:900 11px var(--b)}#v311g span{overflow:hidden;text-overflow:ellipsis}#v311g b{flex:none;color:#2f9a63}#v311g.done{background:linear-gradient(#8cf06c,#2fa36a);border-color:#1d7a2a;box-shadow:0 3px 0 #1d6a2a;color:#fff;animation:v311gp .9s ease-in-out infinite}#v311g.done b{color:#fff}#v311g.done i{background:#fff;color:#2fa36a}@keyframes v311gp{50%{scale:1.05}}body.title #v311g,body.ftue #v311g{display:none!important}body.bigon #labels,body.bigon #hud2,body.bigon #ftHint,body.bigon #v311g,body.bigon #v312card,body.bigon #v312hand,body.bigon .v312ring{visibility:hidden!important}'; document.head.appendChild(st);
+try{ const st=document.createElement('style'); st.textContent='#v311g{position:fixed;left:50%;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:7px;max-width:min(86vw,330px);padding:6px 12px 6px 8px;border-radius:999px;background:rgba(255,251,240,.97);border:2px solid #f0c25a;box-shadow:0 3px 0 #d6a03a,0 6px 14px rgba(60,40,10,.18);font:900 12.5px var(--b);color:#5a3a10;cursor:pointer;white-space:nowrap}#v311g i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;background:#ffb020;color:#fff;display:flex;align-items:center;justify-content:center;font:900 11px var(--b)}#v311g span{overflow:hidden;text-overflow:ellipsis}#v311g b{flex:none;color:#2f9a63}#v311g.done{background:linear-gradient(#8cf06c,#2fa36a);border-color:#1d7a2a;box-shadow:0 3px 0 #1d6a2a;color:#fff;animation:v311gp .9s ease-in-out infinite}#v311g.done b{color:#fff}#v311g.done i{background:#fff;color:#2fa36a}@keyframes v311gp{50%{scale:1.05}}body.title #v311g,body.ftue #v311g{display:none!important}body.bigon #labels,body.bigon #hud2,body.bigon #v287fl,body.bigon #bizBtn,body.bigon #ftHint,body.bigon #v311g,body.bigon #v312card,body.bigon #v312hand,body.bigon .v312ring{visibility:hidden!important}'; document.head.appendChild(st);
   const el=document.createElement('div'); el.id='v311g'; el.setAttribute('role','button'); document.body.appendChild(el);
   let last='';
   el.addEventListener('click',function(e){ e.stopPropagation(); try{ initAudio(); }catch(_){}
@@ -5886,6 +5886,20 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     idle+=500; if(idle<6000) return;
     const bb=document.getElementById('bbar'); const r=bb&&bb.getBoundingClientRect(); b.style.top=(((r&&r.top>100)?r.top:innerHeight-90)-66)+'px'; b.style.display='block';
   }catch(e){} },500);
+}catch(e){} })();
+/* v3.12: 전 라운드 겹침 점검 — 왼쪽 세로열(층 패널 → 비즈니스 버튼)을 진행 바 아래로 차례로 쌓고, 토스트가 뜨면 작은 힌트를 숨긴다 */
+(function(){ try{
+  const st=document.createElement('style'); st.textContent='#v311g{max-width:calc(100vw - 136px)!important}body.toaston #hint{visibility:hidden!important}'; document.head.appendChild(st);
+  const vis=e=>{ if(!e) return false; const cs=getComputedStyle(e); return cs.display!=='none'&&cs.visibility!=='hidden'&&e.getBoundingClientRect().height>4; };
+  let last='';
+  setInterval(function(){ try{
+    const db=document.getElementById('dayBar'), fl=document.getElementById('v287fl'), bz=document.getElementById('bizBtn'), t=document.getElementById('toast');
+    document.body.classList.toggle('toaston',!!(t&&t.classList.contains('on')));
+    if(!vis(db)) return;
+    let y=Math.round(db.getBoundingClientRect().bottom+8), k='';
+    if(vis(fl)){ const h=Math.round(fl.getBoundingClientRect().height); if(fl._y!==y){ fl._y=y; fl.style.top=y+'px'; } y+=h+8; k+='f'; }
+    if(bz&&bz.style.display!=='none'){ const ty=Math.max(y,214); if(bz._y!==ty){ bz._y=ty; bz.style.top=ty+'px'; } }
+  }catch(e){} },400);
 }catch(e){} })();
 /* v3.12: 가독성 — 폰에서 9px 이하로 읽기 힘들던 보조 글자를 10.5~11px로, 하단 버튼 글자 간격 정상화 */
 try{ const st=document.createElement('style'); st.textContent=
