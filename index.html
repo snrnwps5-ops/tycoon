@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded',function(){if(window.__pendVer)show
 <link rel="icon" href="icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
-:root{--d:'Pretendard Variable','Pretendard','Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif;--b:'Pretendard Variable','Pretendard','Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif;--cream:#fffdf8;--sand:#f3e7d3;--wood:#c09566;--teal:#2fa48f;--gold:#c79a3e;--ink:#3b3226;--ink2:#6b5a44;--line:#e8d7bc;--sh1:0 1px 0 rgba(255,255,255,.85) inset,0 2px 6px rgba(96,68,32,.12);--sh2:0 10px 30px rgba(70,46,18,.20)}
+:root{--d:'Jua','Pretendard Variable','Pretendard','Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif;--b:'Pretendard Variable','Pretendard','Noto Sans KR',-apple-system,"Apple SD Gothic Neo",sans-serif;--cream:#fffdf8;--sand:#f3e7d3;--wood:#c09566;--teal:#2fa48f;--gold:#c79a3e;--ink:#3b3226;--ink2:#6b5a44;--line:#e8d7bc;--sh1:0 1px 0 rgba(255,255,255,.85) inset,0 2px 6px rgba(96,68,32,.12);--sh2:0 10px 30px rgba(70,46,18,.20)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 html,body{margin:0;height:100%;overflow:hidden;background:#0a1650;touch-action:none;font-family:var(--b)}
 /* v2.23: iOS 26 홈 화면 앱은 페이지가 화면보다 짧으면 뷰포트를 상태바 높이만큼 짧게 준다(WebKit 301108) — 고정 요소가 그 아래로는 그려지지 않아 하단 띠가 생긴다.
@@ -1839,6 +1839,7 @@ body{font-family:var(--b);letter-spacing:-.15px}
   if(document.readyState!=='loading') boot(); else document.addEventListener('DOMContentLoaded',boot);
 }catch(e){} })();
 </script>
+<style>/* v3.12: 게임 제목·숫자·버튼용 둥근 글꼴 Jua(SIL OFL, 게임에 쓰는 글자만 담은 107KB 파일) */@font-face{font-family:'Jua';src:url(fonts/jua.woff2) format('woff2');font-display:swap}</style>
 <style id="v312art">
 /* v3.12: 로딩·타이틀 리디자인 — ChatGPT 배경(title_bg.jpg: 하늘·떠 있는 매장 섬·직원·스쿠터), 밝은 로고, 금색 영업 시작, 둥근 진행바 */
 #title{background:linear-gradient(180deg,rgba(30,60,160,.18) 0%,rgba(30,60,160,0) 30%,rgba(255,255,255,0) 72%,rgba(140,110,220,.35) 100%),url(title_bg.jpg) center 62%/cover no-repeat #7fb3ff!important}
