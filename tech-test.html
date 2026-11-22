@@ -1995,7 +1995,7 @@ const DAYS=[
 [4,5,6].forEach(d=>{ if(!DAYS[d].types.includes('ret')) DAYS[d].types=DAYS[d].types.concat(['ret']); });
 /* v2.47: 난이도 상향 — 대구(튜토리얼)는 그대로, 부산부터 목표 ×1.25~1.6. 무과금은 재도전·투자가 필요하고, 부스터·VIP가 확실히 체감되게 */
 const HARDK=[1,2.8,2.6,2.1,2.2,1.85];  /* v2.54: 봇 실측(능숙한 무과금, 지점별 투자 가정)으로 매출/목표가 평균 1.0 근처가 되게 */
-function baseGoal(d){ return dayCfg(d).goal/HARDK[Math.min(5,STAGE_OF(Math.min(d,DAYS.length-1)))]; } DAYS.forEach((c,d)=>{ c.goal=Math.round(c.goal*HARDK[Math.min(5,STAGE_OF(d))]/10)*10; });
+function baseGoal(d){ return (dayCfg(d).goal0||dayCfg(d).goal)/HARDK[Math.min(5,STAGE_OF(Math.min(d,DAYS.length-1)))]; } DAYS.forEach((c,d)=>{ c.goal=Math.round(c.goal*HARDK[Math.min(5,STAGE_OF(d))]/10)*10; });
 const dayCfg=d=>d<DAYS.length?DAYS[d]:lvSeasonCfg(d);   /* v2.34: 무한 영업 → 주간 시즌 */
 const EVT={influ:['📸 인플루언서 방문','완벽하게 응대하면 평점이 확 올라요 (실패하면 큰일!)'],sale:['🏷️ 할인 행사','가격 20% 할인, 대신 손님이 40% 더 와요'],rain:['🌧️ 비 오는 날','손님은 적지만 느긋하게 기다려줘요'],delay:['🚚 물류 지연','오늘은 일반 배송이 안 와요. 퀵 배송만 가능!'],review:['🕵️ 본사 암행 평가','최소 평점 +0.2, 대신 클리어 보너스 2배']};
 const RENT=[0,100,300,700,1200,1800];
@@ -9824,6 +9824,11 @@ try{
      법인 단가가 baseGoal×6%(최대 문항 pay)라 목표를 내려도 비율이 크게 좋아지지 않는다. */
   var V301_G=[280,450,500,560,1490,1910,2660,2340,5390,5830,6270,9700,11400,11860,12300,21500,32200,30000,19000,23000,47000,51000,44000];
   for(var _g1=0;_g1<V301_G.length;_g1++){ if(DAYS[_g1]) DAYS[_g1].goal=V301_G[_g1]; }
+  /* v3.15c: GPT 교차 QA — 날짜별 3~5회 시뮬(능숙·무과금·GAP 8) 중앙값 매출/목표가 인천 0.99 · 뉴욕 0.63 · 본사 0.70이라
+     지점 안의 날짜별 모양은 그대로 두고 지점 단위로 낮춰 1.2 근처에 맞춘다(DAY 12~23). 대구·부산·서울(1.2~1.6)은 유지.
+     법인 손님 단가(baseGoal×6%)가 같이 줄지 않게 원래 목표를 goal0에 남겨 baseGoal이 그걸 쓴다. */
+  var V315_G={11:9000,12:9400,13:9780,14:10150,15:11290,16:16900,17:15750,18:9970,19:13400,20:27400,21:29700,22:25650};
+  for(var _k3 in V315_G){ var _d3=DAYS[+_k3]; if(_d3){ _d3.goal0=_d3.goal; _d3.goal=V315_G[_k3]; } }
 }catch(e){ console.warn('v3.01 goals',e); }
 
 /* ---------------- 2) 허브: 성장 현황 + 다음 구매 추천 ---------------- */
