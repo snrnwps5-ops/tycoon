@@ -4175,7 +4175,7 @@ try{ const st=document.createElement('style'); st.textContent='.ft.sale{font-siz
 /* ===== v3.15: 재미 보강 — 영업 중 '돌발 미션'(20~30초 짧은 목표)과 큰 매출 순간 연출, 목표 25·50·75% 알림 =====
    · 미션은 하루 동안만 있는 값(저장 안 함) — 세이브 구조를 바꾸지 않는다.
    · 첫날(DAY 1)과 모달·수리실·비즈니스 화면에서는 뜨지 않는다. */
-var V315={cur:null,next:22,last:0,ms:{},day:-1};
+var V315={cur:null,next:6,last:0,ms:{},day:-1,n:0,paid:0};
 function v315Goal(){ try{ return dayCfg(S.day).goal||300; }catch(e){ return 300; } }
 function v315Pick(){
   var g=v315Goal(), srv=(S.stats&&S.stats.srv)||0, L=[
@@ -4185,7 +4185,7 @@ function v315Pick(){
     {k:'combo',t:'콤보 ×4 만들기',n:4,sec:30,ic:'⭐'}
   ];
   var q=L[Math.floor(Math.random()*L.length)];
-  q=Object.assign({},q); q.left=q.sec; q.b0=q.k==='srv'?srv:(q.k==='rev'?dayRev:0); q.rw=Math.max(20,Math.round(g*0.06/5)*5); return q;
+  q=Object.assign({},q); q.left=q.sec; q.b0=q.k==='srv'?srv:(q.k==='rev'?dayRev:0); q.rw=Math.max(10,Math.min(Math.round(g*0.03/5)*5,Math.round(g*0.06)-V315.paid)); return q;
 }
 function v315Prog(q){ try{ if(q.k==='srv') return ((S.stats&&S.stats.srv)||0)-q.b0; if(q.k==='rev') return dayRev-q.b0; if(q.k==='combo') return Math.max(q.got||0,combo); }catch(e){} return 0; }
 function v315El(){ var e=document.getElementById('v315q'); if(e) return e; var r=document.getElementById('hud2'); if(!r) return null;
@@ -4198,11 +4198,12 @@ try{ var st315=document.createElement('style'); st315.textContent=
   '#v315q.no{opacity:.0;transition:opacity .5s}'+
   '@keyframes v315in{0%{scale:.6;opacity:0}100%{scale:1;opacity:1}}'+
   '.ft.v315big{font-size:34px!important;color:#ffef7a!important;-webkit-text-stroke:2.5px #9a5200;text-shadow:0 4px 0 #9a5200,0 0 18px rgba(255,200,60,.9)}'+
+  '#rate.v315low{background:#ffe3df!important;color:#c0392b!important;border-color:#e8746a!important;animation:v315lw 1.2s ease-in-out 2}@keyframes v315lw{50%{scale:1.08}}'+
   '.ft.v315ms{font-size:22px!important;color:#fff!important;-webkit-text-stroke:2px #1d7a5a;text-shadow:0 3px 0 #1d7a5a}';
   document.head.appendChild(st315); }catch(e){}
 setInterval(function(){ try{
   if(typeof dayState==='undefined') return;
-  if(V315.day!==S.day){ V315.day=S.day; V315.cur=null; V315.next=22; V315.ms={}; var e0=document.getElementById('v315q'); if(e0) e0.style.display='none'; }
+  if(V315.day!==S.day){ V315.day=S.day; V315.cur=null; V315.next=6; V315.ms={}; V315.n=0; V315.paid=0; var e0=document.getElementById('v315q'); if(e0) e0.style.display='none'; }
   if(dayState!=='run'){ return; }
   var _c312=document.getElementById('v312card'); var busy=(_c312&&getComputedStyle(_c312).display!=='none'&&_c312.getBoundingClientRect().height>10)||document.getElementById('modal').classList.contains('on')||document.body.classList.contains('rep')||document.body.classList.contains('biz')||document.body.classList.contains('title');
   var dt=0.25;
@@ -4211,19 +4212,34 @@ setInterval(function(){ try{
   [[0.25,'25%'],[0.5,'절반'],[0.75,'75%']].forEach(function(m){ if(p>=m[0]&&!V315.ms[m[1]]){ V315.ms[m[1]]=1; if(busy) return; try{ floatText(new THREE.Vector3(player.pos.x,3.2,player.pos.z),'목표 '+m[1]+' 달성!','v315ms'); snd('level_up',0.3,1.5); }catch(_){} } });
   if(S.day<1) return;                                  /* 첫날은 기본 흐름만 */
   var q=V315.cur, el=v315El(); if(!el) return;
-  if(!q){ if(busy) return; V315.next-=dt; if(V315.next>0||dayT<20) return;
+  if(!q){ if(busy) return; V315.next-=dt; if(V315.next>0||dayT<20) return; /* v3.15b: GPT 교차 QA 반영 — 하루 최대 2회, 영업 진행 35~75% 구간에서만, 보상 목표의 3%(하루 합계 6% 상한) */ if(V315.n>=2) return; try{ var _cf=dayCfg(S.day), _pr=1-dayT/_cf.dur; if(_pr<0.35||_pr>0.75) return; }catch(_){ return; } if(Math.round(v315Goal()*0.06)-V315.paid<10) return; V315.n++;
     q=V315.cur=v315Pick(); el.className=''; el.style.display='flex'; el.querySelector('span').textContent=q.ic+' '+q.t; try{ snd('ui',0.35,1.3); }catch(_){} }
   if(q.done) return;
   if(q.k==='combo') q.got=Math.max(q.got||0,combo);
   var v=v315Prog(q); if(!busy) q.left-=dt;
   el.querySelector('em').textContent=Math.min(v,q.n)+'/'+q.n+' · '+Math.max(0,Math.ceil(q.left))+'초';
   el.querySelector('i s').style.transform='scaleX('+Math.max(0,q.left/q.sec).toFixed(3)+')';
-  if(v>=q.n){ q.done=1; money+=q.rw; el.className='ok'; el.querySelector('em').textContent='성공! +$'+q.rw;
+  if(v>=q.n){ q.done=1; money+=q.rw; V315.paid+=q.rw; el.className='ok'; el.querySelector('em').textContent='성공! +$'+q.rw;
     try{ snd('level_up',0.5,1.2); confetti(player.pos.x,2.4,player.pos.z); floatText(new THREE.Vector3(player.pos.x,3.0,player.pos.z),'+$'+q.rw,'v315big'); v310Juice(player.pos.x,player.pos.z,q.rw); haptic([10,30,10]); }catch(_){}
-    setTimeout(function(){ el.style.display='none'; V315.cur=null; V315.next=18+Math.random()*10; },1800); }
+    setTimeout(function(){ el.style.display='none'; V315.cur=null; V315.next=25+Math.random()*15; },1800); }
   else if(q.left<=0){ q.done=1; el.className='no'; el.querySelector('em').textContent='아쉬워요';
-    setTimeout(function(){ el.style.display='none'; el.className=''; V315.cur=null; V315.next=16+Math.random()*10; },900); }
+    setTimeout(function(){ el.style.display='none'; el.className=''; V315.cur=null; V315.next=25+Math.random()*15; },900); }
 }catch(e){} },250);
+/* v3.15b: GPT 교차 QA 반영 — ① 같은 세이브를 두 탭에서 열면 나중 탭만 저장(먼저 연 탭은 저장 멈춤 + 안내)
+   ② WebGL 컨텍스트 손실(화면 잠금·메모리 압박) 때 멈춘 화면 대신 저장 후 '다시 불러오기' 안내 */
+(function(){ try{
+  var ME=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  try{ localStorage.setItem('tech-tab',ME); }catch(e){}
+  function note(msg,btn,fn){ try{ var d=document.getElementById('v315tab'); if(!d){ d=document.createElement('div'); d.id='v315tab'; d.style.cssText='position:fixed;inset:0;z-index:99990;background:rgba(20,16,10,.72);display:flex;align-items:center;justify-content:center;padding:24px';
+      d.innerHTML='<div style="background:#fff8ea;border-radius:20px;padding:20px 18px;max-width:320px;text-align:center;font:800 15px/1.5 var(--b);color:#4a3418;box-shadow:0 10px 30px rgba(0,0,0,.3)"><p style="margin:0 0 14px"></p><button style="min-height:48px;width:100%;border:0;border-radius:14px;background:linear-gradient(#ffcf5a,#f0a020);color:#5a3000;font:900 16px var(--b);box-shadow:0 4px 0 #b87410"></button></div>'; document.body.appendChild(d); }
+    d.querySelector('p').textContent=msg; var b=d.querySelector('button'); b.textContent=btn; b.onclick=fn; d.style.display='flex'; }catch(e){} }
+  window.addEventListener('storage',function(e){ try{ if(e.key!=='tech-tab'||!e.newValue||e.newValue===ME) return;
+    window.__noSave=1; note('다른 탭(또는 창)에서 게임이 열렸어요. 진행이 섞이지 않게 이 탭은 저장을 멈췄어요.','이 탭에서 계속하기',function(){ try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }); }catch(_){} });
+  function hookGL(){ var c=document.getElementById('c')||document.querySelector('canvas'); if(!c||c._v315){ return !!c; } c._v315=1;
+    c.addEventListener('webglcontextlost',function(ev){ try{ ev.preventDefault(); }catch(_){} try{ save(); }catch(_){} note('화면을 그리는 기능이 잠깐 멈췄어요(화면 잠금·메모리 부족). 진행은 저장했어요.','다시 불러오기',function(){ try{ sessionStorage.setItem('tech-skip','1'); }catch(_){} location.reload(); }); },false);
+    return true; }
+  if(!hookGL()){ var _t=setInterval(function(){ if(hookGL()) clearInterval(_t); },1000); }
+}catch(e){} })();
 /* 큰 매출(하루 목표의 8% 이상) 순간 — 금빛 큰 숫자 + 살짝 흔들림 */
 function v315Big(x,z,pay){ try{ if(dayState!=='run') return; if(pay<v315Goal()*0.08) return; floatText(new THREE.Vector3(x,3.4,z),'대박! +$'+pay,'v315big'); shakeT=Math.max(shakeT,0.18); try{ sparkle(x,2.2,z,'#ffd23f'); }catch(_){} }catch(e){} }
 function v310Juice(x,z,pay){ try{
@@ -5013,7 +5029,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   /* v2.61: HUD 수리실 버튼 배지 (접수 대기 건수) */ try{ repBadge(); }catch(e){}
   /* v3.12: 시작할 때 0부터 세어 올라가며 글자 크기가 계속 바뀌던 '돈 깜빡임' — 큰 차이는 바로 맞추고, 작은 차이만 굴린다 */
   /* v3.12: 숫자가 굴러가며 계속 바뀌어 깜빡여 보이던 것 — 바로 최종 금액으로 바꾼다(증가 연출은 코인 날아가기·알약 튕김이 맡음) */ shownMoney=money; mnyPaint(Math.floor(shownMoney)); sTxt($('lv'),S.lvl); sCss($('xp'),'width',Math.min(100,Math.round(S.xp/(6+S.lvl*4)*1000)/10)+'%');
-  sTxt($('rate'),(dayState==='run'||dayState==='end'?'오늘 ★ '+(dayRevs.length?dayRating().toFixed(1):'—'):'누적 ★ '+rating().toFixed(1))); { const nv=npsOf(dayNps); const rm=$('rooms'); sTxt(rm,'만족도 '+(nv==null?'—':(nv>0?'+':'')+nv)); sCss(rm,'background',nv==null?'transparent':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'); } setCarry(player.stack.length,CAP());
+  try{ const _re=$('rate'); if(_re){ const _low=(dayState==='run'&&dayRevs.length&&dayRating()<dayCfg(S.day).min); if(_re._low!==_low){ _re._low=_low; _re.classList.toggle('v315low',_low); } } }catch(_){} sTxt($('rate'),(dayState==='run'||dayState==='end'?'오늘 ★ '+(dayRevs.length?dayRating().toFixed(1):'—')+(dayState==='run'?' / '+dayCfg(S.day).min.toFixed(1):''):'누적 ★ '+rating().toFixed(1))); { const nv=npsOf(dayNps); const rm=$('rooms'); sTxt(rm,'만족도 '+(nv==null?'—':(nv>0?'+':'')+nv)); sCss(rm,'background',nv==null?'transparent':nv>=50?'rgba(47,170,69,.85)':nv>=0?'rgba(255,170,30,.85)':'rgba(232,52,42,.85)'); } setCarry(player.stack.length,CAP());
   if(Math.random()<dt*2){ $('crewDot').style.display=Object.keys(ROLES).some(r=>S.day>=ROLE_UNLOCK[r]&&!hasCrew(r)&&money>=Math.min(...candidates(r).map(c=>c.wage*5)))?'block':'none'; $('msDot').style.display=S.ms.some(m=>msProg(m)>=m.goal)||achReady()?'block':'none'; $('upDot').style.display=UPS.some(u=>S.up[u.k]<u.max&&money>=upCost(u))?'block':'none'; }
   if(toastT>0){ toastT-=dt; if(toastT<=0) $('toast').classList.remove('on'); } if(toastLock>0) toastLock=Math.max(0,toastLock-dt);
   if(focusT>0){ focusT-=dt; camT.lerp(focusP,1-Math.exp(-dt*6)); } else if(CAMV.mode==='full') camT.lerp(_CAMC,1-Math.exp(-dt*5)); else camT.lerp(camClampT(dt),1-Math.exp(-dt*5)); /* v2.23: v2.20의 Z축 가둠을 기본 목표로 쓰되, 캐릭터가 화면 밖·버튼 뒤로 나가면 그만큼만 따라간다(camClampT) */ cam.position.copy(camT).add(CAM_OFF); if(shakeT>0){ shakeT-=dt; cam.position.x+=(Math.random()-0.5)*shakeT*0.8; cam.position.z+=(Math.random()-0.5)*shakeT*0.8; } cam.lookAt(camT); titleCam(dt); sun.position.set(camT.x+10,22,camT.z+8); sun.target.position.copy(camT);
@@ -12697,7 +12713,7 @@ var V285=(function(){
     /* v2.86: 💎 상자는 확인 없이 차감하지 않는다 */
     if(kind&&kind!=='free'&&!force){ openBoxAsk(kind); return; }
     var rewards=null, opened=0;
-    if(kind){ var r=openBox(kind); if(r.ok){ rewards=r.rewards; opened=1; } else { try{ toast(r.why,2.4); }catch(e){} } }
+    if(kind){ var r=openBox(kind); if(r.ok){ rewards=r.rewards; opened=1; try{ save(); }catch(_){} /* v3.15b: 젬 차감·보상 직후 바로 저장(탭 종료 유실 방지) */ } else { try{ toast(r.why,2.4); }catch(e){} } }
     var h='<div class="v285p v286box'+(opened?' v286pop':'')+'"><h2>🎁 상자</h2><p class="vnote">조각 · 사장님 장비가 나와요 · <b>보유 💎 '+fmt(V.gem)+'</b></p>';
     h+='<div class="vshsum">🧩 조각 <b>'+shGet()+'</b>장 · 직원 승급과 본사 연구에 같이 써요</div>';
     try{ var _st=(typeof STG==='number')?STG:0, _n=nFloors(_st), _fi=-1; var _BK0={posn1:1,lead:1,mgr2:1,mgr3:1,hq2:1,hq3:1,hqsum:1,geare:1,gearl:1}; for(var _i=0;_i<_n;_i++){ if(floorState(_st,_i)!=='done'&&reqList(_st,_i).some(function(c){ return !c.ok&&_BK0[c.k]; })){ _fi=_i; break; } }
