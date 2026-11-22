@@ -6543,30 +6543,30 @@ function v295DayBonus(){ var b=0; try{ if(S.boostD===S.day) b+=1.0; }catch(e){}
 function v295ShopMul(){ return (1+v295PermBonus())*(1+v295DayBonus()); }
 function grantStarter(){ money+=800; S.boostD=S.day; Object.keys(S.inv).forEach(t=>S.inv[t]+=10); S.paidPack=1; }
 const SHOP=[
- {id:'vip',sp:1,ic:'⭐',n:'VIP 패스',d:'영구 매출 +25% · 매일 $200 · 광고 제거 (영구 배수는 +150%까지 합산)',p:'₩9,900',tag:'BEST',hot:1,show:()=>!S.vipPass,buy:()=>{ S.vipPass=1; S.noAds=1; money+=200; return '매출 +25% 영구 적용!'; }},
- {id:'boost',sp:2,ic:'📈',n:'매출 2배 부스터',d:'이번(또는 다음) 영업 매출 2배 · 영업 부스터끼리는 최대 2배',p:'₩2,500',show:()=>S.boostD!==S.day,buy:()=>{ S.boostD=S.day; return '이번 영업 매출 2배!'; }},
- {id:'cash1',sp:3,ic:'💵',n:'자금 한 줌',d:'$500',p:'₩1,200',show:()=>1,buy:()=>{ money+=500; return '+$500'; }},
- {id:'cash2',sp:4,ic:'💰',n:'자금 가방',d:'$3,000 (+20% 보너스)',p:'₩5,900',tag:'+20%',show:()=>1,buy:()=>{ money+=3000; return '+$3,000'; }},
- {id:'cash3',sp:5,ic:'🏦',n:'자금 금고',d:'$8,000 (+35% 보너스)',p:'₩12,000',tag:'+35%',show:()=>1,buy:()=>{ money+=8000; return '+$8,000'; }},
- {id:'slot',sp:1,ic:'👥',n:'직원 자리 +1',d:'재고 담당·수리 기사를 한 명 더 고용할 수 있는 자리 (영구)',p:'₩4,900',tag:'NEW',show:()=>!S.slotPaid,buy:()=>{ S.slotPaid=1; return '직원 화면에서 추가 채용하세요'; }},
+ {id:'vip',sp:1,ic:'⭐',n:'VIP 패스',d:'영구 매출 +25% · 매일 $200 · 광고 제거 (영구 배수는 +150%까지 합산)',p:'무료(테스트)',tag:'BEST',hot:1,show:()=>!S.vipPass,buy:()=>{ S.vipPass=1; S.noAds=1; money+=200; return '매출 +25% 영구 적용!'; }},
+ {id:'boost',sp:2,ic:'📈',n:'매출 2배 부스터',d:'이번(또는 다음) 영업 매출 2배 · 영업 부스터끼리는 최대 2배',p:'무료(테스트)',show:()=>S.boostD!==S.day,buy:()=>{ S.boostD=S.day; return '이번 영업 매출 2배!'; }},
+ {id:'cash1',sp:3,ic:'💵',n:'자금 한 줌',d:'$500',p:'무료(테스트)',show:()=>1,buy:()=>{ money+=500; return '+$500'; }},
+ {id:'cash2',sp:4,ic:'💰',n:'자금 가방',d:'$3,000 (+20% 보너스)',p:'무료(테스트)',tag:'+20%',show:()=>1,buy:()=>{ money+=3000; return '+$3,000'; }},
+ {id:'cash3',sp:5,ic:'🏦',n:'자금 금고',d:'$8,000 (+35% 보너스)',p:'무료(테스트)',tag:'+35%',show:()=>1,buy:()=>{ money+=8000; return '+$8,000'; }},
+ {id:'slot',sp:1,ic:'👥',n:'직원 자리 +1',d:'재고 담당·수리 기사를 한 명 더 고용할 수 있는 자리 (영구)',p:'무료(테스트)',tag:'NEW',show:()=>!S.slotPaid,buy:()=>{ S.slotPaid=1; return '직원 화면에서 추가 채용하세요'; }},
  /* v2.95: 단품 '광고 제거'는 VIP 패스에 이미 포함돼 있어 중복 상품을 없앴다(P1-2). */];
 const spI=(k,s)=>{ s=s||48; return '<i class="sp" style="width:'+s+'px;height:'+s+'px;background-size:'+s*3+'px '+s*3+'px;background-position:-'+(k%3)*s+'px -'+Math.floor(k/3)*s+'px"></i>'; };
 function openShop(){ const ad=(S.adD===S.day?S.adN||0:0); let h='<h2 style="margin-bottom:2px">🛒 상점</h2><p style="font-size:11px;margin:0 0 6px;color:#9a6a3a">테스트 결제예요 · 실제 돈이 나가지 않아요</p><div class="shl">';
-  h+='<div class="shi ad">'+spI(6)+'<div><b>광고 보고 $100 받기</b><small>하루 3번 · 오늘 '+ad+'/3</small></div><button data-ad="1" '+(ad>=3?'disabled':'')+'>무료</button></div>';
+  h+='<div class="shi ad">'+spI(6)+'<div><b>보너스 $100 받기 (테스트)</b><small>하루 3번 · 오늘 '+ad+'/3</small></div><button data-ad="1" '+(ad>=3?'disabled':'')+'>무료</button></div>';
   h+='<div class="shi ad"><i>🎒</i><div><b>🎒 가방</b><small>조각 · 사장님 장비</small></div><button data-bag="1">열기</button></div>';
   SHOP.filter(x=>x.show()).forEach(x=>{ h+='<div class="shi'+(x.hot?' hot':'')+'">'+(x.tag?'<em>'+x.tag+'</em>':'')+spI(x.sp)+'<div><b>'+x.n+'</b><small>'+x.d+'</small></div><button data-buy="'+x.id+'">'+(x.old?'<s>'+x.old+'</s>':'')+x.p+'</button></div>'; });
   h+='</div><button id="shSave" class="gray" style="background:linear-gradient(#b8c2d0,#8a96a8)">💾 다른 기기로 이어하기 (코드·링크)</button><button id="mOk" class="gray">닫기</button>'; openModal(h);
   $('shSave').onclick=()=>{ openSave(); };
   $('mbox').onclick=e=>{ const bg=e.target.closest('[data-bag]'); if(bg){ e.stopPropagation(); try{ V285.openBag(); }catch(_){} return; }
-    const ab=e.target.closest('[data-ad]'); if(ab&&!ab.disabled){ ab.disabled=true; ab.textContent='광고 중…'; setTimeout(()=>{ if(S.adD!==S.day){ S.adD=S.day; S.adN=0; } S.adN++; money+=100; snd('coin',0.5); toast('+$100 받았어요'); save(); openShop(); },1200); return; }
-    const b=e.target.closest('[data-buy]'); if(!b) return; const it=SHOP.find(x=>x.id===b.dataset.buy); b.disabled=true; b.textContent='결제 중…';
+    const ab=e.target.closest('[data-ad]'); if(ab&&!ab.disabled){ ab.disabled=true; ab.textContent='지급 중…'; setTimeout(()=>{ if(S.adD!==S.day){ S.adD=S.day; S.adN=0; } S.adN++; money+=100; snd('coin',0.5); toast('+$100 받았어요'); save(); openShop(); },1200); return; }
+    const b=e.target.closest('[data-buy]'); if(!b) return; const it=SHOP.find(x=>x.id===b.dataset.buy); b.disabled=true; b.textContent='지급 중…';
     setTimeout(()=>{ const msg=it.buy(); save(); confetti(player.pos.x,2.5,player.pos.z); snd('level_up',0.5); bigBanner(it.ic+' 구매 완료!',msg); openShop(); updShopBtn(); },900); }; }
 function updShopBtn(){ const sb=$('shopBtn'); if(sb) sb.querySelector('em').style.display=(!S.paidPack||!S.vipPass)?'block':'none'; }
 
 function openOffer(then){ S.offer=1; save(); snd('level_up',0.4,1.2);
   openModal('<div class="ofr"><div class="ofb">1회 한정 · 73% 할인</div><div style="margin:8px 0 2px">'+spI(0,84)+'</div><h2 style="margin:2px 0">오픈 기념 스타터 팩</h2><p style="font-size:12px;margin:0 0 6px">지금 이 화면에서만 살 수 있어요</p>'+
    '<div class="ofi"><i>💵</i><span>영업 자금 <b>$800</b> 즉시 지급</span></div><div class="ofi"><i>📈</i><span>이번 영업 <b>매출 2배</b> 부스터</span></div><div class="ofi"><i>📦</i><span>전 품목 재고 <b>+10</b></span></div>'+
-   '<p style="margin:6px 0 0;font-size:13px"><s style="color:#9a8a7a">₩14,900</s> → <b style="font-size:20px;color:#e8342a">₩3,900</b></p></div><button id="ofBuy" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">₩3,900 구매하기 <small style="font-size:11px">(테스트 결제)</small></button><button id="ofNo" class="gray" style="font-size:14px">괜찮아요</button>');
+   '<p style="margin:6px 0 0;font-size:13px"><b style="font-size:20px;color:#e8342a">무료(테스트)</b></p></div><button id="ofBuy" style="background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 4px 0 #b85a00">무료(테스트) 구매하기 <small style="font-size:11px">(테스트 결제)</small></button><button id="ofNo" class="gray" style="font-size:14px">괜찮아요</button>');
   $('ofBuy').onclick=()=>{ $('modal').classList.remove('on'); grantStarter(); save(); updShopBtn(); confetti(player.pos.x,2.5,player.pos.z); snd('coin',0.6); bigBanner('구매 완료!','$800 · 매출 2배 · 재고 +10'); setTimeout(()=>then(),1600); };
   $('ofNo').onclick=()=>{ $('modal').classList.remove('on'); setTimeout(()=>then(),200); }; }
 /* ---- v2.4: 복귀 시 오프라인 정산 모달 ---- */
@@ -7651,7 +7651,7 @@ function boxPaint(){ try{ let el=$('boxChip'); if(!expOwned()||EXP.on!==true||!S
     sHtml(el,(S.autoBox?'🤖 자동 수금':(f?'💰 가득! 수금':'💰 정산함'))+'<br><small style="font-weight:800">$'+b+' / $'+c+'</small><i style="display:block;height:5px;border-radius:3px;margin-top:3px;background:#fff8"><i style="display:block;height:100%;border-radius:3px;width:'+Math.round(Math.min(1,b/c)*100)+'%;background:'+(f?'#e8342a':'#2fa04a')+'"></i></i>');
     el.style.animation=f&&!S.autoBox?'ftb .5s ease-in-out infinite alternate':''; }catch(e){} }
 setTimeout(()=>{ boxOffline(); boxPaint(); setInterval(()=>{ if(!document.hidden&&expOwned()) S.boxAt=Date.now(); boxPaint(); },1000); },400);
-SHOP.splice(2,0,{id:'autobox',sp:1,ic:'🤖',n:'자동 수금 매니저',d:'체험존 정산함을 알아서 수금 · 가득 차서 버리는 돈 0 (영구)',p:'₩3,900',tag:'NEW',show:()=>!S.autoBox,buy:()=>{ S.autoBox=1; const b=boxGet(); money+=b; boxSet(0); return '이제 체험존 수익이 바로 들어와요'; }});
+SHOP.splice(2,0,{id:'autobox',sp:1,ic:'🤖',n:'자동 수금 매니저',d:'체험존 정산함을 알아서 수금 · 가득 차서 버리는 돈 0 (영구)',p:'무료(테스트)',tag:'NEW',show:()=>!S.autoBox,buy:()=>{ S.autoBox=1; const b=boxGet(); money+=b; boxSet(0); return '이제 체험존 수익이 바로 들어와요'; }});
 /* ===== v2.46: 자동화 — 손으로 하던 일(돈 줍기·진열 보충)을 비싸게 하나씩 자동으로. 다음 자동화까지 진행 막대가 늘 보인다 ===== */
 var AUTO_DEF=[{k:'cash',ic:'💵',n:'자동 수금 레일',d:'계산대 옆 돈을 알아서 챙겨요',base:0.8,iv:[5,4,3,2,1.2]},
               {k:'shelf',ic:'📦',n:'자동 진열 로봇',d:'창고 재고로 진열대를 알아서 채워요',base:2.2,iv:[8,6,4.5,3.2,2]}];
@@ -7677,21 +7677,21 @@ function invHint(){ try{ const go=$('dayGo'); if(!go||$('invHint')) return; let 
 function autoBind(){ document.querySelectorAll('#autoCard [data-auto]').forEach(b=>{ b.onclick=e=>{ e.stopPropagation(); autoBuy(b.dataset.auto); }; }); }
 (function(){ const _s=startDayModal; startDayModal=function(){ const r=_s.apply(this,arguments);
   try{ const go=$('dayGo'); if(go&&!$('autoCard')&&$('modal').classList.contains('on')){ const h=autoCard(); if(h){ (($('expCard'))?$('expCard').insertAdjacentHTML('beforebegin',h):$('mbox').insertAdjacentHTML('beforeend',h)); autoBind(); } invHint(); } }catch(e){} return r; }; })();
-SHOP.splice(3,0,{id:'autopack',sp:4,ic:'🤖',n:'자동화 패키지',d:'자동 수금 레일 + 자동 진열 로봇 각 1단계 (1회)',p:'₩6,900',tag:'HOT',hot:1,show:()=>!S.autoPack,buy:()=>{ S.autoPack=1; S.auto=S.auto||{}; ['cash','shelf'].forEach(k=>{ S.auto[k]=Math.min(5,(S.auto[k]||0)+1); }); return '돈 줍기·진열 보충이 자동이 됐어요'; }});
+SHOP.splice(3,0,{id:'autopack',sp:4,ic:'🤖',n:'자동화 패키지',d:'자동 수금 레일 + 자동 진열 로봇 각 1단계 (1회)',p:'무료(테스트)',tag:'HOT',hot:1,show:()=>!S.autoPack,buy:()=>{ S.autoPack=1; S.auto=S.auto||{}; ['cash','shelf'].forEach(k=>{ S.auto[k]=Math.min(5,(S.auto[k]||0)+1); }); return '돈 줍기·진열 보충이 자동이 됐어요'; }});
 /* ===== v2.47: 실패 순간 제안 — 목표를 못 채우면 결과창에 '얼마 부족했는지'와 부스터·상점 바로가기 ===== */
 (function(){ const _r=showResult; showResult=function(){ let d0=0,g=0,rv=0; try{ d0=S.day; g=dayCfg(d0).goal; rv=dayRev; }catch(_){} const r=_r.apply(this,arguments);
   try{ if(rv<g&&!window.__NOPAY){ setTimeout(()=>{ try{ const rt=$('dRetry'); if(!rt||$('payOffer')) return; const lack=g-rv, near=rv>=g*0.8;
       /* v2.91: 무료 재도전이 기본 — 유료 부스터는 접힌 '선택' 항목으로 한 곳에만 둔다 */
       const h='<details id="payOffer" style="margin:6px 0;padding:8px 12px;border-radius:14px;background:#f6f1ff;border:1px solid #d9cbf5;text-align:left">'+
         '<summary style="font:900 13px var(--b);color:#5a3a9a;cursor:pointer;list-style:none">'+(near?'거의 다 왔어요 — ':'')+'유료 부스터로 더 쉽게 (선택)</summary>'+
-        '<div style="font:800 11.5px/1.5 var(--b);color:#5a4a7a;margin:6px 0 5px">📈 매출 2배 · <b>이번 판 1회</b> 적용 · <b>재도전 1회분</b> · ₩2,500<br>'+(S.boostD!==S.day?('적용하면 이번 판 매출 $'+rv+' → <b>$'+(rv*2)+'</b> ('+(rv*2>=g?'목표 달성':'목표 $'+g+'까지 $'+Math.max(0,g-rv*2)+' 부족')+')'):'지금 부스터가 적용 중이에요')+'</div>'+
-        (S.boostD!==S.day?'<button id="poBoost" style="width:100%;height:42px;border:0;border-radius:12px;font:900 14px var(--b);color:#fff;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00">📈 매출 2배로 다시 도전 · ₩2,500</button>':'<div style="font:800 12px var(--b);color:#5a4a7a">📈 부스터 적용 중이에요</div>')+
-        (!S.vipPass?'<button id="poVip" style="width:100%;height:38px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#9b7bff,#6a46e8);box-shadow:0 3px 0 #3a1fa0">⭐ VIP 패스 ₩9,900 · 매출 +25% 영구</button>':'')+
+        '<div style="font:800 11.5px/1.5 var(--b);color:#5a4a7a;margin:6px 0 5px">📈 매출 2배 · <b>이번 판 1회</b> 적용 · <b>재도전 1회분</b> · 무료(테스트)<br>'+(S.boostD!==S.day?('적용하면 이번 판 매출 $'+rv+' → <b>$'+(rv*2)+'</b> ('+(rv*2>=g?'목표 달성':'목표 $'+g+'까지 $'+Math.max(0,g-rv*2)+' 부족')+')'):'지금 부스터가 적용 중이에요')+'</div>'+
+        (S.boostD!==S.day?'<button id="poBoost" style="width:100%;height:42px;border:0;border-radius:12px;font:900 14px var(--b);color:#fff;background:linear-gradient(#ffcf4d,#ff8a1a);box-shadow:0 3px 0 #b85a00">📈 매출 2배로 다시 도전 · 무료(테스트)</button>':'<div style="font:800 12px var(--b);color:#5a4a7a">📈 부스터 적용 중이에요</div>')+
+        (!S.vipPass?'<button id="poVip" style="width:100%;height:38px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#fff;background:linear-gradient(#9b7bff,#6a46e8);box-shadow:0 3px 0 #3a1fa0">⭐ VIP 패스 무료(테스트) · 매출 +25% 영구</button>':'')+
         '<button id="poShop" style="width:100%;height:34px;margin-top:6px;border:0;border-radius:12px;font:900 13px var(--b);color:#5a3a9a;background:#fff">🛒 상점 보기</button>'+
         '<div style="font:700 11px var(--b);color:#8a7aa8;margin-top:5px">테스트 결제예요 · 실제 돈이 나가지 않아요</div></details>';
       const _an=document.getElementById('resCta')||$('dUp')||rt; _an.insertAdjacentHTML('afterend',h);
-      const pb=$('poBoost'); if(pb) pb.onclick=e=>{ e.stopPropagation(); pb.disabled=true; pb.textContent='결제 중…'; setTimeout(()=>{ S.boostD=S.day; try{ save(); snd('level_up',0.5); bigBanner('📈 매출 2배!','이번 재도전에 적용돼요'); }catch(_){} const r2=$('dRetry'); if(r2) r2.click(); },900); };
-      const pv=$('poVip'); if(pv) pv.onclick=e=>{ e.stopPropagation(); pv.disabled=true; pv.textContent='결제 중…'; setTimeout(()=>{ S.vipPass=1; S.noAds=1; money+=200; try{ save(); updShopBtn(); bigBanner('⭐ VIP 패스!','매출 +25% 영구 적용'); }catch(_){} pv.remove(); },900); };
+      const pb=$('poBoost'); if(pb) pb.onclick=e=>{ e.stopPropagation(); pb.disabled=true; pb.textContent='지급 중…'; setTimeout(()=>{ S.boostD=S.day; try{ save(); snd('level_up',0.5); bigBanner('📈 매출 2배!','이번 재도전에 적용돼요'); }catch(_){} const r2=$('dRetry'); if(r2) r2.click(); },900); };
+      const pv=$('poVip'); if(pv) pv.onclick=e=>{ e.stopPropagation(); pv.disabled=true; pv.textContent='지급 중…'; setTimeout(()=>{ S.vipPass=1; S.noAds=1; money+=200; try{ save(); updShopBtn(); bigBanner('⭐ VIP 패스!','매출 +25% 영구 적용'); }catch(_){} pv.remove(); },900); };
       const ps=$('poShop'); if(ps) ps.onclick=e=>{ e.stopPropagation(); openShop(); }; }catch(e){} },120); } }catch(e){} return r; }; })();
 /* ===== v2.50: 손맛 — 돈이 늘면 돈 칩이 통통 튀고, 큰 금액은 진동 ===== */
 try{ const st=document.createElement('style'); st.textContent='#cashPill.pop{animation:cpop .28s ease-out}@keyframes cpop{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}'; document.head.appendChild(st);
@@ -7915,7 +7915,7 @@ function bizPaint(full){ const u=$('bizUI'); if(!u) return; const B=bizS(); bizS
       list+='<div class="bzc"><h4>'+(d.tries?'📇 ':'')+d.co+' <small>· '+Z.n+' · $'+d.val+'</small></h4>'+d.title+
         (d.st==='new'?'<div>⏳ 배정 마감까지 '+bizMin(d.dl-now)+' · 협상 약 '+bizMin(d.dur*bizDurK(B))+' · 성공 '+Math.round(bizChance(d,B)*100)+'%</div><div class="bzb">'+(fr!==-1?'<button data-b="assign" data-i="'+i+'">👔 '+bizWho(B,fr)+' 배정</button>':'<button class="bzg">빈 담당자가 없어요</button>')+'</div>'
          :'<div>📞 '+bizWho(B,d.rep)+' 협상 중 · 성공 확률 '+Math.round(bizChance(d,B)*100)+'%'+(need?' · <b style="color:#c0392b">협상 포인트 대응 필요!</b>'+(B.mgr?' <small>(5분 지나면 팀장이 대신)</small>':''):' · 남은 '+bizMin((d.asked?1-d.p:0.5-d.p)*d.dur*bizDurK(B,d)))+'</div><div class="bzp"><i style="width:'+Math.round(d.p*100)+'%"></i></div>'+
-          '<div class="bzb">'+(need?'<button class="bzy" data-b="quiz" data-i="'+i+'">❗ 협상 포인트 대응</button>':'')+'<button class="bzg" data-b="rush" data-i="'+i+'">⚡ 즉시 완료 ₩1,200</button></div><div style="font:700 10px var(--b);color:#8a7a6a;margin-top:4px">테스트 결제 · 실제 돈이 나가지 않아요</div>')+'</div>'; }); }
+          '<div class="bzb">'+(need?'<button class="bzy" data-b="quiz" data-i="'+i+'">❗ 협상 포인트 대응</button>':'')+'<button class="bzg" data-b="rush" data-i="'+i+'">⚡ 즉시 완료 무료(테스트)</button></div><div style="font:700 10px var(--b);color:#8a7a6a;margin-top:4px">테스트 결제 · 실제 돈이 나가지 않아요</div>')+'</div>'; }); }
   else if(BIZ.tab==='later'){ if(!B.later.length) list='<div class="bze"><em>📇</em><b>재영업할 고객이 없어요</b><small>결렬되거나 마감이 지난 거래가 여기로 와요</small></div>';
     B.later.forEach((l,i)=>{ const ok=now>=l.retry; list+='<div class="bzc"><h4>📇 '+l.co+' <small>· '+l.why+'</small></h4>'+l.title+'<div>다시 영업하면 $'+Math.round(l.val*0.9/10)*10+' · 성공 '+Math.round(Math.min(0.85,l.ch0+0.1)*100)+'% (관계가 생겨 조금 쉬워요)</div><div class="bzb">'+(ok?'<button data-b="retry" data-i="'+i+'">📞 다시 영업</button>':'<button class="bzg">'+bizMin(l.retry-now)+' 뒤에 연락 가능</button>')+'</div></div>'; }); }
   else if(BIZ.tab==='team'){ const mc=bizCost('mgr'), mu=bizCost('mgrup');
@@ -10500,7 +10500,7 @@ function v266WeekLeft(){ try{ var now=new Date(), k=(now.getDay()+6)%7; var nx=n
 try{
   if(!SHOP.some(function(x){ return x.id==='weekbundle'; })){
     SHOP.push({id:'weekbundle',sp:3,ic:'🎁',n:'주간 특가 번들',
-      d:'$3,000 + 이번 영업 매출 2배 + 전 품목 재고 +10',p:'₩4,900',old:'₩9,800',tag:'이번 주 한정',hot:1,
+      d:'$3,000 + 이번 영업 매출 2배 + 전 품목 재고 +10',p:'무료(테스트)',tag:'이번 주 한정',hot:1,
       show:function(){ return S.wkBuy!==v266WeekKey(); },
       buy:function(){ S.wkBuy=v266WeekKey(); money+=3000; S.boostD=S.day;   /* v2.95: 일일 부스터는 v295ShopMul에서 최대 2배로 합산 */
         Object.keys(S.inv||{}).forEach(function(t){ S.inv[t]=(S.inv[t]||0)+10; });
@@ -11347,7 +11347,7 @@ function v271FixHTML(){
         +'<button id="v271FixShop">🛒 상점에서 자금 채우기</button>';
     }
     if(lack<=cfg.goal*0.6&&S.boostD!==S.day){
-      h+='<button id="v271FixBoost" style="margin-top:6px">📈 매출 2배 부스터 · ₩2,500 <small style="font-weight:800;opacity:.75">(테스트 결제)</small></button>';
+      h+='<button id="v271FixBoost" style="margin-top:6px">📈 매출 2배 부스터 · 무료(테스트) <small style="font-weight:800;opacity:.75">(테스트 결제)</small></button>';
     }
     h+='</div>';
     return h;
@@ -14661,10 +14661,10 @@ var V285=(function(){
     return '영구 매출 +100% · 전설 장비 2종 · 매니저 영입 · 💎 300';
   }
   try{
-    SHOP.push({id:'v285starter',sp:0,ic:'🎁',n:'초보자 스타터팩',d:'영구 매출 +100% (VIP +25%와 합산 · 상한 +150%) + 전설 장비(가방·유니폼)·매니저 + 💎 300',p:'₩3,900',old:'₩19,800',tag:'1회 한정',hot:1,show:function(){ return !V.starter; },buy:function(){ return grantStarter285(); }});
-    SHOP.push({id:'gem120',sp:4,ic:'💎',n:'보석 120',d:'상자 1회 · 또는 부스터 충전',p:'₩1,200',show:function(){ return 1; },buy:function(){ V.gem+=120; paintChips(1); return '💎 120'; }});
-    SHOP.push({id:'gem450',sp:1,ic:'💎',n:'보석 450 (+50)',d:'고급 상자 3회 이상',p:'₩3,900',tag:'+50',show:function(){ return 1; },buy:function(){ V.gem+=450; paintChips(1); return '💎 450'; }});
-    SHOP.push({id:'gem1000',sp:5,ic:'💎',n:'보석 1,000 (+150)',d:'전설 상자 3회',p:'₩8,900',tag:'+150',show:function(){ return 1; },buy:function(){ V.gem+=1000; paintChips(1); return '💎 1,000'; }});
+    SHOP.push({id:'v285starter',sp:0,ic:'🎁',n:'초보자 스타터팩',d:'영구 매출 +100% (VIP +25%와 합산 · 상한 +150%) + 전설 장비(가방·유니폼)·매니저 + 💎 300',p:'무료(테스트)',tag:'1회 한정',hot:1,show:function(){ return !V.starter; },buy:function(){ return grantStarter285(); }});
+    SHOP.push({id:'gem120',sp:4,ic:'💎',n:'보석 120',d:'상자 1회 · 또는 부스터 충전',p:'무료(테스트)',show:function(){ return 1; },buy:function(){ V.gem+=120; paintChips(1); return '💎 120'; }});
+    SHOP.push({id:'gem450',sp:1,ic:'💎',n:'보석 450 (+50)',d:'고급 상자 3회 이상',p:'무료(테스트)',tag:'+50',show:function(){ return 1; },buy:function(){ V.gem+=450; paintChips(1); return '💎 450'; }});
+    SHOP.push({id:'gem1000',sp:5,ic:'💎',n:'보석 1,000 (+150)',d:'전설 상자 3회',p:'무료(테스트)',tag:'+150',show:function(){ return 1; },buy:function(){ V.gem+=1000; paintChips(1); return '💎 1,000'; }});
   }catch(e){}
 
   /* ================= 틱 ================= */
