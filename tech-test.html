@@ -4251,7 +4251,7 @@ setInterval(function(){ try{
   if(!hookGL()){ var _t=setInterval(function(){ if(hookGL()) clearInterval(_t); },1000); }
 }catch(e){} })();
 /* v3.16: 다음 설치 목표 한 줄 — 지금 살 수 있는 다음 시설 하나만 (GPT: 'HUD엔 다음 목표 하나만') */
-try{ var st316=document.createElement('style'); st316.textContent='#v316n{display:none;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.94);border:1.5px solid #cfe9e2;box-shadow:0 2px 0 #b6d8cf;font:900 11.5px var(--b);color:#1d5a50;white-space:nowrap;position:relative;overflow:hidden}#v316n s{position:absolute;left:0;bottom:0;height:3px;background:#2bb3a0}#v316n.go{background:linear-gradient(#d9ffd0,#9ef08a);border-color:#2fa36a;color:#14501f;animation:v311gp 1s ease-in-out infinite}'; document.head.appendChild(st316); }catch(e){}
+try{ var st316=document.createElement('style'); st316.textContent='#v316n{display:none;align-items:center;gap:6px;height:24px;max-width:100%;box-sizing:border-box;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.94);border:1.5px solid #cfe9e2;box-shadow:0 2px 0 #b6d8cf;font:900 11.5px var(--b);color:#1d5a50;white-space:nowrap;position:relative;overflow:hidden}#v316n span{overflow:hidden;text-overflow:ellipsis}#v316n s{position:absolute;left:0;bottom:0;height:3px;background:#2bb3a0}#v316n.go{background:linear-gradient(#d9ffd0,#9ef08a);border-color:#2fa36a;color:#14501f;animation:v311gp 1s ease-in-out infinite}'; document.head.appendChild(st316); }catch(e){}
 setInterval(function(){ try{
   var h=document.getElementById('hud2'); if(!h) return; var e=document.getElementById('v316n');
   if(!e){ e=document.createElement('div'); e.id='v316n'; e.innerHTML='<span></span><s></s>'; h.appendChild(e); }
@@ -4259,7 +4259,7 @@ setInterval(function(){ try{
   var busy=document.getElementById('modal').classList.contains('on')||(V315&&V315.cur);
   if(!p||busy){ if(e.style.display!=='none') e.style.display='none'; return; }
   var left=Math.max(0,Math.ceil(p.price-(p.paid||0))), ok=money>=left;
-  var t=ok?('🛒 '+p.t+' 설치 가능! 바닥 표시로 가요'):('🛒 다음 설치 · '+p.t+' $'+Math.floor(money).toLocaleString()+' / $'+left.toLocaleString());
+  var t=ok?('🛒 '+p.t+' 설치 가능!'):('🛒 '+p.t+' $'+Math.floor(money).toLocaleString()+'/$'+left.toLocaleString());
   var sp=e.querySelector('span'); if(sp.textContent!==t) sp.textContent=t; e.classList.toggle('go',ok);
   e.querySelector('s').style.width=Math.min(100,money/Math.max(1,left)*100).toFixed(0)+'%'; if(e.style.display!=='flex') e.style.display='flex';
 }catch(_){} },500);
