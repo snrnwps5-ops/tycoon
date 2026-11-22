@@ -7310,6 +7310,16 @@ try{ const st=document.createElement('style'); st.textContent=
   '.v3Head>span.hb{font-size:10px!important;letter-spacing:.5px!important}'+
   '#mbox small{min-height:0}#mbox .tx>small,#mbox .dstat span{line-height:1.4}';
   document.head.appendChild(st); }catch(e){}
+/* v3.12: UI 아이콘을 같은 화풍 그림(ui_icons.png 3×3)으로 — 하단 버튼·설정·수리실·공사 */
+try{ const st=document.createElement('style'); const I=(c,r)=>'background:url(ui_icons.png) '+(c*50)+'% '+(r*50)+'%/300% 300% no-repeat;';
+  st.textContent=
+  '#upBtn>svg,#crewBtn>svg,#msBtn>svg,#invBtn>svg{display:none!important}'+
+  '#upBtn::before,#crewBtn::before,#msBtn::before,#invBtn::before{content:"";display:block;width:30px;height:30px;margin:-2px auto 0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}'+
+  '#upBtn::before{'+I(0,0)+'}#crewBtn::before{'+I(1,0)+'}#msBtn::before{'+I(2,0)+'}#invBtn::before{'+I(0,1)+'}'+
+  '#optChip>svg{display:none!important}#optChip::before{content:"";display:block;width:24px;height:24px;'+I(2,1)+'}'+
+  '#labChip .ci{display:none!important}#labChip::before{content:"";display:inline-block;width:20px;height:20px;vertical-align:middle;margin-right:3px;'+I(0,2)+'}'+
+  '#v285brBtn>svg{display:none!important}#v285brBtn::before{content:"";display:block;width:30px;height:30px;margin:0 auto;'+I(2,2)+'}';
+  document.head.appendChild(st); }catch(e){}
 /* v3.09: DAY 2~3은 핵심 버튼만 — 첫날(ftue) 숨김을 이틀 더 이어 간다. 상점·랭킹·꾸미기·카메라·저장·부스터·지점 이동·본사 챌린지는 DAY 4부터.
    층 건설(🏗️)·업그레이드·직원·미션·재고·수리실은 그대로 둔다. 새 저장 필드 S.v309o(열림 배너 1회)만 추가 — 없으면 기본값. */
 function v309Early(){ try{ return S.day>=1 && S.day<=2 && !ftueOn(); }catch(e){ return false; } }
