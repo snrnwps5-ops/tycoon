@@ -4298,6 +4298,29 @@ try{ setTimeout(v316AutoGo,1500); }catch(e){}
     if(box.style.display!=='flex') box.style.display='flex';
   }catch(_){} },250);
 }catch(e){} })();
+/* v3.19: 층 공사를 매장 안으로 — 허브 대신 엘리베이터 앞 바닥 표시에 서면 층 공사 창이 열린다.
+   표시에는 지금 상태(착공 가능 / 공사 중 남은 시간 / 다음 층 조건)를 보여 준다. 다 지으면 사라진다. */
+(function(){ try{
+  var cv=document.createElement('canvas'); cv.width=256; cv.height=256; var g=cv.getContext('2d'); var tex=new THREE.CanvasTexture(cv);
+  var m=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false})); m.rotation.x=-Math.PI/2; m.position.set(-0.9,0.06,-8.3); m.renderOrder=2; m.visible=false; scene.add(m);
+  var lastTxt='', hold=0, armed=true;
+  function draw(t1,t2,col){ var k=t1+'|'+t2+'|'+col; if(k===lastTxt) return; lastTxt=k; g.clearRect(0,0,256,256); rr(g,8,8,240,240,36); g.fillStyle='rgba(30,30,50,.84)'; g.fill(); g.lineWidth=8; g.strokeStyle=col; g.stroke();
+    g.font='bold 64px sans-serif'; g.textAlign='center'; g.fillText('🏗️',128,92); g.fillStyle='#fff'; g.font='bold 30px "Noto Sans KR",sans-serif'; g.fillText(t1,128,160); g.fillStyle=col; g.font='bold 28px "Noto Sans KR",sans-serif'; g.fillText(t2,128,206); tex.needsUpdate=true; }
+  setInterval(function(){ try{
+    var st=(typeof STG==='number')?STG:0, n=V285.nFloors(st), d=V285.floorsDone(st);
+    var up=false; try{ up=typeof V287!=='undefined'&&V287.cur&&V287.cur()>0; }catch(_){} var show=!!(n>0&&d<n&&!up&&!(typeof titleOn!=='undefined'&&titleOn)&&S.day>=1);
+    m.visible=show; if(!show) return;
+    var i=d, fs=V285.floorState(st,i), t1=(i+1)+'층 공사', t2='', col='#ffd23f';
+    if(fs==='build'){ var r=Math.ceil(V285.remain(st,i)/1000), mm=Math.floor(r/60), ss=r%60; t2='공사 중 '+(mm>=60?Math.floor(mm/60)+'시간 '+(mm%60)+'분':mm+':'+String(ss).padStart(2,'0')); col='#5ad1ff'; }
+    else if(fs==='idle'){ t2='착공 가능!'; col='#7bea62'; }
+    else { t2='조건 확인'; col='#c8c8d8'; }
+    draw(t1,t2,col);
+    var on=Math.abs(player.pos.x-m.position.x)<0.8&&Math.abs(player.pos.z-m.position.z)<0.8;
+    var busy=document.getElementById('modal').classList.contains('on');
+    if(on&&!busy&&armed){ hold+=0.25; if(hold>=0.5){ hold=0; armed=false; try{ V285.openBranch(st); snd('ui',0.4); }catch(_){} } }
+    if(!on){ hold=0; armed=true; }
+  }catch(_){} },250);
+}catch(e){ console.warn('v319 floor pad',e); } })();
 /* 큰 매출(하루 목표의 8% 이상) 순간 — 금빛 큰 숫자 + 살짝 흔들림 */
 function v315Big(x,z,pay){ try{ if(dayState!=='run') return; if(pay<v315Goal()*0.08) return; floatText(new THREE.Vector3(x,3.4,z),'대박! +$'+pay,'v315big'); shakeT=Math.max(shakeT,0.18); try{ sparkle(x,2.2,z,'#ffd23f'); }catch(_){} }catch(e){} }
 function v310Juice(x,z,pay){ try{
@@ -6054,16 +6077,18 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     const h2=$i('hud2'); if(h2&&h2._y!==y){ h2._y=y; h2.style.top=y+'px'; }
     const q=$i('v315q'), t=$i('toast');
     const C=[
+      /* v3.19: GPT 교차 QA 규칙 — 당장 막힌 문제(재고) 최상위, 이벤트는 그다음, 콤보는 칸 밖(떠오르는 글자로만),
+         다음 설치·챌린지는 영업 중엔 안 보이고 정산 '다음 목표'에서만 */
+      ['stockAl', natVis($i('stockAl'))],
       ['v315q', q&&natVis(q)&&q.classList.contains('ch')],
       ['rushC', natVis($i('rushC'))],
       ['toast', !!(t&&t.classList.contains('on'))],
-      ['stockAl', natVis($i('stockAl'))],
       ['v315q', q&&natVis(q)],
-      ['combo', natVis($i('combo'))],
       ['ftHint', natVis($i('ftHint'))],
       ['v311g', natVis($i('v311g'))],
-      ['v316n', natVis($i('v316n'))],
-      ['v275ch', natVis($i('v275ch'))]
+      ['combo', false],
+      ['v316n', false],
+      ['v275ch', false]
     ];
     let win=null; for(const c of C){ if(c[1]){ win=c[0]; break; } }
     for(const c of C.filter((c,i,a)=>a.findIndex(x=>x[0]===c[0])===i)){ const e=$i(c[0]); if(!e) continue; const hide=c[0]!==win; if(e.classList.contains('lnh')!==hide) e.classList.toggle('lnh',hide); }
@@ -6129,7 +6154,7 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     let more=body.querySelector('details.v319more'); const res=body.querySelector('.v3Res');
     if(!more){ more=document.createElement('details'); more.className='v319more'; more.innerHTML='<summary>자세히 보기 ▾</summary>'; body.appendChild(more);
       const bon=(body.innerText.match(/보너스 \$([\d,]+) 획득/)||[])[1]||'';
-      const rw=document.createElement('div'); rw.className='v319blk'; rw.id='v319rw'; rw.innerHTML='<h5>받은 보상</h5><p>'+(bon?'💰 보너스 +$'+bon:'💰 오늘 번 돈은 바로 쓸 수 있어요')+'</p>';
+      const rw=document.createElement('div'); rw.className='v319blk'; rw.id='v319rw'; rw.innerHTML='<h5>받은 보상</h5><p>'+(bon?'💰 보너스 +$'+(+bon.replace(/,/g,'')).toLocaleString():'💰 오늘 번 돈은 바로 쓸 수 있어요')+'</p>';
       const ng=document.createElement('div'); ng.className='v319blk'; ng.id='v319ng'; const a=nextFac(), b2=stageGoal(); ng.innerHTML='<h5>다음 목표</h5><p>'+(a||b2||'⭐ 내일도 별 3개!')+(a&&b2?'<small>'+b2+'</small>':'')+'</p>';
       if(res){ res.after(rw); rw.after(ng); } else { body.prepend(ng); body.prepend(rw); } }
     const keep=new Set(['v319rw','v319ng']);

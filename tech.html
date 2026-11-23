@@ -5770,6 +5770,29 @@ try{ setTimeout(v316AutoGo,1500); }catch(e){}
     if(box.style.display!=='flex') box.style.display='flex';
   }catch(_){} },250);
 }catch(e){} })();
+/* v3.19: 층 공사를 매장 안으로 — 허브 대신 엘리베이터 앞 바닥 표시에 서면 층 공사 창이 열린다.
+   표시에는 지금 상태(착공 가능 / 공사 중 남은 시간 / 다음 층 조건)를 보여 준다. 다 지으면 사라진다. */
+(function(){ try{
+  var cv=document.createElement('canvas'); cv.width=256; cv.height=256; var g=cv.getContext('2d'); var tex=new THREE.CanvasTexture(cv);
+  var m=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false})); m.rotation.x=-Math.PI/2; m.position.set(-0.9,0.06,-8.3); m.renderOrder=2; m.visible=false; scene.add(m);
+  var lastTxt='', hold=0, armed=true;
+  function draw(t1,t2,col){ var k=t1+'|'+t2+'|'+col; if(k===lastTxt) return; lastTxt=k; g.clearRect(0,0,256,256); rr(g,8,8,240,240,36); g.fillStyle='rgba(30,30,50,.84)'; g.fill(); g.lineWidth=8; g.strokeStyle=col; g.stroke();
+    g.font='bold 64px sans-serif'; g.textAlign='center'; g.fillText('🏗️',128,92); g.fillStyle='#fff'; g.font='bold 30px "Noto Sans KR",sans-serif'; g.fillText(t1,128,160); g.fillStyle=col; g.font='bold 28px "Noto Sans KR",sans-serif'; g.fillText(t2,128,206); tex.needsUpdate=true; }
+  setInterval(function(){ try{
+    var st=(typeof STG==='number')?STG:0, n=V285.nFloors(st), d=V285.floorsDone(st);
+    var up=false; try{ up=typeof V287!=='undefined'&&V287.cur&&V287.cur()>0; }catch(_){} var show=!!(n>0&&d<n&&!up&&!(typeof titleOn!=='undefined'&&titleOn)&&S.day>=1);
+    m.visible=show; if(!show) return;
+    var i=d, fs=V285.floorState(st,i), t1=(i+1)+'층 공사', t2='', col='#ffd23f';
+    if(fs==='build'){ var r=Math.ceil(V285.remain(st,i)/1000), mm=Math.floor(r/60), ss=r%60; t2='공사 중 '+(mm>=60?Math.floor(mm/60)+'시간 '+(mm%60)+'분':mm+':'+String(ss).padStart(2,'0')); col='#5ad1ff'; }
+    else if(fs==='idle'){ t2='착공 가능!'; col='#7bea62'; }
+    else { t2='조건 확인'; col='#c8c8d8'; }
+    draw(t1,t2,col);
+    var on=Math.abs(player.pos.x-m.position.x)<0.8&&Math.abs(player.pos.z-m.position.z)<0.8;
+    var busy=document.getElementById('modal').classList.contains('on');
+    if(on&&!busy&&armed){ hold+=0.25; if(hold>=0.5){ hold=0; armed=false; try{ V285.openBranch(st); snd('ui',0.4); }catch(_){} } }
+    if(!on){ hold=0; armed=true; }
+  }catch(_){} },250);
+}catch(e){ console.warn('v319 floor pad',e); } })();
 /* 큰 매출(하루 목표의 8% 이상) 순간 — 금빛 큰 숫자 + 살짝 흔들림 */
 function v315Big(x,z,pay){ try{ if(dayState!=='run') return; if(pay<v315Goal()*0.08) return; floatText(new THREE.Vector3(x,3.4,z),'대박! +$'+pay,'v315big'); shakeT=Math.max(shakeT,0.18); try{ sparkle(x,2.2,z,'#ffd23f'); }catch(_){} }catch(e){} }
 function v310Juice(x,z,pay){ try{
@@ -7581,7 +7604,7 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
 }catch(e){} })();
 /* v3.19: 대구(첫 지점, DAY 1~4)에선 돈·별만 — 다이아·상자·비즈니스·챌린지·받은함 등은 숨긴다(기능·저장은 그대로) */
 (function(){ try{
-  const st=document.createElement('style'); st.textContent='body.v319e #gemPill,body.v319e #bizBtn,body.v319e #v275ch,body.v319e #boxChip,body.v319e #inboxBtn,body.v319e #v285boost{display:none!important}';
+  const st=document.createElement('style'); st.textContent='body.v319e #gemPill,body.v319e #bizBtn,body.v319e #v275ch,body.v319e #boxChip,body.v319e #inboxBtn,body.v319e #v285boost,body.v319e #mbox .vtabs{display:none!important}';
   document.head.appendChild(st);
   setInterval(function(){ try{ const e=(typeof S!=='undefined')&&((S.curStage|0)===0)&&(S.day|0)<4; if(document.body.classList.contains('v319e')!==e) document.body.classList.toggle('v319e',e); }catch(_){} },700);
 }catch(e){} })();
