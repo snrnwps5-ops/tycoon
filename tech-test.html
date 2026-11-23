@@ -5999,10 +5999,42 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     let y=Math.round(db.getBoundingClientRect().bottom+8), k='';
     if(vis(fl)){ const h=Math.round(fl.getBoundingClientRect().height); if(fl._y!==y){ fl._y=y; fl.style.top=y+'px'; } y+=h+8; k+='f'; }
     if(bz&&bz.style.display!=='none'){ const ty=Math.max(y,214); if(bz._y!==ty){ bz._y=ty; bz.style.top=ty+'px'; } }
-    /* v3.15: 콤보·돌발 미션 레일(#hud2)이 가이드 알약(#v311g)과 같은 줄에 겹치던 것 — 가이드가 보이면 그 아래로 */
-    const h2=document.getElementById('hud2'), gp=document.getElementById('v311g');
-    if(h2){ let ty=Math.round(db.getBoundingClientRect().bottom+4); if(vis(gp)) ty=Math.max(ty,Math.round(gp.getBoundingClientRect().bottom+6)); if(h2._y!==ty){ h2._y=ty; h2.style.top=ty+'px'; } }
   }catch(e){} },400);
+}catch(e){} })();
+/* v3.17: 알림 칸 하나 — 사용자 요청 '알림들은 한 칸에 모아서'. 진행 바 바로 아래 한 자리에 가장 급한 알림 하나만 보인다.
+   우선순위: 돌발 미션 고르기 > 러시 > 토스트 > 재고 경고 > 돌발 미션 진행 > FEVER·콤보 > 첫날 안내 > 가이드 > 다음 설치 > 챌린지.
+   나머지는 숨겨 두었다가 위 알림이 끝나면 차례로 보인다(요소를 지우지 않고 보이기만 바꾼다). */
+(function(){ try{
+  const st=document.createElement('style'); st.textContent=
+    '.lnh{visibility:hidden!important;position:absolute!important;pointer-events:none!important}'+
+    '#hud2{left:12px!important;right:12px!important}'+
+    '#toast.lane{top:var(--laneY,150px)!important;bottom:auto!important;transform:translateX(-50%)!important;max-width:min(86vw,360px)!important;font-size:13.5px!important;padding:7px 14px!important;border-radius:14px!important;z-index:7!important}'+
+    '#ftHint.lane,#v311g.lane{top:var(--laneY,150px)!important}';
+  document.head.appendChild(st);
+  const $i=id=>document.getElementById(id);
+  const natVis=e=>{ if(!e) return false; const cs=getComputedStyle(e); return cs.display!=='none'&&(e.classList.contains('lnh')||cs.visibility!=='hidden')&&+cs.opacity>0.05; };
+  setInterval(function(){ try{
+    const db=$i('dayBar'); if(!db) return; const r=db.getBoundingClientRect(); if(r.height<4) return;
+    const y=Math.round(r.bottom+6); document.documentElement.style.setProperty('--laneY',y+'px');
+    const h2=$i('hud2'); if(h2&&h2._y!==y){ h2._y=y; h2.style.top=y+'px'; }
+    const q=$i('v315q'), t=$i('toast');
+    const C=[
+      ['v315q', q&&natVis(q)&&q.classList.contains('ch')],
+      ['rushC', natVis($i('rushC'))],
+      ['toast', !!(t&&t.classList.contains('on'))],
+      ['stockAl', natVis($i('stockAl'))],
+      ['v315q', q&&natVis(q)],
+      ['combo', natVis($i('combo'))],
+      ['ftHint', natVis($i('ftHint'))],
+      ['v311g', natVis($i('v311g'))],
+      ['v316n', natVis($i('v316n'))],
+      ['v275ch', natVis($i('v275ch'))]
+    ];
+    let win=null; for(const c of C){ if(c[1]){ win=c[0]; break; } }
+    for(const c of C.filter((c,i,a)=>a.findIndex(x=>x[0]===c[0])===i)){ const e=$i(c[0]); if(!e) continue; const hide=c[0]!==win; if(e.classList.contains('lnh')!==hide) e.classList.toggle('lnh',hide); }
+    ['toast','ftHint','v311g'].forEach(id=>{ const e=$i(id); if(e&&!e.classList.contains('lane')) e.classList.add('lane'); });
+    ['h2r1','h2r2'].forEach(id=>{ const row=$i(id); if(!row) return; const any=[...row.children].some(ch=>!ch.classList.contains('lnh')&&getComputedStyle(ch).display!=='none'); row.style.display=any?'flex':'none'; });
+  }catch(_){} },150);
 }catch(e){} })();
 /* v3.12: 가독성 — 폰에서 9px 이하로 읽기 힘들던 보조 글자를 10.5~11px로, 하단 버튼 글자 간격 정상화 */
 try{ const st=document.createElement('style'); st.textContent=
