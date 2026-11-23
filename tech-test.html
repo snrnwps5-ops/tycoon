@@ -4085,7 +4085,7 @@ function lbPlace(el,p,y,d){ v3.set(p.x,y,p.z).project(cam); const W=VW||innerWid
   /* v2.60: 말풍선이 화면 좌우 밖으로 나가지 않게 안쪽으로 붙인다(폭은 CSS max-width가 먼저 줄인다) */
   const _hw=Math.min((el._w||120)/2+4,W/2); el._sx=Math.max(_hw,Math.min(W-_hw,el._sx)); LBV.push(el); }
 /* v3.11: 손님이 많을 때 말풍선이 화면을 덮지 않게 — 사장님과 가까운(급한 손님 우선) 4명만 전체 말풍선, 나머지는 얼굴 아이콘만 */
-function lbDeclutter(){ try{ const MAX=(VW||innerWidth)<420?4:6; const L=LBV.slice().sort((a,b)=>((a.classList.contains('need')?-3:0)+a._d)-((b.classList.contains('need')?-3:0)+b._d));
+function lbDeclutter(){ try{ const MAX=document.body.classList.contains('v318')?0:((VW||innerWidth)<420?4:6);   /* v3.18: 손님 요청은 아래 '손님 알림' 한 곳에 모으고 매장 안 말풍선은 얼굴만 */ const L=LBV.slice().sort((a,b)=>((a.classList.contains('need')?-3:0)+a._d)-((b.classList.contains('need')?-3:0)+b._d));
   L.forEach(function(el,i){ const want=i>=MAX, has=el.classList.contains('mini');
     if(want&&!has){ el._fw=el._w; el._fh=el._h; el.classList.add('mini'); el._w=34; el._h=34; }
     else if(!want&&has){ el.classList.remove('mini'); el._w=el._fw||el._w; el._h=el._fh||el._h; } }); }catch(e){} }
@@ -4266,6 +4266,38 @@ setInterval(function(){ try{
 /* v3.16: '바로 다음 영업' — 화면이 다시 불러와져도 이어서 허브·출석을 넘긴다(20초 안의 요청만) */
 function v316AutoGo(){ try{ var t0=+(sessionStorage.getItem('v316auto')||0); if(!t0||Date.now()-t0>20000) return; var n=0; var iv=setInterval(function(){ try{ n++; if((typeof dayState!=='undefined'&&dayState==='run')||n>40){ clearInterval(iv); sessionStorage.removeItem('v316auto'); return; } if(document.body.classList.contains('title')) return; var g=document.getElementById('attGo')||document.getElementById('v262Go')||document.getElementById('dayGo'); if(g){ g.click(); return; } var s2=document.getElementById('v312start'); if(s2&&s2.style.display==='block') s2.click(); }catch(_){ clearInterval(iv); } },450); }catch(e){} }
 try{ setTimeout(v316AutoGo,1500); }catch(e){}
+/* v3.18: 손님 알림 한 곳 — 사용자 요청 '고객들의 알림을 하나의 알림에서 몰아서, 매장 안은 최대한 안 겹치게'.
+   기다리는 손님 요청을 왼쪽 아래 목록(최대 3줄 + 나머지 수)에 모으고, 매장 안 말풍선은 얼굴 동그라미만 남긴다.
+   줄을 누르면 그 손님에게 걸어간다(화면을 탭한 것과 같은 동작). */
+(function(){ try{
+  document.body.classList.add('v318');
+  var st=document.createElement('style'); st.textContent=
+    '#v318q{position:fixed;left:10px;z-index:6;display:none;flex-direction:column;gap:4px;width:min(64vw,250px);pointer-events:auto}'+
+    '#v318q .r{display:flex;align-items:center;gap:6px;min-height:36px;padding:3px 8px 3px 4px;border-radius:12px;background:rgba(255,255,255,.95);box-shadow:0 2px 0 #e6d8bf,0 4px 10px rgba(60,40,10,.12);font:900 12px/1.2 var(--b);color:#3a2a18;position:relative;overflow:hidden;cursor:pointer}'+
+    '#v318q .r:active{transform:scale(.97)}#v318q .r .fc{flex:none;border-radius:50%}#v318q .r span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}'+
+    '#v318q .r b{position:absolute;left:0;bottom:0;height:3px;border-radius:0 3px 3px 0}#v318q .r.hot{background:#fff1ec;box-shadow:0 2px 0 #f0b8a8,0 4px 10px rgba(160,40,10,.15)}'+
+    '#v318q .more{align-self:flex-start;padding:2px 8px;border-radius:999px;background:rgba(40,30,20,.6);color:#fff;font:900 11px var(--b)}'+
+    'body.title #v318q,body.rep #v318q,body.biz #v318q,body.bigon #v318q{display:none!important}';
+  document.head.appendChild(st);
+  var box=document.createElement('div'); box.id='v318q'; document.body.appendChild(box); var QN=0; function qid(c){ if(!c._qid) c._qid=++QN; return c._qid; }
+  box.addEventListener('click',function(e){ try{ var r=e.target.closest('.r'); if(!r) return; e.stopPropagation(); var c=custs.find(function(x){ return String(x._qid)===r.dataset.id; }); if(!c) return; var p=ftueScr(c.pos.x,0.1,c.pos.z); if(p) tapGo(p[0],p[1]); try{ snd('ui',0.3,1.3); }catch(_){} }catch(_){} });
+  ['pointerdown','touchstart'].forEach(function(ev){ box.addEventListener(ev,function(e){ e.stopPropagation(); },{passive:true}); });
+  var last='';
+  setInterval(function(){ try{
+    var on=typeof dayState!=='undefined'&&dayState==='run'&&!document.getElementById('modal').classList.contains('on');
+    var L=on?custs.filter(function(c){ return c.el&&(c.st==='wait'||c.st==='want'||c.st==='consult')&&!c.hidden; }):[];
+    L.sort(function(a,b){ return (a.pat/(a.patMax||1))-(b.pat/(b.patMax||1)); });
+    if(!L.length){ if(box.style.display!=='none') box.style.display='none'; last=''; return; }
+    var bb=document.getElementById('bbar'), br=bb&&bb.getBoundingClientRect(); var bot=(br&&br.top>100)?(innerHeight-br.top+8):92; box.style.bottom=bot+'px';
+    var top3=L.slice(0,3), key=top3.map(function(c){ return qid(c)+':'+(c.el.textContent||'').replace(/\s+/g,' ').trim(); }).join('|')+'#'+(L.length-3);
+    if(key!==last){ last=key;
+      box.innerHTML=top3.map(function(c){ var fc=c.el.querySelector('.fc'); var tx=(c.el.textContent||'').replace(/\s+/g,' ').trim(); return '<div class="r" data-id="'+qid(c)+'">'+(fc?fc.outerHTML:'')+'<span></span><b></b></div>'; }).join('')+(L.length>3?'<div class="more">+'+(L.length-3)+'명 더 기다려요</div>':'');
+      box.querySelectorAll('.r').forEach(function(r,i){ r.querySelector('span').textContent=(top3[i].el.textContent||'').replace(/\s+/g,' ').trim(); });
+    }
+    box.querySelectorAll('.r').forEach(function(r,i){ var c=top3[i]; if(!c) return; var f=Math.max(0,Math.min(1,c.pat/(c.patMax||1))); var b=r.querySelector('b'); b.style.width=(f*100).toFixed(0)+'%'; b.style.background=f>0.5?'#2fa36a':(f>0.25?'#f0a020':'#e04a3a'); r.classList.toggle('hot',f<0.25); });
+    if(box.style.display!=='flex') box.style.display='flex';
+  }catch(_){} },250);
+}catch(e){} })();
 /* 큰 매출(하루 목표의 8% 이상) 순간 — 금빛 큰 숫자 + 살짝 흔들림 */
 function v315Big(x,z,pay){ try{ if(dayState!=='run') return; if(pay<v315Goal()*0.08) return; floatText(new THREE.Vector3(x,3.4,z),'대박! +$'+pay,'v315big'); shakeT=Math.max(shakeT,0.18); try{ sparkle(x,2.2,z,'#ffd23f'); }catch(_){} }catch(e){} }
 function v310Juice(x,z,pay){ try{
