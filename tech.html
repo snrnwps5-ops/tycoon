@@ -5793,6 +5793,20 @@ try{ setTimeout(v316AutoGo,1500); }catch(e){}
     if(!on){ hold=0; armed=true; }
   }catch(_){} },250);
 }catch(e){ console.warn('v319 floor pad',e); } })();
+/* v3.19: 출근 허브·영업 준비 화면 없애기 — 영업 전 화면(출석 → 방치 수익 → 허브 → 영업 준비)을 자동으로 넘겨 바로 영업을 시작한다.
+   다른 창(지점 조건·별 부족·공사 등)이 뜨면 건드리지 않는다. 허브는 설정의 '매장 관리'에서 직접 열 수 있다(그땐 자동 진행 멈춤). */
+(function(){ try{
+  window.__v319hold=0; try{ var _h=+(sessionStorage.getItem('v319hold')||0); if(_h&&Date.now()-_h<120000) window.__v319hold=1; }catch(_){}
+  setInterval(function(){ try{
+    if(typeof dayState==='undefined'||dayState!=='pre') { if(window.__v319hold&&dayState==='run'){ window.__v319hold=0; try{ sessionStorage.removeItem('v319hold'); }catch(_){} } return; }
+    if(window.__v319hold||document.body.classList.contains('title')||document.body.classList.contains('rep')||document.body.classList.contains('biz')) return;
+    if(document.getElementById('v294pull')||(typeof quizOpen!=='undefined'&&quizOpen)) return;
+    var md=document.getElementById('modal'), on=md&&md.classList.contains('on');
+    var ids=['attGo','offGo','v262Go','dayGo'];
+    for(var i=0;i<ids.length;i++){ var b=document.getElementById(ids[i]); if(b&&on&&b.offsetParent!==null&&!b.disabled){ b.click(); return; } }
+    if(!on){ var s2=document.getElementById('v312start'); if(s2&&s2.style.display==='block') s2.click(); }
+  }catch(_){} },350);
+}catch(e){} })();
 /* 큰 매출(하루 목표의 8% 이상) 순간 — 금빛 큰 숫자 + 살짝 흔들림 */
 function v315Big(x,z,pay){ try{ if(dayState!=='run') return; if(pay<v315Goal()*0.08) return; floatText(new THREE.Vector3(x,3.4,z),'대박! +$'+pay,'v315big'); shakeT=Math.max(shakeT,0.18); try{ sparkle(x,2.2,z,'#ffd23f'); }catch(_){} }catch(e){} }
 function v310Juice(x,z,pay){ try{
@@ -7630,7 +7644,10 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
       if(res){ res.after(rw); rw.after(ng); } else { body.prepend(ng); body.prepend(rw); } }
     const keep=new Set(['v319rw','v319ng']);
     [...body.children].forEach(c=>{ if(c===more||c===res||keep.has(c.id)) return; more.appendChild(c); });
-    const dn=document.getElementById('dNext'); if(dn&&!dn._v319){ dn._v319=1; dn.textContent='▶ 다음 영업'; dn.addEventListener('click',function(){ try{ sessionStorage.setItem('v316auto',String(Date.now())); }catch(_){} setTimeout(function(){ try{ v316AutoGo(); }catch(_){} },50); },true); }
+    const cta=document.getElementById('resCta'), dn0=document.getElementById('dNext');
+    if(cta&&dn0&&!document.getElementById('v319hub')&&!document.body.classList.contains('v319e')){ const hb=document.createElement('button'); hb.id='v319hub'; hb.type='button'; hb.textContent='🏢 매장 관리 먼저 (상자·지점·본사)'; hb.style.cssText='width:100%;min-height:44px;margin-top:6px;border:0;border-radius:12px;background:rgba(0,0,0,.06);color:#5a4a30;font:900 13px var(--b)'; cta.appendChild(hb);
+      hb.onclick=function(e){ e.stopPropagation(); window.__v319hold=1; try{ sessionStorage.setItem('v319hold',String(Date.now())); }catch(_){} try{ sessionStorage.removeItem('v316auto'); }catch(_){} dn0._v319skip=1; dn0.click(); }; }
+    const dn=document.getElementById('dNext'); if(dn&&!dn._v319){ dn._v319=1; dn.textContent='▶ 다음 영업'; dn.addEventListener('click',function(){ if(dn._v319skip){ dn._v319skip=0; return; } try{ sessionStorage.setItem('v316auto',String(Date.now())); }catch(_){} setTimeout(function(){ try{ v316AutoGo(); }catch(_){} },50); },true); }
   }catch(e){} };
   const _sr=showResult; showResult=function(){ const r=_sr.apply(this,arguments); [0,250,700,1500].forEach(t=>setTimeout(function(){ try{ v319Res(); }catch(_){} },t)); return r; };
 }catch(e){ console.warn('v319res',e); } })();
