@@ -7583,6 +7583,32 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
   document.head.appendChild(st);
   setInterval(function(){ try{ const e=(typeof S!=='undefined')&&((S.curStage|0)===0)&&(S.day|0)<4; if(document.body.classList.contains('v319e')!==e) document.body.classList.toggle('v319e',e); }catch(_){} },700);
 }catch(e){} })();
+/* v3.19: 정산 3칸 — ① 오늘 결과(배너·매출·평점·별) ② 받은 보상 ③ 다음 목표 + 버튼 2개. 나머지는 '자세히 보기' 하나로 접는다.
+   '다음 영업' 버튼은 허브·준비 화면을 거치지 않고 바로 다음 날을 시작한다(아래 자동 진행). */
+(function(){ try{
+  const st=document.createElement('style'); st.textContent=
+    '.v319blk{margin:8px 0;padding:10px 12px;border-radius:14px;background:#fff;border:1.5px solid #eadcc0;box-shadow:0 2px 0 #eadcc0;text-align:left}'+
+    '.v319blk h5{margin:0 0 4px;font:900 12px var(--b);color:#a07a40}.v319blk p{margin:0;font:900 15px/1.4 var(--b);color:#3a2a18}.v319blk p small{display:block;font:800 12px/1.4 var(--b);color:#7a6a50}'+
+    'details.v319more{margin:8px 0 0}details.v319more>summary{cursor:pointer;list-style:none;text-align:center;font:900 12.5px var(--b);color:#8a7a60;padding:8px;border-radius:12px;background:rgba(0,0,0,.04)}details.v319more>summary::-webkit-details-marker{display:none}'+
+    '#v316go{display:none!important}';
+  document.head.appendChild(st);
+  function stageGoal(){ try{ const stg=STAGE_OF(S.day); if(stg>=5) return ''; const nm=['부산','서울','인천','뉴욕','본사'][stg]||'다음 지점'; const a=lvStageStars(stg), b=lvStarNeed(stg); let f=''; try{ f=' · 층 '+V285.floorsDone(stg)+'/'+V285.nFloors(stg); }catch(_){} return '🏬 '+nm+' 열기: 별 '+Math.min(a,b)+'/'+b+f; }catch(e){ return ''; } }
+  function nextFac(){ try{ for(const p of PADS){ if(p.fac&&!S.unl.includes(p.id)&&(!p.req||S.unl.includes(p.req))) return '🛒 다음 설치: '+p.t+' $'+Math.max(0,Math.ceil(p.price-(p.paid||0))).toLocaleString()+' · '+p.fx; } }catch(e){} return ''; }
+  window.v319Res=function(){ try{
+    const mb=document.getElementById('mbox'); if(!mb||!document.getElementById('dNext')&&!document.getElementById('dRetry')) return;
+    const body=mb.querySelector('.v3Body'); if(!body) return;
+    let more=body.querySelector('details.v319more'); const res=body.querySelector('.v3Res');
+    if(!more){ more=document.createElement('details'); more.className='v319more'; more.innerHTML='<summary>자세히 보기 ▾</summary>'; body.appendChild(more);
+      const bon=(body.innerText.match(/보너스 \$([\d,]+) 획득/)||[])[1]||'';
+      const rw=document.createElement('div'); rw.className='v319blk'; rw.id='v319rw'; rw.innerHTML='<h5>받은 보상</h5><p>'+(bon?'💰 보너스 +$'+(+bon.replace(/,/g,'')).toLocaleString():'💰 오늘 번 돈은 바로 쓸 수 있어요')+'</p>';
+      const ng=document.createElement('div'); ng.className='v319blk'; ng.id='v319ng'; const a=nextFac(), b2=stageGoal(); ng.innerHTML='<h5>다음 목표</h5><p>'+(a||b2||'⭐ 내일도 별 3개!')+(a&&b2?'<small>'+b2+'</small>':'')+'</p>';
+      if(res){ res.after(rw); rw.after(ng); } else { body.prepend(ng); body.prepend(rw); } }
+    const keep=new Set(['v319rw','v319ng']);
+    [...body.children].forEach(c=>{ if(c===more||c===res||keep.has(c.id)) return; more.appendChild(c); });
+    const dn=document.getElementById('dNext'); if(dn&&!dn._v319){ dn._v319=1; dn.textContent='▶ 다음 영업'; dn.addEventListener('click',function(){ try{ sessionStorage.setItem('v316auto',String(Date.now())); }catch(_){} setTimeout(function(){ try{ v316AutoGo(); }catch(_){} },50); },true); }
+  }catch(e){} };
+  const _sr=showResult; showResult=function(){ const r=_sr.apply(this,arguments); [0,250,700,1500].forEach(t=>setTimeout(function(){ try{ v319Res(); }catch(_){} },t)); return r; };
+}catch(e){ console.warn('v319res',e); } })();
 /* v3.12: 가독성 — 폰에서 9px 이하로 읽기 힘들던 보조 글자를 10.5~11px로, 하단 버튼 글자 간격 정상화 */
 try{ const st=document.createElement('style'); st.textContent=
   '#bbar .bb span{font-size:11.5px!important;letter-spacing:0!important}'+
