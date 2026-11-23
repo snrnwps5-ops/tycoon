@@ -7525,16 +7525,18 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     const h2=$i('hud2'); if(h2&&h2._y!==y){ h2._y=y; h2.style.top=y+'px'; }
     const q=$i('v315q'), t=$i('toast');
     const C=[
+      /* v3.19: GPT 교차 QA 규칙 — 당장 막힌 문제(재고) 최상위, 이벤트는 그다음, 콤보는 칸 밖(떠오르는 글자로만),
+         다음 설치·챌린지는 영업 중엔 안 보이고 정산 '다음 목표'에서만 */
+      ['stockAl', natVis($i('stockAl'))],
       ['v315q', q&&natVis(q)&&q.classList.contains('ch')],
       ['rushC', natVis($i('rushC'))],
       ['toast', !!(t&&t.classList.contains('on'))],
-      ['stockAl', natVis($i('stockAl'))],
       ['v315q', q&&natVis(q)],
-      ['combo', natVis($i('combo'))],
       ['ftHint', natVis($i('ftHint'))],
       ['v311g', natVis($i('v311g'))],
-      ['v316n', natVis($i('v316n'))],
-      ['v275ch', natVis($i('v275ch'))]
+      ['combo', false],
+      ['v316n', false],
+      ['v275ch', false]
     ];
     let win=null; for(const c of C){ if(c[1]){ win=c[0]; break; } }
     for(const c of C.filter((c,i,a)=>a.findIndex(x=>x[0]===c[0])===i)){ const e=$i(c[0]); if(!e) continue; const hide=c[0]!==win; if(e.classList.contains('lnh')!==hide) e.classList.toggle('lnh',hide); }
