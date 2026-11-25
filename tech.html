@@ -5896,12 +5896,12 @@ function juiceTick(dt){
 }
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); },drawDock:()=>drawDock(),gfx:()=>({renderer,sun,hemiL,fillL,warmL,rimL,scene}),nav:()=>{ try{ v322Nav(0.016); return [!!V322NAV, V322NAV&&V322NAV.visible, arrow.visible, +arrow.position.x.toFixed(2), +arrow.position.z.toFixed(2), +player.pos.x.toFixed(2), +player.pos.z.toFixed(2)]; }catch(e){ return String(e); } }}; }catch(e){}
 /* v3.21: 든 상품은 머리 위 '탑'으로 — 위에서 내려다보는 카메라에서도 어느 방향으로 걷든 보인다. '든 물건 ●●●' 말풍선은 없애고 꽉 차면 탑 위에 MAX. */
-try{ player.ch.stackG.position.set(0,2.04,-0.02); player.ch.stackG.scale.setScalar(1.15); document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
+try{ player.ch.stackG.position.set(0,0.8,0.4); player.ch.stackG.scale.setScalar(1.05);   /* v3.23c: 머리 위는 어색하다는 피드백 — 다시 두 팔로 앞에 안고, 상자로 쌓아 위로 솟게 */ document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
 JUICE.pmax=null;
 function juiceCarryMax(){ const full=player.stack.length>0&&player.stack.length>=CAP()&&dayState==='run';
   if(full&&!JUICE.pmax){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
     JUICE.pmax=new THREE.Mesh(new THREE.PlaneGeometry(0.9,0.45),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.pmax.renderOrder=9; scene.add(JUICE.pmax); }
-  if(JUICE.pmax){ JUICE.pmax.visible=full; if(full){ const top=player.stack.length*0.2; JUICE.pmax.position.set(player.pos.x,2.04+top*1.15+0.35,player.pos.z); JUICE.pmax.quaternion.copy(cam.quaternion); } } }
+  if(JUICE.pmax){ JUICE.pmax.visible=full; if(full){ const top=player.stack.length*0.2; JUICE.pmax.position.set(player.pos.x,Math.max(2.25,0.8+top*1.05+0.4),player.pos.z); JUICE.pmax.quaternion.copy(cam.quaternion); } } }
 try{ /* v3.22: 기분 이모지도 새 얼굴(시트9) */ }catch(e){}
 /* v3.22: 발밑 길 안내 화살표 — 영상처럼 바닥에 '이쪽!' 화살표. 목표(노란 화살표·고리)가 2m 넘게 떨어져 있을 때만, 사장님 발 앞에서 목표 쪽을 가리킨다. */
 let V322NAV=null;
