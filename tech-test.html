@@ -4405,6 +4405,7 @@ function juiceTick(dt){
     const b=o._bend; for(let i=0;i<kids.length;i++){ const m=kids[i], h=m.position.y+0.1; m.position.z=b*h*h*0.9; m.rotation.x=b*h*1.6; juicePop(m,dt); } });
   for(let i=0;i<CASH.meshes.length;i++) juicePop(CASH.meshes[i],dt);
   for(let a=0;a<SRC.length;a++){ const sm=SRC[a].sm; for(let i=0;i<sm.length;i++) if(sm[i]._pop!=null) juicePop(sm[i],dt); }
+  try{ v324Tray(dt); }catch(e){}
   try{ juiceCarryMax(); }catch(e){}
   try{ v322Nav(dt); }catch(e){}
   if(JUICE.chainT>0){ JUICE.chainT-=dt; if(JUICE.chainT<=0) JUICE.chain=0; }
@@ -4416,12 +4417,12 @@ function juiceTick(dt){
 }
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); },drawDock:()=>drawDock(),gfx:()=>({renderer,sun,hemiL,fillL,warmL,rimL,scene}),nav:()=>{ try{ v322Nav(0.016); return [!!V322NAV, V322NAV&&V322NAV.visible, arrow.visible, +arrow.position.x.toFixed(2), +arrow.position.z.toFixed(2), +player.pos.x.toFixed(2), +player.pos.z.toFixed(2)]; }catch(e){ return String(e); } }}; }catch(e){}
 /* v3.21: 든 상품은 머리 위 '탑'으로 — 위에서 내려다보는 카메라에서도 어느 방향으로 걷든 보인다. '든 물건 ●●●' 말풍선은 없애고 꽉 차면 탑 위에 MAX. */
-try{ player.ch.stackG.position.set(0,0.8,0.4); player.ch.stackG.scale.setScalar(1.05);   /* v3.23c: 머리 위는 어색하다는 피드백 — 다시 두 팔로 앞에 안고, 상자로 쌓아 위로 솟게 */ document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
+try{ player.ch.stackG.visible=false;   /* v3.24: 사장님 운반은 아래 '쟁반(TRAY)'이 따로 그린다 */   /* v3.23c: 머리 위는 어색하다는 피드백 — 다시 두 팔로 앞에 안고, 상자로 쌓아 위로 솟게 */ document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
 JUICE.pmax=null;
 function juiceCarryMax(){ const full=player.stack.length>0&&player.stack.length>=CAP()&&dayState==='run';
   if(full&&!JUICE.pmax){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
     JUICE.pmax=new THREE.Mesh(new THREE.PlaneGeometry(0.9,0.45),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.pmax.renderOrder=9; scene.add(JUICE.pmax); }
-  if(JUICE.pmax){ JUICE.pmax.visible=full; if(full){ const top=player.stack.length*0.2; JUICE.pmax.position.set(player.pos.x,Math.max(2.25,0.8+top*1.05+0.4),player.pos.z); JUICE.pmax.quaternion.copy(cam.quaternion); } } }
+  if(JUICE.pmax){ JUICE.pmax.visible=full; if(full){ const top=player.stack.length*0.2; JUICE.pmax.position.set(TRAY.g.position.x,TRAY.g.position.y+0.08+Math.min(3,player.stack.length)*0.14+0.32,TRAY.g.position.z); JUICE.pmax.quaternion.copy(cam.quaternion); } } }
 try{ /* v3.22: 기분 이모지도 새 얼굴(시트9) */ }catch(e){}
 /* v3.22: 발밑 길 안내 화살표 — 영상처럼 바닥에 '이쪽!' 화살표. 목표(노란 화살표·고리)가 2m 넘게 떨어져 있을 때만, 사장님 발 앞에서 목표 쪽을 가리킨다. */
 let V322NAV=null;
@@ -4439,6 +4440,29 @@ const V322L={sun:1.48,hemi:0.13,fill:0.19,exp:0.925};
 function v322Light(fl){ try{ if(fl>0) return; sun.intensity=V322L.sun; hemiL.intensity=V322L.hemi; fillL.intensity=V322L.fill; renderer.toneMappingExposure=V322L.exp; }catch(e){} }
 try{ const _fl=v296FloorLight; v296FloorLight=function(fl,tk,th){ const r=_fl.apply(this,arguments); v322Light(fl|0); return r; }; }catch(e){}
 setTimeout(()=>v322Light(0),2500); setTimeout(()=>v322Light(0),6000);
+/* v3.24: GPT 7차 — '양손 쟁반 + 수량 배지'. 가슴 앞 탑은 45° 카메라에서 큰 머리를 가렸다.
+   쟁반은 캐릭터 회전이 아니라 '화면 기준 오른쪽 앞'(카메라 오른쪽 0.34m + 카메라 쪽 0.18m, 높이 0.85m)에 두어
+   어느 방향으로 걸어도 얼굴·몸에 가리지 않는다. 실제 상자는 3단까지, 4개부터는 ×N 배지. 흔들림 ±4°, 걸을 때 위아래 ±0.025m. */
+const TRAY={g:new THREE.Group(),boxes:[],n:-1,sig:'',x:0,z:0,init:false,rz:0,rv:0,badge:null,bn:-1};
+(function(){ const g=TRAY.g; box(0.56,0.05,0.42,'#ffffff',0,0,0,g); box(0.6,0.035,0.46,'#36b39b',0,-0.03,0,g); TRAY.top=new THREE.Group(); TRAY.top.position.y=0.025; g.add(TRAY.top); g.visible=false; scene.add(g); })();
+function v324Box(t){ const g=new THREE.Group(); let bc='#5a6578'; try{ bc=BOXC[t]||bc; }catch(_){} box(0.32,0.13,0.25,'#d9a466',0,0.065,0,g); box(0.325,0.04,0.255,bc,0,0.085,0,g); box(0.07,0.135,0.255,'#fff1dc',0,0.065,0,g); return g; }
+function v324Tray(dt){ const st=player.stack, n=st.length, on=n>0&&!(typeof titleOn!=='undefined'&&titleOn);
+  TRAY.g.visible=on; if(!on){ TRAY.n=0; TRAY.sig=''; if(TRAY.badge) TRAY.badge.visible=false; return; }
+  const ox=CAM_OFF.x, oz=CAM_OFF.z, L=Math.hypot(ox,oz)||1, rx=oz/L, rz=-ox/L, tx=ox/L, tz=oz/L;
+  const ry=player.ch.g.rotation.y, fx=Math.sin(ry), fz=Math.cos(ry); const wx=player.pos.x+fx*0.34+rx*0.2+tx*0.06, wz=player.pos.z+fz*0.34+rz*0.2+tz*0.06;   /* 몸 앞 0.34 + 화면 오른쪽 0.2 — 팔 앞에 들려 있되 얼굴은 비켜 간다 */
+  if(!TRAY.init||Math.hypot(wx-TRAY.x,wz-TRAY.z)>1.5){ TRAY.x=wx; TRAY.z=wz; TRAY.init=true; } else { const a=1-Math.exp(-dt*14); TRAY.x+=(wx-TRAY.x)*a; TRAY.z+=(wz-TRAY.z)*a; }
+  const sp=Math.min(6,Math.abs(player.speed||0)), k=performance.now()/1000;
+  TRAY.g.position.set(TRAY.x,0.85+(sp>0.3?Math.sin(k*13)*0.025:0),TRAY.z); TRAY.g.rotation.y=ry;
+  const tgt=Math.max(-0.07,Math.min(0.07,-sp*0.012)); TRAY.rv+=((tgt-TRAY.rz)*90-TRAY.rv*9)*dt; TRAY.rz+=TRAY.rv*dt; TRAY.g.rotation.z=TRAY.rz;
+  const show=st.slice(-3), sig=show.join('');
+  if(sig!==TRAY.sig){ const grew=n>TRAY.n; TRAY.sig=sig; while(TRAY.top.children.length) TRAY.top.remove(TRAY.top.children[0]); TRAY.boxes=[];
+    show.forEach((t,i)=>{ const m=v324Box(t); m.position.set(((i*29)%5-2)*0.006,i*0.14,0); TRAY.top.add(m); TRAY.boxes.push(m); });
+    if(grew&&TRAY.boxes.length){ const m=TRAY.boxes[TRAY.boxes.length-1]; m._pop=0.001; m.scale.setScalar(0.3); } }
+  TRAY.n=n; for(let i=0;i<TRAY.boxes.length;i++) juicePop(TRAY.boxes[i],dt);
+  const full=n>=CAP(), wantB=n>3&&!full;
+  if(wantB&&TRAY.bn!==n){ TRAY.bn=n; const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#1d2433'; g.beginPath(); g.arc(w/2,h/2,h/2-4,0,7); g.fill(); g.strokeStyle='#ffd23f'; g.lineWidth=8; g.stroke(); g.fillStyle='#fff'; g.font='900 62px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('×'+n,w/2,h/2+3); },128,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
+    if(!TRAY.badge){ TRAY.badge=new THREE.Mesh(new THREE.PlaneGeometry(0.42,0.42),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,fog:false,toneMapped:false})); TRAY.badge.renderOrder=8; scene.add(TRAY.badge); } else { TRAY.badge.material.map=t; TRAY.badge.material.needsUpdate=true; } }
+  if(TRAY.badge){ TRAY.badge.visible=wantB; if(wantB){ TRAY.badge.position.set(TRAY.x+rx*0.3,0.85+0.5,TRAY.z+rz*0.3); TRAY.badge.quaternion.copy(cam.quaternion); } } }
 /* 돈 회수: 연속으로 챙길수록 음이 반음씩 올라간다(최대 12단) */
 function juiceCash(){ if(!sfxOn()||!AC){ return; } const c=JUICE.chain++, n=Math.min(6,c); JUICE.chainT=0.5; const f=880*Math.pow(2,n/12), v=c>6?Math.max(0.35,1-(c-6)*0.08):1; tone(f,0.07,0.09*v,'triangle'); tone(f*1.5,0.06,0.05*v,'sine',0.04);   /* v3.23: GPT 6차 — 6단에서 음 고정, 이후 음량 감소 */ }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }
