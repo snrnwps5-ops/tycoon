@@ -4388,14 +4388,23 @@ function juiceTick(dt){
     const sp=Math.min(6,Math.abs(o.speed||0)); const tgt=-sp*0.022; o._bv=(o._bv||0)+((tgt-(o._bend||0))*70-(o._bv||0)*7)*dt; o._bend=(o._bend||0)+o._bv*dt;
     const b=o._bend; for(let i=0;i<kids.length;i++){ const m=kids[i], h=m.position.y+0.1; m.position.z=b*h*h*0.9; m.rotation.x=b*h*1.6; juicePop(m,dt); } });
   for(let i=0;i<CASH.meshes.length;i++) juicePop(CASH.meshes[i],dt);
+  for(let a=0;a<SRC.length;a++){ const sm=SRC[a].sm; for(let i=0;i<sm.length;i++) if(sm[i]._pop!=null) juicePop(sm[i],dt); }
+  try{ juiceCarryMax(); }catch(e){}
   if(JUICE.chainT>0){ JUICE.chainT-=dt; if(JUICE.chainT<=0) JUICE.chain=0; }
   /* 돈 더미가 꽉 차면(36묶음) 위에 'MAX' — 영상 속 하이퍼캐주얼 게임처럼 '빨리 가서 챙겨!' 신호 */
   const full=CASH.meshes.length>=36&&dayState==='run';
-  if(full&&!JUICE.max){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128);
+  if(full&&!JUICE.max){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
     JUICE.max=new THREE.Mesh(new THREE.PlaneGeometry(1.3,0.65),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.max.renderOrder=9; scene.add(JUICE.max); }
   if(JUICE.max){ JUICE.max.visible=full; if(full){ const k=performance.now()/1000; JUICE.max.position.set(CASH.x,1.25+Math.sin(k*5)*0.07,CASH.z); JUICE.max.quaternion.copy(cam.quaternion); JUICE.max.scale.setScalar(1+Math.max(0,Math.sin(k*5))*0.08); } }
 }
-try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money}}; }catch(e){}
+try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); }}; }catch(e){}
+/* v3.21: 든 상품은 머리 위 '탑'으로 — 위에서 내려다보는 카메라에서도 어느 방향으로 걷든 보인다. '든 물건 ●●●' 말풍선은 없애고 꽉 차면 탑 위에 MAX. */
+try{ player.ch.stackG.position.set(0,1.72,-0.05); player.ch.stackG.scale.setScalar(1.3); document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
+JUICE.pmax=null;
+function juiceCarryMax(){ const full=player.stack.length>0&&player.stack.length>=CAP()&&dayState==='run';
+  if(full&&!JUICE.pmax){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
+    JUICE.pmax=new THREE.Mesh(new THREE.PlaneGeometry(0.9,0.45),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.pmax.renderOrder=9; scene.add(JUICE.pmax); }
+  if(JUICE.pmax){ JUICE.pmax.visible=full; if(full){ let top=0; player.stack.forEach(t=>top+=IH[t]||0.12); const k=performance.now()/1000; JUICE.pmax.position.set(player.pos.x,1.72+top*1.3+0.45+Math.sin(k*6)*0.05,player.pos.z); JUICE.pmax.quaternion.copy(cam.quaternion); } } }
 /* 돈 회수: 연속으로 챙길수록 음이 반음씩 올라간다(최대 12단) */
 function juiceCash(){ if(!sfxOn()||!AC){ return; } const n=Math.min(12,JUICE.chain++); JUICE.chainT=0.5; const f=880*Math.pow(2,n/12); tone(f,0.07,0.09,'triangle'); tone(f*1.5,0.06,0.05,'sine',0.04); }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }
@@ -5128,7 +5137,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
     s.ch.g.position.copy(s.pos); s.ch.g.rotation.y=angLerp(s.ch.g.rotation.y,s.face,Math.min(1,dt*10)); animChar(s.ch,s.speed,dt,s.stack.length>0); layoutStack(s); });
   // pads
   PADS.forEach(p=>{ const vis=padVisible(p); p.m.visible=vis; if(!vis) return; const on=Math.abs(player.pos.x-p.x)<0.75&&Math.abs(player.pos.z-p.z)<0.75;
-    if(on){ p.hold=(p.hold||0)+dt; if(p.hold>0.8&&money>0){ const pay=Math.min(money,Math.max(1,p.price*dt*1.5),p.price-p.paid); money-=pay; p.paid+=pay; S.paid=S.paid||{}; S.paid[p.id]=p.paid; if(Math.random()<dt*14) snd('coin',0.15,1.4); drawPad(p); if(p.paid>=p.price-0.01) unlock(p); } } else p.hold=0; });
+    if(on){ p.hold=(p.hold||0)+dt; if(p.hold>0.8&&money>0){ const pay=Math.min(money,Math.max(1,p.price*dt*1.5),p.price-p.paid); money-=pay; p.paid+=pay; S.paid=S.paid||{}; S.paid[p.id]=p.paid; if(Math.random()<dt*14) snd('coin',0.15,1.4); drawPad(p); /* v3.21: 영상처럼 지폐가 사장님 → 패드로 줄줄이 날아 들어가고, 패드가 두근거린다 */ p._ft=(p._ft||0)-dt; if(p._ft<=0){ p._ft=0.07; try{ fly(bundle(),player.pos.clone().setY(1.3),()=>new THREE.Vector3(p.x+(Math.random()-0.5)*0.5,0.12,p.z+(Math.random()-0.5)*0.5),0.28); }catch(_){} } p.m.scale.setScalar(1+0.06*Math.abs(Math.sin(performance.now()/70))); if(p.paid>=p.price-0.01){ p.m.scale.setScalar(1); unlock(p); try{ confetti(p.x,1.6,p.z); }catch(_){} } } } else { p.hold=0; if(p.m.scale.x!==1) p.m.scale.setScalar(1); } });
   helpCD-=dt; { const stuck=dayState==='run'&&custs.filter(c=>c.st==='wait'||c.st==='want').length>=4&&SRC.some(s=>s.on&&s.n===0); sCls($('help'),'on',stuck&&helpCD<=0); }
   // fx
   bgmTick(dt); if(TS.out==='street'||TS.out==='city') cars.forEach(c=>{ c.g.position.x+=c.sp*dt; if(c.g.position.x>34) c.g.position.x=-34; });
@@ -11415,7 +11424,7 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   /* v2.26: 승진/경고 발령 공문은 결과창 위에 따로 띄운다(결과창·닫기 흐름을 건드리지 않게) */
   if(promotion) inboxAdd({k:'lead',label:'🎉 '+MYRANKN[promotion.to]+' 승진 발령 · +$'+promotion.bonus,open:()=>leadNote('up',promotion)}); else if(penalty) inboxAdd({k:'lead',label:'⚠️ 본사 경고장 · -$'+penalty.fine,open:()=>leadNote('warn',penalty)});
   /* v2.29: 영업 마감 후 본사 스카우트 전직동의서 — 모든 지점 공통 */ setTimeout(()=>scoutTick(0),1300); }
-function unlock(p){ if(S.unl.includes(p.id)) return; S.unl.push(p.id); p.m.visible=false; snd('level_up',0.55,1.1); sparkle(p.x,0.8,p.z,'#7bea62'); gainXP(3); shakeT=0.3;
+function unlock(p){ if(S.unl.includes(p.id)) return; S.unl.push(p.id); p.m.visible=false; try{ if(dayState==='run'){ focusP.set(p.x,0,p.z); focusT=1.1; } }catch(_){} /* v3.21: 새 시설이 생기는 순간 카메라가 잠깐 비춘다 */ snd('level_up',0.55,1.1); sparkle(p.x,0.8,p.z,'#7bea62'); gainXP(3); shakeT=0.3;
   applyUnlocks(); if(p.fac){ try{ save(); focusP.set(p.x,0,p.z); focusT=1.6; setTimeout(()=>{ try{ confetti(p.x,2.2,p.z); bigBanner(p.t+' 설치!',p.fx); }catch(_){} },350); }catch(_){} return; } const FOC={repair:[6.9,-3.2,REPG],support:[2.6,-6.6,SUPG],table2:[4.25,0.2,T2],decor:[0,1,DECOR]}[p.id];
   save(); try{ if(FOC){ focusP.set(FOC[0],0,FOC[1]); focusT=1.6; popIn(FOC[2]); setTimeout(()=>{ try{ confetti(FOC[0],2.5,FOC[1]); }catch(e){} },300); } }catch(e){ console.warn('unlock fx',e); }
   const MSG={repair:['🔧 수리실 오픈!','유리문 안 수리실에서 진단·교체·세척을 해요'],support:['💬 상담 데스크 오픈!','소프트웨어·요금제 상담을 맡아요'],table2:['체험 테이블 추가!','구입 상담 손님이 늘어요'],runner:['재고 직원 고용!','픽업 주문을 대신 처리해요'],tech:['수리 기사 고용!','수리 부품을 대신 가져다줘요'],decor:['매장이 예뻐졌어요!','평점이 올라가요'],flag:['슈퍼스토어 승격!','모든 매출 ×1.5']}[p.id];
