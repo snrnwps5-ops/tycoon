@@ -4158,6 +4158,9 @@ function lbFlush(){ if(!LBV.length) return; lbDeclutter();
       }
       if(bot===b0 && el._sx===x0) break;
     }
+    /* v3.23: GPT 6차 P0 — 그래도 겹치면(위·아래가 막혀 같은 줄에 몰릴 때) 옆으로 비켜 놓는다. 가까운 쪽부터 ±반칸씩 최대 3칸. */
+    { const ov=(x)=>PL.some(b=>Math.abs(x-b.sx)<(w+b.w)/2-2&&bot>b.top+2&&(bot-h)<b.bot-2);
+      if(ov(el._sx)){ let best=null; for(let st=1;st<=6&&best==null;st++){ for(const sg of [1,-1]){ const x=el._sx+sg*st*(w/2+3); if(x<w/2+2||x>_W-w/2-2) continue; if(!ov(x)){ best=x; break; } } } if(best!=null) el._sx=best; } }
     /* v2.83: top(레이아웃) 대신 transform(합성)만 움직인다 — 말풍선 5~9개가 매 프레임 레이아웃을 흔들지 않게 */
     el.style.transform='translate('+Math.round(el._sx-w/2)+'px,'+Math.round(bot)+'px) translateY(-100%)';
     el.classList.toggle('lift', bot<el._sy-1);
@@ -4409,7 +4412,7 @@ function juiceTick(dt){
   const full=CASH.meshes.length>=36&&dayState==='run';
   if(full&&!JUICE.max){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
     JUICE.max=new THREE.Mesh(new THREE.PlaneGeometry(1.3,0.65),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.max.renderOrder=9; scene.add(JUICE.max); }
-  if(JUICE.max){ JUICE.max.visible=full; if(full){ const k=performance.now()/1000; JUICE.max.position.set(CASH.x,0.2+Math.ceil(CASH.meshes.length/4)*0.14+0.55+Math.sin(k*5)*0.07,CASH.z); JUICE.max.quaternion.copy(cam.quaternion); JUICE.max.scale.setScalar(1+Math.max(0,Math.sin(k*5))*0.08); } }
+  if(JUICE.max){ JUICE.max.visible=full; if(full){ const k=performance.now()/1000; JUICE.max.position.set(CASH.x,0.2+Math.ceil(CASH.meshes.length/4)*0.14+0.55,CASH.z); JUICE.max.quaternion.copy(cam.quaternion); } }
 }
 try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); },drawDock:()=>drawDock(),gfx:()=>({renderer,sun,hemiL,fillL,warmL,rimL,scene}),nav:()=>{ try{ v322Nav(0.016); return [!!V322NAV, V322NAV&&V322NAV.visible, arrow.visible, +arrow.position.x.toFixed(2), +arrow.position.z.toFixed(2), +player.pos.x.toFixed(2), +player.pos.z.toFixed(2)]; }catch(e){ return String(e); } }}; }catch(e){}
 /* v3.21: 든 상품은 머리 위 '탑'으로 — 위에서 내려다보는 카메라에서도 어느 방향으로 걷든 보인다. '든 물건 ●●●' 말풍선은 없애고 꽉 차면 탑 위에 MAX. */
@@ -4418,7 +4421,7 @@ JUICE.pmax=null;
 function juiceCarryMax(){ const full=player.stack.length>0&&player.stack.length>=CAP()&&dayState==='run';
   if(full&&!JUICE.pmax){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
     JUICE.pmax=new THREE.Mesh(new THREE.PlaneGeometry(0.9,0.45),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.pmax.renderOrder=9; scene.add(JUICE.pmax); }
-  if(JUICE.pmax){ JUICE.pmax.visible=full; if(full){ let top=0; player.stack.forEach(t=>top+=IH[t]||0.12); const k=performance.now()/1000; JUICE.pmax.position.set(player.pos.x,1.72+top*1.3+0.45+Math.sin(k*6)*0.05,player.pos.z); JUICE.pmax.quaternion.copy(cam.quaternion); } } }
+  if(JUICE.pmax){ JUICE.pmax.visible=full; if(full){ let top=0; player.stack.forEach(t=>top+=IH[t]||0.12); const k=performance.now()/1000; JUICE.pmax.position.set(player.pos.x,1.72+top*1.3+0.45,player.pos.z); JUICE.pmax.quaternion.copy(cam.quaternion); } } }
 try{ /* v3.22: 기분 이모지도 새 얼굴(시트9) */ }catch(e){}
 /* v3.22: 발밑 길 안내 화살표 — 영상처럼 바닥에 '이쪽!' 화살표. 목표(노란 화살표·고리)가 2m 넘게 떨어져 있을 때만, 사장님 발 앞에서 목표 쪽을 가리킨다. */
 let V322NAV=null;
@@ -4437,7 +4440,7 @@ function v322Light(fl){ try{ if(fl>0) return; sun.intensity=V322L.sun; hemiL.int
 try{ const _fl=v296FloorLight; v296FloorLight=function(fl,tk,th){ const r=_fl.apply(this,arguments); v322Light(fl|0); return r; }; }catch(e){}
 setTimeout(()=>v322Light(0),2500); setTimeout(()=>v322Light(0),6000);
 /* 돈 회수: 연속으로 챙길수록 음이 반음씩 올라간다(최대 12단) */
-function juiceCash(){ if(!sfxOn()||!AC){ return; } const n=Math.min(12,JUICE.chain++); JUICE.chainT=0.5; const f=880*Math.pow(2,n/12); tone(f,0.07,0.09,'triangle'); tone(f*1.5,0.06,0.05,'sine',0.04); }
+function juiceCash(){ if(!sfxOn()||!AC){ return; } const c=JUICE.chain++, n=Math.min(6,c); JUICE.chainT=0.5; const f=880*Math.pow(2,n/12), v=c>6?Math.max(0.35,1-(c-6)*0.08):1; tone(f,0.07,0.09*v,'triangle'); tone(f*1.5,0.06,0.05*v,'sine',0.04);   /* v3.23: GPT 6차 — 6단에서 음 고정, 이후 음량 감소 */ }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }
 function flyToHud(p){ v3.set(p.x,p.y,p.z).project(cam); const el=document.createElement('div'); el.style.cssText='position:fixed;z-index:9;width:26px;height:16px;border-radius:3px;background:#5cc94a;border:2px solid #fff;left:'+((v3.x+1)/2*(VW||innerWidth))+'px;top:'+((1-v3.y)/2*(VH||innerHeight))+'px;transition:all .5s cubic-bezier(.5,0,.8,.6)'; document.body.appendChild(el);
   const pr=$('cashPill').getBoundingClientRect(); requestAnimationFrame(()=>{ el.style.left=(pr.left+30)+'px'; el.style.top=(pr.top+10)+'px'; el.style.transform='scale(.6)'; }); setTimeout(()=>{ el.remove(); /* v3.12: 돈 더미를 주울 때마다 0.3초 간격으로 돈 칸이 계속 튕겨 깜빡여 보이던 것 — 1.5초에 한 번만 */ const _n=performance.now(); if(_n-Math.max(window.__bumpT||0,window.__v310bt||0)<1500) return; window.__bumpT=_n; window.__v310bt=_n; $('cashPill').classList.remove('bump'); void $('cashPill').offsetWidth; $('cashPill').classList.add('bump'); },520); }
@@ -4973,7 +4976,11 @@ function camClampT(dt){
   const px=player.pos, K=window.__CAMT||CAMT, W=VW||innerWidth, H=Math.max(1,VH||innerHeight), vh=camVH(), zoom=cam.zoom||1, hw=vh*(W/H)/2/zoom, hh=vh/2/zoom, s=K.s||0;
   _camO.copy(CAM_OFF).normalize(); _camX.crossVectors(_camUp,_camO).normalize(); _camY.crossVectors(_camO,_camX);
   const Xx=_camX.x, Xz=_camX.z, Yx=_camY.x, Yz=_camY.z, Yy=_camY.y, yy=Yx*Yx+Yz*Yz||1;
-  let tx=px.x*0.85, tz=Math.min(3.2,Math.max(-8.0,px.z-1.8))+s;   // ① v2.24: 플레이어를 화면 가운데 근처로 따라간다(v1.x 방식). 세로는 뒷벽~입구 앞까지만
+  let tx=px.x*0.85, tz=Math.min(3.2,Math.max(-8.0,px.z-1.8))+s;
+  /* v3.23: GPT 6차 P0 — 걷는 방향을 미리 보여 준다(화면 폭의 약 12%). 부드럽게 따라가고 멈추면 천천히 돌아온다. 아래 안전 영역 보정이 마지막이라 캐릭터는 화면 밖으로 안 나간다. */
+  if(!window.__NOLA){ const L=camClampT.la||(camClampT.la={x:0,z:0,px:px.x,pz:px.z}); const d=Math.max(0.001,dt||0.016); let vx=(px.x-L.px)/d, vz=(px.z-L.pz)/d; L.px=px.x; L.pz=px.z;
+    const sp=Math.hypot(vx,vz); if(sp>12){ vx=0; vz=0; } const k=Math.min(1,sp/5)*hw*0.3, gx=sp>0.3?vx/sp*k:0, gz=sp>0.3?vz/sp*k:0, a=Math.min(1,d*(sp>0.3?2.2:1.2));
+    L.x+=(gx-L.x)*a; L.z+=(gz-L.z)*a; tx+=L.x; tz+=L.z; }   // ① v2.24: 플레이어를 화면 가운데 근처로 따라간다(v1.x 방식). 세로는 뒷벽~입구 앞까지만
   const upx=vh/zoom/H;                                        // 화면 1px = 월드 몇 m
   const mB=((CAMUI.marPx||76)+16)*upx, mT=((CAMUI.topPx||170)+10)*upx, mS=Math.min(hw*0.45,40*upx);
   const u=(px.x-tx)*Xx+(px.z-tz)*Xz, v=(px.x-tx)*Yx+(px.z-tz)*Yz;   // 플레이어 발의 화면 좌표(월드 단위, 중심 기준)
@@ -5173,7 +5180,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   // fx
   bgmTick(dt); if(TS.out==='street'||TS.out==='city') cars.forEach(c=>{ c.g.position.x+=c.sp*dt; if(c.g.position.x>34) c.g.position.x=-34; });
   for(let k=flyers.length-1;k>=0;k--){ const f=flyers[k]; f.t+=dt; const u=Math.min(1,f.t/f.dur), to=f.toFn(), e=u<0.5?2*u*u:1-Math.pow(-2*u+2,2)/2; f.obj.position.lerpVectors(f.from,to,e);
-    /* v3.20: 거리만큼 높게 포물선 + 반 바퀴 공중제비 + 출발·도착 때 크기 튕김 */ if(f.h==null) f.h=Math.min(1.9,0.55+f.from.distanceTo(to)*0.28); f.obj.position.y+=Math.sin(u*Math.PI)*f.h; f.obj.rotation.y+=dt*8; f.obj.rotation.x=u*Math.PI*0.9; f.obj.scale.setScalar(0.75+0.45*Math.sin(u*Math.PI));
+    /* v3.20: 거리만큼 높게 포물선 + 반 바퀴 공중제비 + 출발·도착 때 크기 튕김 */ if(f.h==null) f.h=Math.min(1.9,0.55+f.from.distanceTo(to)*0.28); f.obj.position.y+=Math.sin(u*Math.PI)*f.h; if(f.calm==null) f.calm=flyers.length>3; f.obj.rotation.y+=dt*(f.calm?3:8); if(!f.calm) f.obj.rotation.x=u*Math.PI*0.9; f.obj.scale.setScalar(f.calm?0.9+0.1*Math.sin(u*Math.PI):0.75+0.45*Math.sin(u*Math.PI));   /* v3.23: 연속 비행(4개+)은 회전·튕김을 줄인다 */
     if(u>=1){ scene.remove(f.obj); flyers.splice(k,1); if(f.done) f.done(); } }
   try{ juiceTick(dt); }catch(e){}
   for(let k=parts.length-1;k>=0;k--){ const p=parts[k]; p.t+=dt; p.v.y-=(p.grow?1:8)*dt; p.m.position.addScaledVector(p.v,dt); if(!p.solid&&p.m.material.opacity!==undefined) p.m.material.opacity=Math.min(1,1-p.t); if(p.spin){ p.m.rotation.x+=dt*7; p.m.rotation.z+=dt*5; } else p.m.rotation.y+=dt*5; if(p.t>1){ scene.remove(p.m); parts.splice(k,1); } }
@@ -11455,7 +11462,7 @@ function showResult(){ S.mid=0; try{ setTimeout(function(){ if(window.__checkVer
   /* v2.26: 승진/경고 발령 공문은 결과창 위에 따로 띄운다(결과창·닫기 흐름을 건드리지 않게) */
   if(promotion) inboxAdd({k:'lead',label:'🎉 '+MYRANKN[promotion.to]+' 승진 발령 · +$'+promotion.bonus,open:()=>leadNote('up',promotion)}); else if(penalty) inboxAdd({k:'lead',label:'⚠️ 본사 경고장 · -$'+penalty.fine,open:()=>leadNote('warn',penalty)});
   /* v2.29: 영업 마감 후 본사 스카우트 전직동의서 — 모든 지점 공통 */ setTimeout(()=>scoutTick(0),1300); }
-function unlock(p){ if(S.unl.includes(p.id)) return; S.unl.push(p.id); p.m.visible=false; try{ if(dayState==='run'){ focusP.set(p.x,0,p.z); focusT=1.1; } }catch(_){} /* v3.21: 새 시설이 생기는 순간 카메라가 잠깐 비춘다 */ snd('level_up',0.55,1.1); sparkle(p.x,0.8,p.z,'#7bea62'); gainXP(3); shakeT=0.3;
+function unlock(p){ if(S.unl.includes(p.id)) return; S.unl.push(p.id); p.m.visible=false; try{ if(dayState==='run'&&!S.v323cam){ S.v323cam=1; focusP.set(p.x,0,p.z); focusT=1.1; } }catch(_){}   /* v3.23: 카메라 비춤은 첫 설치 한 번만 */ /* v3.21: 새 시설이 생기는 순간 카메라가 잠깐 비춘다 */ snd('level_up',0.55,1.1); sparkle(p.x,0.8,p.z,'#7bea62'); gainXP(3); shakeT=0.3;
   applyUnlocks(); if(p.fac){ try{ save(); focusP.set(p.x,0,p.z); focusT=1.6; setTimeout(()=>{ try{ confetti(p.x,2.2,p.z); bigBanner(p.t+' 설치!',p.fx); }catch(_){} },350); }catch(_){} return; } const FOC={repair:[6.9,-3.2,REPG],support:[2.6,-6.6,SUPG],table2:[4.25,0.2,T2],decor:[0,1,DECOR]}[p.id];
   save(); try{ if(FOC){ focusP.set(FOC[0],0,FOC[1]); focusT=1.6; popIn(FOC[2]); setTimeout(()=>{ try{ confetti(FOC[0],2.5,FOC[1]); }catch(e){} },300); } }catch(e){ console.warn('unlock fx',e); }
   const MSG={repair:['🔧 수리실 오픈!','유리문 안 수리실에서 진단·교체·세척을 해요'],support:['💬 상담 데스크 오픈!','소프트웨어·요금제 상담을 맡아요'],table2:['체험 테이블 추가!','구입 상담 손님이 늘어요'],runner:['재고 직원 고용!','픽업 주문을 대신 처리해요'],tech:['수리 기사 고용!','수리 부품을 대신 가져다줘요'],decor:['매장이 예뻐졌어요!','평점이 올라가요'],flag:['슈퍼스토어 승격!','모든 매출 ×1.5']}[p.id];
