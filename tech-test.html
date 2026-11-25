@@ -4379,6 +4379,25 @@ function v284Burst(x,y,z,kind,c){
   }catch(e){}
 }
 const parts=[]; function sparkle(x,y,z,c){ for(let k=0;k<10;k++){ const m=new THREE.Mesh(gget('sp',()=>new THREE.OctahedronGeometry(0.08)),new THREE.MeshBasicMaterial({color:c||'#ffe14d',transparent:true})); m.position.set(x,y,z); scene.add(m); parts.push({m,v:new THREE.Vector3((Math.random()-0.5)*3,2+Math.random()*2,(Math.random()-0.5)*3),t:0}); } }
+/* v3.20 손맛 모듈 — 엔진 없이 three r128로: 튀어 오르기(pop) · 더미 휘청임(sway) · 돈 회수 음 올라가기 · 돈 더미 MAX 표시.
+   새 재질 종류 없음(MeshBasicMaterial 간판 1장). 품질 단계가 내려가도 계산량은 상품 수만큼이라 가볍다. */
+const JUICE={objs:new Set(),chain:0,chainT:0,max:null};
+function juicePop(m,dt){ if(m._pop==null) return; m._pop+=dt/0.24; const u=Math.min(1,m._pop); const c=1.70158*1.3; const v=1+(c+1)*Math.pow(u-1,3)+c*Math.pow(u-1,2); m.scale.setScalar(0.3+0.7*v); if(u>=1){ m._pop=null; m.scale.setScalar(1); } }
+function juiceTick(dt){
+  JUICE.objs.forEach(o=>{ const sg=o.ch&&o.ch.stackG; if(!sg||!sg.parent){ JUICE.objs.delete(o); return; } const kids=sg.children; if(!kids.length){ o._bend=0; o._bv=0; return; }
+    const sp=Math.min(6,Math.abs(o.speed||0)); const tgt=-sp*0.022; o._bv=(o._bv||0)+((tgt-(o._bend||0))*70-(o._bv||0)*7)*dt; o._bend=(o._bend||0)+o._bv*dt;
+    const b=o._bend; for(let i=0;i<kids.length;i++){ const m=kids[i], h=m.position.y+0.1; m.position.z=b*h*h*0.9; m.rotation.x=b*h*1.6; juicePop(m,dt); } });
+  for(let i=0;i<CASH.meshes.length;i++) juicePop(CASH.meshes[i],dt);
+  if(JUICE.chainT>0){ JUICE.chainT-=dt; if(JUICE.chainT<=0) JUICE.chain=0; }
+  /* 돈 더미가 꽉 차면(36묶음) 위에 'MAX' — 영상 속 하이퍼캐주얼 게임처럼 '빨리 가서 챙겨!' 신호 */
+  const full=CASH.meshes.length>=36&&dayState==='run';
+  if(full&&!JUICE.max){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128);
+    JUICE.max=new THREE.Mesh(new THREE.PlaneGeometry(1.3,0.65),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.max.renderOrder=9; scene.add(JUICE.max); }
+  if(JUICE.max){ JUICE.max.visible=full; if(full){ const k=performance.now()/1000; JUICE.max.position.set(CASH.x,1.25+Math.sin(k*5)*0.07,CASH.z); JUICE.max.quaternion.copy(cam.quaternion); JUICE.max.scale.setScalar(1+Math.max(0,Math.sin(k*5))*0.08); } }
+}
+try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money}}; }catch(e){}
+/* 돈 회수: 연속으로 챙길수록 음이 반음씩 올라간다(최대 12단) */
+function juiceCash(){ if(!sfxOn()||!AC){ return; } const n=Math.min(12,JUICE.chain++); JUICE.chainT=0.5; const f=880*Math.pow(2,n/12); tone(f,0.07,0.09,'triangle'); tone(f*1.5,0.06,0.05,'sine',0.04); }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }
 function flyToHud(p){ v3.set(p.x,p.y,p.z).project(cam); const el=document.createElement('div'); el.style.cssText='position:fixed;z-index:9;width:26px;height:16px;border-radius:3px;background:#5cc94a;border:2px solid #fff;left:'+((v3.x+1)/2*(VW||innerWidth))+'px;top:'+((1-v3.y)/2*(VH||innerHeight))+'px;transition:all .5s cubic-bezier(.5,0,.8,.6)'; document.body.appendChild(el);
   const pr=$('cashPill').getBoundingClientRect(); requestAnimationFrame(()=>{ el.style.left=(pr.left+30)+'px'; el.style.top=(pr.top+10)+'px'; el.style.transform='scale(.6)'; }); setTimeout(()=>{ el.remove(); /* v3.12: 돈 더미를 주울 때마다 0.3초 간격으로 돈 칸이 계속 튕겨 깜빡여 보이던 것 — 1.5초에 한 번만 */ const _n=performance.now(); if(_n-Math.max(window.__bumpT||0,window.__v310bt||0)<1500) return; window.__bumpT=_n; window.__v310bt=_n; $('cashPill').classList.remove('bump'); void $('cashPill').offsetWidth; $('cashPill').classList.add('bump'); },520); }
@@ -5015,7 +5034,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   } else if(player.speed>=PICKSLOW||CARRY){ PKH.s=null; PKH.t=0; }
   // cash
   /* v2.10: 계산대 현금 회수는 '영업 중(run)'에만 — 마감 연출(end)·정산창(result)에서 회수되면 영수증 스냅샷과 HUD 현금이 어긋난다. 남은 현금은 다음 날 그대로 있다가 회수된다. */
-  cashT-=dt; if(dayState==='run'&&cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; sfxCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x,0.5,CASH.z),()=>player.pos.clone().setY(1.4),0.2); }
+  cashT-=dt; if(dayState==='run'&&cashVal>0&&cashT<=0&&Math.hypot(player.pos.x-CASH.x,player.pos.z-CASH.z)<1.2){ const take=Math.min(cashVal,Math.max(10,Math.ceil(cashVal*0.18))); cashVal-=take; money+=take; dayColl+=take; S.stats.earn+=take; rebuildCash(); cashT=0.06; juiceCash(); flyToHud(new THREE.Vector3(CASH.x,0.6,CASH.z)); fly(bundle(),new THREE.Vector3(CASH.x+(Math.random()-0.5)*0.6,0.35+Math.min(4,CASH.meshes.length/9)*0.14,CASH.z+(Math.random()-0.5)*0.4),()=>player.pos.clone().setY(1.4),0.26); }
   // customers
   if(dayState==='run'){ dayT-=dt; const cfg=dayCfg(S.day); if(dayT<=0) endDay(false); try{ v282SpawnWatch(); }catch(e){} spawnT-=dt*loadK()*(typeof V287!=='undefined'?V287.spawnMul():1)*(cfg.spawn||1)*(V278PK.on?V278PKSPAWN:1)*(S.womD===S.day?S.womK:1)*(SEASON==='bf'?1.1:1)*(dayEv==='sale'?1.4:dayEv==='rain'?0.75:1)*mktSpawnMul(); if(cfg.wave){ waveT-=dt; if(waveT<=0&&dayT>12){ waveT=34; bigBanner('🎤 키노트 종료!','손님이 몰려와요'); snd('level_up',0.4,0.8); for(let k=0;k<3;k++) setTimeout(spawnCust,k*350); } } if(dayEv==='influ'&&!influDone&&dayT<cfg.dur*0.65){ const n0=custs.length; spawnCust(); if(custs.length>n0){ influDone=1; const c=custs[custs.length-1]; c.influ=1; c.vip=0; c.flight=0; c.pat=c.patMax=Math.max(c.patMax,32); c._lt=null; addAura(c); toast('📸 인플루언서가 왔어요! 완벽하게 응대하세요',3.5); } } if(spawnT<=0){ spawnT=((S.day===0&&S.stats.srv<5?1.8:3.0)+Math.random()*1.5)*v275TrSpawnI(); spawnCust(); } }
   else if(dayState==='end'){ dayEndT-=dt; if(dayEndT<=0&&!quizOpen){ dayState='result'; showResult(); } }
@@ -5113,7 +5132,10 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   helpCD-=dt; { const stuck=dayState==='run'&&custs.filter(c=>c.st==='wait'||c.st==='want').length>=4&&SRC.some(s=>s.on&&s.n===0); sCls($('help'),'on',stuck&&helpCD<=0); }
   // fx
   bgmTick(dt); if(TS.out==='street'||TS.out==='city') cars.forEach(c=>{ c.g.position.x+=c.sp*dt; if(c.g.position.x>34) c.g.position.x=-34; });
-  for(let k=flyers.length-1;k>=0;k--){ const f=flyers[k]; f.t+=dt; const u=Math.min(1,f.t/f.dur), to=f.toFn(); f.obj.position.lerpVectors(f.from,to,u); f.obj.position.y+=Math.sin(u*Math.PI)*1.0; f.obj.rotation.y+=dt*8; if(u>=1){ scene.remove(f.obj); flyers.splice(k,1); if(f.done) f.done(); } }
+  for(let k=flyers.length-1;k>=0;k--){ const f=flyers[k]; f.t+=dt; const u=Math.min(1,f.t/f.dur), to=f.toFn(), e=u<0.5?2*u*u:1-Math.pow(-2*u+2,2)/2; f.obj.position.lerpVectors(f.from,to,e);
+    /* v3.20: 거리만큼 높게 포물선 + 반 바퀴 공중제비 + 출발·도착 때 크기 튕김 */ if(f.h==null) f.h=Math.min(1.9,0.55+f.from.distanceTo(to)*0.28); f.obj.position.y+=Math.sin(u*Math.PI)*f.h; f.obj.rotation.y+=dt*8; f.obj.rotation.x=u*Math.PI*0.9; f.obj.scale.setScalar(0.75+0.45*Math.sin(u*Math.PI));
+    if(u>=1){ scene.remove(f.obj); flyers.splice(k,1); if(f.done) f.done(); } }
+  try{ juiceTick(dt); }catch(e){}
   for(let k=parts.length-1;k>=0;k--){ const p=parts[k]; p.t+=dt; p.v.y-=(p.grow?1:8)*dt; p.m.position.addScaledVector(p.v,dt); if(!p.solid&&p.m.material.opacity!==undefined) p.m.material.opacity=Math.min(1,1-p.t); if(p.spin){ p.m.rotation.x+=dt*7; p.m.rotation.z+=dt*5; } else p.m.rotation.y+=dt*5; if(p.t>1){ scene.remove(p.m); parts.splice(k,1); } }
   for(let k=pops.length-1;k>=0;k--){ const q=pops[k]; if(!q.o||!q.o.scale){ pops.splice(k,1); continue; } q.t+=dt; const u=Math.min(1,q.t/0.6); const e=1+Math.sin(u*Math.PI*1.5)*(1-u)*0.35; q.o.scale.y=Math.max(0.01,u*e); if(u>=1){ q.o.scale.y=1; pops.splice(k,1); } }
   if(bigT>0){ bigT-=dt; if(bigT<=0){ $('big').classList.remove('on'); v312BanSync(); } }
