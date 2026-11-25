@@ -2568,6 +2568,12 @@ function addGear(kind,ch,head,f,o){
     add(new THREE.Mesh(new THREE.BoxGeometry(bh*0.075,bh*0.14,bh*0.055),m),bg).position.set(0,0,0);
     const hd=add(new THREE.Mesh(new THREE.TorusGeometry(bh*0.038,bh*0.008,5,12,Math.PI),m2),bg); hd.position.set(0,bh*0.07,0); }
 }
+/* v3.24: '들고 서 있기' 전용 동작 — 예전엔 Walk_Carry를 멈춰(timeScale 0) 써서 걷다 만 다리로 얼어 있었다.
+   Idle(숨쉬기·몸통)의 팔 이외 트랙 + Walk_Carry 첫 프레임의 팔 자세(고정)를 합친 클립. 새 에셋 없음. */
+function v324IdleCarry(idle,wc){ const ARM=/^(Shoulder|UpperArm|LowerArm|Fist)[LR]\./; const T=[];
+  idle.tracks.forEach(t=>{ if(!ARM.test(t.name)) T.push(t.clone()); });
+  wc.tracks.forEach(t=>{ if(!ARM.test(t.name)) return; const n=t.getValueSize(), v=Array.from(t.values.slice(0,n)); const C=t.constructor; T.push(new C(t.name,[0,idle.duration],v.concat(v))); });
+  return new THREE.AnimationClip('Idle_Carry',idle.duration,T); }
 function playA(ch,n,f){ if(!ch.acts[n]||ch.cur===n) return; const a=ch.acts[n]; a.reset(); a.enabled=true; a.setEffectiveWeight(1); a.fadeIn(f==null?0.15:f).play(); if(ch.cur&&ch.acts[ch.cur]) ch.acts[ch.cur].fadeOut(f==null?0.15:f); ch.cur=n; }
 /* v2.84: 앞치마 위치 계산용 — 머리뼈 월드 높이에서 몸 높이를 어림한다(기존 bodyH와 같은 식) */
 function ch0H(m){ try{ const h=m.getObjectByName('Head'); if(h){ const v=new THREE.Vector3(); h.getWorldPosition(v); return Math.max(1.3,v.y/0.74); } }catch(e){} return 1.7; }
@@ -2580,6 +2586,7 @@ function makeChar(model,o){ o=o||{}; const G=A['q:'+model]||A['q:Casual_Male']; 
     if(/^Skin$/.test(n)) hex=skin; if(o.tint&&/Shirt|Clothes/.test(n)) hex=o.tint; if(o.pants&&/Pants/.test(n)) hex=o.pants; if(o.hat&&/Hat/.test(n)) hex=o.hat; if(/Hat/.test(n)&&x.visible!==false) hasHat=1;
     if(/^Hair$/.test(n)){ hasHair=1; if(o.hair) hex=o.hair; else hc=hex; hairM=x; } if(/^Face$/.test(n)) faceM=x;
     x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); } });
+  try{ if(!CLIPS.Idle_Carry&&CLIPS.Idle&&CLIPS.Walk_Carry) CLIPS.Idle_Carry=v324IdleCarry(CLIPS.Idle,CLIPS.Walk_Carry); }catch(e){}
   const mixer=new THREE.AnimationMixer(m), acts={}; Object.keys(CLIPS).forEach(k=>acts[k]=mixer.clipAction(CLIPS[k]));
   /* ---- v2.88: 캐릭터 아트 — 둥근 손·신발, 헤어 바리에이션, 유니폼 디테일 ---- */
 const HS_LIST=['fringe','pony','bun','bob','swept','buzz','long'];
@@ -2675,7 +2682,7 @@ function v288Body(ch, head, f, o){
   playA(ch,'Idle',0); mixer.update(Math.random()); try{ v265Blob(ch); }catch(e){} return ch; }
 function animChar(ch,speed,dt,carry){ if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4.2; ch.blinkK=1; }
   if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.10,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); for(let i=0;i<ch.eyeL.length;i++) ch.eyeL[i].scale.y=k; } }
-  const mv=speed>0.3, run=speed>5; const n=mv?(carry?(run?'Run_Carry':'Walk_Carry'):(run?'Run':'Walk')):(carry?'Walk_Carry':'Idle'); playA(ch,n);
+  const mv=speed>0.3, run=speed>5; const n=mv?(carry?(run?'Run_Carry':'Walk_Carry'):(run?'Run':'Walk')):(carry?(ch.acts.Idle_Carry?'Idle_Carry':'Walk_Carry'):'Idle'); playA(ch,n);
   const a=ch.acts[n]; if(a) a.timeScale=mv?Math.min(1.8,Math.max(0.7,speed/(run?6:3.2))):(n==='Walk_Carry'?0:1); ch.mixer.update(dt);
   /* v2.84: 경쾌한 통통 바운스 — 시간 기반 절대값이라 회전·위치가 누적되지 않는다(회전 누적 버그 재발 방지) */
   let y=0; if(ch.jump>0){ ch.jump=Math.max(0,ch.jump-dt*2.2); y=Math.sin((1-ch.jump)*Math.PI)*0.4; }
@@ -5929,10 +5936,14 @@ function v324Box(t){ const g=new THREE.Group(); let bc='#5a6578'; try{ bc=BOXC[t
 function v324Tray(dt){ const st=player.stack, n=st.length, on=n>0&&!(typeof titleOn!=='undefined'&&titleOn);
   TRAY.g.visible=on; if(!on){ TRAY.n=0; TRAY.sig=''; if(TRAY.badge) TRAY.badge.visible=false; return; }
   const ox=CAM_OFF.x, oz=CAM_OFF.z, L=Math.hypot(ox,oz)||1, rx=oz/L, rz=-ox/L, tx=ox/L, tz=oz/L;
-  const ry=player.ch.g.rotation.y, fx=Math.sin(ry), fz=Math.cos(ry); const wx=player.pos.x+fx*0.34+rx*0.2+tx*0.06, wz=player.pos.z+fz*0.34+rz*0.2+tz*0.06;   /* 몸 앞 0.34 + 화면 오른쪽 0.2 — 팔 앞에 들려 있되 얼굴은 비켜 간다 */
-  if(!TRAY.init||Math.hypot(wx-TRAY.x,wz-TRAY.z)>1.5){ TRAY.x=wx; TRAY.z=wz; TRAY.init=true; } else { const a=1-Math.exp(-dt*14); TRAY.x+=(wx-TRAY.x)*a; TRAY.z+=(wz-TRAY.z)*a; }
+  const ry=player.ch.g.rotation.y, fx=Math.sin(ry), fz=Math.cos(ry);
+  /* v3.24b: 쟁반을 '두 손(FistL·FistR) 사이'에 붙인다 — 팔 동작(걷기·서 있기)이 바뀌어도 손과 쟁반이 어긋나지 않는다. 손을 못 찾으면 몸 앞 0.34m. */
+  if(TRAY.fl===undefined){ TRAY.fl=player.ch.g.getObjectByName('FistL')||null; TRAY.fr=player.ch.g.getObjectByName('FistR')||null; TRAY.v1=new THREE.Vector3(); TRAY.v2=new THREE.Vector3(); }
+  let wx=player.pos.x+fx*0.34, wz=player.pos.z+fz*0.34, wy=0.85;
+  if(TRAY.fl&&TRAY.fr){ player.ch.g.updateMatrixWorld(true); TRAY.fl.getWorldPosition(TRAY.v1); TRAY.fr.getWorldPosition(TRAY.v2); wx=(TRAY.v1.x+TRAY.v2.x)/2+fx*0.06; wz=(TRAY.v1.z+TRAY.v2.z)/2+fz*0.06; wy=Math.max(TRAY.v1.y,TRAY.v2.y)+0.03; }
+  TRAY.x=wx; TRAY.z=wz; TRAY.y=wy;
   const sp=Math.min(6,Math.abs(player.speed||0)), k=performance.now()/1000;
-  TRAY.g.position.set(TRAY.x,0.85+(sp>0.3?Math.sin(k*13)*0.025:0),TRAY.z); TRAY.g.rotation.y=ry;
+  TRAY.g.position.set(TRAY.x,TRAY.y,TRAY.z); TRAY.g.rotation.y=ry;
   const tgt=Math.max(-0.07,Math.min(0.07,-sp*0.012)); TRAY.rv+=((tgt-TRAY.rz)*90-TRAY.rv*9)*dt; TRAY.rz+=TRAY.rv*dt; TRAY.g.rotation.z=TRAY.rz;
   const show=st.slice(-3), sig=show.join('');
   if(sig!==TRAY.sig){ const grew=n>TRAY.n; TRAY.sig=sig; while(TRAY.top.children.length) TRAY.top.remove(TRAY.top.children[0]); TRAY.boxes=[];
@@ -5942,7 +5953,7 @@ function v324Tray(dt){ const st=player.stack, n=st.length, on=n>0&&!(typeof titl
   const full=n>=CAP(), wantB=n>3&&!full;
   if(wantB&&TRAY.bn!==n){ TRAY.bn=n; const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#1d2433'; g.beginPath(); g.arc(w/2,h/2,h/2-4,0,7); g.fill(); g.strokeStyle='#ffd23f'; g.lineWidth=8; g.stroke(); g.fillStyle='#fff'; g.font='900 62px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('×'+n,w/2,h/2+3); },128,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
     if(!TRAY.badge){ TRAY.badge=new THREE.Mesh(new THREE.PlaneGeometry(0.42,0.42),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,fog:false,toneMapped:false})); TRAY.badge.renderOrder=8; scene.add(TRAY.badge); } else { TRAY.badge.material.map=t; TRAY.badge.material.needsUpdate=true; } }
-  if(TRAY.badge){ TRAY.badge.visible=wantB; if(wantB){ TRAY.badge.position.set(TRAY.x+rx*0.3,0.85+0.5,TRAY.z+rz*0.3); TRAY.badge.quaternion.copy(cam.quaternion); } } }
+  if(TRAY.badge){ TRAY.badge.visible=wantB; if(wantB){ TRAY.badge.position.set(TRAY.x+rx*0.32,TRAY.y+0.45,TRAY.z+rz*0.32); TRAY.badge.quaternion.copy(cam.quaternion); } } }
 /* 돈 회수: 연속으로 챙길수록 음이 반음씩 올라간다(최대 12단) */
 function juiceCash(){ if(!sfxOn()||!AC){ return; } const c=JUICE.chain++, n=Math.min(6,c); JUICE.chainT=0.5; const f=880*Math.pow(2,n/12), v=c>6?Math.max(0.35,1-(c-6)*0.08):1; tone(f,0.07,0.09*v,'triangle'); tone(f*1.5,0.06,0.05*v,'sine',0.04);   /* v3.23: GPT 6차 — 6단에서 음 고정, 이후 음량 감소 */ }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }
