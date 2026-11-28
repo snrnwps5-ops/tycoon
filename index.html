@@ -6226,6 +6226,22 @@ $('saveChip').onclick=()=>{ initAudio(); if(qBusy()||$('modal').classList.contai
 $('optChip').onclick=()=>{ initAudio(); if(qBusy()||optOpen()) return; snd('ui',0.4); openOpt(); };
 $('invBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openInv(); };
 $('upBtn').onclick=()=>{ initAudio(); if(qBusy()) return; snd('ui',0.4); openUp(); };
+/* v3.29: GPT 6차 — 대구(1번째 지점)는 하단 버튼을 줄인다: [업그레이드]+[직원] → [성장] 하나(창 안에 탭 2개). 미션·상점은 v3.22에서 초반 숨김. */
+(function(){ try{
+  const st=document.createElement('style'); st.textContent='body.v329g #crewBtn{display:none!important}'+
+    '#mbox .v329tab{display:flex!important;gap:4px;margin:0 0 8px!important;padding:4px!important;border-radius:999px;background:rgba(60,40,20,.10)!important}#mbox .v329tab i{font-style:normal;flex:1;text-align:center;cursor:pointer;border-radius:999px;padding:7px 0;font:900 13px var(--b);color:#7a6a5a;background:transparent;box-shadow:none}#mbox .v329tab i.on{background:#fff;color:#2b2233;box-shadow:0 2px 5px rgba(0,0,0,.14)}';
+  document.head.appendChild(st);
+  const upSpan=document.querySelector('#upBtn span');
+  function tick(){ const on=(typeof S!=='undefined')&&((S.curStage|0)===0); if(document.body.classList.contains('v329g')!==on) document.body.classList.toggle('v329g',on); if(upSpan){ const t=on?'성장':'업그레이드'; if(upSpan.textContent!==t) upSpan.textContent=t; } }
+  setInterval(tick,600); tick();
+  function tabs(cur){ if(!document.body.classList.contains('v329g')) return; const mb=document.getElementById('mbox'); if(!mb||mb.querySelector('.v329tab')) return;
+    const d=document.createElement('div'); d.className='v329tab'; d.innerHTML='<i role="button" data-gtab="up" class="'+(cur==='up'?'on':'')+'">업그레이드</i><i role="button" data-gtab="crew" class="'+(cur==='crew'?'on':'')+'">직원</i>';
+    d.addEventListener('click',function(e){ const b=e.target.closest('[data-gtab]'); if(!b) return; e.stopPropagation(); const k=b.getAttribute('data-gtab'); if(k===cur) return; try{ snd('ui',0.3); }catch(_){} if(k==='crew') openCrew(); else openUp(); });
+    const h=mb.querySelector('h2'); if(h&&h.parentNode===mb) h.insertAdjacentElement('afterend',d); else mb.insertBefore(d,mb.firstChild); }
+  const _u=openUp, _c=openCrew;
+  openUp=function(){ const r=_u.apply(this,arguments); try{ tabs('up'); }catch(e){} return r; };
+  openCrew=function(){ const r=_c.apply(this,arguments); try{ tabs('crew'); }catch(e){} return r; };
+}catch(e){ console.warn('v329',e); } })();
 let helpCD=25; $('help').onclick=()=>{ $('help').classList.remove('on'); helpCD=90; $('help').querySelector('span').textContent=S.noAds?'채우는 중…':'광고 보는 중…'; setTimeout(()=>{ $('help').querySelector('span').textContent='광고 보고 즉시 · 테스트'; SRC.forEach(s=>{ if(s.on){ s.n=s.max; layoutSrc(s); sparkle(s.x,1.2,s.z); } }); custs.forEach(c=>{ if(c.st==='wait'||c.st==='want') c.pat=c.patMax; }); snd('level_up',0.5); bigBanner('재고 가득!','손님 인내심도 회복'); },S.noAds?150:1000); };
 $('stockAl').onclick=()=>{ if(!quizOpen){ initAudio(); snd('ui',0.4); openInv(); } }; drawDock();
 $('shopBtn').onclick=()=>{ initAudio(); snd('ui',0.4); if(!quizOpen) openShop(); }; updShopBtn();
@@ -7628,8 +7644,8 @@ try{ const st=document.createElement('style'); st.textContent='#v311g{position:f
     /* 손가락·반짝임 */
     hand.style.display='none'; let rg=null;
     if(!ok&&tut){
-      if(mOn&&s.inner){ const t=[...document.querySelectorAll('#mbox '+s.inner)].find(function(e){ const r=e.getBoundingClientRect(); return r.width>10&&r.height>10&&r.top<innerHeight-20; }); if(t) rg=t; }
-      else if(!mOn&&gOn&&s.tgt&&card.style.display==='none'){ const t=document.getElementById(s.tgt); if(t){ const r=t.getBoundingClientRect(), cs=getComputedStyle(t);
+      if(mOn&&s.inner){ const _gt=(s.tgt==='crewBtn'&&document.body.classList.contains('v329g')&&!document.querySelector('#mbox [data-hire]'))?'[data-gtab="crew"]':s.inner; const t=[...document.querySelectorAll('#mbox '+_gt)].find(function(e){ const r=e.getBoundingClientRect(); return r.width>10&&r.height>10&&r.top<innerHeight-20; }); if(t) rg=t; }
+      else if(!mOn&&gOn&&s.tgt&&card.style.display==='none'){ const t=document.getElementById((s.tgt==='crewBtn'&&document.body.classList.contains('v329g'))?'upBtn':s.tgt); if(t){ const r=t.getBoundingClientRect(), cs=getComputedStyle(t);
           if(r.width>8&&cs.visibility!=='hidden'&&cs.display!=='none'){ rg=t; hand.style.left=(r.left+r.width/2-17)+'px'; const below=r.top<innerHeight*0.4; { const _hc=below?'👆':'👇'; if(hand.textContent!==_hc) hand.textContent=_hc; } hand.style.top=(below?r.bottom+4:r.top-40)+'px'; hand.style.display='block'; } } }
       else if(!mOn&&gOn&&s.cust&&card.style.display==='none'&&typeof custs!=='undefined'){
         let best=null,bd=1e9; custs.forEach(function(cc){ if(cc.st!=='wait'&&cc.st!=='want') return; const d=Math.hypot(cc.pos.x-player.pos.x,cc.pos.z-player.pos.z); if(d<bd&&d>1.6){ bd=d; best=cc; } });
