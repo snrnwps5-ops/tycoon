@@ -3739,7 +3739,7 @@ function addStaff(kind,crew){ if(staff.some(s=>s.crew===crew)) return; const dup
   const ACC={greet:{acc:'headset',accC:'#2f6fd8',accC2:'#1d2433'},runner:{acc:'cap',accC:STAFFC,accC2:'#1d2433'},spec:{acc:'glasses',accC:'#1d2433',accC2:'#1d2433'}}[kind]||{};
   const LKs=staffLook(kind,crew); const APR={greet:'#9fc6ff',runner:'#ffd76b',tech:'#8fe0c0',spec:'#c9b3ff',mgr:'#2f3a58'}[kind];
   const ch=makeChar(LKs.m||MD,Object.assign({tint:kind==='mgr'?null:STAFFC,pants:LKs.pants||'#2a2d38',hat:STAFFC,hair:LKs.hair||undefined,skin:LKs.skin||undefined,hs:LKs.hs,shoe:'#2a2d38',apron:kind==='mgr'?null:APR,apronPocket:kind==='runner'?'#ffe9a8':(kind==='greet'?'#cfe3ff':kind==='tech'?'#b8f0dd':'#ded2ff')},LKs.acc?{acc:LKs.acc,accC:LKs.accC,accC2:'#1d2433'}:(LKs.m?{}:ACC))); const h=[HOME[kind][0]+dup*0.9,HOME[kind][1]]; const s={kind,crew,home:h,ch,pos:new THREE.Vector3(h[0],0,h[1]),stack:[],state:'idle',speed:0,face:Math.PI,t:0,wp:[],job:null,el:document.createElement('div')};
-  s.el.className='ntag'; s.el.innerHTML='<i style="background:'+ROLES[kind].c+'">'+ROLES[kind].ic+'</i><em class="tg" style="background:'+TGRADE_COL[crewGrade(crew)]+'">'+crewGrade(crew)+'</em><b class="nm">'+crew.name+'</b> <span class="se">'+satEmo(crew.sat)+'</span>'; $('labels').appendChild(s.el); ch.g.position.copy(s.pos); staff.push(s); }
+  s.el.className='ntag'; s.el.innerHTML='<i style="background:'+ROLES[kind].c+'">'+ROLES[kind].ic+'</i><em class="tg" style="background:'+TGRADE_COL[crewGrade(crew)]+'">'+crewGrade(crew)+'</em><b class="nm">'+crew.name+'</b> <span class="se">'+satEmo(crew.sat)+'</span>'; $('labels').appendChild(s.el); ch.g.position.copy(s.pos); staff.push(s); setTimeout(()=>{ try{ if(window.V327ON!==false) v327SprOn(ch,v327Url(kind,LKs.m||MD),s); }catch(_){} },0); }
 S.crew.forEach(c=>addStaff(c.role,c));
 
 /* ---- v2.9: HQ UI 모듈(면접실·지점 대시보드·본사 전직 품의서) 어댑터 ---- */
@@ -5893,7 +5893,7 @@ function juiceTick(dt){
   for(let i=0;i<CASH.meshes.length;i++) juicePop(CASH.meshes[i],dt);
   for(let a=0;a<SRC.length;a++){ const sm=SRC[a].sm; for(let i=0;i<sm.length;i++) if(sm[i]._pop!=null) juicePop(sm[i],dt); }
   try{ v324Tray(dt); }catch(e){}
-  try{ if(SPRT.list.length) v327SprTick(); }catch(e){}
+  try{ if(SPRT.list.length) v327SprTick(dt); }catch(e){}
   try{ juiceCarryMax(); }catch(e){}
   try{ v322Nav(dt); }catch(e){}
   if(JUICE.chainT>0){ JUICE.chainT-=dt; if(JUICE.chainT<=0) JUICE.chain=0; }
@@ -5903,9 +5903,10 @@ function juiceTick(dt){
     JUICE.max=new THREE.Mesh(new THREE.PlaneGeometry(1.3,0.65),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.max.renderOrder=9; scene.add(JUICE.max); }
   if(JUICE.max){ JUICE.max.visible=full; if(full){ const k=performance.now()/1000; JUICE.max.position.set(CASH.x,0.2+Math.ceil(CASH.meshes.length/4)*0.14+0.55,CASH.z); JUICE.max.quaternion.copy(cam.quaternion); } }
 }
-try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); },drawDock:()=>drawDock(),gfx:()=>({renderer,sun,hemiL,fillL,warmL,rimL,scene}),sprDbg:()=>SPRT.list.map(c=>{ const m=c._spr.m; return {v:m.visible,p:m.position.toArray().map(x=>+x.toFixed(2)),img:!!(c._spr.t.image&&c._spr.t.image.width),w:c._spr.t.image&&c._spr.t.image.width,par:!!m.parent,sc:m.scale.toArray()}; }),spr:(who)=>{ const url='chr_staff1.png'; if(who==='staff'){ staff.forEach(s=>v327SprOn(s.ch,url)); } else v327SprOn(player.ch,url); return SPRT.list.length; },dlv:()=>({dlv:DLV.n,pks:PKS.n,stack:player.stack.length}),nav:()=>{ try{ v322Nav(0.016); return [!!V322NAV, V322NAV&&V322NAV.visible, arrow.visible, +arrow.position.x.toFixed(2), +arrow.position.z.toFixed(2), +player.pos.x.toFixed(2), +player.pos.z.toFixed(2)]; }catch(e){ return String(e); } }}; }catch(e){}
+try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); },drawDock:()=>drawDock(),gfx:()=>({renderer,sun,hemiL,fillL,warmL,rimL,scene}),hire:(kind,name)=>{ try{ const c={id:'t'+Math.random(),name,role:kind,sat:80,lv:1,xp:0,stat:{}}; addStaff(kind,c); return staff.length; }catch(e){ return String(e); } },sprDbg:()=>SPRT.list.map(c=>{ const m=c._spr.m; return {v:m.visible,p:m.position.toArray().map(x=>+x.toFixed(2)),img:!!(c._spr.t.image&&c._spr.t.image.width),w:c._spr.t.image&&c._spr.t.image.width,par:!!m.parent,sc:m.scale.toArray()}; }),spr:(who,url)=>{ url=url||'chr_boss.webp'; if(who==='staff'){ staff.forEach(s=>v327SprOn(s.ch,url,s)); } else v327SprOn(player.ch,url,player); return SPRT.list.length; },dlv:()=>({dlv:DLV.n,pks:PKS.n,stack:player.stack.length}),nav:()=>{ try{ v322Nav(0.016); return [!!V322NAV, V322NAV&&V322NAV.visible, arrow.visible, +arrow.position.x.toFixed(2), +arrow.position.z.toFixed(2), +player.pos.x.toFixed(2), +player.pos.z.toFixed(2)]; }catch(e){ return String(e); } }}; }catch(e){}
 /* v3.21: 든 상품은 머리 위 '탑'으로 — 위에서 내려다보는 카메라에서도 어느 방향으로 걷든 보인다. '든 물건 ●●●' 말풍선은 없애고 꽉 차면 탑 위에 MAX. */
-try{ player.ch.stackG.visible=false;   /* v3.24: 사장님 운반은 아래 '쟁반(TRAY)'이 따로 그린다 */   /* v3.23c: 머리 위는 어색하다는 피드백 — 다시 두 팔로 앞에 안고, 상자로 쌓아 위로 솟게 */ document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
+try{ setTimeout(()=>{ try{ if(window.V327ON!==false) v327SprOn(player.ch,V327CH.boss,player); }catch(_){} },0);
+player.ch.stackG.visible=false;   /* v3.24: 사장님 운반은 아래 '쟁반(TRAY)'이 따로 그린다 */   /* v3.23c: 머리 위는 어색하다는 피드백 — 다시 두 팔로 앞에 안고, 상자로 쌓아 위로 솟게 */ document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
 JUICE.pmax=null;
 function juiceCarryMax(){ const full=player.stack.length>0&&player.stack.length>=CAP()&&dayState==='run';
   if(full&&!JUICE.pmax){ const t=canvasTex((g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle='#ff2d2d'; g.strokeStyle='#fff'; g.lineWidth=14; g.lineJoin='round'; g.font='900 100px "Pretendard",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.strokeText('MAX',w/2,h/2); g.fillText('MAX',w/2,h/2); },256,128); try{ t.encoding=THREE.sRGBEncoding; }catch(_){}
@@ -5941,11 +5942,11 @@ function v324Tray(dt){ const st=player.stack, n=st.length, on=n>0&&!(typeof titl
   /* v3.24b: 쟁반을 '두 손(FistL·FistR) 사이'에 붙인다 — 팔 동작(걷기·서 있기)이 바뀌어도 손과 쟁반이 어긋나지 않는다. 손을 못 찾으면 몸 앞 0.34m. */
   if(TRAY.fl===undefined){ TRAY.fl=player.ch.g.getObjectByName('FistL')||null; TRAY.fr=player.ch.g.getObjectByName('FistR')||null; TRAY.v1=new THREE.Vector3(); TRAY.v2=new THREE.Vector3(); }
   let wx=player.pos.x+fx*0.34, wz=player.pos.z+fz*0.34, wy=0.85;
-  if(player.ch._spr){ /* 2D 그림 캐릭터: 판이 화면 쪽으로 기울어 있으니 판의 '위' 방향으로 손 높이(0.9)만큼 + 카메라 쪽 0.3 */ const sm=player.ch._spr.m; if(!TRAY.up) TRAY.up=new THREE.Vector3(); TRAY.up.set(0,1,0).applyQuaternion(cam.quaternion); wx=sm.position.x+TRAY.up.x*0.92+tx*0.3; wz=sm.position.z+TRAY.up.z*0.92+tz*0.3; wy=sm.position.y+TRAY.up.y*0.92+0.05; }
+  if(player.ch._spr){ /* 2D 그림 캐릭터: 판이 화면 쪽으로 기울어 있으니 판의 '위' 방향으로 손 높이(0.9)만큼 + 카메라 쪽 0.3 */ const sm=player.ch._spr.m; if(!TRAY.up) TRAY.up=new THREE.Vector3(); TRAY.up.set(0,1,0).applyQuaternion(cam.quaternion); const sp=player.ch._spr, d=sp.cell%3, fl=sp.flip, hh=d===2?0.78:1.0, fwd=d===0?0.32:(d===2?-0.16:0.05), side=d===1?fl*0.4:0; wx=sm.position.x+TRAY.up.x*hh+tx*fwd+rx*side; wz=sm.position.z+TRAY.up.z*hh+tz*fwd+rz*side; wy=sm.position.y+TRAY.up.y*hh+0.04;   /* 정면=앞, 옆=보는 쪽 손끝, 뒤=몸 뒤(그림에 가려 자연스럽다) */ }
   else if(TRAY.fl&&TRAY.fr){ player.ch.g.updateMatrixWorld(true); TRAY.fl.getWorldPosition(TRAY.v1); TRAY.fr.getWorldPosition(TRAY.v2); wx=(TRAY.v1.x+TRAY.v2.x)/2+fx*0.06; wz=(TRAY.v1.z+TRAY.v2.z)/2+fz*0.06; wy=Math.max(TRAY.v1.y,TRAY.v2.y)+0.03; }
   TRAY.x=wx; TRAY.z=wz; TRAY.y=wy;
   const sp=Math.min(6,Math.abs(player.speed||0)), k=performance.now()/1000;
-  TRAY.g.position.set(TRAY.x,TRAY.y,TRAY.z); TRAY.g.rotation.y=ry;
+  TRAY.g.position.set(TRAY.x,TRAY.y,TRAY.z); if(player.ch._spr&&player.ch._spr.cell%3===2) TRAY.g.visible=false;   /* 뒷모습: 앞으로 든 쟁반은 몸에 가려 안 보이는 게 자연스럽다 */ TRAY.g.rotation.y=ry;
   const tgt=Math.max(-0.07,Math.min(0.07,-sp*0.012)); TRAY.rv+=((tgt-TRAY.rz)*90-TRAY.rv*9)*dt; TRAY.rz+=TRAY.rv*dt; TRAY.g.rotation.z=TRAY.rz; if(TRAY.bump>0){ TRAY.bump=Math.max(0,TRAY.bump-dt*6); const b=Math.sin(TRAY.bump*Math.PI)*0.12; TRAY.g.scale.set(1+b,1-b*0.8,1+b); } else if(TRAY.g.scale.x!==1) TRAY.g.scale.set(1,1,1);
   const show=st.slice(-3), sig=show.join('');
   if(sig!==TRAY.sig){ const grew=n>TRAY.n; TRAY.sig=sig; while(TRAY.top.children.length) TRAY.top.remove(TRAY.top.children[0]); TRAY.boxes=[];
@@ -5967,21 +5968,37 @@ function v325Deliver(c){ const now=time; DLV.n=(now-DLV.t<1.4)?DLV.n+1:1; DLV.t=
   try{ haptic(DLV.n>=2?14:8); }catch(e){}
   if(DLV.n>=2){ try{ floatText(new THREE.Vector3(player.pos.x,2.6,player.pos.z),'연속 전달 ×'+DLV.n+'!','gold'); }catch(e){} }
   if(DLV.n>=3){ try{ sparkle(c.pos.x,1.4,c.pos.z,'#ffd23f'); }catch(e){} } }
-/* v3.27 시안: 2D 일러스트 캐릭터(GPT) — 3D 몸은 숨기고(뼈·손 위치는 계속 움직여 쟁반이 따라간다) 화면을 보는 세운 그림으로 그린다.
-   그림 한 장 = [정면 | 뒷모습] 2칸(320×512). 카메라 각도가 고정이라 화면 정렬 판으로 충분하다. 걸을 때 통통·좌우 흔들림. */
-const SPRT={tex:{},list:[]};
-function v327SprOn(ch,url){ try{ if(ch._spr) return; const tt=new THREE.TextureLoader().load(url); try{ tt.encoding=THREE.sRGBEncoding; }catch(_){} tt.repeat.set(0.5,1); tt.anisotropy=4;   /* 캐릭터마다 텍스처 1장(같은 그림은 브라우저 캐시) — offset을 따로 쓰려고 */ const H=2.05, Wd=H*0.625;
-  const geo=new THREE.PlaneGeometry(Wd,H); geo.translate(0,H/2,0);
+/* v3.27: 2D 일러스트 캐릭터(GPT) — 3D 몸은 숨기고(뼈는 계속 움직인다) 화면 정렬 판에 그림을 세운다. 카메라 각도가 고정이라 판이 자연스럽다.
+   그림 한 장 = 3열×2행(각 320×512): 윗줄 [정면 | 옆(오른쪽 보기) | 뒤] 빈손, 아랫줄 같은 3방향 '두 손으로 받쳐 들기'.
+   방향: 캐릭터가 보는 쪽과 카메라 방향의 각도로 정면/옆/뒤를 고르고, 화면 왼쪽을 보면 옆모습을 좌우 반전.
+   걷기: 발 디딜 때마다 통통(0.06m)·살짝 눌림·좌우 기울기 ±3.5°, 방향 바뀔 땐 0.12초 납작해졌다 펴지며 전환(뒤집힘이 튀지 않게). 서 있을 땐 숨쉬기. */
+var SPRT=window.__SPRT||(window.__SPRT={list:[]});
+/* 직무×성별 그림(GPT). 없는 조합은 같은 직무 다른 성별 → 없으면 3D 그대로 */
+var V327CH={boss:'chr_boss.webp',greet_f:'chr_greet_f.webp',runner_m:'chr_runner_m.webp',tech_m:'chr_tech_m.webp',spec_f:'chr_spec_f.webp',mgr_m:'chr_mgr_m.webp',greet_m:'chr_greet_m.webp',runner_f:'chr_runner_f.webp',tech_f:'chr_tech_f.webp',spec_m:'chr_spec_m.webp',mgr_f:'chr_mgr_f.webp'};
+function v327Url(kind,model){ const g=/_Female$/.test(model||'')?'f':'m', o=g==='f'?'m':'f'; return V327CH[kind+'_'+g]||V327CH[kind+'_'+o]||null; }
+function v327SprOn(ch,url,owner){ try{ if(!window.__SPRT||typeof scene==='undefined'||typeof cam==='undefined'){ setTimeout(()=>v327SprOn(ch,url,owner),400); return; } if(ch._spr||!url) return; const tt=new THREE.TextureLoader().load(url); try{ tt.encoding=THREE.sRGBEncoding; }catch(_){} tt.repeat.set(1/3,0.5); tt.offset.set(0,0.5); tt.anisotropy=4;
+  const H=2.05, Wd=H*0.625, geo=new THREE.PlaneGeometry(Wd,H); geo.translate(0,H/2,0);
   const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tt,transparent:true,alphaTest:0.35,depthWrite:true,fog:false})); m.renderOrder=1; scene.add(m);
-  ch._spr={m,t:tt,back:-1}; ch.inner.traverse(o=>{ if(o.isMesh) o.visible=false; }); SPRT.list.push(ch); }catch(e){ console.warn('spr',e); } }
-function v327SprTick(){ const ox=CAM_OFF.x, oz=CAM_OFF.z, L=Math.hypot(ox,oz)||1, tx=ox/L, tz=oz/L, k=performance.now()/1000;
-  for(let i=SPRT.list.length-1;i>=0;i--){ const ch=SPRT.list[i], sp=ch._spr; if(!ch.g.parent){ scene.remove(sp.m); SPRT.list.splice(i,1); continue; }
-    sp.m.visible=ch.g.visible; const r=ch.g.rotation.y, back=(Math.sin(r)*tx+Math.cos(r)*tz)<-0.15?1:0; if(back!==sp.back){ sp.back=back; sp.t.offset.x=back*0.5; }
-    const mv=ch===player?Math.abs(player.speed||0)>0.3:(ch._lastP?ch.g.position.distanceTo(ch._lastP)>0.002:false); ch._lastP=(ch._lastP||new THREE.Vector3()).copy(ch.g.position);
-    const ph=k*11+(ch._sph||(ch._sph=Math.random()*6)); const bob=mv?Math.abs(Math.sin(ph))*0.07:Math.sin(k*1.6+ch._sph)*0.012;
-    sp.m.position.set(ch.g.position.x,ch.g.position.y+bob+(ch.inner.position.y>0.2?ch.inner.position.y:0),ch.g.position.z);
-    sp.m.quaternion.copy(cam.quaternion); if(mv) sp.m.rotateZ(Math.sin(ph)*0.06);
-    const sq=mv?1-Math.abs(Math.cos(ph))*0.035:1+Math.sin(k*1.6+ch._sph)*0.01; sp.m.scale.set(2-sq,sq,1); } }
+  if(!SPRT.shG){ SPRT.shG=new THREE.CircleGeometry(0.42,20); SPRT.shM=new THREE.MeshBasicMaterial({color:0x2a1a10,transparent:true,opacity:0.28,depthWrite:false}); }
+  const sh=new THREE.Mesh(SPRT.shG,SPRT.shM); sh.rotation.x=-Math.PI/2; sh.scale.set(1,0.62,1); sh.renderOrder=0; scene.add(sh);   /* 발밑 그림자 — 그림 캐릭터가 바닥에 붙어 보이게 */
+  ch._spr={m,sh,t:tt,cell:-1,flip:1,turn:0,owner:owner||null}; ch.inner.traverse(o=>{ if(o.isMesh) o.visible=false; }); SPRT.list.push(ch); }catch(e){ console.warn('spr',e); } }
+function v327SprOff(ch){ try{ const sp=ch._spr; if(!sp) return; scene.remove(sp.m); scene.remove(sp.sh); ch._spr=null; ch.inner.traverse(o=>{ if(o.isMesh) o.visible=true; }); const i=SPRT.list.indexOf(ch); if(i>=0) SPRT.list.splice(i,1); }catch(e){} }
+function v327SprTick(dt){ const ox=CAM_OFF.x, oz=CAM_OFF.z, L=Math.hypot(ox,oz)||1, tx=ox/L, tz=oz/L, rx=oz/L, rz=-ox/L, k=performance.now()/1000;
+  const rehide=(SPRT.hT=(SPRT.hT||0)+dt)>0.5; if(rehide) SPRT.hT=0;
+  for(let i=SPRT.list.length-1;i>=0;i--){ const ch=SPRT.list[i], sp=ch._spr; if(!ch.g.parent){ scene.remove(sp.m); scene.remove(sp.sh); SPRT.list.splice(i,1); continue; }
+    if(rehide) ch.inner.traverse(o=>{ if(o.isMesh&&o.visible) o.visible=false; });   /* 나중에 붙는 3D 장비·소품도 숨긴다 */
+    sp.m.visible=sp.sh.visible=ch.g.visible; sp.sh.position.set(ch.g.position.x,ch.g.position.y+0.015,ch.g.position.z);
+    const r=ch.g.rotation.y, fx=Math.sin(r), fz=Math.cos(r), df=fx*tx+fz*tz, dr=fx*rx+fz*rz;
+    const dir=df>0.72?0:(df<-0.72?2:1), flip=(dir===1&&dr<0)?-1:1;
+    const ow=sp.owner, carry=!!(ow&&ow.stack&&ow.stack.length>0), cell=(carry?3:0)+dir;
+    if(cell!==sp.cell||flip!==sp.flip){ if(sp.cell>=0&&(dir!==sp.cell%3||flip!==sp.flip)) sp.turn=0.12; sp.cell=cell; sp.flip=flip; sp.t.offset.set((cell%3)/3,cell<3?0.5:0); }
+    const pos=ch.g.position; const mv=ch._lastP?Math.hypot(pos.x-ch._lastP.x,pos.z-ch._lastP.z)>0.0015:false; (ch._lastP||(ch._lastP=new THREE.Vector3())).copy(pos);
+    if(ch._sph==null) ch._sph=Math.random()*6; const ph=k*11.5+ch._sph;
+    const bob=mv?Math.abs(Math.sin(ph))*0.06:0, sq=mv?1-Math.abs(Math.cos(ph))*0.03:1+Math.sin(k*1.7+ch._sph)*0.012;
+    const jy=ch.inner.position.y>0.12?ch.inner.position.y:0;   /* 점프·기쁨 통통은 기존 값을 그대로 */
+    sp.m.position.set(pos.x,pos.y+bob+jy,pos.z); sp.m.quaternion.copy(cam.quaternion); if(mv) sp.m.rotateZ(Math.sin(ph)*0.06);
+    let sx=1; if(sp.turn>0){ sp.turn=Math.max(0,sp.turn-dt); sx=0.55+0.45*(1-sp.turn/0.12); }
+    sp.m.scale.set(flip*sx*(2-sq),sq,1); } }
 /* 돈 회수: 연속으로 챙길수록 음이 반음씩 올라간다(최대 12단) */
 function juiceCash(){ if(!sfxOn()||!AC){ return; } const c=JUICE.chain++, n=Math.min(6,c); JUICE.chainT=0.5; const f=880*Math.pow(2,n/12), v=c>6?Math.max(0.35,1-(c-6)*0.08):1; tone(f,0.07,0.09*v,'triangle'); tone(f*1.5,0.06,0.05*v,'sine',0.04);   /* v3.23: GPT 6차 — 6단에서 음 고정, 이후 음량 감소 */ }
 const flyers=[]; function fly(obj,from,toFn,dur,done){ scene.add(obj); obj.position.copy(from); flyers.push({obj,from:from.clone(),toFn,t:0,dur,done}); }

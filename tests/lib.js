@@ -6,7 +6,7 @@ const W=ms=>new Promise(r=>setTimeout(r,ms));
 function chromePath(){ const c=[process.env.CHROME,'/usr/bin/google-chrome','/usr/bin/chromium','/usr/bin/chromium-browser','/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'].filter(Boolean); for(const p of c){ try{ if(fs.existsSync(p)) return p; }catch(e){} } throw new Error('Chrome을 찾지 못했어요. CHROME=/경로/chrome 으로 지정하세요'); }
 /* 저장소 파일을 .run/ 으로 복사하고, CDN three.js를 로컬 node_modules로 바꾼다 */
 function prep(){ fs.mkdirSync(RUN,{recursive:true}); fs.mkdirSync(SHOTS,{recursive:true});
-  for(const f of fs.readdirSync(ROOT)){ if(/\.(js|jpg|png|txt|webmanifest)$/.test(f)) fs.copyFileSync(path.join(ROOT,f),path.join(RUN,f)); } try{ fs.mkdirSync(path.join(RUN,'fonts'),{recursive:true}); for(const f of fs.readdirSync(path.join(ROOT,'fonts'))) fs.copyFileSync(path.join(ROOT,'fonts',f),path.join(RUN,'fonts',f)); }catch(e){}
+  for(const f of fs.readdirSync(ROOT)){ if(/\.(js|jpg|png|webp|txt|webmanifest)$/.test(f)) fs.copyFileSync(path.join(ROOT,f),path.join(RUN,f)); } try{ fs.mkdirSync(path.join(RUN,'fonts'),{recursive:true}); for(const f of fs.readdirSync(path.join(ROOT,'fonts'))) fs.copyFileSync(path.join(ROOT,'fonts',f),path.join(RUN,'fonts',f)); }catch(e){}
   /* v2.99: node_modules(three)가 없으면 CDN 주소를 그대로 둔다 — npm install 없이도 돌릴 수 있게 */
   const hasThree=fs.existsSync(path.join(__dirname,'node_modules','three','build','three.min.js'));
   for(const f of ['tech.html','tech-test.html']){ let s=fs.readFileSync(path.join(ROOT,f),'utf8');
