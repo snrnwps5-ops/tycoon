@@ -2502,19 +2502,19 @@ function faceInfo(model,g,m,head,faceMesh){ if(FACEC[model]) return FACEC[model]
 function addFace(head,f,o){
   const dark=new THREE.MeshBasicMaterial({color:o.eye||'#2b2233'});
   const lite=new THREE.MeshBasicMaterial({color:'#ffffff'});
-  const ew=f.w*0.235, eh=f.w*0.275, ex=f.w*0.158, ey=f.y1+f.h*0.345, ez=f.z2+f.w*0.022;
+  const ew=f.w*(V328?0.245:0.235), eh=f.w*(V328?0.295:0.275), ex=f.w*(V328?0.162:0.158), ey=f.y1+f.h*(V328?0.335:0.345), ez=f.z2+f.w*(V328?0.024:0.022);   /* v3.28 C: 눈은 원래보다 조금만 크게(B 대비 -12%) */
   const eyes=[];
-  const iris=new THREE.MeshBasicMaterial({color:o.iris||'#5a4a7a'});
+  const iris=new THREE.MeshBasicMaterial({color:o.iris||(V328?'#7a5236':'#5a4a7a')});   /* v3.28: 보라→따뜻한 갈색 눈동자 */
   [-1,1].forEach(s=>{ const e=new THREE.Group(); e.position.set(f.cx+s*ex,ey,ez); head.add(e);
     const ball=new THREE.Mesh(EYEGEO,dark); ball.scale.set(ew*0.52,eh*0.54,ew*0.24); e.add(ball);
-    const ir=new THREE.Mesh(EYEGEO,iris); ir.scale.set(ew*0.40,eh*0.42,ew*0.20); ir.position.z=ew*0.07; e.add(ir);
-    const hi=new THREE.Mesh(EYEGEO,new THREE.MeshBasicMaterial({color:'#ffffff'})); hi.scale.set(ew*0.19,eh*0.19,ew*0.10); hi.position.set(ew*0.14,eh*0.20,ew*0.20); e.add(hi);
+    const ir=new THREE.Mesh(EYEGEO,iris); ir.scale.set(ew*(V328?0.455:0.40),eh*(V328?0.475:0.42),ew*0.20);   /* 검은 테두리 얇게 */ ir.position.z=ew*0.07; e.add(ir);
+    const hi=new THREE.Mesh(EYEGEO,new THREE.MeshBasicMaterial({color:'#ffffff'})); hi.scale.set(ew*(V328?0.20:0.19),eh*(V328?0.20:0.19),ew*0.10); hi.position.set(ew*0.13,eh*0.19,ew*0.20); e.add(hi);
     const hi2=new THREE.Mesh(EYEGEO,new THREE.MeshBasicMaterial({color:'#dff3ff'})); hi2.scale.set(ew*0.09,eh*0.09,ew*0.06); hi2.position.set(-ew*0.12,-eh*0.14,ew*0.20); e.add(hi2);
     /* 속눈썹 — 눈 위쪽 얇은 선 */
-    const lash=new THREE.Mesh(new THREE.BoxGeometry(ew*1.05,eh*0.10,ew*0.05),dark); lash.position.set(0,eh*0.50,ew*0.10); lash.rotation.z=s*0.10; e.add(lash);
+    const lash=new THREE.Mesh(new THREE.BoxGeometry(ew*(V328?0.95:1.05),eh*(V328?0.065:0.10),ew*0.05),dark); lash.position.set(0,eh*0.50,ew*0.10); lash.rotation.z=s*0.10; e.add(lash);
     eyes.push(e); });
   /* v2.84: 볼터치 — 분홍 볼 두 점이 얼굴을 아기자기하게 만든다 */
-  const blMat=new THREE.MeshBasicMaterial({color:'#ff9aae',transparent:true,opacity:0.42});
+  const blMat=new THREE.MeshBasicMaterial({color:V328?'#ff8fa6':'#ff9aae',transparent:true,opacity:V328?0.55:0.42});
   [-1,1].forEach(s=>{ const b=new THREE.Mesh(EYEGEO,blMat); b.scale.set(f.w*0.115,f.w*0.062,f.w*0.016);
     b.position.set(f.cx+s*f.w*0.250,f.y1+f.h*0.175,f.z2+f.w*0.008); head.add(b); });
   /* v2.84: 입 — 작은 미소(반원 토러스) */
@@ -2577,6 +2577,7 @@ function v324IdleCarry(idle,wc){ const ARM=/^(Shoulder|UpperArm|LowerArm|Fist)[L
 function playA(ch,n,f){ if(!ch.acts[n]||ch.cur===n) return; const a=ch.acts[n]; a.reset(); a.enabled=true; a.setEffectiveWeight(1); a.fadeIn(f==null?0.15:f).play(); if(ch.cur&&ch.acts[ch.cur]) ch.acts[ch.cur].fadeOut(f==null?0.15:f); ch.cur=n; }
 /* v2.84: 앞치마 위치 계산용 — 머리뼈 월드 높이에서 몸 높이를 어림한다(기존 bodyH와 같은 식) */
 function ch0H(m){ try{ const h=m.getObjectByName('Head'); if(h){ const v=new THREE.Vector3(); h.getWorldPosition(v); return Math.max(1.3,v.y/0.74); } }catch(e){} return 1.7; }
+var V328=(function(){ try{ return localStorage.getItem('v328off')!=='1'; }catch(e){ return true; } })();   /* QA 전후 비교용 끄기 스위치 */
 function makeChar(model,o){ o=o||{}; const G=A['q:'+model]||A['q:Casual_Male']; const g=new THREE.Group(), inner=new THREE.Group(); g.add(inner); scene.add(g);
   const m=THREE.SkeletonUtils.clone(G.scene); { const _s=1.25/QH; m.scale.set(_s*1.05,_s,_s*1.05); } inner.add(m);
   const skin=o.skin||SKINS[Math.floor(Math.random()*SKINS.length)];
@@ -2585,7 +2586,9 @@ function makeChar(model,o){ o=o||{}; const G=A['q:'+model]||A['q:Casual_Male']; 
     if(x.isMesh){ x.castShadow=true; x.frustumCulled=false; const mt=x.material; let c=mt.color?mt.color.clone():new THREE.Color('#fff'); c.convertLinearToSRGB(); let hex='#'+c.getHexString(); const n=mt.name||'';
     if(/^Skin$/.test(n)) hex=skin; if(o.tint&&/Shirt|Clothes/.test(n)) hex=o.tint; if(o.pants&&/Pants/.test(n)) hex=o.pants; if(o.hat&&/Hat/.test(n)) hex=o.hat; if(/Hat/.test(n)&&x.visible!==false) hasHat=1;
     if(/^Hair$/.test(n)){ hasHair=1; if(o.hair) hex=o.hair; else hc=hex; hairM=x; } if(/^Face$/.test(n)) faceM=x;
-    x.material=new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); x.material.name=n; } });
+    /* v3.28: 캐릭터 공통 화풍(직원·손님 모두) — 옷·머리는 살짝 파스텔(흰색 쪽 10%), 은은한 자체광(그림자 쪽이 칙칙하지 않게), 반사광 낮춤. 재질 종류는 그대로 Phong. */
+    const _c=new THREE.Color(hex); if(V328&&!/^Skin$|^Face$|Eye/.test(n)) _c.lerp(new THREE.Color('#ffffff'),0.10); const _e=_c.clone().multiplyScalar(/^Skin$/.test(n)?0.10:0.08);
+    x.material=V328?new THREE.MeshPhongMaterial({color:_c,emissive:_e,shininess:8,specular:0x0c0c0c,skinning:true}):new THREE.MeshPhongMaterial({color:hex,shininess:10,specular:0x151515,skinning:true}); x.material.name=n; } });
   try{ if(!CLIPS.Idle_Carry&&CLIPS.Idle&&CLIPS.Walk_Carry) CLIPS.Idle_Carry=v324IdleCarry(CLIPS.Idle,CLIPS.Walk_Carry); }catch(e){}
   const mixer=new THREE.AnimationMixer(m), acts={}; Object.keys(CLIPS).forEach(k=>acts[k]=mixer.clipAction(CLIPS[k]));
   /* ---- v2.88: 캐릭터 아트 — 둥근 손·신발, 헤어 바리에이션, 유니폼 디테일 ---- */
@@ -2666,7 +2669,7 @@ function v288Body(ch, head, f, o){
       const st2=new THREE.Mesh(new THREE.BoxGeometry(bh*0.020,bh*0.16,bh*0.012),new THREE.MeshPhongMaterial({color:o.apron})); st2.position.set(bh*0.052,bh*0.16,0); st2.rotation.z=-0.16; ap.add(st2);
       const bd=new THREE.Mesh(new THREE.BoxGeometry(bh*0.055,bh*0.028,bh*0.006),basic('#fffdf6')); bd.position.set(-bh*0.040,bh*0.075,bh*0.010); ap.add(bd); } }catch(e){}
   const stackG=new THREE.Group(); stackG.position.set(0,0.78,0.38); g.add(stackG);
-  const ch={g,inner,m,mixer,acts,cur:null,stackG,jump:0,look:o.look||null,hair:o.hair||null,hairC:hc||'#3a2a20',eyeL:null,blinkT:1.5+Math.random()*3,blinkK:0};
+  const ch={g,inner,m,mixer,acts,cur:null,stackG,jump:0,look:o.look||null,hair:o.hair||null,hairC:hc||'#3a2a20',eyeL:null,blinkT:1.5+Math.random()*3,blinkK:0,headB:head||null};
   try{ const hp=head?head.getWorldPosition(new THREE.Vector3()):null; ch.bodyH=Math.max(1.3,(hp?hp.y:1.24)/0.74); }catch(e){ ch.bodyH=1.7; }
   /* v2.84: 치비 비율 — 머리를 1.18배로 키우고 몸통을 가로로 조금 넓혀 통통하게.
      눈·볼터치·액세서리는 모두 머리뼈의 자식이라 함께 커진다. */
@@ -2676,6 +2679,7 @@ function v288Body(ch, head, f, o){
       ch.hs=hs;
       /* v3.08: 모델 자체 모자가 있으면 덧붙이는 헤어 볼륨(포니·번·롱 등)을 생략 — 모자를 뚫고 나와 겹쳐 보이던 문제 */
       ch.hairSw=(hasHair&&!o.noHair&&!hasHat)?v288Hair(hs,head,f,o.hair||ch.hairC):[];
+      /* v3.28 C: 헤어 실루엣 축소 시도 — 모델 헤어 지오메트리 변형은 화면상 효과가 없어 철회(QC lineBC) */
       if(o.acc) addGear(o.acc,ch,head,f,o);
       v288Body(ch,head,f,o);
     }catch(e){ window.__FACEERR=(window.__FACEERR||0)+1; window.__FACEERRM=String(e&&e.message||e); } }
@@ -2683,7 +2687,7 @@ function v288Body(ch, head, f, o){
 function animChar(ch,speed,dt,carry){ if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4.2; ch.blinkK=1; }
   if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.10,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); for(let i=0;i<ch.eyeL.length;i++) ch.eyeL[i].scale.y=k; } }
   const mv=speed>0.3, run=speed>5; const n=mv?(carry?(run?'Run_Carry':'Walk_Carry'):(run?'Run':'Walk')):(carry?(ch.acts.Idle_Carry?'Idle_Carry':'Walk_Carry'):'Idle'); playA(ch,n);
-  const a=ch.acts[n]; if(a) a.timeScale=mv?Math.min(1.8,Math.max(0.7,speed/(run?6:3.2))):(n==='Walk_Carry'?0:1); ch.mixer.update(dt);
+  const a=ch.acts[n]; if(a) a.timeScale=mv?Math.min(1.8,Math.max(0.7,speed/(run?6:3.2))):(n==='Walk_Carry'?0:1); ch.mixer.update(dt); if(V328&&ch.headB) ch.headB.scale.setScalar(1.13);   /* v3.28: 머리 13% 크게 — 치비 비율(애니메이션 뒤에 덮어쓴다) */
   /* v2.84: 경쾌한 통통 바운스 — 시간 기반 절대값이라 회전·위치가 누적되지 않는다(회전 누적 버그 재발 방지) */
   let y=0; if(ch.jump>0){ ch.jump=Math.max(0,ch.jump-dt*2.2); y=Math.sin((1-ch.jump)*Math.PI)*0.4; }
   ch.bT=(ch.bT||0)+dt;
@@ -5893,6 +5897,7 @@ function juiceTick(dt){
   for(let i=0;i<CASH.meshes.length;i++) juicePop(CASH.meshes[i],dt);
   for(let a=0;a<SRC.length;a++){ const sm=SRC[a].sm; for(let i=0;i<sm.length;i++) if(sm[i]._pop!=null) juicePop(sm[i],dt); }
   try{ v324Tray(dt); }catch(e){}
+  try{ if(window.__LINE) window.__LINE.forEach(ch=>animChar(ch,0,dt,false)); }catch(e){}
   try{ if(SPRT.list.length) v327SprTick(dt); }catch(e){}
   try{ juiceCarryMax(); }catch(e){}
   try{ v322Nav(dt); }catch(e){}
@@ -5903,7 +5908,7 @@ function juiceTick(dt){
     JUICE.max=new THREE.Mesh(new THREE.PlaneGeometry(1.3,0.65),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,depthTest:false,fog:false,toneMapped:false})); JUICE.max.renderOrder=9; scene.add(JUICE.max); }
   if(JUICE.max){ JUICE.max.visible=full; if(full){ const k=performance.now()/1000; JUICE.max.position.set(CASH.x,0.2+Math.ceil(CASH.meshes.length/4)*0.14+0.55,CASH.z); JUICE.max.quaternion.copy(cam.quaternion); } }
 }
-try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); },drawDock:()=>drawDock(),gfx:()=>({renderer,sun,hemiL,fillL,warmL,rimL,scene}),hire:(kind,name)=>{ try{ const c={id:'t'+Math.random(),name,role:kind,sat:80,lv:1,xp:0,stat:{}}; addStaff(kind,c); return staff.length; }catch(e){ return String(e); } },sprDbg:()=>SPRT.list.map(c=>{ const m=c._spr.m; return {v:m.visible,p:m.position.toArray().map(x=>+x.toFixed(2)),img:!!(c._spr.t.image&&c._spr.t.image.width),w:c._spr.t.image&&c._spr.t.image.width,par:!!m.parent,sc:m.scale.toArray()}; }),spr:(who,url)=>{ url=url||'chr_boss.webp'; if(who==='staff'){ staff.forEach(s=>v327SprOn(s.ch,url,s)); } else v327SprOn(player.ch,url,player); return SPRT.list.length; },dlv:()=>({dlv:DLV.n,pks:PKS.n,stack:player.stack.length}),nav:()=>{ try{ v322Nav(0.016); return [!!V322NAV, V322NAV&&V322NAV.visible, arrow.visible, +arrow.position.x.toFixed(2), +arrow.position.z.toFixed(2), +player.pos.x.toFixed(2), +player.pos.z.toFixed(2)]; }catch(e){ return String(e); } }}; }catch(e){}
+try{ if(location.protocol==='file:'||/[?&]test=1/.test(location.search)) window.__JZ={J:JUICE,get p(){return player},S:()=>S,CASH:CASH,keys:()=>keys,get cash(){return cashVal},set cash(v){cashVal=v;rebuildCash();},get money(){return money},camSet:(x,y,z)=>{ CAMB.x=x; CAMB.y=y; CAMB.z=z; CAM_OFF.set(x,y,z); },stackScale:k=>{ player.ch.stackG.scale.setScalar(k); },stackPos:(y,z)=>{ player.ch.stackG.position.set(0,y,z); },drawDock:()=>drawDock(),gfx:()=>({renderer,sun,hemiL,fillL,warmL,rimL,scene}),lineup:()=>{ const _r=Math.random; let _s=42; Math.random=()=>{ _s=(_s*16807)%2147483647; return _s/2147483647; }; const M=['Casual_Female','Casual_Male','Suit_Female','Worker_Male','Casual2_Female','Casual_Bald','Suit_Male','Casual3_Female']; const L=[]; const face=Math.atan2(CAM_OFF.x,CAM_OFF.z); M.forEach((m,i)=>{ try{ const ch=makeChar(m,{tint:i<4?STAFFC:undefined}); ch.g.position.set(-2.8+i*0.8,0,1.2+(i%2)*0.5); ch.g.rotation.y=face; scene.add(ch.g); L.push(ch); }catch(e){} }); Math.random=_r; window.__LINE=L; focusP.set(0,0,1.4); focusT=999; cam.zoom=2.3; cam.updateProjectionMatrix(); return L.length; },hire:(kind,name)=>{ try{ const c={id:'t'+Math.random(),name,role:kind,sat:80,lv:1,xp:0,stat:{}}; addStaff(kind,c); return staff.length; }catch(e){ return String(e); } },sprDbg:()=>SPRT.list.map(c=>{ const m=c._spr.m; return {v:m.visible,p:m.position.toArray().map(x=>+x.toFixed(2)),img:!!(c._spr.t.image&&c._spr.t.image.width),w:c._spr.t.image&&c._spr.t.image.width,par:!!m.parent,sc:m.scale.toArray()}; }),spr:(who,url)=>{ url=url||'chr_boss.webp'; if(who==='staff'){ staff.forEach(s=>v327SprOn(s.ch,url,s)); } else v327SprOn(player.ch,url,player); return SPRT.list.length; },dlv:()=>({dlv:DLV.n,pks:PKS.n,stack:player.stack.length}),nav:()=>{ try{ v322Nav(0.016); return [!!V322NAV, V322NAV&&V322NAV.visible, arrow.visible, +arrow.position.x.toFixed(2), +arrow.position.z.toFixed(2), +player.pos.x.toFixed(2), +player.pos.z.toFixed(2)]; }catch(e){ return String(e); } }}; }catch(e){}
 /* v3.21: 든 상품은 머리 위 '탑'으로 — 위에서 내려다보는 카메라에서도 어느 방향으로 걷든 보인다. '든 물건 ●●●' 말풍선은 없애고 꽉 차면 탑 위에 MAX. */
 try{ setTimeout(()=>{ try{ if(window.V327ON===true) v327SprOn(player.ch,V327CH.boss,player); }catch(_){} },0);
 player.ch.stackG.visible=false;   /* v3.24: 사장님 운반은 아래 '쟁반(TRAY)'이 따로 그린다 */   /* v3.23c: 머리 위는 어색하다는 피드백 — 다시 두 팔로 앞에 안고, 상자로 쌓아 위로 솟게 */ document.body.classList.add('v321'); const st=document.createElement('style'); st.textContent='body.v321 #carry{display:none!important}'; document.head.appendChild(st); }catch(e){}
@@ -6651,7 +6656,7 @@ function step(){ const now=performance.now(); let dt=(now-last)/1000;
   /* v2.10: 손으로 수리하는 동안에는 대기 손님 인내심이 모달 감속(0.3)의 35%로 더 천천히 줄고, 수리 중인 손님은 인내심이 줄지 않는다 */
   const repBusy=!!(quizOpen&&custs.some(x=>x.type==='fix'&&x.st==='consult'));
   for(let k=custs.length-1;k>=0;k--){ const c=custs[k]; c.speed=0;
-    if(c.lock>0){ c.lock-=dt; c.ch.mixer.update(dt); continue; }
+    if(c.lock>0){ c.lock-=dt; c.ch.mixer.update(dt); if(V328&&c.ch.headB) c.ch.headB.scale.setScalar(1.13); continue; }
     if(c.st==='enter'){ if(walkTo(c,dt,3.2*ftueSpd())){ c.st=c.type==='fix'?'wait':'wait'; c.face=c.spot.face; if(c.spType&&!c.t0){ c.t0=time; if(c.spType==='esc') c.escT=15; c._lt=null; } } }
     /* v2.84: 수리실로 들어간 손님은 매장 화면에서 완전히 빠진다(말풍선·타이머·진행 바 없음) */
     else if(c.st==='lab'&&c.hidden){ if(c.ch&&c.ch.g) c.ch.g.visible=false; if(c.el&&c.el.style.display!=='none') c.el.style.display='none'; continue; }
@@ -8222,7 +8227,7 @@ var BZ_TP={ual:[-0.19,-0.81,-2.12],lal:[1.22,2.2,0.47],uar:[0.66,0.2,1.15],lar:[
 var BZ_PH={uar:[0.57,-0.08,1.65],lar:[0,0.71,0.01]};                                                   // 통화: 오른손을 귀 옆으로
 var BZ_UP={uar:[0.29,0.14,1.94],lar:[-2.78,0.69,2.45]};                                                 // 협상 포인트: 오른손을 머리 옆으로 번쩍
 function bizAnim(R,dt){ const ch=R.ch, b=bizBones(ch), t=performance.now()/1000+(R.i==='m'?3.1:R.i*1.7), d=R.d;
-  ch.mixer.update(dt); if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4; ch.blinkK=1; } if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.1,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); ch.eyeL.forEach(e=>e.scale.y=k); } }
+  ch.mixer.update(dt); if(V328&&ch.headB) ch.headB.scale.setScalar(1.13); if(ch.eyeL){ ch.blinkT-=dt; if(ch.blinkT<=0){ ch.blinkT=2.4+Math.random()*4; ch.blinkK=1; } if(ch.blinkK>0){ ch.blinkK=Math.max(0,ch.blinkK-dt*5.5); const k=Math.max(0.1,Math.abs(Math.cos((1-ch.blinkK)*Math.PI))); ch.eyeL.forEach(e=>e.scale.y=k); } }
   const S=b.sit||{}, put=(k,x,y,z)=>{ const s=S[k]; if(s&&b[k]) b[k].rotation.set(s[0]+(x||0),s[1]+(y||0),s[2]+(z||0)); };
   const O=window.__BZP||{}, TP=O.tp||BZ_TP, PHS=O.ph||BZ_PH, UPP=O.up||BZ_UP;
   const ask=!!(d&&d.st==='nego'&&!d.asked&&d.p>=0.5), ph=!!d&&!ask;
