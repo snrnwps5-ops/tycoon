@@ -13458,32 +13458,42 @@ var V285=(function(){
       var ch=player.ch, inner=ch.inner;
       if(ch._v285g){ try{ inner.remove(ch._v285g); }catch(e){} ch._v285g=null; }
       if(ch._v285cap){ try{ if(ch._v285cap.parent) ch._v285cap.parent.remove(ch._v285cap); }catch(e){} ch._v285cap=null; }
+      (ch._v326att||[]).forEach(function(x){ try{ if(x.parent) x.parent.remove(x); }catch(e){} }); ch._v326att=[];
       var g=new THREE.Group(); inner.add(g); ch._v285g=g;
       /* v2.86: 모자는 머리 위로, 조끼는 몸통 밖으로, 가방은 어깨 옆으로 — 탑다운에서도 착용이 뚜렷이 보이게 */
       var hh=1.54; try{ var hp=null; inner.traverse(function(o){ if(!hp&&o.isBone&&o.name==='Head') hp=o; }); if(hp){ var vv=new THREE.Vector3(); hp.getWorldPosition(vv); inner.worldToLocal(vv); hh=vv.y+0.3; /* v3.08: 머리뼈에 붙은 헤어 볼륨(포니·번 등) 꼭대기를 재서 그 위에 씌운다 — 고정 높이로는 긴 머리에 모자가 파묻혔다 */ try{ var bb=new THREE.Box3().setFromObject(hp); if(isFinite(bb.max.y)){ var tp=new THREE.Vector3(vv.x,0,0); tp.copy(hp.getWorldPosition(new THREE.Vector3())); tp.y=bb.max.y; inner.worldToLocal(tp); hh=Math.max(hh,tp.y-0.1); } }catch(_){} } }catch(e){}
       var eq=V.eq;
       function gm(col,extra){ var o={color:col,shininess:60}; if(extra) for(var k in extra) o[k]=extra[k]; return new THREE.MeshPhongMaterial(o); }
+      /* v3.26: 장비를 '진짜 옷'처럼 — 폰 실측에서 모자=회색 원통(머리에 얹힌 덩어리), 조끼=몸을 덮는 상자, 가방=옆구리 상자로 보였다.
+         · 모자: 반구 크라운 + 앞챙(머리뼈에 붙음) · 유니폼: 캐릭터 셔츠 재질 색을 바꾼다(겉에 상자 X) + 가슴 명찰 · 가방: 등 뒤 백팩(몸통뼈에 붙음) + 어깨끈 */
+      var tor=null; try{ inner.traverse(function(o){ if(!tor&&o.isBone&&o.name==='Torso') tor=o; }); }catch(e){}
+      function attachTo(bone,grp){ try{ if(bone&&bone.attach){ inner.updateMatrixWorld(true); bone.attach(grp); return true; } }catch(e){} return false; }
       if(eq.cap>=0){
-        var cc=['#b9bec8','#5aa8ff','#b07aff','#ffb020'][eq.cap];
-        var brim=new THREE.Mesh(new THREE.CylinderGeometry(0.36,0.36,0.06,24),gm(cc)); brim.position.set(0,hh+0.02,0); g.add(brim);
-        var crown=new THREE.Mesh(new THREE.CylinderGeometry(0.21,0.27,0.26,18),gm(cc)); crown.position.set(0,hh+0.17,0); g.add(crown);
-        var band=new THREE.Mesh(new THREE.CylinderGeometry(0.275,0.275,0.06,18),gm('#2b3340')); band.position.set(0,hh+0.07,0); g.add(band);
-        var gem=new THREE.Mesh(new THREE.SphereGeometry(0.06,10,8),gm('#fff6c8',{emissive:'#ffcf4d',emissiveIntensity:0.7})); gem.position.set(0,hh+0.17,0.27); g.add(gem);
-        /* v3.10: 모자를 머리뼈에 붙인다 — 걷기·뛰기 애니메이션에서 머리가 흔들릴 때 모자가 제자리에 떠 있거나 머리에 파고들던 문제 */
-        try{ if(hp&&hp.attach){ var cg=new THREE.Group(); g.add(cg); [brim,crown,band,gem].forEach(function(m){ cg.add(m); }); inner.updateMatrixWorld(true); hp.attach(cg); ch._v285cap=cg; } }catch(e){}
+        var cc=['#e9ecf1','#5aa8ff','#b07aff','#ffb020'][eq.cap];
+        var cg=new THREE.Group(); g.add(cg); var ht=hh; try{ g.visible=false; var bb=new THREE.Box3().setFromObject(inner); g.visible=true; ht=Math.max(hh,bb.max.y-inner.position.y); }catch(e){} var cb=ht-0.13;   /* 머리카락 꼭대기(ht) 기준으로 씌운다 — 머리뼈 기준이면 볼륨 큰 헤어 속에 묻혔다 */
+        var crown=new THREE.Mesh(new THREE.SphereGeometry(0.41,20,10,0,Math.PI*2,0,Math.PI/2),gm(cc)); crown.scale.set(1,0.6,1.04); crown.position.set(0,cb,-0.02); cg.add(crown);
+        var visor=new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.4,0.035,20,1,false,-Math.PI/2.6,Math.PI/1.3),gm(cc)); visor.scale.set(1.05,1,1.05); visor.position.set(0,cb+0.01,0.1); visor.rotation.x=0.14; cg.add(visor);
+        var button=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,6),gm('#2b3340')); button.position.set(0,cb+0.41*0.6,-0.02); cg.add(button);
+        var logo=new THREE.Mesh(new THREE.CircleGeometry(0.07,14),gm('#fff6c8',{emissive:'#ffcf4d',emissiveIntensity:0.5})); logo.position.set(0,cb+0.11,0.3); logo.rotation.x=-0.55; cg.add(logo);
+        if(hp&&attachTo(hp,cg)) ch._v285cap=cg;
       }
+      ch._v326shirt=ch._v326shirt||[]; if(!ch._v326shirt.length){ inner.traverse(function(o){ if(o.isMesh&&o.material&&/Shirt|Clothes/.test(o.material.name||'')) ch._v326shirt.push({m:o.material,c:o.material.color.clone()}); }); }
+      ch._v326shirt.forEach(function(x){ x.m.color.copy(x.c); });
       if(eq.uni>=0){
-        var uc=['#d8dde6','#7fb6ff','#c79aff','#ffcf6a'][eq.uni];
-        var vest=new THREE.Mesh(new THREE.BoxGeometry(0.60,0.46,0.40),gm(uc)); vest.position.set(0,0.96,0.01); g.add(vest);
-        var vneck=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.30,0.02),gm('#ffffff')); vneck.position.set(0,1.02,0.21); g.add(vneck);
-        var tag=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.08,0.02),gm(uc,{emissive:uc,emissiveIntensity:0.5})); tag.position.set(0.16,1.02,0.21); g.add(tag);
+        var uc=['#f1f3f7','#7fb6ff','#c79aff','#ffcf6a'][eq.uni];
+        ch._v326shirt.forEach(function(x){ x.m.color.set(uc); });
+        var tg=new THREE.Group(); g.add(tg);
+        var tag=new THREE.Mesh(new THREE.BoxGeometry(0.13,0.07,0.015),gm('#ffffff',{emissive:uc,emissiveIntensity:0.25})); tag.position.set(0.12,1.02,0.2); tg.add(tag);
+        if(tor) attachTo(tor,tg); ch._v326att.push(tg);
       }
       if(eq.bag>=0){
         var bc=['#9a8f7c','#4a7bd0','#8a5ad0','#c8892c'][eq.bag];
-        var bag=new THREE.Mesh(new THREE.BoxGeometry(0.30,0.36,0.20),gm(bc)); bag.position.set(0.36,0.94,-0.02); g.add(bag);
-        var flap=new THREE.Mesh(new THREE.BoxGeometry(0.31,0.13,0.22),gm(bc,{emissive:bc,emissiveIntensity:0.18})); flap.position.set(0.36,1.09,-0.02); g.add(flap);
-        var strap=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.62,0.05),gm('#5a4a3a')); strap.position.set(0.14,1.05,0.02); strap.rotation.z=0.42; g.add(strap);
-        var buckle=new THREE.Mesh(new THREE.BoxGeometry(0.09,0.09,0.04),gm('#e8c96a')); buckle.position.set(0.36,0.98,0.10); g.add(buckle);
+        var bg=new THREE.Group(); g.add(bg);
+        var pack=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.38,0.16),gm(bc)); pack.position.set(0,0.98,-0.24); bg.add(pack);
+        var top=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.34,12),gm(bc)); top.rotation.z=Math.PI/2; top.position.set(0,1.17,-0.24); bg.add(top);
+        var pocket=new THREE.Mesh(new THREE.BoxGeometry(0.24,0.14,0.05),gm(bc,{emissive:bc,emissiveIntensity:0.15})); pocket.position.set(0,0.9,-0.33); bg.add(pocket);
+        [-0.12,0.12].forEach(function(x){ var st=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.36,0.03),gm('#5a4a3a')); st.position.set(x,1.02,0.17); bg.add(st); var sh=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.03,0.42),gm('#5a4a3a')); sh.position.set(x,1.2,-0.03); bg.add(sh); });
+        if(tor) attachTo(tor,bg); ch._v326att.push(bg);
       }
     }catch(e){}
   }
